@@ -3,18 +3,21 @@
  * Design: "The Director's Cut" — Cinematic Dark
  * Goal: Convert cold Meta Ads traffic → $19/month Skool subscription
  * All CTAs link to: https://www.skool.com/aifilmacademy (with affiliate ref if present)
+ *
+ * Section order (conversion-optimized):
+ * Hero → Stats → Reviews (social proof early) → Partners (credibility) →
+ * Problem → What You Get → Workflow → Pricing → FAQ → CTA → Footer
  */
 
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import StatsBar from "@/components/StatsBar";
+import TestimonialsSection from "@/components/TestimonialsSection";
+import PartnersSection from "@/components/PartnersSection";
 import ProblemSection from "@/components/ProblemSection";
 import WhatYouGetSection from "@/components/WhatYouGetSection";
 import WorkflowSection from "@/components/WorkflowSection";
-import GallerySection from "@/components/GallerySection";
-import TestimonialsSection from "@/components/TestimonialsSection";
 import PricingSection from "@/components/PricingSection";
-import PartnersSection from "@/components/PartnersSection";
 import FAQSection from "@/components/FAQSection";
 import FinalCTASection from "@/components/FinalCTASection";
 import Footer from "@/components/Footer";
@@ -25,13 +28,12 @@ export default function Home() {
       <Navbar />
       <HeroSection />
       <StatsBar />
+      <TestimonialsSection />
+      <PartnersSection />
       <ProblemSection />
       <WhatYouGetSection />
       <WorkflowSection />
-      <GallerySection />
-      <TestimonialsSection />
       <PricingSection />
-      <PartnersSection />
       <FAQSection />
       <FinalCTASection />
       <Footer />
