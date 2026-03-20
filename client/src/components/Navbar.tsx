@@ -3,11 +3,11 @@
  * Design: "The Director's Cut" — transparent on top, dark on scroll
  */
 import { useState, useEffect } from "react";
-
-const SKOOL_URL = "https://www.skool.com/aifilmacademy";
+import { useSkoolUrl } from "@/contexts/AffiliateLinkContext";
 const LOGO_URL = "https://d2xsxph8kpxj0f.cloudfront.net/310419663032668673/9znEqYZ2JpzLxCzomcgMbf/afa-logo-long_9672f3eb.png";
 
 export default function Navbar() {
+  const skoolUrl = useSkoolUrl();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -60,7 +60,7 @@ export default function Navbar() {
         {/* CTA Button */}
         <div className="flex items-center gap-3">
           <a
-            href={SKOOL_URL}
+            href={skoolUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="btn-primary px-4 py-2 text-sm font-semibold hidden sm:flex"
@@ -96,7 +96,7 @@ export default function Navbar() {
             </a>
           ))}
           <a
-            href={SKOOL_URL}
+            href={skoolUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="btn-primary px-5 py-3 text-base font-semibold text-center mt-2"

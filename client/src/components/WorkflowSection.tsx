@@ -3,9 +3,10 @@
  * Design: "The Director's Cut" — dark bg with workflow bg image, numbered steps
  */
 
+import { useSkoolUrl } from "@/contexts/AffiliateLinkContext";
 const WORKFLOW_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310419663032668673/9znEqYZ2JpzLxCzomcgMbf/afa-workflow-bg-6UmrxWz82CBtUXpwjvKm59.webp";
 const TOOLS_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310419663032668673/9znEqYZ2JpzLxCzomcgMbf/afa-tools-bg-E2JfjK4Jy5LoG9XDfEifZ7.webp";
-const SKOOL_URL = "https://www.skool.com/aifilmacademy";
+
 
 const steps = [
   {
@@ -32,6 +33,7 @@ const steps = [
 ];
 
 export default function WorkflowSection() {
+  const skoolUrl = useSkoolUrl();
   return (
     <section id="workflow" className="py-20 md:py-28 relative overflow-hidden" style={{ background: "#0A0A0A" }}>
       {/* Background image */}
@@ -159,7 +161,7 @@ export default function WorkflowSection() {
               </p>
             </div>
             <a
-              href={SKOOL_URL}
+              href={skoolUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="btn-primary px-6 py-3 text-sm font-semibold shrink-0"

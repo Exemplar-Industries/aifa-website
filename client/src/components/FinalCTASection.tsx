@@ -3,10 +3,11 @@
  * Design: "The Director's Cut" — full-bleed dark section, massive headline, single CTA
  */
 
-const SKOOL_URL = "https://www.skool.com/aifilmacademy";
+import { useSkoolUrl } from "@/contexts/AffiliateLinkContext";
 const HERO_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310419663032668673/9znEqYZ2JpzLxCzomcgMbf/afa-hero-bg-kCkktLY3hquHjRqwTxUHRg.webp";
 
 export default function FinalCTASection() {
+  const skoolUrl = useSkoolUrl();
   return (
     <section
       className="relative py-24 md:py-36 overflow-hidden"
@@ -57,7 +58,7 @@ export default function FinalCTASection() {
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-12">
           <a
-            href={SKOOL_URL}
+            href={skoolUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="btn-primary pulse-cta px-12 py-5 text-xl font-bold"

@@ -3,8 +3,7 @@
  * Design: "The Director's Cut" — accordion style, dark bg
  */
 import { useState } from "react";
-
-const SKOOL_URL = "https://www.skool.com/aifilmacademy";
+import { useSkoolUrl } from "@/contexts/AffiliateLinkContext";
 
 const faqs = [
   {
@@ -42,6 +41,7 @@ const faqs = [
 ];
 
 export default function FAQSection() {
+  const skoolUrl = useSkoolUrl();
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
@@ -74,7 +74,7 @@ export default function FAQSection() {
               Still on the fence? Here are the most common questions we get from new members.
             </p>
             <a
-              href={SKOOL_URL}
+              href={skoolUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="btn-primary mt-6 px-6 py-3 text-sm font-semibold inline-flex"

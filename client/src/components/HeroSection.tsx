@@ -4,10 +4,12 @@
  * Goal: Immediate conversion impulse — headline + CTA above the fold
  */
 
-const SKOOL_URL = "https://www.skool.com/aifilmacademy";
+
+import { useSkoolUrl } from "@/contexts/AffiliateLinkContext";
 const HERO_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310419663032668673/9znEqYZ2JpzLxCzomcgMbf/afa-hero-bg-kCkktLY3hquHjRqwTxUHRg.webp";
 
 export default function HeroSection() {
+  const skoolUrl = useSkoolUrl();
   return (
     <section
       className="relative min-h-screen flex flex-col justify-center overflow-hidden grain-overlay"
@@ -76,7 +78,7 @@ export default function HeroSection() {
           {/* CTA buttons */}
           <div className="flex flex-col sm:flex-row gap-4 mt-10 animate-fade-up-delay-3">
             <a
-              href={SKOOL_URL}
+              href={skoolUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="btn-primary pulse-cta px-8 py-4 text-lg font-bold text-center"

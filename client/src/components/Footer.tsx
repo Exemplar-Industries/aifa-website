@@ -3,10 +3,11 @@
  * Design: "The Director's Cut" — dark, clean, no clutter
  */
 
-const SKOOL_URL = "https://www.skool.com/aifilmacademy";
+import { useSkoolUrl } from "@/contexts/AffiliateLinkContext";
 const LOGO_URL = "https://d2xsxph8kpxj0f.cloudfront.net/310419663032668673/9znEqYZ2JpzLxCzomcgMbf/afa-logo-long_9672f3eb.png";
 
 export default function Footer() {
+  const skoolUrl = useSkoolUrl();
   return (
     <footer className="bg-[#060606] border-t border-white/5">
       <div className="container py-12">
@@ -37,7 +38,7 @@ export default function Footer() {
                 { label: "What You Get", href: "#what-you-get" },
                 { label: "The Workflow", href: "#workflow" },
                 { label: "Pricing", href: "#pricing" },
-                { label: "Join Now", href: SKOOL_URL, external: true },
+                { label: "Join Now", href: skoolUrl, external: true },
               ].map((link) => (
                 <a
                   key={link.label}
@@ -63,7 +64,7 @@ export default function Footer() {
             </h4>
             <div className="flex flex-col gap-2">
               {[
-                { label: "Skool Community", href: SKOOL_URL, external: true },
+                { label: "Skool Community", href: skoolUrl, external: true },
                 { label: "YouTube Channel", href: "https://www.youtube.com/@aifilmacademy", external: true },
                 { label: "Instagram", href: "https://www.instagram.com/aifilmacademy", external: true },
               ].map((link) => (

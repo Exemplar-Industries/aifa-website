@@ -3,7 +3,8 @@
  * Design: "The Director's Cut" — dark cards, red accent numbers, staggered grid
  */
 
-const SKOOL_URL = "https://www.skool.com/aifilmacademy";
+
+import { useSkoolUrl } from "@/contexts/AffiliateLinkContext";
 const CERT_BADGE = "https://d2xsxph8kpxj0f.cloudfront.net/310419663032668673/9znEqYZ2JpzLxCzomcgMbf/afa-cert-badge-WbXWXDQ3q6yeo59xfJsrEm.webp";
 
 const features = [
@@ -58,6 +59,7 @@ const features = [
 ];
 
 export default function WhatYouGetSection() {
+  const skoolUrl = useSkoolUrl();
   const totalValue = 1194;
 
   return (
@@ -146,7 +148,7 @@ export default function WhatYouGetSection() {
             </div>
           </div>
           <a
-            href={SKOOL_URL}
+            href={skoolUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="btn-primary pulse-cta px-10 py-4 text-lg font-bold text-center shrink-0"

@@ -3,8 +3,7 @@
  * Design: "The Director's Cut" — two cards side by side, annual highlighted as best value
  */
 import { useState } from "react";
-
-const SKOOL_URL = "https://www.skool.com/aifilmacademy";
+import { useSkoolUrl } from "@/contexts/AffiliateLinkContext";
 
 const included = [
   "50+ video lessons (updated monthly)",
@@ -17,6 +16,7 @@ const included = [
 ];
 
 export default function PricingSection() {
+  const skoolUrl = useSkoolUrl();
   const [billingCycle, setBillingCycle] = useState<"monthly" | "annual">("annual");
 
   return (
@@ -182,7 +182,7 @@ export default function PricingSection() {
 
             {/* CTA */}
             <a
-              href={SKOOL_URL}
+              href={skoolUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="btn-primary pulse-cta w-full py-4 text-lg font-bold text-center block"
