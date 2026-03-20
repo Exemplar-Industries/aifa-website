@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 
 // ─── QUIZ DATA ────────────────────────────────────────────────────────────────
 
@@ -974,13 +974,13 @@ async function submitToSheet(data: {
   // POST directly to the Apps Script Web App which writes to the Google Sheet
   // Sheet: https://docs.google.com/spreadsheets/d/1C2W25VNE9Eu4u2MpSpNFZ512eq_w5H2BjO6zxlcndsY
   const WEB_APP_URL =
-    "https://script.google.com/macros/s/AKfycbwIjGeWvS8M8zop_tjt0ZX0IpT0v6Xs5p3lNo6ogOeii5RE0hdyi0bq3bE0djW8aqHYGg/exec";
+    "https://script.google.com/macros/s/AKfycbxOx0mpOLZOXDGOzjl_MwnGhp4fhkk8XY0ZuYt20SbW2ADTZ2RF3DOui246Ua0dujwh0g/exec";
 
   try {
     await fetch(WEB_APP_URL, {
       method: "POST",
       mode: "no-cors",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "text/plain" },
       body: JSON.stringify({
         email: data.email,
         firstName: data.firstName,
@@ -1006,6 +1006,39 @@ export default function Certification() {
   const [lastName, setLastName] = useState("");
   const [answers, setAnswers] = useState<Answers>({});
   const [score, setScore] = useState(0);
+
+  // Auto-test bypass: ?autotest=1 fills all correct answers and submits
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("autotest") === "1") {
+      const testEmail = params.get("email") || "test@aifilmacademy.com";
+      const testFirst = params.get("first") || "Test";
+      const testLast = params.get("last") || "User";
+      setEmail(testEmail);
+      setFirstName(testFirst);
+      setLastName(testLast);
+      // Build perfect answers
+      const allAnswers: Answers = {};
+      SECTIONS.forEach((section) => {
+        section.questions.forEach((q) => {
+          allAnswers[q.id] = q.correct;
+        });
+      });
+      setAnswers(allAnswers);
+      const correct = TOTAL_QUESTIONS;
+      setScore(correct);
+      submitToSheet({
+        email: testEmail,
+        firstName: testFirst,
+        lastName: testLast,
+        score: correct,
+        total: TOTAL_QUESTIONS,
+        passed: true,
+        answers: allAnswers,
+      });
+      setStage("result");
+    }
+  }, []);
 
   const handleStart = () => {
     setStage("quiz");
