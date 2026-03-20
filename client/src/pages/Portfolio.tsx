@@ -27,7 +27,7 @@ export default function Portfolio() {
           marginBottom: "1.25rem",
           fontFamily: "'DM Sans', sans-serif",
         }}>
-          BRANDON PATINO | CREATIVE AI CONSULTANT
+          AI FILM ACADEMY | BRANDON PATINO
         </p>
         <h1 style={{
           fontFamily: "'Bebas Neue', sans-serif",
@@ -94,11 +94,11 @@ export default function Portfolio() {
                 fontFamily: "'Bebas Neue', sans-serif",
                 fontSize: "clamp(2.8rem, 7vw, 5rem)",
                 lineHeight: "1",
-                color: "#fff",
-                margin: "0 0 0.4rem",
-              }}>
-                {stat.number}
-              </p>
+              color: i === 1 ? "#E63329" : "#fff",
+          margin: "0 0 0.4rem",
+        }}
+              >
+                {stat.number}              </p>
               <p style={{ fontSize: "0.78rem", color: "rgba(255,255,255,0.4)", lineHeight: "1.4" }}>
                 {stat.label}
               </p>
@@ -285,9 +285,10 @@ export default function Portfolio() {
           letterSpacing: "0.01em",
           color: "#fff",
           marginBottom: "0.75rem",
-        }}>
-          Book Your Consultation
-        </h2>
+        }}
+      >
+        Book a Strategy Call
+      </h2>
         <p style={{
           fontSize: "0.93rem",
           color: "rgba(255,255,255,0.4)",
@@ -296,31 +297,34 @@ export default function Portfolio() {
           Unlock creative potential through AI strategies.
         </p>
         <a
-          href="mailto:llcexemplar@gmail.com?subject=Consultation%20Request%20—%20Portfolio"
+          href="https://calendly.com/llcexemplar/strategy-call-w-brandon" target="_blank" rel="noopener noreferrer"
           style={{
             display: "inline-block",
             padding: "0.8rem 2.25rem",
-            border: "1px solid rgba(255,255,255,0.35)",
+            border: "1px solid #E63329",
             borderRadius: "3px",
             color: "#fff",
             fontSize: "0.88rem",
             letterSpacing: "0.06em",
             textDecoration: "none",
             fontFamily: "'DM Sans', sans-serif",
+            background: "#E63329",
             transition: "background 0.2s, border-color 0.2s",
           }}
           onMouseEnter={(e) => {
             const el = e.currentTarget;
-            el.style.background = "rgba(255,255,255,0.08)";
-            el.style.borderColor = "rgba(255,255,255,0.6)";
+            el.style.background = "#E63329";
+            el.style.borderColor = "#E63329";
+            el.style.color = "#fff";
           }}
           onMouseLeave={(e) => {
             const el = e.currentTarget;
             el.style.background = "transparent";
             el.style.borderColor = "rgba(255,255,255,0.35)";
+            el.style.color = "#fff";
           }}
         >
-          Request a Call
+          Book a Strategy Call
         </a>
       </section>
 
