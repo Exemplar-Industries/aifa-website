@@ -7,12 +7,14 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import { AffiliateLinkProvider } from "./contexts/AffiliateLinkContext";
 import Home from "./pages/Home";
 import Portfolio from "./pages/Portfolio";
+import Certification from "./pages/Certification";
 
 function Router() {
   return (
     <Switch>
       <Route path={"/"} component={Home} />
       <Route path={"/portfolio"} component={Portfolio} />
+      <Route path={"/certification"} component={Certification} />
       <Route path={"/404"} component={NotFound} />
       <Route component={NotFound} />
     </Switch>
