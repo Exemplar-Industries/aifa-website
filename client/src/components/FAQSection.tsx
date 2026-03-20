@@ -16,7 +16,7 @@ const faqs = [
   },
   {
     q: "How is this different from free YouTube tutorials?",
-    a: "YouTube gives you scattered information with no structure. AIFA gives you a complete, step-by-step system — the workflow, the stack, the community, and the certification — all in one place. You also get direct access to Brandon and the team inside the community.",
+    a: "YouTube gives you scattered information with no structure. AIFA gives you a complete, step-by-step system — the workflow, the stack, the community, and the certification — all in one place. You also get community access, direct feedback, and a structured path from beginner to certified AI filmmaker.",
   },
   {
     q: "How often is the content updated?",

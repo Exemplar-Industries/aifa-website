@@ -11,7 +11,6 @@ const included = [
   "Curated AI tool stack guide",
   "Private community (1,100+ members)",
   "LinkedIn certification badge",
-  "Direct access to Brandon & team",
   "Cancel anytime — no contracts",
 ];
 
