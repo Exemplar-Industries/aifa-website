@@ -3,7 +3,7 @@
  *
  * AFFILIATE FLOW:
  * 1. Creator's ad → aifilmacademy.com?ref=<their_ref_code>
- * 2. This context reads ?ref= from URL, stores in sessionStorage
+ * 2. This context reads ?ref= from URL synchronously on init (no render delay)
  * 3. useSkoolUrl() returns Skool URL with ref appended → creator gets credit
  * 4. trackCtaClick() fires Meta Pixel "InitiateCheckout" event with ref data
  *    so Meta knows which creator's ad drove the conversion intent
@@ -16,7 +16,7 @@
  * f5511ea8e89d4136b8b9514927c5c4c0 → Gentrit Brahimi
  */
 
-import { createContext, useContext, useEffect, useState, ReactNode, useCallback } from "react";
+import { createContext, useContext, useCallback, ReactNode } from "react";
 
 const BASE_SKOOL_URL = "https://www.skool.com/aifilmacademy/about";
 const SESSION_KEY = "aifa_ref";
@@ -29,6 +29,34 @@ declare global {
   }
 }
 
+/**
+ * Resolve the ref code synchronously — called once at module load time.
+ * Priority: URL param → sessionStorage → window._aifaRef (set by pixel script)
+ * This ensures the correct URL is available on the very first render,
+ * with no flash of the wrong link.
+ */
+function resolveRefCode(): string | null {
+  try {
+    const urlRef = new URLSearchParams(window.location.search).get("ref");
+    if (urlRef) {
+      sessionStorage.setItem(SESSION_KEY, urlRef);
+      return urlRef;
+    }
+    const sessionRef = sessionStorage.getItem(SESSION_KEY);
+    if (sessionRef) return sessionRef;
+    if (window._aifaRef) return window._aifaRef;
+  } catch {
+    // SSR / restricted environments — fail silently
+  }
+  return null;
+}
+
+// Resolved once at module init — stable for the lifetime of the page
+const RESOLVED_REF = resolveRefCode();
+const RESOLVED_SKOOL_URL = RESOLVED_REF
+  ? `${BASE_SKOOL_URL}?ref=${RESOLVED_REF}`
+  : BASE_SKOOL_URL;
+
 interface AffiliateLinkContextType {
   refCode: string | null;
   skoolUrl: string;
@@ -36,35 +64,12 @@ interface AffiliateLinkContextType {
 }
 
 const AffiliateLinkContext = createContext<AffiliateLinkContextType>({
-  refCode: null,
-  skoolUrl: BASE_SKOOL_URL,
+  refCode: RESOLVED_REF,
+  skoolUrl: RESOLVED_SKOOL_URL,
   trackCtaClick: () => {},
 });
 
 export function AffiliateLinkProvider({ children }: { children: ReactNode }) {
-  const [refCode, setRefCode] = useState<string | null>(null);
-
-  useEffect(() => {
-    // Priority 1: URL param (fresh click from ad)
-    const urlParams = new URLSearchParams(window.location.search);
-    const urlRef = urlParams.get("ref");
-
-    if (urlRef) {
-      sessionStorage.setItem(SESSION_KEY, urlRef);
-      setRefCode(urlRef);
-    } else {
-      // Priority 2: Already captured this session (user scrolled down)
-      const sessionRef = sessionStorage.getItem(SESSION_KEY);
-      // Priority 3: Set by inline pixel script in index.html before React loaded
-      const windowRef = window._aifaRef;
-      const resolved = sessionRef || windowRef || null;
-      if (resolved) setRefCode(resolved);
-    }
-  }, []);
-
-  // The Skool URL with affiliate ref appended (or base URL for organic)
-  const skoolUrl = refCode ? `${BASE_SKOOL_URL}?ref=${refCode}` : BASE_SKOOL_URL;
-
   /**
    * Call this when user clicks any "Join" CTA button.
    * Fires Meta Pixel "InitiateCheckout" event with affiliate data.
@@ -74,18 +79,24 @@ export function AffiliateLinkProvider({ children }: { children: ReactNode }) {
     if (typeof window.fbq === "function") {
       window.fbq("track", "InitiateCheckout", {
         content_name: ctaLabel,
-        content_category: refCode ? "affiliate_cta" : "organic_cta",
+        content_category: RESOLVED_REF ? "affiliate_cta" : "organic_cta",
         // Attach ref code so you can filter by creator in Meta Events Manager
-        ...(refCode && { content_ids: [refCode] }),
+        ...(RESOLVED_REF && { content_ids: [RESOLVED_REF] }),
         currency: "USD",
         value: 19.00,
         num_items: 1,
       });
     }
-  }, [refCode]);
+  }, []);
 
   return (
-    <AffiliateLinkContext.Provider value={{ refCode, skoolUrl, trackCtaClick }}>
+    <AffiliateLinkContext.Provider
+      value={{
+        refCode: RESOLVED_REF,
+        skoolUrl: RESOLVED_SKOOL_URL,
+        trackCtaClick,
+      }}
+    >
       {children}
     </AffiliateLinkContext.Provider>
   );
