@@ -404,6 +404,115 @@ export default function Consulting() {
         </a>
       </section>
 
+      {/* ── STUDENT TESTIMONIALS ── */}
+      <section style={{
+        padding: "5rem 2rem 4rem",
+        borderTop: "1px solid rgba(255,255,255,0.07)",
+        maxWidth: "1100px",
+        margin: "0 auto",
+      }}>
+        <p style={{
+          fontSize: "0.75rem",
+          fontWeight: 700,
+          letterSpacing: "0.1em",
+          color: "rgba(255,255,255,0.35)",
+          textTransform: "uppercase",
+          textAlign: "center",
+          marginBottom: "0.6rem",
+        }}>Student Results</p>
+        <h2 style={{
+          fontFamily: "'DM Sans', sans-serif",
+          fontWeight: 800,
+          fontSize: "clamp(1.8rem, 3.5vw, 2.6rem)",
+          letterSpacing: "-0.02em",
+          color: "#fff",
+          textAlign: "center",
+          marginBottom: "0.75rem",
+        }}>What Members Are Saying</h2>
+        <p style={{
+          fontSize: "0.93rem",
+          color: "rgba(255,255,255,0.4)",
+          textAlign: "center",
+          marginBottom: "3rem",
+          maxWidth: "480px",
+          margin: "0 auto 3rem",
+        }}>Real posts from the AI Film Academy community on Skool.</p>
+
+        {/* Testimonial image grid */}
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+          gap: "1.25rem",
+          marginBottom: "3rem",
+        }}>
+          {/* Mark K */}
+          <div style={{
+            borderRadius: "8px",
+            overflow: "hidden",
+            border: "1px solid rgba(255,255,255,0.08)",
+            background: "#111",
+          }}>
+            <img
+              src="https://d2xsxph8kpxj0f.cloudfront.net/310419663032668673/9znEqYZ2JpzLxCzomcgMbf/testimonial_mark_k_aee3533a.jpeg"
+              alt="Mark K testimonial — AIFA course was a turning point"
+              style={{ width: "100%", display: "block", objectFit: "cover" }}
+            />
+          </div>
+          {/* Jae Lee */}
+          <div style={{
+            borderRadius: "8px",
+            overflow: "hidden",
+            border: "1px solid rgba(255,255,255,0.08)",
+            background: "#111",
+          }}>
+            <img
+              src="https://d2xsxph8kpxj0f.cloudfront.net/310419663032668673/9znEqYZ2JpzLxCzomcgMbf/testimonial_jae_lee_13b2196a.jpeg"
+              alt="Jae Lee — selected in 4 film festivals with zero prior experience"
+              style={{ width: "100%", display: "block", objectFit: "cover" }}
+            />
+          </div>
+          {/* Tamer Osman */}
+          <div style={{
+            borderRadius: "8px",
+            overflow: "hidden",
+            border: "1px solid rgba(255,255,255,0.08)",
+            background: "#111",
+          }}>
+            <img
+              src="https://d2xsxph8kpxj0f.cloudfront.net/310419663032668673/9znEqYZ2JpzLxCzomcgMbf/testimonial_tamer_osman_d3a2b3d7.jpeg"
+              alt="Tamer Osman — earned Generative AI Media Specialist certification"
+              style={{ width: "100%", display: "block", objectFit: "cover" }}
+            />
+          </div>
+        </div>
+
+        {/* Pull quote */}
+        <blockquote style={{
+          borderLeft: "3px solid #E63329",
+          paddingLeft: "1.5rem",
+          margin: "0 auto",
+          maxWidth: "680px",
+          textAlign: "left",
+        }}>
+          <p style={{
+            fontSize: "clamp(1rem, 2vw, 1.25rem)",
+            fontStyle: "italic",
+            color: "rgba(255,255,255,0.75)",
+            lineHeight: "1.65",
+            marginBottom: "0.75rem",
+          }}>
+            "Finding your AIFA course was a turning point for me. The important points are easy to understand right away, and the explanations are clear, specific, and practical. Nothing feels vague or overcomplicated — it just makes sense."
+          </p>
+          <cite style={{
+            fontSize: "0.8rem",
+            color: "rgba(255,255,255,0.35)",
+            fontStyle: "normal",
+            letterSpacing: "0.05em",
+            textTransform: "uppercase",
+          }}>— Mark K., AI Film Academy Member</cite>
+        </blockquote>
+      </section>
+
       {/* ── FOOTER ── */}
       <footer style={{
         padding: "2rem 2rem",
