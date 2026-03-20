@@ -6,8 +6,8 @@
 const stats = [
   { number: "1,100+", label: "Active Creators" },
   { number: "$19", label: "Per Month" },
-  { number: "50+", label: "Lessons & Tutorials" },
-  { number: "1", label: "Proven Workflow" },
+  { number: "3", label: "Custom AI Agents" },
+  { number: "40+", label: "Countries" },
   { number: "5.0★", label: "Google Rating" },
 ];
 

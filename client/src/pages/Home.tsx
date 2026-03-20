@@ -2,18 +2,19 @@
  * AI Film Academy — Home Page (Landing Page)
  * Design: "The Director's Cut" — Cinematic Dark
  * Goal: Convert cold Meta Ads traffic → $19/month Skool subscription
- * All CTAs link to: https://www.skool.com/aifilmacademy
+ * All CTAs link to: https://www.skool.com/aifilmacademy (with affiliate ref if present)
  */
 
-import { useEffect, useRef, useState } from "react";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import StatsBar from "@/components/StatsBar";
 import ProblemSection from "@/components/ProblemSection";
 import WhatYouGetSection from "@/components/WhatYouGetSection";
 import WorkflowSection from "@/components/WorkflowSection";
+import GallerySection from "@/components/GallerySection";
 import TestimonialsSection from "@/components/TestimonialsSection";
 import PricingSection from "@/components/PricingSection";
+import PartnersSection from "@/components/PartnersSection";
 import FAQSection from "@/components/FAQSection";
 import FinalCTASection from "@/components/FinalCTASection";
 import Footer from "@/components/Footer";
@@ -27,8 +28,10 @@ export default function Home() {
       <ProblemSection />
       <WhatYouGetSection />
       <WorkflowSection />
+      <GallerySection />
       <TestimonialsSection />
       <PricingSection />
+      <PartnersSection />
       <FAQSection />
       <FinalCTASection />
       <Footer />
