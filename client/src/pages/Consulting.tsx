@@ -281,18 +281,23 @@ export default function Consulting() {
             {[
               {
                 title: "Team AI Workshop",
-                desc: "A full-day intensive that takes your creative team from AI-curious to AI-capable. Hands-on, workflow-specific, immediately applicable.",
-                tag: "1 Day",
+                desc: "A full-day intensive that takes your creative team from AI-curious to AI-capable. Hands-on, workflow-specific, and immediately applicable to your production pipeline.",
+                tag: "1 Day Intensive",
               },
               {
-                title: "AI Pipeline Audit",
-                desc: "A deep-dive into your current production workflow. I identify where AI can cut time, reduce cost, and elevate output — with a clear implementation roadmap.",
-                tag: "Consulting",
+                title: "Marketing Team AI Upskilling",
+                desc: "Advising marketing teams on how to start using AI video tools, upskilling their team, and guiding them through creating their first AI-generated concepts and campaigns.",
+                tag: "Advisory",
               },
               {
-                title: "Ongoing Advisory",
-                desc: "Monthly retainer for organizations building AI-native creative teams. Strategy calls, tool vetting, and direct access as the space evolves.",
-                tag: "Retainer",
+                title: "Curriculum Design & Education",
+                desc: "Long-form AI curriculum design for schools and organizations — from 10-month programs to structured course modules. Includes live instruction, lesson planning, and ongoing support.",
+                tag: "Education",
+              },
+              {
+                title: "Custom AI Builds",
+                desc: "End-to-end custom AI workflow and tool builds for creative teams — from automated video pipelines to branded AI agents tailored to your organization's specific needs.",
+                tag: "Custom",
               },
             ].map((service, i) => (
               <div key={i} style={{
@@ -334,50 +339,7 @@ export default function Consulting() {
         </div>
       </section>
 
-      {/* ── TESTIMONIALS ── */}
-      <section style={{
-        borderTop: "1px solid rgba(255,255,255,0.07)",
-        padding: "5rem 2rem",
-      }}>
-        <div style={{ maxWidth: "680px", margin: "0 auto" }}>
-          {[
-            {
-              quote: "Brandon's leadership gave our team the push we needed. The fear of AI is gone, replaced by a genuine excitement to build better work, faster.",
-              name: "Jacob Brakins",
-            },
-            {
-              quote: "Brandon's leadership gave our team the push we needed. The fear of AI is gone, replaced by a genuine excitement to build better work, faster.",
-              name: "Lucas C. Cooper",
-            },
-          ].map((t, i) => (
-            <div key={i} style={{
-              textAlign: "center",
-              padding: "4rem 0",
-              borderBottom: i === 0 ? "1px solid rgba(255,255,255,0.07)" : "none",
-            }}>
-              <p style={{
-                fontFamily: "'DM Sans', sans-serif",
-                fontWeight: 700,
-                fontSize: "clamp(1.4rem, 3.2vw, 2.1rem)",
-                lineHeight: "1.35",
-                color: "#fff",
-                marginBottom: "1.75rem",
-                letterSpacing: "-0.01em",
-              }}>
-                "{t.quote}"
-              </p>
-              <p style={{
-                fontSize: "0.72rem",
-                letterSpacing: "0.15em",
-                color: "rgba(255,255,255,0.35)",
-                textTransform: "uppercase",
-              }}>
-                {t.name}
-              </p>
-            </div>
-          ))}
-        </div>
-      </section>
+
 
       {/* ── CTA ── */}
       <section style={{
