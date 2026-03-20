@@ -3,17 +3,35 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
-    <title>AI Film Academy™ | Master AI Filmmaking for $19/mo</title>
+    <title>AIFA — AI Film Academy™ | Master AI Filmmaking for $19/mo</title>
     <meta name="description" content="Stop experimenting. Start mastering. Learn the one AI filmmaking workflow used by pros — get certified and upgrade your career for just $19/month." />
-    <meta property="og:title" content="AI Film Academy™ | Master AI Filmmaking" />
+    <meta property="og:title" content="AIFA — AI Film Academy™ | Master AI Filmmaking" />
     <meta property="og:description" content="One workflow. One system. One tech stack. Join 1,100+ creators mastering AI filmmaking for $19/month." />
     <meta property="og:type" content="website" />
     <!-- Google Fonts: Bebas Neue (display) + DM Sans (body) + JetBrains Mono (labels) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
-    <!-- Meta Pixel Code -->
+
+    <!--
+      ============================================================
+      META PIXEL — AIFA Affiliate-Aware Tracking
+      ============================================================
+      HOW IT WORKS:
+      1. Video creator's ad links to: aifilmacademy.com?ref=<their_ref_code>
+      2. This script reads the ?ref= param from the URL
+      3. Stores it in sessionStorage (persists as user scrolls)
+      4. Fires fbq('track', 'PageView') with the ref code as a
+         custom parameter so Meta knows which creator drove the visit
+      5. When user clicks "Join" → they go to Skool with ?ref= intact
+         (handled by AffiliateLinkContext.tsx in the React app)
+
+      TO ACTIVATE: Replace YOUR_PIXEL_ID_HERE with your real Meta Pixel ID
+      Find it at: business.facebook.com → Events Manager → your Pixel
+      ============================================================
+    -->
     <script>
+      // Step 1: Load the Meta Pixel base code
       !function(f,b,e,v,n,t,s)
       {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
       n.callMethod.apply(n,arguments):n.queue.push(arguments)};
@@ -22,10 +40,46 @@
       t.src=v;s=b.getElementsByTagName(e)[0];
       s.parentNode.insertBefore(t,s)}(window, document,'script',
       'https://connect.facebook.net/en_US/fbevents.js');
-      fbq('init', 'PIXEL_ID_PLACEHOLDER');
-      fbq('track', 'PageView');
+
+      // Step 2: Read affiliate ref code from URL
+      // e.g. aifilmacademy.com?ref=cf768b4a74b447ed9248d18863689820
+      (function() {
+        var urlParams = new URLSearchParams(window.location.search);
+        var refCode = urlParams.get('ref');
+
+        // Also store in sessionStorage so React app can use it
+        if (refCode) {
+          try { sessionStorage.setItem('aifa_ref', refCode); } catch(e) {}
+        } else {
+          try { refCode = sessionStorage.getItem('aifa_ref'); } catch(e) {}
+        }
+
+        // Step 3: Init pixel
+        fbq('init', 'YOUR_PIXEL_ID_HERE');
+
+        // Step 4: Fire PageView with affiliate data attached
+        // This lets you filter Meta Ads reports by creator/affiliate
+        if (refCode) {
+          fbq('track', 'PageView', {
+            content_category: 'affiliate_landing',
+            content_name: 'aifa_ref_' + refCode,
+            // Maps to contractor names for easy reporting:
+            // cf768b4a74b447ed9248d18863689820 = Bruno Saki
+            // d4171d9df4bf4059ad11d646844b9754 = Shahine
+            // 8d29de4f3923438e880029c66552ca4c = Mark Kobayashi
+            // 776e24598283460494f9d93de34297a6 = TeeCee
+            // f5511ea8e89d4136b8b9514927c5c4c0 = Gentrit Brahimi
+          });
+        } else {
+          fbq('track', 'PageView', {
+            content_category: 'organic_landing'
+          });
+        }
+
+        // Step 5: Store ref globally so inline event handlers can access it
+        window._aifaRef = refCode || null;
+      })();
     </script>
-    <!-- noscript pixel fallback removed for CSP compliance -->
     <!-- End Meta Pixel Code -->
   </head>
   <body>
