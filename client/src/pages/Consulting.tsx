@@ -81,7 +81,14 @@ export default function Consulting() {
 
       {/* ── STATS ── */}
       <section style={{ padding: "2rem 2rem 4.5rem" }}>
-        <div style={{
+        <style>{`
+          @media (max-width: 600px) {
+            .consulting-stats { grid-template-columns: 1fr !important; gap: 2.5rem !important; }
+            .consulting-about { grid-template-columns: 1fr !important; gap: 2rem !important; }
+            .consulting-stat-num { font-size: 3.5rem !important; }
+          }
+        `}</style>
+        <div className="consulting-stats" style={{
           maxWidth: "860px",
           margin: "0 auto",
           display: "grid",
@@ -95,7 +102,7 @@ export default function Consulting() {
             { number: "1,000+", label: "AI Film Academy Students" },
           ].map((stat, i) => (
             <div key={i}>
-              <p style={{
+              <p className="consulting-stat-num" style={{
                 fontFamily: "'DM Sans', sans-serif",
                 fontWeight: 800,
                 fontSize: "clamp(2.8rem, 7vw, 5rem)",
@@ -119,7 +126,7 @@ export default function Consulting() {
         borderTop: "1px solid rgba(255,255,255,0.07)",
         borderBottom: "1px solid rgba(255,255,255,0.07)",
       }}>
-        <div style={{
+        <div className="consulting-about" style={{
           maxWidth: "860px",
           margin: "0 auto",
           display: "grid",
