@@ -1,5 +1,5 @@
 /*
- * WorkflowSection — The 3-step AFA workflow
+ * WorkflowSection — The 3-step AIFA workflow
  * Design: "The Director's Cut" — dark bg with workflow bg image, numbered steps
  */
 
@@ -19,7 +19,7 @@ const steps = [
     number: "02",
     title: "Master the Workflow",
     description:
-      "Follow the AFA Workflow System — a step-by-step process from concept to final cut. Every lesson builds on the last. You'll know exactly what to do and in what order.",
+      "Follow the AIFA Workflow System — a step-by-step process from concept to final cut. Every lesson builds on the last. You'll know exactly what to do and in what order.",
     tools: ["Storyboarding", "AI Image Gen", "Video Synthesis", "Sound Design", "Color Grade"],
   },
   {

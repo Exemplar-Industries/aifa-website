@@ -8,7 +8,7 @@ const stats = [
   { number: "$19", label: "Per Month" },
   { number: "50+", label: "Lessons & Tutorials" },
   { number: "1", label: "Proven Workflow" },
-  { number: "∞", label: "Weekly Live Calls" },
+  { number: "5.0★", label: "Google Rating" },
 ];
 
 export default function StatsBar() {

@@ -15,7 +15,7 @@ export default function Footer() {
           <div className="sm:col-span-2 md:col-span-1">
             <img
               src={LOGO_URL}
-              alt="AI Film Academy"
+              alt="AI Film Academy (AIFA)"
               className="h-10 w-auto object-contain mb-4"
               style={{ maxWidth: '160px', filter: 'brightness(0) invert(1) opacity(0.7)' }}
             />
@@ -111,7 +111,7 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="pt-6 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-white/25 text-xs" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            © {new Date().getFullYear()} AI Film Academy™. All rights reserved.
+            © {new Date().getFullYear()} AI Film Academy™ (AIFA). All rights reserved.
           </p>
           <p className="text-white/25 text-xs" style={{ fontFamily: "'DM Sans', sans-serif" }}>
             Built for creators who refuse to fall behind.

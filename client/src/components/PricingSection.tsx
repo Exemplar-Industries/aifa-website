@@ -1,15 +1,15 @@
 /*
- * PricingSection — Single clear offer, no confusion
- * Design: "The Director's Cut" — one card, red CTA, value stack comparison
+ * PricingSection — Monthly + Annual pricing options
+ * Design: "The Director's Cut" — two cards side by side, annual highlighted as best value
  */
+import { useState } from "react";
 
 const SKOOL_URL = "https://www.skool.com/aifilmacademy";
 
 const included = [
   "50+ video lessons (updated monthly)",
-  "The AFA Workflow System",
+  "The AIFA Workflow System",
   "Curated AI tool stack guide",
-  "Weekly live Q&A calls",
   "Private community (1,100+ members)",
   "LinkedIn certification badge",
   "Direct access to Brandon & team",
@@ -17,6 +17,8 @@ const included = [
 ];
 
 export default function PricingSection() {
+  const [billingCycle, setBillingCycle] = useState<"monthly" | "annual">("annual");
+
   return (
     <section id="pricing" className="py-20 md:py-28 bg-[#0A0A0A]">
       <div className="container">
@@ -38,8 +40,54 @@ export default function PricingSection() {
             </span>
           </h2>
           <p className="mt-4 text-white/60 text-base leading-relaxed" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            No upsells. No paywalls. No "premium tier." Everything in the Academy is included in your $19/month membership.
+            No upsells. No paywalls. No "premium tier." Everything in the Academy is included in your membership.
           </p>
+        </div>
+
+        {/* Billing toggle */}
+        <div className="flex items-center gap-3 mb-10">
+          <button
+            onClick={() => setBillingCycle("monthly")}
+            className={`px-5 py-2 rounded-full text-sm font-medium transition-all ${
+              billingCycle === "monthly"
+                ? "text-white"
+                : "text-white/40 hover:text-white/60"
+            }`}
+            style={{
+              fontFamily: "'DM Sans', sans-serif",
+              background: billingCycle === "monthly" ? "oklch(0.18 0 0)" : "transparent",
+              border: billingCycle === "monthly" ? "1px solid oklch(0.3 0 0)" : "1px solid transparent",
+            }}
+          >
+            Monthly
+          </button>
+          <button
+            onClick={() => setBillingCycle("annual")}
+            className={`px-5 py-2 rounded-full text-sm font-medium transition-all flex items-center gap-2 ${
+              billingCycle === "annual"
+                ? "text-white"
+                : "text-white/40 hover:text-white/60"
+            }`}
+            style={{
+              fontFamily: "'DM Sans', sans-serif",
+              background: billingCycle === "annual" ? "oklch(0.18 0 0)" : "transparent",
+              border: billingCycle === "annual" ? "1px solid oklch(0.3 0 0)" : "1px solid transparent",
+            }}
+          >
+            Annual
+            <span
+              className="text-xs px-2 py-0.5 rounded font-semibold"
+              style={{
+                background: "oklch(0.48 0.22 25)",
+                color: "#F5F5F0",
+                fontFamily: "'JetBrains Mono', monospace",
+                fontSize: "0.55rem",
+                letterSpacing: "0.05em",
+              }}
+            >
+              SAVE 40%
+            </span>
+          </button>
         </div>
 
         <div className="grid md:grid-cols-2 gap-6 items-start">
@@ -48,27 +96,43 @@ export default function PricingSection() {
             className="rounded-xl p-8 border relative overflow-hidden"
             style={{
               background: "linear-gradient(135deg, oklch(0.12 0 0) 0%, oklch(0.10 0.01 25) 100%)",
-              borderColor: "oklch(0.48 0.22 25 / 0.4)",
+              borderColor: billingCycle === "annual" ? "oklch(0.48 0.22 25 / 0.5)" : "oklch(0.25 0 0)",
             }}
           >
-            {/* Popular badge */}
-            <div
-              className="absolute top-4 right-4 px-3 py-1 rounded text-xs font-semibold"
-              style={{
-                background: "oklch(0.48 0.22 25)",
-                color: "#F5F5F0",
-                fontFamily: "'JetBrains Mono', monospace",
-                fontSize: "0.6rem",
-                letterSpacing: "0.1em",
-              }}
-            >
-              MOST POPULAR
-            </div>
+            {/* Badge */}
+            {billingCycle === "annual" && (
+              <div
+                className="absolute top-4 right-4 px-3 py-1 rounded text-xs font-semibold"
+                style={{
+                  background: "oklch(0.48 0.22 25)",
+                  color: "#F5F5F0",
+                  fontFamily: "'JetBrains Mono', monospace",
+                  fontSize: "0.6rem",
+                  letterSpacing: "0.1em",
+                }}
+              >
+                BEST VALUE
+              </div>
+            )}
+            {billingCycle === "monthly" && (
+              <div
+                className="absolute top-4 right-4 px-3 py-1 rounded text-xs font-semibold"
+                style={{
+                  background: "oklch(0.22 0 0)",
+                  color: "oklch(0.6 0 0)",
+                  fontFamily: "'JetBrains Mono', monospace",
+                  fontSize: "0.6rem",
+                  letterSpacing: "0.1em",
+                }}
+              >
+                MONTHLY
+              </div>
+            )}
 
             {/* Price */}
             <div className="mb-6">
               <p className="text-white/40 text-sm mb-1" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-                Monthly membership
+                {billingCycle === "annual" ? "Annual membership" : "Monthly membership"}
               </p>
               <div className="flex items-end gap-2">
                 <span
@@ -79,15 +143,22 @@ export default function PricingSection() {
                     color: "#F5F5F0",
                   }}
                 >
-                  $19
+                  {billingCycle === "annual" ? "$149" : "$19"}
                 </span>
                 <span className="text-white/40 text-lg mb-3" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-                  /month
+                  {billingCycle === "annual" ? "/year" : "/month"}
                 </span>
               </div>
-              <p className="text-white/40 text-sm" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-                Less than a Netflix subscription
-              </p>
+              {billingCycle === "annual" ? (
+                <div className="flex items-center gap-2">
+                  <span className="text-white/30 text-sm line-through" style={{ fontFamily: "'DM Sans', sans-serif" }}>$228/year</span>
+                  <span className="text-green-400 text-sm font-medium" style={{ fontFamily: "'DM Sans', sans-serif" }}>Save $79 — that's $12.42/mo</span>
+                </div>
+              ) : (
+                <p className="text-white/40 text-sm" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+                  Less than a Netflix subscription
+                </p>
+              )}
             </div>
 
             {/* Included items */}
@@ -116,7 +187,7 @@ export default function PricingSection() {
               rel="noopener noreferrer"
               className="btn-primary pulse-cta w-full py-4 text-lg font-bold text-center block"
             >
-              Start Your Membership →
+              {billingCycle === "annual" ? "Get Annual Access — $149/yr →" : "Start Monthly — $19/mo →"}
             </a>
             <p className="text-center text-white/30 text-xs mt-3" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Cancel anytime. No questions asked.
@@ -134,22 +205,21 @@ export default function PricingSection() {
                   { label: "Hiring a video editor", price: "$500–$5,000/project", bad: true },
                   { label: "Random YouTube tutorials", price: "Free (but scattered)", bad: true },
                   { label: "Other AI courses", price: "$297–$997 one-time", bad: true },
-                  { label: "AI Film Academy", price: "$19/month — everything", bad: false },
+                  { label: "AIFA — Monthly", price: "$19/month", bad: false },
+                  { label: "AIFA — Annual", price: "$149/year (best value)", bad: false, highlight: true },
                 ].map((row, i) => (
                   <div
                     key={i}
                     className="flex items-center justify-between py-2 border-b border-white/5 last:border-0"
                   >
-                    <div className="flex items-center gap-2">
-                      <span className={`text-sm ${row.bad ? "text-white/40 line-through" : "text-white font-semibold"}`} style={{ fontFamily: "'DM Sans', sans-serif" }}>
-                        {row.label}
-                      </span>
-                    </div>
+                    <span className={`text-sm ${row.bad ? "text-white/40 line-through" : row.highlight ? "text-white font-bold" : "text-white font-semibold"}`} style={{ fontFamily: "'DM Sans', sans-serif" }}>
+                      {row.label}
+                    </span>
                     <span
                       className={`text-xs font-medium ${row.bad ? "text-white/30" : ""}`}
                       style={{
                         fontFamily: "'JetBrains Mono', monospace",
-                        color: row.bad ? undefined : "oklch(0.48 0.22 25)",
+                        color: row.bad ? undefined : row.highlight ? "oklch(0.48 0.22 25)" : "oklch(0.6 0.1 25)",
                       }}
                     >
                       {row.price}
@@ -165,7 +235,7 @@ export default function PricingSection() {
                 Try it risk-free
               </h3>
               <p className="text-white/55 text-sm leading-relaxed" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-                Join, explore everything, attend a live call. If it's not the most valuable $19 you've ever spent on your creative career, cancel with one click. No hoops, no emails, no guilt.
+                Join, explore everything, dive into the curriculum. If it's not the most valuable investment you've made in your creative career, cancel with one click. No hoops, no emails, no guilt.
               </p>
             </div>
 

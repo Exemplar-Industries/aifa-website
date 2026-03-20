@@ -9,7 +9,7 @@ const SKOOL_URL = "https://www.skool.com/aifilmacademy";
 const faqs = [
   {
     q: "Do I need any prior filmmaking or AI experience?",
-    a: "No. The AFA is built for creators at all levels — from complete beginners to experienced filmmakers looking to add AI to their workflow. We start with the fundamentals and build up from there.",
+    a: "No. The AIFA is built for creators at all levels — from complete beginners to experienced filmmakers looking to add AI to their workflow. We start with the fundamentals and build up from there.",
   },
   {
     q: "What tools will I need? Are they expensive?",
@@ -17,15 +17,15 @@ const faqs = [
   },
   {
     q: "How is this different from free YouTube tutorials?",
-    a: "YouTube gives you scattered information with no structure. AFA gives you a complete, step-by-step system — the workflow, the stack, the community, and the certification — all in one place. Plus, you get live calls and direct feedback on your work.",
+    a: "YouTube gives you scattered information with no structure. AIFA gives you a complete, step-by-step system — the workflow, the stack, the community, and the certification — all in one place. You also get direct access to Brandon and the team inside the community.",
   },
   {
     q: "How often is the content updated?",
-    a: "Monthly. The AI space moves fast, and so do we. New lessons are added regularly as tools evolve, and our weekly live calls keep you current on the latest developments.",
+    a: "Regularly. The AI space moves fast, and so do we. New lessons are added as tools evolve so your skills stay current. The community is also constantly sharing the latest developments and discoveries.",
   },
   {
     q: "What is the LinkedIn certification?",
-    a: "Upon completing the AFA curriculum, you earn a verifiable 'Certified AI Filmmaker' credential that you can add to your LinkedIn profile. It's recognized by the AI creative community and signals to clients and employers that you have professional-level skills.",
+    a: "Upon completing the AIFA curriculum, you earn a verifiable 'Certified AI Filmmaker' credential that you can add to your LinkedIn profile. It's recognized by the AI creative community and signals to clients and employers that you have professional-level skills.",
   },
   {
     q: "Can I cancel anytime?",
@@ -33,11 +33,11 @@ const faqs = [
   },
   {
     q: "Who is Brandon Patino?",
-    a: "Brandon is a Google-certified AI educator, filmmaker, and the founder of AI Film Academy. He's been at the forefront of AI filmmaking since the technology emerged and has helped thousands of creators build professional-grade AI workflows.",
+    a: "Brandon is a Google-certified AI educator, filmmaker, and the founder of AI Film Academy (AIFA). He's been at the forefront of AI filmmaking since the technology emerged and has helped thousands of creators build professional-grade AI workflows.",
   },
   {
     q: "Is this a one-time purchase or subscription?",
-    a: "It's a $19/month subscription. This keeps the content fresh, the community active, and the live calls ongoing. There's no annual commitment — just month-to-month.",
+    a: "You can join monthly at $19/month, or save 40% with an annual membership at $149/year (that's just $12.42/month). Both plans include everything — no upsells, no paywalls. Cancel anytime.",
   },
 ];
 

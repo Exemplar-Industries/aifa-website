@@ -10,7 +10,7 @@ const features = [
   {
     tag: "CORE",
     icon: "🎬",
-    title: "The AFA Workflow System",
+    title: "The AIFA Workflow System",
     value: "$297 value",
     description:
       "One proven, repeatable workflow for creating cinematic AI films — from concept to final export. No more tool chaos.",
@@ -24,12 +24,12 @@ const features = [
       "Step-by-step tutorials covering Midjourney, Kling, Runway, Veo, CapCut, and more — updated as tools evolve.",
   },
   {
-    tag: "LIVE",
-    icon: "📡",
-    title: "Weekly Live Calls",
-    value: "$197 value",
+    tag: "AI TOOLS",
+    icon: "🤖",
+    title: "Custom AI Agents",
+    value: "$79 value",
     description:
-      "Real-time Q&A and workflow reviews with Brandon and the AFA team. Get your work critiqued and your questions answered.",
+      "Personal AI assistants that help you prompt faster, fix errors, and generate better results — built specifically for the AIFA workflow.",
   },
   {
     tag: "COMMUNITY",
@@ -43,22 +43,22 @@ const features = [
     tag: "TOOLS",
     icon: "🛠",
     title: "Curated AI Tool Stack",
-    value: "$97 value",
+    value: "$27 value",
     description:
-      "We've tested hundreds of tools so you don't have to. Get the exact stack pros use — organized by use case and budget.",
+      "We've tested hundreds of tools so you don't have to. Get the exact stack pros use — organized by use case and budget. Stop paying for tools you don't need.",
   },
   {
     tag: "CREDENTIAL",
     icon: "🏆",
     title: "LinkedIn Certification",
-    value: "$97 value",
+    value: "$497 value",
     description:
       "Earn a verifiable AI Filmmaker certification you can add to your LinkedIn profile and portfolio. Stand out in the market.",
   },
 ];
 
 export default function WhatYouGetSection() {
-  const totalValue = 982;
+  const totalValue = 1194;
 
   return (
     <section id="what-you-get" className="py-20 md:py-28 bg-[#0D0D0D]">
@@ -82,7 +82,7 @@ export default function WhatYouGetSection() {
             </span>
           </h2>
           <p className="mt-4 text-white/60 text-base leading-relaxed" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            The AI Film Academy is a complete system — not just a course. You get the workflow, the training, the community, and the credential.
+            The AI Film Academy is a complete system — not just a course. You get the workflow, the training, the community, and the credential. All included in one membership.
           </p>
         </div>
 
@@ -141,7 +141,7 @@ export default function WhatYouGetSection() {
                 className="stat-number text-5xl"
                 style={{ color: "oklch(0.48 0.22 25)" }}
               >
-                $19/mo
+                $19/mo or $149/yr
               </p>
             </div>
           </div>

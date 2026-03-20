@@ -82,7 +82,7 @@ export default function HeroSection() {
               className="btn-primary pulse-cta px-8 py-4 text-lg font-bold text-center"
               style={{ fontSize: "1.05rem", letterSpacing: "0.02em" }}
             >
-              Join the Academy — $19/mo
+              Join the Academy — From $19/mo
             </a>
             <a
               href="#what-you-get"
