@@ -1,42 +1,48 @@
 /*
- * Portfolio — Brandon Patino | Creative AI Consultant
+ * Consulting — Brandon Patino | AI Film Academy
  * Design: Exact match to brandonpatino.framer.website/portfolio
  * - Pure black bg (#000)
- * - Centered layout, small all-caps name/title header
- * - Big white headline (Bebas Neue)
+ * - Centered layout
+ * - Header: bold white DM Sans "BRANDON PATINO | CREATIVE AI CONSULTANT"
+ * - Large bold headline (DM Sans bold, not Bebas Neue — matches Framer)
  * - Full-width YouTube hero video embed
  * - 3 large stat numbers (50,000+ / 10,000+ / 1,000+)
- * - About Me: left text + right photo
- * - Project entries: full-width video + title + description below
+ * - About Me: left text + right photo (Guinness)
+ * - Project entries: full-width video + title + description
+ * - Services section (lead gen focused)
  * - Large centered testimonial quotes
  * - "Book Your Consultation" CTA + "Request a Call" button
  * - Footer: © 2020–2026
  */
 
 export default function Consulting() {
+  const CALENDLY = "https://calendly.com/llcexemplar/strategy-call-w-brandon";
+
   return (
     <div style={{ background: "#000", color: "#fff", minHeight: "100vh", fontFamily: "'DM Sans', sans-serif" }}>
 
-      {/* ── HEADER ── */}
+      {/* ── HEADER ── matches Framer exactly */}
       <header style={{ textAlign: "center", padding: "3.5rem 2rem 2.5rem" }}>
         <p style={{
-          fontSize: "0.72rem",
-          letterSpacing: "0.18em",
-          color: "rgba(255,255,255,0.45)",
+          fontSize: "0.85rem",
+          fontWeight: 700,
+          letterSpacing: "0.06em",
+          color: "#fff",
           textTransform: "uppercase",
-          marginBottom: "1.25rem",
+          marginBottom: "1.1rem",
           fontFamily: "'DM Sans', sans-serif",
         }}>
-          AI FILM ACADEMY | BRANDON PATINO
+          BRANDON PATINO | CREATIVE AI CONSULTANT
         </p>
         <h1 style={{
-          fontFamily: "'Bebas Neue', sans-serif",
-          fontSize: "clamp(2.8rem, 7vw, 5rem)",
-          letterSpacing: "0.01em",
-          lineHeight: "1.05",
+          fontFamily: "'DM Sans', sans-serif",
+          fontWeight: 800,
+          fontSize: "clamp(2.2rem, 5.5vw, 4rem)",
+          letterSpacing: "-0.02em",
+          lineHeight: "1.08",
           color: "#fff",
           margin: "0 auto 1.25rem",
-          maxWidth: "680px",
+          maxWidth: "720px",
         }}>
           Future-Proof Your Creative Teams.
         </h1>
@@ -63,7 +69,6 @@ export default function Consulting() {
           position: "relative",
           border: "1px solid rgba(255,255,255,0.07)",
         }}>
-          {/* Placeholder — swap videoId below with real YouTube video ID */}
           <iframe
             src="https://www.youtube.com/embed/ivhWLYfxBGk"
             title="Brandon Patino — Creative AI Reel"
@@ -91,14 +96,15 @@ export default function Consulting() {
           ].map((stat, i) => (
             <div key={i}>
               <p style={{
-                fontFamily: "'Bebas Neue', sans-serif",
+                fontFamily: "'DM Sans', sans-serif",
+                fontWeight: 800,
                 fontSize: "clamp(2.8rem, 7vw, 5rem)",
                 lineHeight: "1",
-              color: i === 1 ? "#E63329" : "#fff",
-          margin: "0 0 0.4rem",
-        }}
-              >
-                {stat.number}              </p>
+                color: i === 1 ? "#E63329" : "#fff",
+                margin: "0 0 0.4rem",
+              }}>
+                {stat.number}
+              </p>
               <p style={{ fontSize: "0.78rem", color: "rgba(255,255,255,0.4)", lineHeight: "1.4" }}>
                 {stat.label}
               </p>
@@ -176,17 +182,17 @@ export default function Consulting() {
             {
               title: "AI-Powered 3D Cartoon Animation",
               description: "Generated studio-quality 3D character animation entirely through AI. Achieved a cohesive, vibrant cartoon aesthetic while cutting traditional animation production cycles by 80%.",
-              videoId: "REPLACE_WITH_VIDEO_ID_1",
+              videoId: "bUFRQ5CrHBQ",
             },
             {
               title: "AI-Powered Realism Ad Campaigns",
               description: "Photorealistic cinematography for a wellness brand launch — zero camera crew required. Delivered broadcast-ready product advertisement using generative video models.",
-              videoId: "REPLACE_WITH_VIDEO_ID_2",
+              videoId: "zeLO8qGbEfk",
             },
             {
               title: "Live Creative AI Trainings",
               description: "Empowering artists worldwide to master the AI video pipeline. From storyboard to final render, I break down complex workflows into actionable steps that ignite creative confidence.",
-              videoId: "REPLACE_WITH_VIDEO_ID_3",
+              videoId: "jtfgf685-7M",
             },
           ].map((project, i) => (
             <div key={i} style={{ marginBottom: "5rem" }}>
@@ -208,9 +214,10 @@ export default function Consulting() {
                 />
               </div>
               <h3 style={{
-                fontFamily: "'Bebas Neue', sans-serif",
-                fontSize: "1.55rem",
-                letterSpacing: "0.03em",
+                fontFamily: "'DM Sans', sans-serif",
+                fontWeight: 700,
+                fontSize: "1.35rem",
+                letterSpacing: "-0.01em",
                 color: "#fff",
                 marginBottom: "0.6rem",
               }}>
@@ -226,6 +233,104 @@ export default function Consulting() {
               </p>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* ── SERVICES ── */}
+      <section style={{
+        borderTop: "1px solid rgba(255,255,255,0.07)",
+        padding: "5rem 2rem",
+      }}>
+        <div style={{ maxWidth: "860px", margin: "0 auto" }}>
+          <p style={{
+            fontSize: "0.65rem",
+            letterSpacing: "0.18em",
+            color: "rgba(255,255,255,0.3)",
+            textTransform: "uppercase",
+            marginBottom: "1rem",
+            textAlign: "center",
+          }}>
+            What I Offer
+          </p>
+          <h2 style={{
+            fontFamily: "'DM Sans', sans-serif",
+            fontWeight: 800,
+            fontSize: "clamp(1.8rem, 4vw, 2.8rem)",
+            letterSpacing: "-0.02em",
+            color: "#fff",
+            marginBottom: "0.75rem",
+            textAlign: "center",
+          }}>
+            AI Strategy for Creative Organizations
+          </h2>
+          <p style={{
+            fontSize: "0.93rem",
+            color: "rgba(255,255,255,0.4)",
+            textAlign: "center",
+            marginBottom: "3.5rem",
+            maxWidth: "480px",
+            margin: "0 auto 3.5rem",
+          }}>
+            From one-day intensives to ongoing advisory — built around your team's workflow and goals.
+          </p>
+          <div style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+            gap: "1.5rem",
+          }}>
+            {[
+              {
+                title: "Team AI Workshop",
+                desc: "A full-day intensive that takes your creative team from AI-curious to AI-capable. Hands-on, workflow-specific, immediately applicable.",
+                tag: "1 Day",
+              },
+              {
+                title: "AI Pipeline Audit",
+                desc: "A deep-dive into your current production workflow. I identify where AI can cut time, reduce cost, and elevate output — with a clear implementation roadmap.",
+                tag: "Consulting",
+              },
+              {
+                title: "Ongoing Advisory",
+                desc: "Monthly retainer for organizations building AI-native creative teams. Strategy calls, tool vetting, and direct access as the space evolves.",
+                tag: "Retainer",
+              },
+            ].map((service, i) => (
+              <div key={i} style={{
+                background: "rgba(255,255,255,0.03)",
+                border: "1px solid rgba(255,255,255,0.08)",
+                borderRadius: "6px",
+                padding: "2rem",
+              }}>
+                <span style={{
+                  display: "inline-block",
+                  fontSize: "0.65rem",
+                  letterSpacing: "0.12em",
+                  textTransform: "uppercase",
+                  color: "#E63329",
+                  marginBottom: "1rem",
+                  fontWeight: 600,
+                }}>
+                  {service.tag}
+                </span>
+                <h3 style={{
+                  fontFamily: "'DM Sans', sans-serif",
+                  fontWeight: 700,
+                  fontSize: "1.1rem",
+                  color: "#fff",
+                  marginBottom: "0.75rem",
+                }}>
+                  {service.title}
+                </h3>
+                <p style={{
+                  fontSize: "0.85rem",
+                  color: "rgba(255,255,255,0.45)",
+                  lineHeight: "1.7",
+                }}>
+                  {service.desc}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -251,12 +356,13 @@ export default function Consulting() {
               borderBottom: i === 0 ? "1px solid rgba(255,255,255,0.07)" : "none",
             }}>
               <p style={{
-                fontFamily: "'Bebas Neue', sans-serif",
-                fontSize: "clamp(1.5rem, 3.5vw, 2.3rem)",
-                lineHeight: "1.3",
+                fontFamily: "'DM Sans', sans-serif",
+                fontWeight: 700,
+                fontSize: "clamp(1.4rem, 3.2vw, 2.1rem)",
+                lineHeight: "1.35",
                 color: "#fff",
                 marginBottom: "1.75rem",
-                letterSpacing: "0.01em",
+                letterSpacing: "-0.01em",
               }}>
                 "{t.quote}"
               </p>
@@ -280,15 +386,15 @@ export default function Consulting() {
         borderTop: "1px solid rgba(255,255,255,0.07)",
       }}>
         <h2 style={{
-          fontFamily: "'Bebas Neue', sans-serif",
-          fontSize: "clamp(2.2rem, 5vw, 3.8rem)",
-          letterSpacing: "0.01em",
+          fontFamily: "'DM Sans', sans-serif",
+          fontWeight: 800,
+          fontSize: "clamp(2rem, 4.5vw, 3.2rem)",
+          letterSpacing: "-0.02em",
           color: "#fff",
           marginBottom: "0.75rem",
-        }}
-      >
-        Book a Strategy Call
-      </h2>
+        }}>
+          Book Your Consultation
+        </h2>
         <p style={{
           fontSize: "0.93rem",
           color: "rgba(255,255,255,0.4)",
@@ -297,34 +403,35 @@ export default function Consulting() {
           Unlock creative potential through AI strategies.
         </p>
         <a
-          href="https://calendly.com/llcexemplar/strategy-call-w-brandon" target="_blank" rel="noopener noreferrer"
+          href={CALENDLY}
+          target="_blank"
+          rel="noopener noreferrer"
           style={{
             display: "inline-block",
-            padding: "0.8rem 2.25rem",
-            border: "1px solid #E63329",
+            padding: "0.75rem 2rem",
+            border: "1px solid rgba(255,255,255,0.35)",
             borderRadius: "3px",
             color: "#fff",
             fontSize: "0.88rem",
-            letterSpacing: "0.06em",
+            letterSpacing: "0.04em",
             textDecoration: "none",
             fontFamily: "'DM Sans', sans-serif",
-            background: "#E63329",
+            fontWeight: 500,
+            background: "transparent",
             transition: "background 0.2s, border-color 0.2s",
           }}
           onMouseEnter={(e) => {
             const el = e.currentTarget;
             el.style.background = "#E63329";
             el.style.borderColor = "#E63329";
-            el.style.color = "#fff";
           }}
           onMouseLeave={(e) => {
             const el = e.currentTarget;
             el.style.background = "transparent";
             el.style.borderColor = "rgba(255,255,255,0.35)";
-            el.style.color = "#fff";
           }}
         >
-          Book a Strategy Call
+          Request a Call
         </a>
       </section>
 
