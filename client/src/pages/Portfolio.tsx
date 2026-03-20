@@ -1,437 +1,342 @@
 /*
- * Portfolio — Private client-facing portfolio page
- * Design: "The Director's Cut" — same cinematic dark aesthetic as the main site
- * Access: /portfolio (not linked from main nav — share directly with clients)
- * Inspired by: brandonpatino.framer.website/portfolio
+ * Portfolio — Brandon Patino | Creative AI Consultant
+ * Design: Exact match to brandonpatino.framer.website/portfolio
+ * - Pure black bg (#000)
+ * - Centered layout, small all-caps name/title header
+ * - Big white headline (Bebas Neue)
+ * - Full-width YouTube hero video embed
+ * - 3 large stat numbers (50,000+ / 10,000+ / 1,000+)
+ * - About Me: left text + right photo
+ * - Project entries: full-width video + title + description below
+ * - Large centered testimonial quotes
+ * - "Book Your Consultation" CTA + "Request a Call" button
+ * - Footer: © 2020–2026
  */
 
-import { useState } from "react";
-
-const LOGO_URL = "https://d2xsxph8kpxj0f.cloudfront.net/310419663032668673/9znEqYZ2JpzLxCzomcgMbf/afa-logo-long_9672f3eb.png";
-const HERO_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310419663032668673/9znEqYZ2JpzLxCzomcgMbf/afa-hero-bg-kCkktLY3hquHjRqwTxUHRg.webp";
-
-// Portfolio work items — update with real project data
-const projects = [
-  {
-    id: 1,
-    category: "AI FILM",
-    title: "Prometheus Unbound",
-    description: "Full AI-generated short film. Concept to final export using Midjourney, Kling AI, and Runway. Cinematic color grade in CapCut.",
-    tags: ["Midjourney", "Kling AI", "Runway", "CapCut"],
-    year: "2025",
-    thumbnail: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
-    featured: true,
-  },
-  {
-    id: 2,
-    category: "BRAND CAMPAIGN",
-    title: "AI Film Academy — Launch Campaign",
-    description: "Full brand identity and video campaign for AIFA's 2025 launch. 1,100+ members acquired in first 90 days.",
-    tags: ["Brand Strategy", "Video Production", "Meta Ads"],
-    year: "2025",
-    thumbnail: "https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=800&q=80",
-    featured: true,
-  },
-  {
-    id: 3,
-    category: "AI COMMERCIAL",
-    title: "Product Spot — AI Generated",
-    description: "30-second product commercial created entirely with AI tools. From storyboard to final delivery in 48 hours.",
-    tags: ["Google Veo", "Midjourney", "ElevenLabs"],
-    year: "2025",
-    thumbnail: "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=800&q=80",
-    featured: false,
-  },
-  {
-    id: 4,
-    category: "EDUCATION",
-    title: "AI Filmmaking Curriculum",
-    description: "50+ video lessons covering the complete AI filmmaker workflow. Developed for 1,100+ students across 40+ countries.",
-    tags: ["Curriculum Design", "Video Production", "Skool"],
-    year: "2024",
-    thumbnail: "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=800&q=80",
-    featured: false,
-  },
-  {
-    id: 5,
-    category: "AI MUSIC VIDEO",
-    title: "Neon Requiem",
-    description: "AI-generated music video for an independent artist. Full visual direction and production using the AIFA workflow.",
-    tags: ["Midjourney", "Runway", "Kling AI", "CapCut"],
-    year: "2025",
-    thumbnail: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800&q=80",
-    featured: false,
-  },
-  {
-    id: 6,
-    category: "CONSULTING",
-    title: "Enterprise AI Integration",
-    description: "Consulting engagement helping a media company integrate AI tools into their production pipeline. 60% cost reduction achieved.",
-    tags: ["AI Strategy", "Workflow Design", "Training"],
-    year: "2024",
-    thumbnail: "https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&q=80",
-    featured: false,
-  },
-];
-
-const stats = [
-  { number: "1,100+", label: "Students Trained" },
-  { number: "50+", label: "AI Films Produced" },
-  { number: "40+", label: "Countries Reached" },
-  { number: "5.0★", label: "Google Rating" },
-];
-
-const services = [
-  {
-    icon: "🎬",
-    title: "AI Film Production",
-    description: "End-to-end AI film production — from concept and storyboard to final delivery. Cinematic quality at a fraction of traditional cost.",
-  },
-  {
-    icon: "📡",
-    title: "Brand Video Campaigns",
-    description: "AI-powered video campaigns for brands and startups. Fast turnaround, premium output, measurable results.",
-  },
-  {
-    icon: "🤖",
-    title: "AI Workflow Consulting",
-    description: "Help your team integrate AI tools into your production pipeline. Custom training, workflow design, and ongoing support.",
-  },
-  {
-    icon: "🎓",
-    title: "Custom Training Programs",
-    description: "Bespoke AI filmmaking training for corporate teams, agencies, and media companies. In-person or remote.",
-  },
-];
-
 export default function Portfolio() {
-  const [activeFilter, setActiveFilter] = useState("ALL");
-  const categories = ["ALL", "AI FILM", "BRAND CAMPAIGN", "AI COMMERCIAL", "EDUCATION", "AI MUSIC VIDEO", "CONSULTING"];
-
-  const filtered = activeFilter === "ALL"
-    ? projects
-    : projects.filter(p => p.category === activeFilter);
-
   return (
-    <div className="min-h-screen bg-[#0A0A0A] text-[#F5F5F0] overflow-x-hidden">
-      {/* Minimal Navbar */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-[#0A0A0A]/90 backdrop-blur-md border-b border-white/5">
-        <div className="container flex items-center justify-between h-16">
-          <a href="/" className="flex items-center gap-2">
-            <img
-              src={LOGO_URL}
-              alt="AI Film Academy"
-              className="h-8 w-auto object-contain"
-              style={{ maxWidth: '160px', filter: 'brightness(0) invert(1)' }}
-            />
-          </a>
-          <div className="flex items-center gap-4">
-            <span
-              className="text-xs text-white/30 uppercase tracking-widest"
-              style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.6rem" }}
-            >
-              Private Portfolio
-            </span>
-            <a
-              href="mailto:hello@aifilmacademy.com"
-              className="btn-primary px-4 py-2 text-sm font-semibold"
-            >
-              Get in Touch
-            </a>
-          </div>
-        </div>
-      </nav>
+    <div style={{ background: "#000", color: "#fff", minHeight: "100vh", fontFamily: "'DM Sans', sans-serif" }}>
 
-      {/* Hero */}
-      <section className="relative min-h-[70vh] flex flex-col justify-end overflow-hidden pt-16">
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url(${HERO_BG})`, opacity: 0.15 }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0A0A0A]/60 via-transparent to-[#0A0A0A]" />
-        <div
-          className="absolute top-1/3 right-0 w-[500px] h-[500px] pointer-events-none"
-          style={{ background: "radial-gradient(ellipse at 100% 50%, oklch(0.48 0.22 25 / 0.08) 0%, transparent 70%)" }}
-        />
+      {/* ── HEADER ── */}
+      <header style={{ textAlign: "center", padding: "3.5rem 2rem 2.5rem" }}>
+        <p style={{
+          fontSize: "0.72rem",
+          letterSpacing: "0.18em",
+          color: "rgba(255,255,255,0.45)",
+          textTransform: "uppercase",
+          marginBottom: "1.25rem",
+          fontFamily: "'DM Sans', sans-serif",
+        }}>
+          BRANDON PATINO | CREATIVE AI CONSULTANT
+        </p>
+        <h1 style={{
+          fontFamily: "'Bebas Neue', sans-serif",
+          fontSize: "clamp(2.8rem, 7vw, 5rem)",
+          letterSpacing: "0.01em",
+          lineHeight: "1.05",
+          color: "#fff",
+          margin: "0 auto 1.25rem",
+          maxWidth: "680px",
+        }}>
+          Future-Proof Your Creative Teams.
+        </h1>
+        <p style={{
+          fontSize: "0.95rem",
+          color: "rgba(255,255,255,0.5)",
+          maxWidth: "460px",
+          margin: "0 auto",
+          lineHeight: "1.65",
+        }}>
+          Helping forward-thinking organizations master Generative AI workflows for media, art, and video storytelling.
+        </p>
+      </header>
 
-        <div className="container relative z-10 pb-16 md:pb-24">
-          <div
-            className="text-xs uppercase tracking-widest text-white/30 mb-6"
-            style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.6rem" }}
-          >
-            — Brandon Patino / AI Film Academy
-          </div>
-          <h1
-            style={{
-              fontFamily: "'Bebas Neue', sans-serif",
-              fontSize: "clamp(3.5rem, 10vw, 8rem)",
-              lineHeight: "0.92",
-              letterSpacing: "0.01em",
-              color: "#F5F5F0",
-            }}
-          >
-            Director.
-            <br />
-            Educator.
-            <br />
-            <span style={{ color: "oklch(0.48 0.22 25)" }}>AI Pioneer.</span>
-          </h1>
-          <p
-            className="mt-6 text-white/60 text-lg max-w-xl leading-relaxed"
-            style={{ fontFamily: "'DM Sans', sans-serif" }}
-          >
-            Google-certified AI educator and filmmaker. Founder of AI Film Academy (AIFA). Helping brands, creators, and enterprises harness the power of AI filmmaking.
-          </p>
-
-          {/* Stats row */}
-          <div className="flex flex-wrap gap-8 mt-10">
-            {stats.map((stat, i) => (
-              <div key={i}>
-                <p
-                  className="text-3xl font-bold"
-                  style={{
-                    fontFamily: "'Bebas Neue', sans-serif",
-                    color: i === 0 ? "oklch(0.48 0.22 25)" : "#F5F5F0",
-                    letterSpacing: "0.02em",
-                  }}
-                >
-                  {stat.number}
-                </p>
-                <p
-                  className="text-xs text-white/40 mt-0.5"
-                  style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.6rem", letterSpacing: "0.1em" }}
-                >
-                  {stat.label}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Work Section */}
-      <section className="py-16 md:py-24 bg-[#0A0A0A]">
-        <div className="container">
-          <div className="flex items-end justify-between mb-10 gap-4 flex-wrap">
-            <div>
-              <div className="section-label mb-3">Selected Work</div>
-              <h2
-                style={{
-                  fontFamily: "'Bebas Neue', sans-serif",
-                  fontSize: "clamp(2rem, 5vw, 3.5rem)",
-                  lineHeight: "1",
-                  color: "#F5F5F0",
-                }}
-              >
-                Recent Projects
-              </h2>
-            </div>
-
-            {/* Filter tabs */}
-            <div className="flex flex-wrap gap-2">
-              {["ALL", "AI FILM", "BRAND CAMPAIGN", "CONSULTING"].map((cat) => (
-                <button
-                  key={cat}
-                  onClick={() => setActiveFilter(cat)}
-                  className="px-3 py-1.5 rounded text-xs font-medium transition-all"
-                  style={{
-                    fontFamily: "'JetBrains Mono', monospace",
-                    fontSize: "0.6rem",
-                    letterSpacing: "0.08em",
-                    background: activeFilter === cat ? "oklch(0.48 0.22 25)" : "oklch(0.14 0 0)",
-                    color: activeFilter === cat ? "#F5F5F0" : "oklch(0.5 0 0)",
-                    border: `1px solid ${activeFilter === cat ? "oklch(0.48 0.22 25)" : "oklch(0.22 0 0)"}`,
-                  }}
-                >
-                  {cat}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Project grid */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {filtered.map((project) => (
-              <div
-                key={project.id}
-                className={`group relative rounded-xl overflow-hidden border border-white/8 cursor-pointer transition-all duration-300 hover:border-white/20 ${
-                  project.featured ? "md:col-span-2 lg:col-span-1" : ""
-                }`}
-                style={{ background: "oklch(0.10 0 0)" }}
-              >
-                {/* Thumbnail */}
-                <div className="relative overflow-hidden" style={{ paddingBottom: project.featured ? "60%" : "65%" }}>
-                  <img
-                    src={project.thumbnail}
-                    alt={project.title}
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    style={{ opacity: 0.75 }}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-transparent to-transparent" />
-
-                  {/* Category badge */}
-                  <div className="absolute top-4 left-4">
-                    <span
-                      className="px-2 py-1 rounded text-xs font-semibold"
-                      style={{
-                        fontFamily: "'JetBrains Mono', monospace",
-                        fontSize: "0.55rem",
-                        letterSpacing: "0.1em",
-                        background: "oklch(0.48 0.22 25)",
-                        color: "#F5F5F0",
-                      }}
-                    >
-                      {project.category}
-                    </span>
-                  </div>
-
-                  {/* Year */}
-                  <div className="absolute top-4 right-4">
-                    <span
-                      className="text-white/40 text-xs"
-                      style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.6rem" }}
-                    >
-                      {project.year}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Content */}
-                <div className="p-5">
-                  <h3
-                    className="text-white font-semibold text-lg mb-2"
-                    style={{ fontFamily: "'DM Sans', sans-serif" }}
-                  >
-                    {project.title}
-                  </h3>
-                  <p className="text-white/55 text-sm leading-relaxed mb-4" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-                    {project.description}
-                  </p>
-                  <div className="flex flex-wrap gap-1.5">
-                    {project.tags.map((tag, j) => (
-                      <span
-                        key={j}
-                        className="px-2 py-0.5 rounded text-xs border"
-                        style={{
-                          fontFamily: "'JetBrains Mono', monospace",
-                          fontSize: "0.6rem",
-                          letterSpacing: "0.06em",
-                          borderColor: "oklch(0.22 0 0)",
-                          color: "oklch(0.55 0 0)",
-                          background: "oklch(0.12 0 0)",
-                        }}
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Services Section */}
-      <section className="py-16 md:py-24 bg-[#0D0D0D]">
-        <div className="container">
-          <div className="max-w-xl mb-12">
-            <div className="section-label mb-4">Services</div>
-            <h2
-              style={{
-                fontFamily: "'Bebas Neue', sans-serif",
-                fontSize: "clamp(2rem, 5vw, 3.5rem)",
-                lineHeight: "1",
-                color: "#F5F5F0",
-              }}
-            >
-              What I Can
-              <br />
-              <span style={{ color: "oklch(0.48 0.22 25)" }}>Do For You</span>
-            </h2>
-          </div>
-
-          <div className="grid sm:grid-cols-2 gap-4">
-            {services.map((service, i) => (
-              <div
-                key={i}
-                className="afa-card rounded-xl p-6 flex gap-4"
-              >
-                <span className="text-2xl shrink-0">{service.icon}</span>
-                <div>
-                  <h3
-                    className="text-white font-semibold mb-2"
-                    style={{ fontFamily: "'DM Sans', sans-serif" }}
-                  >
-                    {service.title}
-                  </h3>
-                  <p className="text-white/55 text-sm leading-relaxed" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-                    {service.description}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Contact CTA */}
-      <section className="py-20 md:py-28 bg-[#0A0A0A] relative overflow-hidden">
-        <div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] pointer-events-none"
-          style={{ background: "radial-gradient(ellipse, oklch(0.48 0.22 25 / 0.07) 0%, transparent 70%)" }}
-        />
-        <div className="container relative z-10 text-center">
-          <div className="section-label mb-6 justify-center">Let's Work Together</div>
-          <h2
-            style={{
-              fontFamily: "'Bebas Neue', sans-serif",
-              fontSize: "clamp(2.5rem, 7vw, 5.5rem)",
-              lineHeight: "0.95",
-              color: "#F5F5F0",
-            }}
-          >
-            Ready to Start
-            <br />
-            <span style={{ color: "oklch(0.48 0.22 25)" }}>Your Project?</span>
-          </h2>
-          <p
-            className="mt-6 text-white/55 text-lg max-w-xl mx-auto leading-relaxed"
-            style={{ fontFamily: "'DM Sans', sans-serif" }}
-          >
-            Whether you need AI film production, brand video content, or enterprise AI training — let's talk about what's possible.
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-10">
-            <a
-              href="mailto:hello@aifilmacademy.com"
-              className="btn-primary pulse-cta px-10 py-4 text-lg font-bold"
-            >
-              Email Brandon →
-            </a>
-            <a
-              href="/"
-              className="btn-outline px-8 py-4 text-base font-semibold"
-            >
-              View AIFA Academy
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="bg-[#060606] border-t border-white/5 py-8">
-        <div className="container flex flex-col sm:flex-row items-center justify-between gap-3">
-          <img
-            src={LOGO_URL}
-            alt="AI Film Academy"
-            className="h-7 w-auto object-contain"
-            style={{ maxWidth: '130px', filter: 'brightness(0) invert(1) opacity(0.4)' }}
+      {/* ── HERO VIDEO ── */}
+      <section style={{ padding: "1rem 2rem 3rem" }}>
+        <div style={{
+          maxWidth: "860px",
+          margin: "0 auto",
+          borderRadius: "6px",
+          overflow: "hidden",
+          background: "#0d0d0d",
+          aspectRatio: "16/9",
+          position: "relative",
+          border: "1px solid rgba(255,255,255,0.07)",
+        }}>
+          {/* Placeholder — swap videoId below with real YouTube video ID */}
+          <iframe
+            src="https://www.youtube.com/embed/videoseries?list=PLbpi6ZahtOH6Ar_3GPy3workflowplaylist&autoplay=0"
+            title="Portfolio Reel"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+            style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", border: "none" }}
           />
-          <p className="text-white/25 text-xs" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            © {new Date().getFullYear()} Brandon Patino / AI Film Academy™ (AIFA). Private portfolio — not for public distribution.
-          </p>
         </div>
+      </section>
+
+      {/* ── STATS ── */}
+      <section style={{ padding: "2rem 2rem 4.5rem" }}>
+        <div style={{
+          maxWidth: "860px",
+          margin: "0 auto",
+          display: "grid",
+          gridTemplateColumns: "repeat(3, 1fr)",
+          gap: "1rem",
+          textAlign: "center",
+        }}>
+          {[
+            { number: "50,000+", label: "AI Voice Users via Eleven Labs" },
+            { number: "10,000+", label: "Live Workshop Students" },
+            { number: "1,000+", label: "AI Film Academy Students" },
+          ].map((stat, i) => (
+            <div key={i}>
+              <p style={{
+                fontFamily: "'Bebas Neue', sans-serif",
+                fontSize: "clamp(2.8rem, 7vw, 5rem)",
+                lineHeight: "1",
+                color: "#fff",
+                margin: "0 0 0.4rem",
+              }}>
+                {stat.number}
+              </p>
+              <p style={{ fontSize: "0.78rem", color: "rgba(255,255,255,0.4)", lineHeight: "1.4" }}>
+                {stat.label}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── ABOUT ME ── */}
+      <section style={{
+        padding: "4rem 2rem",
+        borderTop: "1px solid rgba(255,255,255,0.07)",
+        borderBottom: "1px solid rgba(255,255,255,0.07)",
+      }}>
+        <div style={{
+          maxWidth: "860px",
+          margin: "0 auto",
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          gap: "4rem",
+          alignItems: "start",
+        }}>
+          {/* Left: Text */}
+          <div>
+            <p style={{
+              fontSize: "0.65rem",
+              letterSpacing: "0.18em",
+              color: "rgba(255,255,255,0.3)",
+              textTransform: "uppercase",
+              marginBottom: "1.75rem",
+            }}>
+              About Me
+            </p>
+            {[
+              "My career is built on the intersection of design and innovation. Over the last 15 years—from graphic design and web dev to leading complex media projects—I've focused on one goal: leveraging technology to elevate creative output.",
+              "For over 5 years, I built and scaled my own video editing agency, delivering high-impact media for a global client base. This honed my skills in storytelling, visual creativity, and managing diverse production teams. In the last 2 years, I have focused on creative AI as a mentor, workshop host, educator, and consultant—empowering professionals and organizations to leverage AI for breakthrough results.",
+              "I bring the mindset of an elite athlete to everything I do. My deep commitment to excellence, discipline, and elite performance was recognized with a Guinness World Record in 2025, reflecting my relentless drive toward peak performance in everything I pursue.",
+            ].map((para, i) => (
+              <p key={i} style={{
+                fontSize: "0.93rem",
+                color: "rgba(255,255,255,0.68)",
+                lineHeight: "1.85",
+                marginBottom: "1.25rem",
+              }}>
+                {para}
+              </p>
+            ))}
+          </div>
+
+          {/* Right: Photo */}
+          <div>
+            <div style={{
+              borderRadius: "4px",
+              overflow: "hidden",
+              background: "#111",
+              aspectRatio: "4/5",
+            }}>
+              <img
+                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80"
+                alt="Brandon Patino — Guinness World Record 2025"
+                style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", opacity: 0.9 }}
+              />
+            </div>
+            <p style={{ fontSize: "0.7rem", color: "rgba(255,255,255,0.25)", marginTop: "0.75rem", letterSpacing: "0.05em" }}>
+              Guinness World Record — 2025
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ── PROJECTS ── */}
+      <section style={{ padding: "4.5rem 2rem" }}>
+        <div style={{ maxWidth: "860px", margin: "0 auto" }}>
+          {[
+            {
+              title: "AI-Powered 3D Cartoon Animation",
+              description: "Generated studio-quality 3D character animation entirely through AI. Achieved a cohesive, vibrant cartoon aesthetic while cutting traditional animation production cycles by 80%.",
+              videoId: "REPLACE_WITH_VIDEO_ID_1",
+            },
+            {
+              title: "AI-Powered Realism Ad Campaigns",
+              description: "Photorealistic cinematography for a wellness brand launch — zero camera crew required. Delivered broadcast-ready product advertisement using generative video models.",
+              videoId: "REPLACE_WITH_VIDEO_ID_2",
+            },
+            {
+              title: "Live Creative AI Trainings",
+              description: "Empowering artists worldwide to master the AI video pipeline. From storyboard to final render, I break down complex workflows into actionable steps that ignite creative confidence.",
+              videoId: "REPLACE_WITH_VIDEO_ID_3",
+            },
+          ].map((project, i) => (
+            <div key={i} style={{ marginBottom: "5rem" }}>
+              <div style={{
+                borderRadius: "6px",
+                overflow: "hidden",
+                background: "#0d0d0d",
+                aspectRatio: "16/9",
+                marginBottom: "1.5rem",
+                position: "relative",
+                border: "1px solid rgba(255,255,255,0.07)",
+              }}>
+                <iframe
+                  src={`https://www.youtube.com/embed/${project.videoId}`}
+                  title={project.title}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", border: "none" }}
+                />
+              </div>
+              <h3 style={{
+                fontFamily: "'Bebas Neue', sans-serif",
+                fontSize: "1.55rem",
+                letterSpacing: "0.03em",
+                color: "#fff",
+                marginBottom: "0.6rem",
+              }}>
+                {project.title}
+              </h3>
+              <p style={{
+                fontSize: "0.88rem",
+                color: "rgba(255,255,255,0.45)",
+                lineHeight: "1.75",
+                maxWidth: "540px",
+              }}>
+                {project.description}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── TESTIMONIALS ── */}
+      <section style={{
+        borderTop: "1px solid rgba(255,255,255,0.07)",
+        padding: "5rem 2rem",
+      }}>
+        <div style={{ maxWidth: "680px", margin: "0 auto" }}>
+          {[
+            {
+              quote: "Brandon's leadership gave our team the push we needed. The fear of AI is gone, replaced by a genuine excitement to build better work, faster.",
+              name: "Jacob Brakins",
+            },
+            {
+              quote: "Brandon's leadership gave our team the push we needed. The fear of AI is gone, replaced by a genuine excitement to build better work, faster.",
+              name: "Lucas C. Cooper",
+            },
+          ].map((t, i) => (
+            <div key={i} style={{
+              textAlign: "center",
+              padding: "4rem 0",
+              borderBottom: i === 0 ? "1px solid rgba(255,255,255,0.07)" : "none",
+            }}>
+              <p style={{
+                fontFamily: "'Bebas Neue', sans-serif",
+                fontSize: "clamp(1.5rem, 3.5vw, 2.3rem)",
+                lineHeight: "1.3",
+                color: "#fff",
+                marginBottom: "1.75rem",
+                letterSpacing: "0.01em",
+              }}>
+                "{t.quote}"
+              </p>
+              <p style={{
+                fontSize: "0.72rem",
+                letterSpacing: "0.15em",
+                color: "rgba(255,255,255,0.35)",
+                textTransform: "uppercase",
+              }}>
+                {t.name}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── CTA ── */}
+      <section style={{
+        padding: "5rem 2rem",
+        textAlign: "center",
+        borderTop: "1px solid rgba(255,255,255,0.07)",
+      }}>
+        <h2 style={{
+          fontFamily: "'Bebas Neue', sans-serif",
+          fontSize: "clamp(2.2rem, 5vw, 3.8rem)",
+          letterSpacing: "0.01em",
+          color: "#fff",
+          marginBottom: "0.75rem",
+        }}>
+          Book Your Consultation
+        </h2>
+        <p style={{
+          fontSize: "0.93rem",
+          color: "rgba(255,255,255,0.4)",
+          marginBottom: "2.25rem",
+        }}>
+          Unlock creative potential through AI strategies.
+        </p>
+        <a
+          href="mailto:llcexemplar@gmail.com?subject=Consultation%20Request%20—%20Portfolio"
+          style={{
+            display: "inline-block",
+            padding: "0.8rem 2.25rem",
+            border: "1px solid rgba(255,255,255,0.35)",
+            borderRadius: "3px",
+            color: "#fff",
+            fontSize: "0.88rem",
+            letterSpacing: "0.06em",
+            textDecoration: "none",
+            fontFamily: "'DM Sans', sans-serif",
+            transition: "background 0.2s, border-color 0.2s",
+          }}
+          onMouseEnter={(e) => {
+            const el = e.currentTarget;
+            el.style.background = "rgba(255,255,255,0.08)";
+            el.style.borderColor = "rgba(255,255,255,0.6)";
+          }}
+          onMouseLeave={(e) => {
+            const el = e.currentTarget;
+            el.style.background = "transparent";
+            el.style.borderColor = "rgba(255,255,255,0.35)";
+          }}
+        >
+          Request a Call
+        </a>
+      </section>
+
+      {/* ── FOOTER ── */}
+      <footer style={{
+        padding: "2rem 2rem",
+        borderTop: "1px solid rgba(255,255,255,0.07)",
+      }}>
+        <p style={{ fontSize: "0.72rem", color: "rgba(255,255,255,0.2)", marginBottom: "0.2rem" }}>
+          © 2020–2026
+        </p>
+        <p style={{ fontSize: "0.72rem", color: "rgba(255,255,255,0.2)" }}>
+          All Rights Reserved
+        </p>
       </footer>
+
     </div>
   );
 }
