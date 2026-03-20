@@ -13,7 +13,7 @@
  * - Footer: © 2020–2026
  */
 
-export default function Portfolio() {
+export default function Consulting() {
   return (
     <div style={{ background: "#000", color: "#fff", minHeight: "100vh", fontFamily: "'DM Sans', sans-serif" }}>
 
@@ -65,8 +65,8 @@ export default function Portfolio() {
         }}>
           {/* Placeholder — swap videoId below with real YouTube video ID */}
           <iframe
-            src="https://www.youtube.com/embed/videoseries?list=PLbpi6ZahtOH6Ar_3GPy3workflowplaylist&autoplay=0"
-            title="Portfolio Reel"
+            src="https://www.youtube.com/embed/ivhWLYfxBGk"
+            title="Brandon Patino — Creative AI Reel"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
             style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", border: "none" }}
@@ -157,9 +157,9 @@ export default function Portfolio() {
               aspectRatio: "4/5",
             }}>
               <img
-                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80"
+                src="https://d2xsxph8kpxj0f.cloudfront.net/310419663032668673/9znEqYZ2JpzLxCzomcgMbf/brandon-guinness_4043d965.webp"
                 alt="Brandon Patino — Guinness World Record 2025"
-                style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", opacity: 0.9 }}
+                style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center top", display: "block" }}
               />
             </div>
             <p style={{ fontSize: "0.7rem", color: "rgba(255,255,255,0.25)", marginTop: "0.75rem", letterSpacing: "0.05em" }}>
