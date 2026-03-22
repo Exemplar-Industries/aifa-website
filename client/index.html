@@ -3,6 +3,16 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+    <!-- GitHub Pages SPA routing: restore path after 404 redirect -->
+    <script>
+      (function() {
+        var redirect = sessionStorage.getItem('ghpages_redirect');
+        if (redirect) {
+          sessionStorage.removeItem('ghpages_redirect');
+          window.history.replaceState(null, null, redirect);
+        }
+      })();
+    </script>
     <title>AIFA — AI Film Academy™ | Master AI Filmmaking for $19/mo</title>
     <meta name="description" content="Stop experimenting. Start mastering. Learn the one AI filmmaking workflow used by pros — get certified and upgrade your career for just $19/month." />
     <meta property="og:title" content="AIFA — AI Film Academy™ | Master AI Filmmaking" />
