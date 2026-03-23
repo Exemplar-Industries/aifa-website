@@ -149,11 +149,13 @@ export default function HeroSection() {
                 animation: "fade-up 0.6s ease 0.1s both",
               }}
             >
-              Master AI Filmmaking.{" "}
+              Master AI Filmmaking.
+              <br />
               <span
                 style={{
                   color: "oklch(0.60 0.24 25)",
                   textShadow: "0 0 60px oklch(0.48 0.22 25 / 0.5), 0 4px 80px rgba(0,0,0,0.95)",
+                  display: "block",
                 }}
               >
                 Upgrade Your Career.
