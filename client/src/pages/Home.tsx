@@ -25,7 +25,6 @@ import WorkflowSection from "@/components/WorkflowSection";
 import PricingSection from "@/components/PricingSection";
 import FAQSection from "@/components/FAQSection";
 import FinalCTASection from "@/components/FinalCTASection";
-import TrustedBySection from "@/components/TrustedBySection";
 import Footer from "@/components/Footer";
 
 export default function Home() {
@@ -39,10 +38,7 @@ export default function Home() {
       {/* 2. STATS */}
       <StatsBar />
 
-      {/* 3. TRUSTED BY — credibility before social proof */}
-      <TrustedBySection />
-
-      {/* 4. SOCIAL PROOF */}
+      {/* 3. SOCIAL PROOF */}
       <TestimonialsSection />
 
       {/* 5. PROBLEM */}
