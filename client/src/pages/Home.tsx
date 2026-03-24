@@ -39,25 +39,25 @@ export default function Home() {
       {/* 2. STATS */}
       <StatsBar />
 
-      {/* 3. SOCIAL PROOF */}
-      <TestimonialsSection />
-
-      {/* 4. PROBLEM */}
-      <ProblemSection />
-
-      {/* 5. SYSTEM */}
-      <WorkflowSection />
-
-      {/* 6. PRICING — the close */}
-      <PricingSection />
-
-      {/* 7. FINAL CTA — "The Decision" */}
-      <FinalCTASection />
-
-      {/* 8. TRUSTED BY — last-second credibility under the close */}
+      {/* 3. TRUSTED BY — credibility before social proof */}
       <TrustedBySection />
 
-      {/* 9. FAQ — objection handling for those who scroll past */}
+      {/* 4. SOCIAL PROOF */}
+      <TestimonialsSection />
+
+      {/* 5. PROBLEM */}
+      <ProblemSection />
+
+      {/* 6. SYSTEM */}
+      <WorkflowSection />
+
+      {/* 7. PRICING — the close */}
+      <PricingSection />
+
+      {/* 8. FINAL CTA — "The Decision" */}
+      <FinalCTASection />
+
+      {/* 9. FAQ — objection handling */}
       <FAQSection />
 
       {/* 10. FOOTER */}
