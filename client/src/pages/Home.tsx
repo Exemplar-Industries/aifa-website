@@ -3,20 +3,17 @@
  * Design: "The Director's Cut" — Cinematic Dark
  * Goal: Convert cold Meta Ads traffic → $19/month Skool subscription
  *
- * CONVERSION-OPTIMIZED SECTION ORDER (updated):
+ * CONVERSION-OPTIMIZED SECTION ORDER:
  * 1. Hero          — Above fold, video, headline, CTA
- * 2. StatsBar      — Quick credibility numbers (1100+ creators, 5.0★, etc.)
- * 3. Testimonials  — Google reviews early — social proof while attention is high
- * 4. Problem       — "AI filmmaking is overwhelming. We fixed that." — agitate pain
- * 5. Workflow      — "One Workflow. Three Steps." — the solution / the system
- * 6. Pricing       — The close. Right after the solution is presented.
- * 7. FAQ           — Handle objections before they bounce
- * 8. FinalCTA      — Last push
- * 9. Footer        — Partners logos moved here (credibility without a full section)
- *
- * REMOVED from main flow:
- * - WhatYouGetSection: too long, interrupts momentum between Problem and System
- * - PartnersSection: moved into Footer as compact logo strip
+ * 2. StatsBar      — Quick credibility numbers
+ * 3. Testimonials  — Google reviews while attention is highest
+ * 4. Problem       — "AI filmmaking is overwhelming. We fixed that."
+ * 5. Workflow      — "One Workflow. Three Steps." — the solution
+ * 6. Pricing       — The close
+ * 7. FinalCTA      — "The Decision" — last push
+ * 8. TrustedBy     — Compact "Trusted By" strip — last-second credibility
+ * 9. FAQ           — Objection handling for those who scroll past the close
+ * 10. Footer       — Links, legal, copyright
  */
 
 import Navbar from "@/components/Navbar";
@@ -28,6 +25,7 @@ import WorkflowSection from "@/components/WorkflowSection";
 import PricingSection from "@/components/PricingSection";
 import FAQSection from "@/components/FAQSection";
 import FinalCTASection from "@/components/FinalCTASection";
+import TrustedBySection from "@/components/TrustedBySection";
 import Footer from "@/components/Footer";
 
 export default function Home() {
@@ -35,31 +33,34 @@ export default function Home() {
     <div className="min-h-screen bg-[#0A0A0A] text-[#F5F5F0] overflow-x-hidden">
       <Navbar />
 
-      {/* 1. HERO — above fold, video center stage */}
+      {/* 1. HERO */}
       <HeroSection />
 
-      {/* 2. STATS — instant credibility numbers */}
+      {/* 2. STATS */}
       <StatsBar />
 
-      {/* 3. SOCIAL PROOF — Google reviews while attention is highest */}
+      {/* 3. SOCIAL PROOF */}
       <TestimonialsSection />
 
-      {/* 4. PROBLEM — agitate the pain: AI filmmaking is overwhelming */}
+      {/* 4. PROBLEM */}
       <ProblemSection />
 
-      {/* 5. SYSTEM — the solution: One Workflow, Three Steps */}
+      {/* 5. SYSTEM */}
       <WorkflowSection />
 
-      {/* 6. PRICING — close immediately after the solution */}
+      {/* 6. PRICING — the close */}
       <PricingSection />
 
-      {/* 7. FAQ — handle objections */}
-      <FAQSection />
-
-      {/* 8. FINAL CTA — last push */}
+      {/* 7. FINAL CTA — "The Decision" */}
       <FinalCTASection />
 
-      {/* 9. FOOTER — partners logos live here now */}
+      {/* 8. TRUSTED BY — last-second credibility under the close */}
+      <TrustedBySection />
+
+      {/* 9. FAQ — objection handling for those who scroll past */}
+      <FAQSection />
+
+      {/* 10. FOOTER */}
       <Footer />
     </div>
   );
