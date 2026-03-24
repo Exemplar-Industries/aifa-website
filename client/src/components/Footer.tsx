@@ -109,6 +109,43 @@ export default function Footer() {
           </div>
         </div>
 
+        {/* Partners strip */}
+        <div className="pt-8 pb-8 border-t border-white/5">
+          <p
+            className="text-center text-white/20 text-xs uppercase tracking-[0.2em] mb-5"
+            style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.55rem" }}
+          >
+            Trusted Partners
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-8">
+            {[
+              { name: "Anthum", url: "https://anthum.ai", badge: "Creative Partner" },
+              { name: "Outskill", url: "https://www.outskill.com", badge: "Education Partner" },
+            ].map((p) => (
+              <a
+                key={p.name}
+                href={p.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 opacity-30 hover:opacity-60 transition-opacity"
+              >
+                <span
+                  className="text-white text-sm font-black"
+                  style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.08em" }}
+                >
+                  {p.name}
+                </span>
+                <span
+                  className="text-white/40 text-xs"
+                  style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.5rem", letterSpacing: "0.15em", textTransform: "uppercase" }}
+                >
+                  {p.badge}
+                </span>
+              </a>
+            ))}
+          </div>
+        </div>
+
         {/* Bottom bar */}
         <div className="pt-6 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-white/25 text-xs" style={{ fontFamily: "'DM Sans', sans-serif" }}>
