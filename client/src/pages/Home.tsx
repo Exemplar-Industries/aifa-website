@@ -62,6 +62,7 @@ function FullscreenHero() {
           height: "100%",
           objectFit: "cover",
           objectPosition: "center center",
+          transform: "scale(0.88)",
           zIndex: 0,
           opacity: videoLoaded ? 1 : 0,
           transition: "opacity 1.2s ease",
@@ -188,8 +189,8 @@ function FullscreenHero() {
         <h1
           style={{
             fontFamily: "'Bebas Neue', sans-serif",
-            fontSize: "clamp(3.5rem, 10vw, 9.5rem)",
-            lineHeight: "0.90",
+            fontSize: "clamp(2.6rem, 9vw, 9.5rem)",
+            lineHeight: "0.92",
             letterSpacing: "0.01em",
             color: "#F5F5F0",
             textShadow:
