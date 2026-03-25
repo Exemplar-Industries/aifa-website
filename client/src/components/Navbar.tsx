@@ -18,8 +18,7 @@ export default function Navbar() {
   }, []);
 
   const navLinks = [
-    { label: "What You Get", href: "#what-you-get" },
-    { label: "Workflow", href: "#workflow" },
+    { label: "The System", href: "#workflow" },
     { label: "Testimonials", href: "#testimonials" },
     { label: "Pricing", href: "#pricing" },
   ];
