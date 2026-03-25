@@ -65,8 +65,8 @@ export default function Footer() {
             <div className="flex flex-col gap-2">
               {[
                 { label: "Skool Community", href: skoolUrl, external: true },
-                { label: "YouTube Channel", href: "https://www.youtube.com/@aifilmacademy", external: true },
-                { label: "Instagram", href: "https://www.instagram.com/aifilmacademy", external: true },
+                { label: "YouTube Channel", href: "https://www.youtube.com/channel/UC1zRjoLJcN4cuMLs_A7kIMg", external: true },
+                { label: "Instagram", href: "https://www.instagram.com/theaifilmacademy/", external: true },
               ].map((link) => (
                 <a
                   key={link.label}
