@@ -2,19 +2,19 @@
  * HeroSection — Cinematic Video-First Hero
  * Design: "The Director's Cut" — Video center stage, film studio atmosphere
  * Layout: Anthum.ai inspired — headline above, full-width video player, CTA below
- * Video: YouTube embed (ivhWLYfxBGk) as placeholder — swap for actual trailer
+ * Video: Self-hosted CDN MP4 — autoplay muted loop, no YouTube dependency
  * Atmosphere: Deep black, dramatic red/amber studio lighting, film grain, lens flares
  */
 
 import { useRef, useEffect, useState } from "react";
 import { useSkoolUrl } from "@/contexts/AffiliateLinkContext";
 
-const PLACEHOLDER_VIDEO_ID = "ivhWLYfxBGk";
+const HERO_VIDEO_URL = "https://d2xsxph8kpxj0f.cloudfront.net/310419663032668673/9znEqYZ2JpzLxCzomcgMbf/hero-placeholder_26c33403.mp4";
 
 export default function HeroSection() {
   const skoolUrl = useSkoolUrl();
   const [videoLoaded, setVideoLoaded] = useState(false);
-  const iframeRef = useRef<HTMLIFrameElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
     const timer = setTimeout(() => setVideoLoaded(true), 800);
@@ -300,21 +300,22 @@ export default function HeroSection() {
               </div>
             )}
 
-            {/* YouTube iframe */}
-            <iframe
-              ref={iframeRef}
-              src={`https://www.youtube-nocookie.com/embed/${PLACEHOLDER_VIDEO_ID}?iv_load_policy=3&rel=0&modestbranding=1&playsinline=1&autoplay=1&mute=1&loop=1&playlist=${PLACEHOLDER_VIDEO_ID}&controls=1&origin=${encodeURIComponent(window.location.origin)}`}
-              title="AI Film Academy — Showreel"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-              onLoad={() => setVideoLoaded(true)}
+            {/* Self-hosted CDN video — autoplay muted loop */}
+            <video
+              ref={videoRef}
+              src={HERO_VIDEO_URL}
+              autoPlay
+              muted
+              loop
+              playsInline
+              onCanPlay={() => setVideoLoaded(true)}
               style={{
                 position: "absolute",
                 top: "28px",
                 left: 0,
                 width: "100%",
                 height: "calc(100% - 56px)",
-                border: "none",
+                objectFit: "cover",
                 display: "block",
               }}
             />
