@@ -25,7 +25,7 @@ Deno.serve(async (req: Request) => {
 
     const skoolUrl = `${SKOOL_WEBHOOK_BASE_URL}?email=${encodeURIComponent(email.trim().toLowerCase())}`;
 
-    const skoolRes = await fetch(skoolUrl, { method: "GET" });
+    const skoolRes = await fetch(skoolUrl, { method: "POST" });
 
     if (!skoolRes.ok) {
       const body = await skoolRes.text();
