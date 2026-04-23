@@ -1,7 +1,7 @@
 /*
- * AI Film Academy — Anthem Community Free Invite Page
+ * AI Film Academy — Anthum Community Free Invite Page
  * Route: /invite
- * Purpose: 100 free membership slots for Anthem community members
+ * Purpose: 100 free membership slots for Anthum community members
  * Backend: Supabase (slot tracking + duplicate prevention) → Skool direct webhook invite
  */
 
@@ -76,8 +76,10 @@ export default function Invite() {
   const [slotsRemaining, setSlotsRemaining] = useState<number | null>(null);
   const [formState, setFormState] = useState<FormState>("idle");
   const [errorMsg, setErrorMsg] = useState("");
-  const [name, setName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
+  const [discord, setDiscord] = useState("");
 
   // ── Fetch live slot count ──────────────────────────────────────────────────
   const fetchSlots = useCallback(async () => {
@@ -125,10 +127,13 @@ export default function Invite() {
     e.preventDefault();
     if (formState === "loading") return;
 
-    const trimmedName = name.trim();
+    const trimmedFirst = firstName.trim();
+    const trimmedLast = lastName.trim();
     const trimmedEmail = email.trim().toLowerCase();
+    const trimmedDiscord = discord.trim();
+    const fullName = `${trimmedFirst} ${trimmedLast}`.trim();
 
-    if (!trimmedName || !trimmedEmail) return;
+    if (!trimmedFirst || !trimmedLast || !trimmedEmail) return;
 
     setFormState("loading");
     setErrorMsg("");
@@ -144,7 +149,11 @@ export default function Invite() {
       // 2. Insert claim (UNIQUE constraint on email prevents duplicates)
       const { error: insertError } = await supabase
         .from("invite_claims")
-        .insert({ name: trimmedName, email: trimmedEmail });
+        .insert({
+          name: fullName,
+          email: trimmedEmail,
+          ...(trimmedDiscord ? { discord_username: trimmedDiscord } : {}),
+        });
 
       if (insertError) {
         if (
@@ -191,6 +200,19 @@ export default function Invite() {
 
   const isFull = slotsRemaining !== null && slotsRemaining <= 0;
 
+  // Shared input style
+  const inputStyle = {
+    background: "rgba(255,255,255,0.05)",
+    border: "1px solid rgba(255,255,255,0.1)",
+    fontSize: "1rem",
+  };
+  const onFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+    e.target.style.borderColor = "rgba(239,68,68,0.5)";
+  };
+  const onBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    e.target.style.borderColor = "rgba(255,255,255,0.1)";
+  };
+
   // ─── Render ────────────────────────────────────────────────────────────────
   return (
     <div
@@ -213,7 +235,7 @@ export default function Invite() {
           </span>
         </a>
         <span className="text-xs text-gray-500 uppercase tracking-widest">
-          Anthem Community Exclusive
+          Anthum Community Exclusive
         </span>
       </nav>
 
@@ -232,7 +254,7 @@ export default function Invite() {
             className="w-1.5 h-1.5 rounded-full animate-pulse"
             style={{ background: "#ef4444" }}
           />
-          Limited Time — Anthem Members Only
+          Limited Time — Anthum Members Only
         </div>
 
         {/* Headline */}
@@ -245,9 +267,10 @@ export default function Invite() {
           <span style={{ color: "#ef4444" }}>AI Film Academy</span>
         </h1>
 
-        <p className="text-gray-400 text-center max-w-md mb-2" style={{ fontSize: "1.05rem" }}>
+        <p className="text-gray-400 text-center max-w-lg mb-2" style={{ fontSize: "1.05rem" }}>
           Brandon is giving away <strong className="text-white">100 free memberships</strong> to
-          the Anthem community. Full access. Every course. No credit card.
+          the Anthum community. Learn how to create high-quality AI videos with an easy workflow,
+          no tool overwhelm, and real skill certification.
         </p>
         <p className="text-gray-600 text-sm text-center mb-10">
           Normally $19/month — yours free, permanently.
@@ -315,7 +338,7 @@ export default function Invite() {
             <div className="text-4xl mb-3">🔒</div>
             <h2 className="text-xl font-bold text-white mb-2">All spots claimed</h2>
             <p className="text-gray-400 text-sm">
-              All 100 free memberships have been claimed. Join the waitlist at{" "}
+              All 100 free memberships have been claimed. Join at{" "}
               <a
                 href="https://aifilmacademy.com"
                 className="underline text-red-400"
@@ -330,32 +353,45 @@ export default function Invite() {
             onSubmit={handleSubmit}
             className="w-full max-w-md flex flex-col gap-4"
           >
-            <div className="flex flex-col gap-1">
-              <label className="text-xs text-gray-500 uppercase tracking-wider">
-                First Name
-              </label>
-              <input
-                type="text"
-                required
-                placeholder="Your first name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                disabled={formState === "loading"}
-                className="w-full rounded-xl px-4 py-3 text-white placeholder-gray-600 outline-none transition-all"
-                style={{
-                  background: "rgba(255,255,255,0.05)",
-                  border: "1px solid rgba(255,255,255,0.1)",
-                  fontSize: "1rem",
-                }}
-                onFocus={(e) => {
-                  e.target.style.borderColor = "rgba(239,68,68,0.5)";
-                }}
-                onBlur={(e) => {
-                  e.target.style.borderColor = "rgba(255,255,255,0.1)";
-                }}
-              />
+            {/* First + Last name row */}
+            <div className="flex gap-3">
+              <div className="flex flex-col gap-1 flex-1">
+                <label className="text-xs text-gray-500 uppercase tracking-wider">
+                  First Name
+                </label>
+                <input
+                  type="text"
+                  required
+                  placeholder="First"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  disabled={formState === "loading"}
+                  className="w-full rounded-xl px-4 py-3 text-white placeholder-gray-600 outline-none transition-all"
+                  style={inputStyle}
+                  onFocus={onFocus}
+                  onBlur={onBlur}
+                />
+              </div>
+              <div className="flex flex-col gap-1 flex-1">
+                <label className="text-xs text-gray-500 uppercase tracking-wider">
+                  Last Name
+                </label>
+                <input
+                  type="text"
+                  required
+                  placeholder="Last"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                  disabled={formState === "loading"}
+                  className="w-full rounded-xl px-4 py-3 text-white placeholder-gray-600 outline-none transition-all"
+                  style={inputStyle}
+                  onFocus={onFocus}
+                  onBlur={onBlur}
+                />
+              </div>
             </div>
 
+            {/* Email */}
             <div className="flex flex-col gap-1">
               <label className="text-xs text-gray-500 uppercase tracking-wider">
                 Email Address
@@ -368,17 +404,28 @@ export default function Invite() {
                 onChange={(e) => setEmail(e.target.value)}
                 disabled={formState === "loading"}
                 className="w-full rounded-xl px-4 py-3 text-white placeholder-gray-600 outline-none transition-all"
-                style={{
-                  background: "rgba(255,255,255,0.05)",
-                  border: "1px solid rgba(255,255,255,0.1)",
-                  fontSize: "1rem",
-                }}
-                onFocus={(e) => {
-                  e.target.style.borderColor = "rgba(239,68,68,0.5)";
-                }}
-                onBlur={(e) => {
-                  e.target.style.borderColor = "rgba(255,255,255,0.1)";
-                }}
+                style={inputStyle}
+                onFocus={onFocus}
+                onBlur={onBlur}
+              />
+            </div>
+
+            {/* Discord (optional) */}
+            <div className="flex flex-col gap-1">
+              <label className="text-xs text-gray-500 uppercase tracking-wider">
+                Discord Username{" "}
+                <span className="normal-case text-gray-600 tracking-normal">(optional)</span>
+              </label>
+              <input
+                type="text"
+                placeholder="yourname#0000 or @yourname"
+                value={discord}
+                onChange={(e) => setDiscord(e.target.value)}
+                disabled={formState === "loading"}
+                className="w-full rounded-xl px-4 py-3 text-white placeholder-gray-600 outline-none transition-all"
+                style={inputStyle}
+                onFocus={onFocus}
+                onBlur={onBlur}
               />
             </div>
 
@@ -388,19 +435,24 @@ export default function Invite() {
 
             <button
               type="submit"
-              disabled={formState === "loading" || !name.trim() || !email.trim()}
+              disabled={
+                formState === "loading" ||
+                !firstName.trim() ||
+                !lastName.trim() ||
+                !email.trim()
+              }
               className="w-full rounded-xl py-4 font-bold text-white text-base uppercase tracking-wider transition-all duration-200 relative overflow-hidden"
               style={{
                 background:
-                  formState === "loading" || !name.trim() || !email.trim()
+                  formState === "loading" || !firstName.trim() || !lastName.trim() || !email.trim()
                     ? "rgba(239,68,68,0.4)"
                     : "linear-gradient(135deg, #ef4444, #b91c1c)",
                 cursor:
-                  formState === "loading" || !name.trim() || !email.trim()
+                  formState === "loading" || !firstName.trim() || !lastName.trim() || !email.trim()
                     ? "not-allowed"
                     : "pointer",
                 boxShadow:
-                  formState === "loading" || !name.trim() || !email.trim()
+                  formState === "loading" || !firstName.trim() || !lastName.trim() || !email.trim()
                     ? "none"
                     : "0 0 30px rgba(239,68,68,0.35)",
               }}
@@ -437,12 +489,11 @@ export default function Invite() {
           </h3>
           <ul className="space-y-3">
             {[
-              "50+ video lessons (updated monthly)",
-              "The AIFA Workflow System — concept to final cut",
-              "Curated AI tool stack (Kling, Runway, Veo, Midjourney)",
-              "Private community — 1,100+ active creators",
-              "LinkedIn certification badge",
-              "Live coaching & community feedback",
+              "Step-by-step AI video workflow — concept to final cut",
+              "No tool overwhelm — a curated stack that actually works (Kling, Veo, Midjourney)",
+              "Real skill certification — LinkedIn-ready badge",
+              "Private community — 1,100+ active AI creators",
+              "Project-based learning — make real videos, not just watch tutorials",
             ].map((item) => (
               <li key={item} className="flex items-start gap-3 text-sm text-gray-300">
                 <span style={{ color: "#ef4444", flexShrink: 0 }}>✓</span>
@@ -457,7 +508,7 @@ export default function Invite() {
       <footer className="border-t border-white/5 py-6 text-center">
         <p className="text-xs text-gray-700">
           © 2026 AI Film Academy™ (AIFA). All rights reserved. This offer is exclusively for
-          Anthem community members.
+          Anthum community members.
         </p>
       </footer>
     </div>
