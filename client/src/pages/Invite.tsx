@@ -1,8 +1,9 @@
 /*
  * AI Film Academy — Anthum Community Free Invite Page
- * Route: /invite
+ * Route: /anthum-exclusive
  * Purpose: 100 free membership slots for Anthum community members
  * Backend: Supabase (slot tracking + duplicate prevention) → Skool direct webhook invite
+ * Sold-out state: Anthum waitlist capture → anthum_waitlist table (status: waitlist)
  */
 
 import { useState, useEffect, useCallback } from "react";
@@ -10,6 +11,7 @@ import { supabase, SUPABASE_URL, TOTAL_INVITE_SLOTS } from "@/lib/supabase";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 type FormState = "idle" | "loading" | "success" | "error" | "duplicate" | "full";
+type WaitlistState = "idle" | "loading" | "success" | "error" | "duplicate";
 
 // ─── Animated Counter Component ───────────────────────────────────────────────
 function AnimatedCounter({ value, total }: { value: number; total: number }) {
@@ -20,17 +22,17 @@ function AnimatedCounter({ value, total }: { value: number; total: number }) {
     const step = displayed > value ? -1 : 1;
     const timer = setInterval(() => {
       setDisplayed((prev) => {
-        if (prev === value) {
-          clearInterval(timer);
-          return prev;
-        }
+        if (prev === value) { clearInterval(timer); return prev; }
         return prev + step;
       });
     }, 30);
     return () => clearInterval(timer);
   }, [value]);
 
-  const pct = Math.max(0, Math.min(100, ((total - value) / total) * 100));
+  // Progress bar fills as slots are CLAIMED (total - remaining = claimed)
+  const claimed = total - displayed;
+  const pct = Math.max(0, Math.min(100, (claimed / total) * 100));
+  const isLow = displayed <= 10;
 
   return (
     <div className="w-full max-w-sm mx-auto">
@@ -40,8 +42,8 @@ function AnimatedCounter({ value, total }: { value: number; total: number }) {
           className="font-black tabular-nums leading-none"
           style={{
             fontSize: "clamp(3rem, 12vw, 5rem)",
-            color: displayed > 10 ? "#ef4444" : "#f97316",
-            textShadow: displayed > 10 ? "0 0 40px rgba(239,68,68,0.5)" : "0 0 40px rgba(249,115,22,0.6)",
+            color: isLow ? "#f97316" : "#ef4444",
+            textShadow: isLow ? "0 0 40px rgba(249,115,22,0.6)" : "0 0 40px rgba(239,68,68,0.5)",
             transition: "color 0.5s, text-shadow 0.5s",
           }}
         >
@@ -53,7 +55,7 @@ function AnimatedCounter({ value, total }: { value: number; total: number }) {
         spots remaining
       </p>
 
-      {/* Progress bar */}
+      {/* Progress bar — fills as slots are claimed */}
       <div className="w-full h-2 rounded-full bg-white/10 overflow-hidden">
         <div
           className="h-full rounded-full transition-all duration-700"
@@ -64,9 +66,227 @@ function AnimatedCounter({ value, total }: { value: number; total: number }) {
         />
       </div>
       <div className="flex justify-between text-xs text-gray-600 mt-1">
-        <span>0 left</span>
+        <span>{claimed} claimed</span>
         <span>{total} total</span>
       </div>
+    </div>
+  );
+}
+
+// ─── Waitlist Form (shown when sold out) ──────────────────────────────────────
+function WaitlistForm() {
+  const [wState, setWState] = useState<WaitlistState>("idle");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [discord, setDiscord] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
+
+  const inputStyle = {
+    background: "rgba(255,255,255,0.05)",
+    border: "1px solid rgba(255,255,255,0.1)",
+    fontSize: "1rem",
+  };
+  const onFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+    e.target.style.borderColor = "rgba(239,68,68,0.5)";
+  };
+  const onBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    e.target.style.borderColor = "rgba(255,255,255,0.1)";
+  };
+
+  const handleWaitlist = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (wState === "loading") return;
+    const trimFirst = firstName.trim();
+    const trimLast = lastName.trim();
+    const trimEmail = email.trim().toLowerCase();
+    const trimDiscord = discord.trim();
+    if (!trimFirst || !trimLast || !trimEmail) return;
+
+    setWState("loading");
+    setErrorMsg("");
+
+    try {
+      const { error } = await supabase.from("anthum_waitlist").insert({
+        first_name: trimFirst,
+        last_name: trimLast,
+        email: trimEmail,
+        ...(trimDiscord ? { discord_username: trimDiscord } : {}),
+        source: "anthum_waitlist",
+        status: "waitlist",
+      });
+
+      if (error) {
+        if (error.code === "23505" || error.message?.toLowerCase().includes("unique")) {
+          setWState("duplicate");
+          return;
+        }
+        throw error;
+      }
+      setWState("success");
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Something went wrong. Please try again.";
+      setErrorMsg(msg);
+      setWState("error");
+    }
+  };
+
+  if (wState === "success") {
+    return (
+      <div
+        className="w-full max-w-md rounded-2xl p-8 text-center"
+        style={{ background: "rgba(34,197,94,0.08)", border: "1px solid rgba(34,197,94,0.25)" }}
+      >
+        <div className="text-4xl mb-3">🎯</div>
+        <h2 className="text-xl font-bold text-white mb-2">You're on the list.</h2>
+        <p className="text-gray-400 text-sm">
+          We'll reach out first when an exclusive Anthum offer drops — including a chance to win a
+          free lifetime membership raffle.
+        </p>
+      </div>
+    );
+  }
+
+  if (wState === "duplicate") {
+    return (
+      <div
+        className="w-full max-w-md rounded-2xl p-8 text-center"
+        style={{ background: "rgba(234,179,8,0.08)", border: "1px solid rgba(234,179,8,0.25)" }}
+      >
+        <div className="text-4xl mb-3">📬</div>
+        <h2 className="text-xl font-bold text-white mb-2">Already on the list</h2>
+        <p className="text-gray-400 text-sm">
+          This email is already registered. We'll be in touch when the next offer drops.
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="w-full max-w-md">
+      {/* Sold-out header */}
+      <div
+        className="rounded-2xl p-6 text-center mb-6"
+        style={{ background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.25)" }}
+      >
+        <div className="text-4xl mb-3">🔒</div>
+        <h2 className="text-xl font-bold text-white mb-2">All 100 spots were claimed!</h2>
+        <p className="text-gray-400 text-sm">
+          Looks like all the slots were taken. Still interested? Enter your name and email below
+          to be first in line for potential upcoming Anthum × AI Film Academy exclusive offers
+          and a chance to be entered into a <strong className="text-white">free lifetime membership raffle</strong>.
+        </p>
+      </div>
+
+      {/* Waitlist form */}
+      <form onSubmit={handleWaitlist} className="flex flex-col gap-4">
+        <div className="flex gap-3">
+          <div className="flex flex-col gap-1 flex-1">
+            <label className="text-xs text-gray-500 uppercase tracking-wider">First Name</label>
+            <input
+              type="text"
+              required
+              placeholder="First"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              disabled={wState === "loading"}
+              className="w-full rounded-xl px-4 py-3 text-white placeholder-gray-600 outline-none transition-all"
+              style={inputStyle}
+              onFocus={onFocus}
+              onBlur={onBlur}
+            />
+          </div>
+          <div className="flex flex-col gap-1 flex-1">
+            <label className="text-xs text-gray-500 uppercase tracking-wider">Last Name</label>
+            <input
+              type="text"
+              required
+              placeholder="Last"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              disabled={wState === "loading"}
+              className="w-full rounded-xl px-4 py-3 text-white placeholder-gray-600 outline-none transition-all"
+              style={inputStyle}
+              onFocus={onFocus}
+              onBlur={onBlur}
+            />
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-1">
+          <label className="text-xs text-gray-500 uppercase tracking-wider">Email Address</label>
+          <input
+            type="email"
+            required
+            placeholder="you@example.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            disabled={wState === "loading"}
+            className="w-full rounded-xl px-4 py-3 text-white placeholder-gray-600 outline-none transition-all"
+            style={inputStyle}
+            onFocus={onFocus}
+            onBlur={onBlur}
+          />
+        </div>
+
+        <div className="flex flex-col gap-1">
+          <label className="text-xs text-gray-500 uppercase tracking-wider">
+            Discord Username{" "}
+            <span className="normal-case text-gray-600 tracking-normal">(optional)</span>
+          </label>
+          <input
+            type="text"
+            placeholder="yourname#0000 or @yourname"
+            value={discord}
+            onChange={(e) => setDiscord(e.target.value)}
+            disabled={wState === "loading"}
+            className="w-full rounded-xl px-4 py-3 text-white placeholder-gray-600 outline-none transition-all"
+            style={inputStyle}
+            onFocus={onFocus}
+            onBlur={onBlur}
+          />
+        </div>
+
+        {wState === "error" && (
+          <p className="text-red-400 text-sm text-center">{errorMsg}</p>
+        )}
+
+        <button
+          type="submit"
+          disabled={wState === "loading" || !firstName.trim() || !lastName.trim() || !email.trim()}
+          className="w-full rounded-xl py-4 font-bold text-white text-base uppercase tracking-wider transition-all duration-200"
+          style={{
+            background:
+              wState === "loading" || !firstName.trim() || !lastName.trim() || !email.trim()
+                ? "rgba(239,68,68,0.4)"
+                : "linear-gradient(135deg, #ef4444, #b91c1c)",
+            cursor:
+              wState === "loading" || !firstName.trim() || !lastName.trim() || !email.trim()
+                ? "not-allowed"
+                : "pointer",
+            boxShadow:
+              wState === "loading" || !firstName.trim() || !lastName.trim() || !email.trim()
+                ? "none"
+                : "0 0 30px rgba(239,68,68,0.35)",
+          }}
+        >
+          {wState === "loading" ? (
+            <span className="flex items-center justify-center gap-2">
+              <span
+                className="w-4 h-4 rounded-full border-2 border-t-transparent animate-spin"
+                style={{ borderColor: "white", borderTopColor: "transparent" }}
+              />
+              Joining waitlist...
+            </span>
+          ) : (
+            "Join the Waitlist →"
+          )}
+        </button>
+
+        <p className="text-center text-xs text-gray-600">
+          Anthum members only. No spam — exclusive offers only.
+        </p>
+      </form>
     </div>
   );
 }
@@ -88,7 +308,6 @@ export default function Invite() {
       if (error) throw error;
       setSlotsRemaining(data as number);
     } catch {
-      // Fallback: count rows directly
       const { count, error: countError } = await supabase
         .from("invite_claims")
         .select("*", { count: "exact", head: true });
@@ -100,26 +319,19 @@ export default function Invite() {
 
   useEffect(() => {
     fetchSlots();
-    // Poll every 10 seconds for live updates
     const interval = setInterval(fetchSlots, 10000);
     return () => clearInterval(interval);
   }, [fetchSlots]);
 
-  // ── Real-time subscription for instant counter updates ────────────────────
+  // ── Real-time subscription ─────────────────────────────────────────────────
   useEffect(() => {
     const channel = supabase
       .channel("invite_claims_changes")
-      .on(
-        "postgres_changes",
-        { event: "INSERT", schema: "public", table: "invite_claims" },
-        () => {
-          fetchSlots();
-        }
-      )
+      .on("postgres_changes", { event: "INSERT", schema: "public", table: "invite_claims" }, () => {
+        fetchSlots();
+      })
       .subscribe();
-    return () => {
-      supabase.removeChannel(channel);
-    };
+    return () => { supabase.removeChannel(channel); };
   }, [fetchSlots]);
 
   // ── Form submission ────────────────────────────────────────────────────────
@@ -139,52 +351,43 @@ export default function Invite() {
     setErrorMsg("");
 
     try {
-      // 1. Re-check slots before claiming
+      // 1. Re-check slots
       const { data: slots } = await supabase.rpc("get_invite_slots_remaining");
       if ((slots as number) <= 0) {
         setFormState("full");
+        setSlotsRemaining(0);
         return;
       }
 
-      // 2. Insert claim (UNIQUE constraint on email prevents duplicates)
-      const { error: insertError } = await supabase
-        .from("invite_claims")
-        .insert({
-          name: fullName,
-          email: trimmedEmail,
-          ...(trimmedDiscord ? { discord_username: trimmedDiscord } : {}),
-        });
+      // 2. Insert claim
+      const { error: insertError } = await supabase.from("invite_claims").insert({
+        name: fullName,
+        email: trimmedEmail,
+        ...(trimmedDiscord ? { discord_username: trimmedDiscord } : {}),
+      });
 
       if (insertError) {
-        if (
-          insertError.code === "23505" ||
-          insertError.message?.toLowerCase().includes("unique")
-        ) {
+        if (insertError.code === "23505" || insertError.message?.toLowerCase().includes("unique")) {
           setFormState("duplicate");
           return;
         }
         throw insertError;
       }
 
-      // 3. Trigger Skool invite via Supabase Edge Function (server-side, no CORS issues)
+      // 3. Trigger Skool invite via Edge Function
       try {
-        const edgeFnUrl = `${SUPABASE_URL}/functions/v1/send-skool-invite`;
-        const res = await fetch(edgeFnUrl, {
+        const res = await fetch(`${SUPABASE_URL}/functions/v1/send-skool-invite`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email: trimmedEmail }),
         });
         if (res.ok) {
-          // Mark invite triggered in DB (best-effort)
           await supabase
             .from("invite_claims")
             .update({ zapier_triggered: true, zapier_triggered_at: new Date().toISOString() })
             .eq("email", trimmedEmail);
-        } else {
-          console.warn("Edge function returned non-OK:", res.status);
         }
       } catch {
-        // Non-blocking — claim is already saved in DB
         console.warn("Skool invite edge function failed — claim saved, invite may need manual follow-up");
       }
 
@@ -199,8 +402,8 @@ export default function Invite() {
   };
 
   const isFull = slotsRemaining !== null && slotsRemaining <= 0;
+  const showWaitlist = formState === "full" || isFull;
 
-  // Shared input style
   const inputStyle = {
     background: "rgba(255,255,255,0.05)",
     border: "1px solid rgba(255,255,255,0.1)",
@@ -213,12 +416,8 @@ export default function Invite() {
     e.target.style.borderColor = "rgba(255,255,255,0.1)";
   };
 
-  // ─── Render ────────────────────────────────────────────────────────────────
   return (
-    <div
-      className="min-h-screen flex flex-col"
-      style={{ background: "#0a0a0a", color: "#ffffff" }}
-    >
+    <div className="min-h-screen flex flex-col" style={{ background: "#0a0a0a", color: "#ffffff" }}>
       {/* ── Minimal nav ── */}
       <nav className="flex items-center justify-between px-6 py-4 border-b border-white/5">
         <a href="/" className="flex items-center gap-2">
@@ -226,13 +425,9 @@ export default function Invite() {
             src="/logo.png"
             alt="AI Film Academy"
             className="h-8 w-auto"
-            onError={(e) => {
-              (e.target as HTMLImageElement).style.display = "none";
-            }}
+            onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
           />
-          <span className="font-bold text-sm tracking-wide text-white/80">
-            AI Film Academy™
-          </span>
+          <span className="font-bold text-sm tracking-wide text-white/80">AI Film Academy™</span>
         </a>
         <span className="text-xs text-gray-500 uppercase tracking-widest">
           Anthum Community Exclusive
@@ -250,10 +445,7 @@ export default function Invite() {
             color: "#ef4444",
           }}
         >
-          <span
-            className="w-1.5 h-1.5 rounded-full animate-pulse"
-            style={{ background: "#ef4444" }}
-          />
+          <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: "#ef4444" }} />
           Limited Time — Anthum Members Only
         </div>
 
@@ -287,7 +479,7 @@ export default function Invite() {
           {slotsRemaining === null ? (
             <div className="flex items-center justify-center h-24">
               <div
-                className="w-8 h-8 rounded-full border-2 border-t-transparent animate-spin"
+                className="w-8 h-8 rounded-full border-2 animate-spin"
                 style={{ borderColor: "#ef4444", borderTopColor: "transparent" }}
               />
             </div>
@@ -297,13 +489,12 @@ export default function Invite() {
         </div>
 
         {/* ── Form / State panels ── */}
-        {formState === "success" ? (
+        {showWaitlist ? (
+          <WaitlistForm />
+        ) : formState === "success" ? (
           <div
             className="w-full max-w-md rounded-2xl p-8 text-center"
-            style={{
-              background: "rgba(34,197,94,0.08)",
-              border: "1px solid rgba(34,197,94,0.25)",
-            }}
+            style={{ background: "rgba(34,197,94,0.08)", border: "1px solid rgba(34,197,94,0.25)" }}
           >
             <div className="text-4xl mb-3">🎬</div>
             <h2 className="text-xl font-bold text-white mb-2">You're in!</h2>
@@ -315,10 +506,7 @@ export default function Invite() {
         ) : formState === "duplicate" ? (
           <div
             className="w-full max-w-md rounded-2xl p-8 text-center"
-            style={{
-              background: "rgba(234,179,8,0.08)",
-              border: "1px solid rgba(234,179,8,0.25)",
-            }}
+            style={{ background: "rgba(234,179,8,0.08)", border: "1px solid rgba(234,179,8,0.25)" }}
           >
             <div className="text-4xl mb-3">📬</div>
             <h2 className="text-xl font-bold text-white mb-2">Already claimed</h2>
@@ -327,38 +515,12 @@ export default function Invite() {
               out if you need help.
             </p>
           </div>
-        ) : formState === "full" || isFull ? (
-          <div
-            className="w-full max-w-md rounded-2xl p-8 text-center"
-            style={{
-              background: "rgba(239,68,68,0.08)",
-              border: "1px solid rgba(239,68,68,0.25)",
-            }}
-          >
-            <div className="text-4xl mb-3">🔒</div>
-            <h2 className="text-xl font-bold text-white mb-2">All spots claimed</h2>
-            <p className="text-gray-400 text-sm">
-              All 100 free memberships have been claimed. Join at{" "}
-              <a
-                href="https://aifilmacademy.com"
-                className="underline text-red-400"
-              >
-                aifilmacademy.com
-              </a>{" "}
-              to get notified of future offers.
-            </p>
-          </div>
         ) : (
-          <form
-            onSubmit={handleSubmit}
-            className="w-full max-w-md flex flex-col gap-4"
-          >
+          <form onSubmit={handleSubmit} className="w-full max-w-md flex flex-col gap-4">
             {/* First + Last name row */}
             <div className="flex gap-3">
               <div className="flex flex-col gap-1 flex-1">
-                <label className="text-xs text-gray-500 uppercase tracking-wider">
-                  First Name
-                </label>
+                <label className="text-xs text-gray-500 uppercase tracking-wider">First Name</label>
                 <input
                   type="text"
                   required
@@ -373,9 +535,7 @@ export default function Invite() {
                 />
               </div>
               <div className="flex flex-col gap-1 flex-1">
-                <label className="text-xs text-gray-500 uppercase tracking-wider">
-                  Last Name
-                </label>
+                <label className="text-xs text-gray-500 uppercase tracking-wider">Last Name</label>
                 <input
                   type="text"
                   required
@@ -393,9 +553,7 @@ export default function Invite() {
 
             {/* Email */}
             <div className="flex flex-col gap-1">
-              <label className="text-xs text-gray-500 uppercase tracking-wider">
-                Email Address
-              </label>
+              <label className="text-xs text-gray-500 uppercase tracking-wider">Email Address</label>
               <input
                 type="email"
                 required
@@ -435,13 +593,8 @@ export default function Invite() {
 
             <button
               type="submit"
-              disabled={
-                formState === "loading" ||
-                !firstName.trim() ||
-                !lastName.trim() ||
-                !email.trim()
-              }
-              className="w-full rounded-xl py-4 font-bold text-white text-base uppercase tracking-wider transition-all duration-200 relative overflow-hidden"
+              disabled={formState === "loading" || !firstName.trim() || !lastName.trim() || !email.trim()}
+              className="w-full rounded-xl py-4 font-bold text-white text-base uppercase tracking-wider transition-all duration-200"
               style={{
                 background:
                   formState === "loading" || !firstName.trim() || !lastName.trim() || !email.trim()
@@ -476,32 +629,34 @@ export default function Invite() {
           </form>
         )}
 
-        {/* What's included */}
-        <div
-          className="w-full max-w-md mt-12 rounded-2xl p-6"
-          style={{
-            background: "rgba(255,255,255,0.02)",
-            border: "1px solid rgba(255,255,255,0.06)",
-          }}
-        >
-          <h3 className="text-sm font-bold uppercase tracking-widest text-gray-400 mb-4 text-center">
-            What you get with full access
-          </h3>
-          <ul className="space-y-3">
-            {[
-              "Step-by-step AI video workflow — concept to final cut",
-              "No tool overwhelm — a curated stack that actually works (Kling, Veo, Midjourney)",
-              "Real skill certification — LinkedIn-ready badge",
-              "Private community — 1,100+ active AI creators",
-              "Project-based learning — make real videos, not just watch tutorials",
-            ].map((item) => (
-              <li key={item} className="flex items-start gap-3 text-sm text-gray-300">
-                <span style={{ color: "#ef4444", flexShrink: 0 }}>✓</span>
-                {item}
-              </li>
-            ))}
-          </ul>
-        </div>
+        {/* What's included — only show when not sold out */}
+        {!showWaitlist && (
+          <div
+            className="w-full max-w-md mt-12 rounded-2xl p-6"
+            style={{
+              background: "rgba(255,255,255,0.02)",
+              border: "1px solid rgba(255,255,255,0.06)",
+            }}
+          >
+            <h3 className="text-sm font-bold uppercase tracking-widest text-gray-400 mb-4 text-center">
+              What you get with full access
+            </h3>
+            <ul className="space-y-3">
+              {[
+                "Step-by-step AI video workflow — concept to final cut",
+                "No tool overwhelm — a curated stack that actually works (Kling, Veo, Midjourney)",
+                "Real skill certification — LinkedIn-ready badge",
+                "Private community — 1,100+ active AI creators",
+                "Project-based learning — make real videos, not just watch tutorials",
+              ].map((item) => (
+                <li key={item} className="flex items-start gap-3 text-sm text-gray-300">
+                  <span style={{ color: "#ef4444", flexShrink: 0 }}>✓</span>
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </main>
 
       {/* ── Footer ── */}

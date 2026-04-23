@@ -18,7 +18,6 @@ function Router() {
       <Route path={"/consulting"} component={Consulting} />
       <Route path={"/certification"} component={Certification} />
       <Route path={"/lpv3"} component={LPV3} />
-      <Route path={"/invite"} component={Invite} />
       <Route path={"/anthum-exclusive"} component={Invite} />
       <Route path={"/404"} component={NotFound} />
       <Route component={NotFound} />
