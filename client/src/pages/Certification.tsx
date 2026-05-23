@@ -1151,7 +1151,7 @@ export default function Certification() {
             className="text-sm text-white/50 leading-relaxed mb-10"
             style={{ fontFamily: "'DM Sans', sans-serif" }}
           >
-            Enter your membership email to verify access. Annual, Lifetime, and Free members enter immediately. Monthly members unlock after 90 days of membership.
+            Enter your membership email to verify access. Annual and Lifetime members enter immediately. Monthly members unlock after 90 days of membership. Alternatively, monthly members can upgrade to annual or purchase a one-time fast pass to certify today.
           </p>
 
           <div className="space-y-4 mb-8">
