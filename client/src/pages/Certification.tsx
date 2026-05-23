@@ -1034,8 +1034,9 @@ export default function Certification() {
         setEmail(gateEmail);
         setStage("intro");
       } else {
-        // Store result for the status page
-        sessionStorage.setItem("cert_gate_result", JSON.stringify(data));
+        // Store result + email for the status page (email needed for re-check)
+        sessionStorage.setItem("cert_gate_result", JSON.stringify({ ...data, email: gateEmail }));
+        sessionStorage.setItem("cert_gate_email", gateEmail);
         setLocation("/certification-status");
       }
     } catch {

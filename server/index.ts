@@ -3,9 +3,15 @@ import { createServer } from "http";
 import path from "path";
 import { fileURLToPath } from "url";
 import axios from "axios";
+import crypto from "crypto";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+// ─── STRIPE CONFIG ───────────────────────────────────────────────────────────
+const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY || "";
+const STRIPE_WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET || "";
+const FAST_PASS_PRODUCT_ID = "prod_UZD6bVS9UkPzD2";
 
 // ─── TWENTY CRM CONFIG ────────────────────────────────────────────────────────
 const TWENTY_API_KEY =
@@ -41,6 +47,7 @@ async function checkEligibility(email: string): Promise<EligibilityResult> {
             afaSubscriptionPlan
             membershipStatus
             dateJoined
+            fastPassGranted
           }
         }
       }
@@ -70,6 +77,12 @@ async function checkEligibility(email: string): Promise<EligibilityResult> {
   const plan: string = person.afaSubscriptionPlan ?? "";
   const status: string = person.membershipStatus ?? "";
   const dateJoined: string | null = person.dateJoined ?? null;
+  const fastPassGranted: boolean = person.fastPassGranted === true;
+
+  // ALLOW: Fast-Pass purchased via Stripe — check this first
+  if (fastPassGranted) {
+    return { eligible: true };
+  }
 
   // ALLOW: Annual members (any price point)
   if (status === "ANNUAL_PAYING" || plan.toLowerCase().includes("annual")) {
@@ -89,8 +102,14 @@ async function checkEligibility(email: string): Promise<EligibilityResult> {
   // MONTHLY: Apply the 90-day tenure gate
   if (status === "MONTHLY_PAYING" || plan.toLowerCase().includes("monthly")) {
     if (!dateJoined) {
-      // No join date — fail open to avoid blocking legitimate members
-      return { eligible: true };
+      // No join date on a monthly member — CRM sync bug. Block them.
+      // The sync fix (defaulting to today) will populate this on next run.
+      return {
+        eligible: false,
+        reason: "tenure_too_short",
+        daysRemaining: 90,
+        daysCompleted: 0,
+      };
     }
     const tenure = daysSince(dateJoined);
     if (tenure >= 90) {
@@ -108,12 +127,59 @@ async function checkEligibility(email: string): Promise<EligibilityResult> {
   return { eligible: false, reason: "not_active_member" };
 }
 
+// ─── CRM HELPERS ─────────────────────────────────────────────────────────────
+async function grantFastPass(email: string): Promise<boolean> {
+  // Find the person in CRM
+  const query = `
+    query FindPerson($email: String!) {
+      people(filter: { emails: { primaryEmail: { eq: $email } } }, first: 1) {
+        edges { node { id } }
+      }
+    }
+  `;
+  const findResp = await axios.post(
+    TWENTY_GRAPHQL_URL,
+    { query, variables: { email: email.toLowerCase().trim() } },
+    { headers: { Authorization: `Bearer ${TWENTY_API_KEY}`, "Content-Type": "application/json" }, timeout: 10000 }
+  );
+  const edges = findResp.data?.data?.people?.edges ?? [];
+
+  if (edges.length === 0) {
+    // Person not in CRM yet — create a minimal record so the Fast-Pass is tracked
+    await axios.post(
+      `${TWENTY_GRAPHQL_URL.replace("/graphql", "/rest/people")}`,
+      {
+        emails: { primaryEmail: email.toLowerCase().trim() },
+        fastPassGranted: true,
+        fastPassGrantedAt: new Date().toISOString().split("T")[0],
+        source: "Stripe",
+      },
+      { headers: { Authorization: `Bearer ${TWENTY_API_KEY}`, "Content-Type": "application/json" }, timeout: 10000 }
+    );
+    return true;
+  }
+
+  const personId = edges[0].node.id;
+  const patchResp = await axios.patch(
+    `${TWENTY_GRAPHQL_URL.replace("/graphql", `/rest/people/${personId}`)}`,
+    {
+      fastPassGranted: true,
+      fastPassGrantedAt: new Date().toISOString().split("T")[0],
+    },
+    { headers: { Authorization: `Bearer ${TWENTY_API_KEY}`, "Content-Type": "application/json" }, timeout: 10000 }
+  );
+  return patchResp.status === 200;
+}
+
 // ─── SERVER ───────────────────────────────────────────────────────────────────
 async function startServer() {
   const app = express();
   const server = createServer(app);
 
-  // Parse JSON bodies for API routes
+  // Raw body needed for Stripe webhook signature verification
+  app.use("/api/stripe-webhook", express.raw({ type: "application/json" }));
+
+  // Parse JSON bodies for all other API routes
   app.use(express.json());
 
   // ── CERTIFICATION ELIGIBILITY CHECK ──────────────────────────────────────
@@ -133,6 +199,118 @@ async function startServer() {
       // Fail open: if CRM is unreachable, let the user through rather than
       // blocking legitimate members due to a backend outage.
       res.json({ eligible: true, warning: "crm_unavailable" });
+    }
+  });
+
+  // ── STRIPE FAST-PASS WEBHOOK ─────────────────────────────────────────────
+  // Stripe sends checkout.session.completed when a Fast-Pass is purchased.
+  // We verify the signature, confirm the product matches, then tag the CRM.
+  app.post("/api/stripe-webhook", async (req, res) => {
+    const sig = req.headers["stripe-signature"] as string;
+    const rawBody = req.body as Buffer;
+
+    // Verify webhook signature if secret is configured
+    if (STRIPE_WEBHOOK_SECRET) {
+      try {
+        const timestamp = sig.split(",").find((p) => p.startsWith("t="))?.slice(2);
+        const v1 = sig.split(",").find((p) => p.startsWith("v1="))?.slice(3);
+        if (!timestamp || !v1) {
+          res.status(400).json({ error: "Invalid signature format" });
+          return;
+        }
+        const payload = `${timestamp}.${rawBody.toString("utf8")}`;
+        const expected = crypto
+          .createHmac("sha256", STRIPE_WEBHOOK_SECRET)
+          .update(payload)
+          .digest("hex");
+        if (expected !== v1) {
+          console.error("[stripe-webhook] Signature mismatch");
+          res.status(400).json({ error: "Signature verification failed" });
+          return;
+        }
+      } catch (err) {
+        console.error("[stripe-webhook] Signature error:", err);
+        res.status(400).json({ error: "Signature error" });
+        return;
+      }
+    }
+
+    let event: { type: string; data: { object: Record<string, unknown> } };
+    try {
+      event = JSON.parse(rawBody.toString("utf8"));
+    } catch {
+      res.status(400).json({ error: "Invalid JSON" });
+      return;
+    }
+
+    if (event.type === "checkout.session.completed") {
+      const session = event.data.object;
+      const email =
+        (session.customer_email as string) ??
+        ((session.customer_details as Record<string, unknown>)?.email as string) ??
+        "";
+
+      // Confirm this is a Fast-Pass purchase by checking line items via Stripe API
+      // (We check product ID to avoid tagging unrelated purchases)
+      let isFastPass = false;
+      try {
+        if (STRIPE_SECRET_KEY && session.id) {
+          const lineResp = await axios.get(
+            `https://api.stripe.com/v1/checkout/sessions/${session.id}/line_items`,
+            {
+              headers: { Authorization: `Bearer ${STRIPE_SECRET_KEY}` },
+              timeout: 10000,
+            }
+          );
+          const items = lineResp.data?.data ?? [];
+          isFastPass = items.some(
+            (item: Record<string, unknown>) =>
+              (item.price as Record<string, unknown>)?.product === FAST_PASS_PRODUCT_ID
+          );
+        } else {
+          // No Stripe key configured — trust the webhook event (less secure)
+          isFastPass = true;
+        }
+      } catch (err) {
+        console.error("[stripe-webhook] Line item check failed:", err);
+        // Fail open — if we can't verify the product, still grant access
+        isFastPass = true;
+      }
+
+      if (isFastPass && email) {
+        try {
+          const granted = await grantFastPass(email);
+          console.log(`[stripe-webhook] Fast-Pass granted for ${email}: ${granted}`);
+        } catch (err) {
+          console.error(`[stripe-webhook] CRM update failed for ${email}:`, err);
+        }
+      } else {
+        console.log(`[stripe-webhook] Skipping — not a Fast-Pass or no email. isFastPass=${isFastPass}, email=${email}`);
+      }
+    }
+
+    res.json({ received: true });
+  });
+
+  // ── MANUAL RE-CHECK ("I just upgraded on Skool") ─────────────────────────
+  // Called when a user claims they just upgraded to Annual on Skool.
+  // Re-queries the CRM in real time. If the CRM now shows ANNUAL_PAYING,
+  // returns eligible=true. Otherwise returns the current gate result.
+  // The CRM sync runs every ~24h, so this is the bridge for the sync gap.
+  app.post("/api/recheck-certification-eligibility", async (req, res) => {
+    const { email } = req.body ?? {};
+
+    if (!email || typeof email !== "string" || !email.includes("@")) {
+      res.status(400).json({ error: "Valid email is required." });
+      return;
+    }
+
+    try {
+      const result = await checkEligibility(email);
+      res.json({ ...result, rechecked: true });
+    } catch (err) {
+      console.error("[recheck] CRM lookup failed:", err);
+      res.json({ eligible: true, warning: "crm_unavailable", rechecked: true });
     }
   });
 

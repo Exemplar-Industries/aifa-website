@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 
 // ─── ICONS ────────────────────────────────────────────────────────────────────
@@ -39,6 +39,22 @@ function CheckIcon() {
   );
 }
 
+function SpinnerIcon() {
+  return (
+    <svg
+      className="animate-spin"
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.5"
+    >
+      <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+    </svg>
+  );
+}
+
 // ─── PROGRESS BAR ─────────────────────────────────────────────────────────────
 function TenureProgressBar({
   daysCompleted,
@@ -49,26 +65,26 @@ function TenureProgressBar({
 }) {
   const pct = Math.min(100, Math.round((daysCompleted / 90) * 100));
   return (
-    <div className="w-full max-w-md mx-auto mb-8">
-      <div className="flex justify-between text-xs text-gray-400 mb-2 font-mono uppercase tracking-wider">
+    <div className="w-full max-w-md mt-2">
+      <div className="flex justify-between text-xs text-gray-400 mb-1.5 font-mono">
         <span>Day {daysCompleted}</span>
-        <span>{daysRemaining} days remaining</span>
+        <span>{pct}% complete</span>
         <span>Day 90</span>
       </div>
-      <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden">
+      <div className="w-full h-2 bg-gray-800 rounded-full overflow-hidden">
         <div
-          className="h-full bg-[#E63329] rounded-full transition-all duration-700"
+          className="h-full bg-[#E63329] rounded-full transition-all duration-500"
           style={{ width: `${pct}%` }}
         />
       </div>
-      <p className="text-center text-xs text-gray-500 mt-2 font-mono">
-        {pct}% of the way to automatic unlock
+      <p className="text-xs text-gray-500 mt-1.5 text-center">
+        {daysRemaining} day{daysRemaining !== 1 ? "s" : ""} until automatic unlock
       </p>
     </div>
   );
 }
 
-// ─── OPTION CARD ─────────────────────────────────────────────────────────────
+// ─── OPTION CARD ──────────────────────────────────────────────────────────────
 function OptionCard({
   badge,
   title,
@@ -76,39 +92,46 @@ function OptionCard({
   bullets,
   cta,
   href,
+  onClick,
   primary,
+  loading,
+  disabled,
 }: {
   badge: string;
-  title: string;
+  title: string | React.ReactNode;
   description: string;
   bullets: string[];
   cta: string;
-  href: string;
+  href?: string;
+  onClick?: () => void;
   primary?: boolean;
+  loading?: boolean;
+  disabled?: boolean;
 }) {
-  return (
+  const btnClass = `mt-auto w-full py-3 px-4 rounded text-sm font-semibold uppercase tracking-wider transition-all duration-200 flex items-center justify-center gap-2 ${
+    primary
+      ? "bg-[#E63329] text-white hover:bg-[#c42a21]"
+      : disabled
+      ? "bg-gray-700 text-gray-500 cursor-not-allowed"
+      : "border border-[#E63329] text-[#E63329] hover:bg-[#E63329] hover:text-white"
+  }`;
+
+  const content = (
     <div
-      className={`relative flex flex-col rounded-sm border ${
-        primary
-          ? "border-[#E63329] bg-[#1a0a09]"
-          : "border-white/10 bg-white/5"
-      } p-6 gap-4`}
+      className={`flex flex-col bg-[#111] border rounded-lg p-6 gap-4 h-full ${
+        primary ? "border-[#E63329]" : "border-gray-700"
+      }`}
     >
-      {primary && (
-        <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#E63329] text-white text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-sm">
-          Recommended
-        </div>
-      )}
-      <div className="text-xs font-mono text-[#E63329] uppercase tracking-widest">
+      <span className="text-xs font-mono text-[#E63329] uppercase tracking-widest">
         {badge}
-      </div>
+      </span>
       <h3
-        className="text-xl font-bold text-white uppercase tracking-wide"
-        style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.05em" }}
+        className="text-2xl font-bold text-white uppercase"
+        style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.04em" }}
       >
         {title}
       </h3>
-      <p className="text-sm text-gray-400 leading-relaxed">{description}</p>
+      <p className="text-gray-400 text-sm leading-relaxed">{description}</p>
       <ul className="flex flex-col gap-2 flex-1">
         {bullets.map((b, i) => (
           <li key={i} className="flex items-start gap-2 text-sm text-gray-300">
@@ -117,31 +140,40 @@ function OptionCard({
           </li>
         ))}
       </ul>
-      <a
-        href={href}
-        target={href.startsWith("http") ? "_blank" : "_self"}
-        rel="noopener noreferrer"
-        className={`mt-2 w-full py-3 text-center text-sm font-bold uppercase tracking-widest transition-colors duration-200 ${
-          primary
-            ? "bg-[#E63329] text-white hover:bg-[#c42b22]"
-            : "border border-white/20 text-white hover:bg-white/10"
-        }`}
-        style={{ fontFamily: "'DM Sans', sans-serif" }}
-      >
-        {cta}
-      </a>
+      {onClick ? (
+        <button onClick={onClick} disabled={disabled || loading} className={btnClass}>
+          {loading ? <SpinnerIcon /> : null}
+          {loading ? "Checking..." : cta}
+        </button>
+      ) : href ? (
+        <a
+          href={href}
+          target={href.startsWith("http") ? "_blank" : undefined}
+          rel="noopener noreferrer"
+          className={btnClass}
+        >
+          {cta}
+        </a>
+      ) : null}
     </div>
   );
+
+  return content;
 }
 
 // ─── MAIN COMPONENT ───────────────────────────────────────────────────────────
 export default function CertificationStatus() {
   const [, setLocation] = useLocation();
 
-  // Read state passed via sessionStorage from the gate check
   const [daysCompleted, setDaysCompleted] = useState<number | null>(null);
   const [daysRemaining, setDaysRemaining] = useState<number | null>(null);
   const [reason, setReason] = useState<string>("tenure_too_short");
+  const [email, setEmail] = useState<string>("");
+
+  // Re-check state
+  const [recheckLoading, setRecheckLoading] = useState(false);
+  const [recheckMessage, setRecheckMessage] = useState<string | null>(null);
+  const [recheckSuccess, setRecheckSuccess] = useState(false);
 
   useEffect(() => {
     const raw = sessionStorage.getItem("cert_gate_result");
@@ -151,15 +183,54 @@ export default function CertificationStatus() {
         if (data.daysCompleted !== undefined) setDaysCompleted(data.daysCompleted);
         if (data.daysRemaining !== undefined) setDaysRemaining(data.daysRemaining);
         if (data.reason) setReason(data.reason);
+        if (data.email) setEmail(data.email);
       } catch {
         // ignore
       }
     }
+    // Also try to get email from sessionStorage directly
+    const storedEmail = sessionStorage.getItem("cert_gate_email");
+    if (storedEmail) setEmail(storedEmail);
   }, []);
 
   const isTenureBlock = reason === "tenure_too_short";
   const isNotFound = reason === "not_found";
-  const isNotActive = reason === "not_active_member";
+
+  // "I just upgraded on Skool" re-check handler
+  async function handleRecheck() {
+    if (!email) {
+      setRecheckMessage("We don't have your email on file. Please go back and re-enter it.");
+      return;
+    }
+    setRecheckLoading(true);
+    setRecheckMessage(null);
+    try {
+      const resp = await fetch("/api/recheck-certification-eligibility", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      const data = await resp.json();
+      if (data.eligible) {
+        setRecheckSuccess(true);
+        setRecheckMessage("Upgrade confirmed! Redirecting you to the certification test...");
+        sessionStorage.setItem("cert_gate_result", JSON.stringify({ eligible: true }));
+        setTimeout(() => setLocation("/certification?bypass=1"), 1800);
+      } else if (data.reason === "tenure_too_short") {
+        setRecheckMessage(
+          `Your plan is still showing as Monthly in our system. If you just upgraded on Skool, it can take up to 24 hours to sync. Come back tomorrow and you'll have instant access — or use the Fast-Pass below to unlock right now.`
+        );
+      } else {
+        setRecheckMessage(
+          "We couldn't verify an Annual membership for that email. Make sure you upgraded at skool.com/aifilmacademy/plans and that you used the same email address."
+        );
+      }
+    } catch {
+      setRecheckMessage("Something went wrong. Please try again in a moment.");
+    } finally {
+      setRecheckLoading(false);
+    }
+  }
 
   return (
     <div
@@ -210,7 +281,7 @@ export default function CertificationStatus() {
           {isTenureBlock
             ? "The AI Media Specialist Certification is reserved for members who have demonstrated real commitment to the craft. Monthly members unlock it automatically after 90 days — or you can fast-track it right now."
             : isNotFound
-            ? "We couldn't find an active AFA membership linked to that email. Join the community to access the certification test."
+            ? "We couldn't find an active AFA membership linked to that email. Join the community first, then come back to get certified."
             : "Your membership status doesn't currently qualify for certification access. Upgrade to unlock it instantly."}
         </p>
 
@@ -225,57 +296,110 @@ export default function CertificationStatus() {
           )}
       </div>
 
+      {/* Re-check feedback banner */}
+      {recheckMessage && (
+        <div
+          className={`w-full max-w-4xl mb-6 px-5 py-4 rounded-lg border text-sm leading-relaxed ${
+            recheckSuccess
+              ? "bg-green-900/30 border-green-600 text-green-300"
+              : "bg-yellow-900/20 border-yellow-600/50 text-yellow-300"
+          }`}
+        >
+          {recheckMessage}
+        </div>
+      )}
+
       {/* Option Cards */}
-      <div className="w-full max-w-4xl grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-        <OptionCard
-          badge="Option A — Instant Unlock"
-          title="Go Annual"
-          description="Upgrade to an Annual membership and unlock certification immediately — plus save over 30% vs monthly."
-          bullets={[
-            "Instant certification access",
-            "Save $79+ vs monthly billing",
-            "Full community access",
-            "Priority support",
-          ]}
-          cta="Upgrade to Annual →"
-          href="https://www.skool.com/aifilmacademy/about?showPlans=true"
-          primary
-        />
+      {isNotFound ? (
+        // Not-found layout: single prominent CTA to join
+        <div className="w-full max-w-lg">
+          <OptionCard
+            badge="Join the Community"
+            title="Become a Member First"
+            description="The certification is exclusive to AI Film Academy members. Join now and start your journey — you'll unlock the certification test after 90 days, or instantly with an Annual plan."
+            bullets={[
+              "Access to the full AFA curriculum",
+              "Monthly plan: $19/month",
+              "Annual plan: instant certification access",
+              "Join 500+ AI filmmakers",
+            ]}
+            cta="Join AI Film Academy →"
+            href="https://www.skool.com/aifilmacademy/about"
+            primary
+          />
+        </div>
+      ) : (
+        <div className="w-full max-w-4xl grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+          {/* Option A: Go Annual on Skool */}
+          <OptionCard
+            badge="Option A — Instant Unlock"
+            title="Go Annual on Skool"
+            description="Upgrade to an Annual membership on Skool and unlock certification immediately — plus save over 30% vs monthly billing."
+            bullets={[
+              "Instant certification access",
+              "Save $79+ vs monthly billing",
+              "Full community access",
+              "Priority support",
+            ]}
+            cta="Upgrade on Skool →"
+            href="https://www.skool.com/aifilmacademy/plans"
+            primary
+          />
 
-        <OptionCard
-          badge="Option B — Instant Unlock"
-          title="Fast-Pass Fee"
-          description="Pay a one-time $47 Fast-Pass to unlock the certification test right now, without changing your plan."
-          bullets={[
-            "Instant certification access",
-            "Keep your current monthly plan",
-            "One-time payment, no recurring charge",
-            "Certification badge included",
-          ]}
-          cta="Pay $47 Fast-Pass →"
-          href="https://buy.stripe.com/aifa-certification-fastpass"
-        />
+          {/* Option B: Fast-Pass */}
+          <OptionCard
+            badge="Option B — Instant Unlock"
+            title="Fast-Pass Fee"
+            description="Pay a one-time $47 Fast-Pass to unlock the certification test right now, without changing your plan."
+            bullets={[
+              "Instant certification access",
+              "Keep your current monthly plan",
+              "One-time payment, no recurring charge",
+              "Certification badge included",
+            ]}
+            cta="Pay $47 Fast-Pass →"
+            href="https://buy.stripe.com/aifa-certification-fastpass"
+          />
 
-        <OptionCard
-          badge="Option C — Auto Unlock"
-          title={
-            isTenureBlock && daysRemaining !== null
-              ? `${daysRemaining} Days Away`
-              : "Wait 3 Months"
-          }
-          description="Stay on your current plan and your certification access will unlock automatically once you hit 90 days of membership."
-          bullets={[
-            "No additional cost",
-            "Automatic unlock at day 90",
-            "Keep building your skills in the meantime",
-            daysRemaining !== null
-              ? `Unlocks in approximately ${daysRemaining} days`
-              : "Unlocks after 90 days of membership",
-          ]}
-          cta="Return to Community →"
-          href="https://www.skool.com/aifilmacademy"
-        />
-      </div>
+          {/* Option C: Wait / Already Upgraded re-check */}
+          <OptionCard
+            badge="Option C — Already Upgraded?"
+            title={
+              isTenureBlock && daysRemaining !== null
+                ? `${daysRemaining} Days Away`
+                : "Wait 3 Months"
+            }
+            description={
+              isTenureBlock
+                ? "Just upgraded to Annual on Skool? Hit the button below and we'll check your status right now. Our system syncs every 24 hours, so there may be a short delay."
+                : "Stay on your current plan and your certification access will unlock automatically once you hit 90 days of membership."
+            }
+            bullets={
+              isTenureBlock
+                ? [
+                    "Tap below after upgrading on Skool",
+                    "We'll re-check your plan in real time",
+                    "Instant redirect if upgrade is confirmed",
+                    daysRemaining !== null
+                      ? `Or auto-unlocks in ${daysRemaining} days`
+                      : "Or auto-unlocks at day 90",
+                  ]
+                : [
+                    "No additional cost",
+                    "Automatic unlock at day 90",
+                    "Keep building your skills in the meantime",
+                    daysRemaining !== null
+                      ? `Unlocks in approximately ${daysRemaining} days`
+                      : "Unlocks after 90 days of membership",
+                  ]
+            }
+            cta={isTenureBlock ? "I Just Upgraded — Check Now →" : "Return to Community →"}
+            onClick={isTenureBlock ? handleRecheck : undefined}
+            href={isTenureBlock ? undefined : "https://www.skool.com/aifilmacademy"}
+            loading={recheckLoading}
+          />
+        </div>
+      )}
 
       {/* Wrong email link */}
       <p className="text-sm text-gray-500">
