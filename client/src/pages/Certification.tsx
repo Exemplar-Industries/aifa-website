@@ -1,4 +1,5 @@
 import { useState, useCallback, useEffect } from "react";
+import { useLocation } from "wouter";
 
 // ─── QUIZ DATA ────────────────────────────────────────────────────────────────
 
@@ -997,15 +998,52 @@ async function submitToSheet(data: {
 
 // ─── MAIN COMPONENT ───────────────────────────────────────────────────────────
 
-type Stage = "intro" | "quiz" | "result";
+type Stage = "gate" | "gate_loading" | "intro" | "quiz" | "result";
 
 export default function Certification() {
-  const [stage, setStage] = useState<Stage>("intro");
+  const [, setLocation] = useLocation();
+  const [stage, setStage] = useState<Stage>("gate");
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [answers, setAnswers] = useState<Answers>({});
   const [score, setScore] = useState(0);
+
+  // ── GATE: email eligibility check ─────────────────────────────────────────
+  const [gateEmail, setGateEmail] = useState("");
+  const [gateError, setGateError] = useState("");
+
+  const handleGateSubmit = async () => {
+    if (!gateEmail.includes("@")) {
+      setGateError("Please enter a valid email address.");
+      return;
+    }
+    setGateError("");
+    setStage("gate_loading");
+
+    try {
+      const res = await fetch("/api/check-certification-eligibility", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: gateEmail }),
+      });
+      const data = await res.json();
+
+      if (data.eligible) {
+        // Pre-fill the email on the intro screen
+        setEmail(gateEmail);
+        setStage("intro");
+      } else {
+        // Store result for the status page
+        sessionStorage.setItem("cert_gate_result", JSON.stringify(data));
+        setLocation("/certification-status");
+      }
+    } catch {
+      // Fail open on network error — don't block legitimate members
+      setEmail(gateEmail);
+      setStage("intro");
+    }
+  };
 
   // Auto-test bypass: ?autotest=1 fills all correct answers and submits
   useEffect(() => {
@@ -1038,6 +1076,10 @@ export default function Certification() {
       });
       setStage("result");
     }
+    // bypass=1 skips the gate entirely (for admin/testing)
+    if (params.get("bypass") === "1") {
+      setStage("intro");
+    }
   }, []);
 
   const handleStart = () => {
@@ -1068,6 +1110,92 @@ export default function Certification() {
     setStage("result");
     window.scrollTo(0, 0);
   };
+
+  // ── GATE SCREEN ─────────────────────────────────────────────────────────────────
+  if (stage === "gate" || stage === "gate_loading") {
+    const loading = stage === "gate_loading";
+    return (
+      <div className="min-h-screen bg-[#0A0A0A] flex items-center justify-center px-5 py-16">
+        <div className="w-full max-w-lg">
+          {/* AFA wordmark */}
+          <div className="mb-10 flex items-center gap-3">
+            <div className="w-8 h-8 bg-[#E63329] flex items-center justify-center">
+              <span
+                className="text-white text-xs font-black"
+                style={{ fontFamily: "'Bebas Neue', sans-serif" }}
+              >
+                AFA
+              </span>
+            </div>
+            <span
+              className="text-xs font-mono uppercase tracking-[0.2em] text-white/40"
+              style={{ fontFamily: "'JetBrains Mono', monospace" }}
+            >
+              AI Film Academy
+            </span>
+          </div>
+
+          <div className="w-8 h-[2px] bg-[#E63329] mb-6" />
+
+          <h1
+            className="text-5xl font-black uppercase leading-none tracking-tight mb-3"
+            style={{ fontFamily: "'Bebas Neue', sans-serif" }}
+          >
+            AI Media Specialist
+            <br />
+            <span className="text-[#E63329]">Certification Test</span>
+          </h1>
+
+          <p
+            className="text-sm text-white/50 leading-relaxed mb-10"
+            style={{ fontFamily: "'DM Sans', sans-serif" }}
+          >
+            Enter your membership email to verify access. Annual, Lifetime, and Free members enter immediately. Monthly members unlock after 90 days of membership.
+          </p>
+
+          <div className="space-y-4 mb-8">
+            <div>
+              <label
+                className="block text-xs font-mono uppercase tracking-widest text-white/40 mb-2"
+                style={{ fontFamily: "'JetBrains Mono', monospace" }}
+              >
+                Membership Email
+              </label>
+              <input
+                type="email"
+                value={gateEmail}
+                onChange={(e) => setGateEmail(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && !loading && handleGateSubmit()}
+                placeholder="your@email.com"
+                disabled={loading}
+                className="w-full bg-[#111111] border border-white/10 text-white px-4 py-3 text-sm focus:outline-none focus:border-[#E63329] transition-colors placeholder:text-white/20 disabled:opacity-50"
+                style={{ fontFamily: "'DM Sans', sans-serif" }}
+              />
+              {gateError && (
+                <p className="text-xs text-[#E63329] mt-2">{gateError}</p>
+              )}
+            </div>
+          </div>
+
+          <button
+            onClick={handleGateSubmit}
+            disabled={loading || !gateEmail.includes("@")}
+            className="w-full py-4 bg-[#E63329] text-white font-bold uppercase tracking-wider text-sm hover:bg-[#c42b22] transition-colors duration-200 disabled:opacity-30 disabled:cursor-not-allowed"
+            style={{ fontFamily: "'DM Sans', sans-serif" }}
+          >
+            {loading ? "Verifying Membership..." : "Verify & Continue"}
+          </button>
+
+          <p
+            className="text-xs text-white/20 text-center mt-4"
+            style={{ fontFamily: "'DM Sans', sans-serif" }}
+          >
+            Your email is used only to verify your membership status.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   if (stage === "intro") {
     return (

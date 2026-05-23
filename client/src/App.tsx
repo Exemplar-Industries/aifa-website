@@ -8,6 +8,7 @@ import { AffiliateLinkProvider } from "./contexts/AffiliateLinkContext";
 import Home from "./pages/Home";
 import Consulting from "./pages/Consulting";
 import Certification from "./pages/Certification";
+import CertificationStatus from "./pages/CertificationStatus";
 import LPV3 from "./pages/LPV3";
 import Invite from "./pages/Invite";
 
@@ -17,6 +18,7 @@ function Router() {
       <Route path={"/"} component={Home} />
       <Route path={"/consulting"} component={Consulting} />
       <Route path={"/certification"} component={Certification} />
+      <Route path={"/certification-status"} component={CertificationStatus} />
       <Route path={"/lpv3"} component={LPV3} />
       <Route path={"/anthum-exclusive"} component={Invite} />
       <Route path={"/404"} component={NotFound} />
