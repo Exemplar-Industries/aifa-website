@@ -11,7 +11,7 @@ const __dirname = path.dirname(__filename);
 // ─── STRIPE CONFIG ───────────────────────────────────────────────────────────
 const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY || "";
 const STRIPE_WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET || "";
-const FAST_PASS_PRODUCT_ID = "prod_UZD6bVS9UkPzD2";
+const FAST_PASS_PRODUCT_ID = "prod_UZGwA0tsMGTOR2";
 
 // ─── RAILWAY SYNC TRIGGER CONFIG ────────────────────────────────────────────
 const RAILWAY_TOKEN = process.env.RAILWAY_TOKEN || "9a2f81cf-8c46-44e0-85ae-9baeb78e7183";

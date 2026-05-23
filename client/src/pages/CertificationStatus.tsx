@@ -380,7 +380,7 @@ export default function CertificationStatus() {
               "Certification badge included",
             ]}
             cta="Pay $47 Fast-Pass →"
-            href="https://buy.stripe.com/aifa-certification-fastpass"
+            href="https://buy.stripe.com/7sY3cu1Baggo3Kf3ny7Vm00"
           />
 
           {/* Option C: Wait / Already Upgraded re-check */}
