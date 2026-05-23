@@ -96,6 +96,7 @@ function OptionCard({
   primary,
   loading,
   disabled,
+  loadingLabel,
 }: {
   badge: string;
   title: string | React.ReactNode;
@@ -107,6 +108,7 @@ function OptionCard({
   primary?: boolean;
   loading?: boolean;
   disabled?: boolean;
+  loadingLabel?: string;
 }) {
   const btnClass = `mt-auto w-full py-3 px-4 rounded text-sm font-semibold uppercase tracking-wider transition-all duration-200 flex items-center justify-center gap-2 ${
     primary
@@ -143,7 +145,7 @@ function OptionCard({
       {onClick ? (
         <button onClick={onClick} disabled={disabled || loading} className={btnClass}>
           {loading ? <SpinnerIcon /> : null}
-          {loading ? "Checking..." : cta}
+          {loading ? (loadingLabel ?? "Checking...") : cta}
         </button>
       ) : href ? (
         <a
@@ -174,6 +176,7 @@ export default function CertificationStatus() {
   const [recheckLoading, setRecheckLoading] = useState(false);
   const [recheckMessage, setRecheckMessage] = useState<string | null>(null);
   const [recheckSuccess, setRecheckSuccess] = useState(false);
+  const [recheckStage, setRecheckStage] = useState<"idle" | "triggering" | "syncing" | "done">("idle");
 
   useEffect(() => {
     const raw = sessionStorage.getItem("cert_gate_result");
@@ -197,6 +200,7 @@ export default function CertificationStatus() {
   const isNotFound = reason === "not_found";
 
   // "I just upgraded on Skool" re-check handler
+  // Triggers the full Railway Skool→CRM sync, then polls until the plan flips.
   async function handleRecheck() {
     if (!email) {
       setRecheckMessage("We don't have your email on file. Please go back and re-enter it.");
@@ -204,28 +208,46 @@ export default function CertificationStatus() {
     }
     setRecheckLoading(true);
     setRecheckMessage(null);
+    setRecheckStage("triggering");
+
+    // Show a staged progress message so the user knows what's happening
+    // The server will poll for up to 3 minutes, so we update the UI message
+    // at intervals to prevent the user from thinking it's frozen.
+    const stageTimer = setTimeout(() => {
+      setRecheckStage("syncing");
+      setRecheckMessage("Sync in progress — pulling your latest membership data from Skool. This takes about 60–90 seconds...");
+    }, 5000);
+
     try {
       const resp = await fetch("/api/recheck-certification-eligibility", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
       });
+      clearTimeout(stageTimer);
+      setRecheckStage("done");
       const data = await resp.json();
+
       if (data.eligible) {
         setRecheckSuccess(true);
         setRecheckMessage("Upgrade confirmed! Redirecting you to the certification test...");
         sessionStorage.setItem("cert_gate_result", JSON.stringify({ eligible: true }));
         setTimeout(() => setLocation("/certification?bypass=1"), 1800);
+      } else if (data.message) {
+        // Server returned a specific message (sync ran but plan didn't flip)
+        setRecheckMessage(data.message);
       } else if (data.reason === "tenure_too_short") {
         setRecheckMessage(
-          `Your plan is still showing as Monthly in our system. If you just upgraded on Skool, it can take up to 24 hours to sync. Come back tomorrow and you'll have instant access — or use the Fast-Pass below to unlock right now.`
+          `Sync complete — your account is still showing as Monthly. If you just upgraded on Skool, please wait 2–3 minutes and try again. Or use the Fast-Pass below to unlock right now.`
         );
       } else {
         setRecheckMessage(
-          "We couldn't verify an Annual membership for that email. Make sure you upgraded at skool.com/aifilmacademy/plans and that you used the same email address."
+          "We couldn't verify an Annual membership for that email. Make sure you upgraded at skool.com/aifilmacademy/plans and used the same email address."
         );
       }
     } catch {
+      clearTimeout(stageTimer);
+      setRecheckStage("done");
       setRecheckMessage("Something went wrong. Please try again in a moment.");
     } finally {
       setRecheckLoading(false);
@@ -397,6 +419,13 @@ export default function CertificationStatus() {
             onClick={isTenureBlock ? handleRecheck : undefined}
             href={isTenureBlock ? undefined : "https://www.skool.com/aifilmacademy"}
             loading={recheckLoading}
+            loadingLabel={
+              recheckStage === "triggering"
+                ? "Triggering sync..."
+                : recheckStage === "syncing"
+                ? "Syncing with Skool..."
+                : "Checking..."
+            }
           />
         </div>
       )}

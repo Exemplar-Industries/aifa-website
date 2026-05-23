@@ -13,6 +13,11 @@ const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY || "";
 const STRIPE_WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET || "";
 const FAST_PASS_PRODUCT_ID = "prod_UZD6bVS9UkPzD2";
 
+// ─── RAILWAY SYNC TRIGGER CONFIG ────────────────────────────────────────────
+const RAILWAY_TOKEN = process.env.RAILWAY_TOKEN || "9a2f81cf-8c46-44e0-85ae-9baeb78e7183";
+const RAILWAY_SYNC_SERVICE_ID = process.env.RAILWAY_SYNC_SERVICE_ID || "fcf6db96-29b5-4019-b016-829b850a4eb4";
+const RAILWAY_SYNC_ENVIRONMENT_ID = process.env.RAILWAY_SYNC_ENVIRONMENT_ID || "8d58f4c4-64a4-40cb-9180-2bf5df9beff0";
+
 // ─── TWENTY CRM CONFIG ────────────────────────────────────────────────────────
 const TWENTY_API_KEY =
   process.env.TWENTY_API_KEY ||
@@ -293,10 +298,11 @@ async function startServer() {
   });
 
   // ── MANUAL RE-CHECK ("I just upgraded on Skool") ─────────────────────────
-  // Called when a user claims they just upgraded to Annual on Skool.
-  // Re-queries the CRM in real time. If the CRM now shows ANNUAL_PAYING,
-  // returns eligible=true. Otherwise returns the current gate result.
-  // The CRM sync runs every ~24h, so this is the bridge for the sync gap.
+  // When a user clicks "I just upgraded on Skool", this endpoint:
+  // 1. Triggers the Railway cron job to run the full Skool→CRM sync immediately
+  // 2. Polls the CRM every 10 seconds for up to 3 minutes waiting for the plan to flip
+  // 3. Returns eligible=true as soon as the CRM shows Annual/Lifetime, or the
+  //    current gate result if the sync completes but plan hasn't changed.
   app.post("/api/recheck-certification-eligibility", async (req, res) => {
     const { email } = req.body ?? {};
 
@@ -305,13 +311,78 @@ async function startServer() {
       return;
     }
 
+    // Step 1: Trigger the Railway sync job immediately
+    let syncTriggered = false;
     try {
-      const result = await checkEligibility(email);
-      res.json({ ...result, rechecked: true });
+      const railwayMutation = `
+        mutation TriggerSync($serviceId: String!, $environmentId: String!) {
+          serviceInstanceDeploy(serviceId: $serviceId, environmentId: $environmentId)
+        }
+      `;
+      const railwayResp = await axios.post(
+        "https://backboard.railway.app/graphql/v2",
+        {
+          query: railwayMutation,
+          variables: {
+            serviceId: RAILWAY_SYNC_SERVICE_ID,
+            environmentId: RAILWAY_SYNC_ENVIRONMENT_ID,
+          },
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${RAILWAY_TOKEN}`,
+            "Content-Type": "application/json",
+          },
+          timeout: 15000,
+        }
+      );
+      syncTriggered = railwayResp.data?.data?.serviceInstanceDeploy === true;
+      console.log(`[recheck] Railway sync triggered for ${email}: ${syncTriggered}`);
     } catch (err) {
-      console.error("[recheck] CRM lookup failed:", err);
-      res.json({ eligible: true, warning: "crm_unavailable", rechecked: true });
+      console.error("[recheck] Railway trigger failed:", err);
+      // Non-fatal — fall through to CRM poll
     }
+
+    // Step 2: Poll CRM every 10 seconds for up to 3 minutes (18 attempts)
+    // The sync takes ~60-90 seconds on Railway. We poll until it flips or we time out.
+    const MAX_POLLS = 18;
+    const POLL_INTERVAL_MS = 10000;
+
+    for (let attempt = 0; attempt < MAX_POLLS; attempt++) {
+      // Wait before polling (give sync time to start on first attempt)
+      await new Promise((resolve) => setTimeout(resolve, POLL_INTERVAL_MS));
+
+      try {
+        const result = await checkEligibility(email);
+        console.log(`[recheck] Poll ${attempt + 1}/${MAX_POLLS} for ${email}: eligible=${result.eligible}`);
+
+        if (result.eligible) {
+          // Plan has flipped — return success immediately
+          res.json({ ...result, rechecked: true, syncTriggered, pollAttempts: attempt + 1 });
+          return;
+        }
+
+        // If this is the last attempt, return whatever we have
+        if (attempt === MAX_POLLS - 1) {
+          res.json({
+            ...result,
+            rechecked: true,
+            syncTriggered,
+            pollAttempts: MAX_POLLS,
+            message: syncTriggered
+              ? "Sync ran but plan hasn't updated yet. Please allow a few more minutes and try again."
+              : "Could not trigger sync. Please try again in a few minutes.",
+          });
+          return;
+        }
+      } catch (err) {
+        console.error(`[recheck] Poll ${attempt + 1} CRM lookup failed:`, err);
+        // Continue polling
+      }
+    }
+
+    // Fallback (should not reach here)
+    res.json({ eligible: false, reason: "not_active_member", rechecked: true, syncTriggered });
   });
 
   // Serve static files from dist/public in production
