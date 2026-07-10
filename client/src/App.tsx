@@ -11,6 +11,7 @@ import Certification from "./pages/Certification";
 import CertificationStatus from "./pages/CertificationStatus";
 import LPV3 from "./pages/LPV3";
 import Invite from "./pages/Invite";
+import LiveExclusive from "./pages/LiveExclusive";
 
 function Router() {
   return (
@@ -21,6 +22,7 @@ function Router() {
       <Route path={"/certification-status"} component={CertificationStatus} />
       <Route path={"/lpv3"} component={LPV3} />
       <Route path={"/anthum-exclusive"} component={Invite} />
+      <Route path={"/live-exclusive"} component={LiveExclusive} />
       <Route path={"/404"} component={NotFound} />
       <Route component={NotFound} />
     </Switch>
