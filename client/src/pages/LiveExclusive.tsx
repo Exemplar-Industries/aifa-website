@@ -98,6 +98,40 @@ export default function LiveExclusive() {
     e.target.style.borderColor = "rgba(255,255,255,0.1)";
   };
 
+  // ── What's Inside items (from Skool about page) ───────────────────────────
+  const whatsInside = [
+    {
+      emoji: "🛠️",
+      label: "Clear 3-Step Workflow",
+      detail: "Follow a simple process from idea to finished video — no guessing, no wasted time.",
+    },
+    {
+      emoji: "⚡",
+      label: "No Tool Overwhelm",
+      detail: "Learn only the tools that matter. Kling, Veo, Midjourney — curated and sequenced.",
+    },
+    {
+      emoji: "🎓",
+      label: "Professional Skill Certification",
+      detail: "Earn a credential you can show clients, brands, and agencies. LinkedIn-ready badge.",
+    },
+    {
+      emoji: "🖥️",
+      label: "Build Your Portfolio",
+      detail: "Weekly challenges that produce real work — not just tutorials you forget.",
+    },
+    {
+      emoji: "🎥",
+      label: "Personalized Feedback",
+      detail: "Weekly live feedback sessions and personalized Loom reviews on your actual work.",
+    },
+    {
+      emoji: "🎬",
+      label: "Creative Opportunities",
+      detail: "Curated festivals, events, and challenges to get your work seen.",
+    },
+  ];
+
   return (
     <div className="min-h-screen flex flex-col" style={{ background: "#0a0a0a", color: "#ffffff" }}>
 
@@ -126,7 +160,7 @@ export default function LiveExclusive() {
       </nav>
 
       {/* ── Main content ── */}
-      <main className="flex-1 flex flex-col items-center justify-center px-4 py-12">
+      <main className="flex-1 flex flex-col items-center justify-start px-4 py-12">
 
         {/* Live badge */}
         <div
@@ -174,14 +208,88 @@ export default function LiveExclusive() {
         </h1>
 
         {/* Sub-headline */}
-        <p className="text-gray-400 text-center max-w-lg mb-2" style={{ fontSize: "1.1rem", lineHeight: "1.7" }}>
-          This is the same membership everyone else pays $49/month for.{" "}
-          <strong className="text-white">You get it free</strong> — full access, no trial, no catch —
-          because you showed up live.
+        <p className="text-gray-400 text-center max-w-xl mb-2" style={{ fontSize: "1.1rem", lineHeight: "1.7" }}>
+          You have ideas. We give you the tool stack, workflow, feedback, and certification to turn them into{" "}
+          <strong className="text-white">high-quality AI films, ads, trailers, and animated content</strong>{" "}
+          you feel confident sharing — without getting overwhelmed.
         </p>
-        <p className="text-gray-600 text-sm text-center mb-10">
-          No credit card. No expiration. Just drop your info below.
+        <p className="text-gray-600 text-sm text-center mb-12">
+          This is the same membership everyone else pays $49/month for. Yours free — because you showed up live.
         </p>
+
+        {/* ── What's Inside — ABOVE the form ── */}
+        <div className="w-full max-w-2xl mb-12">
+          <h2
+            className="text-center font-black mb-8"
+            style={{ fontSize: "clamp(1.4rem, 4vw, 2rem)", letterSpacing: "-0.01em" }}
+          >
+            What's Inside
+          </h2>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {whatsInside.map((item) => (
+              <div
+                key={item.label}
+                className="rounded-2xl p-5 flex gap-4 items-start"
+                style={{
+                  background: "rgba(255,255,255,0.03)",
+                  border: "1px solid rgba(255,255,255,0.07)",
+                }}
+              >
+                <span className="text-2xl flex-shrink-0 mt-0.5">{item.emoji}</span>
+                <div>
+                  <p className="text-white font-bold text-sm mb-1">{item.label}</p>
+                  <p className="text-gray-500 text-xs leading-relaxed">{item.detail}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Outcome promises */}
+          <div
+            className="mt-6 rounded-2xl p-5"
+            style={{
+              background: "rgba(255,255,255,0.02)",
+              border: "1px solid rgba(255,255,255,0.06)",
+            }}
+          >
+            <p className="text-gray-400 text-xs uppercase tracking-widest font-semibold mb-3 text-center">
+              What you'll be able to make
+            </p>
+            <div className="flex flex-wrap justify-center gap-3">
+              {[
+                "AI ads for your brand",
+                "Book or movie trailers",
+                "YouTube animation series",
+                "Premium-looking content",
+              ].map((outcome) => (
+                <span
+                  key={outcome}
+                  className="text-xs px-3 py-1.5 rounded-full font-medium"
+                  style={{
+                    background: "rgba(239,68,68,0.1)",
+                    border: "1px solid rgba(239,68,68,0.2)",
+                    color: "#fca5a5",
+                  }}
+                >
+                  {outcome}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* Value reminder */}
+          <div
+            className="mt-4 rounded-xl px-4 py-3 text-center"
+            style={{ background: "rgba(239,68,68,0.07)", border: "1px solid rgba(239,68,68,0.15)" }}
+          >
+            <p className="text-xs text-gray-400">
+              Regular members pay{" "}
+              <span className="text-white font-bold">$49/month</span> for everything above.
+              You're getting it free — today only.
+            </p>
+          </div>
+        </div>
 
         {/* ── Form / State panels ── */}
         {formState === "success" ? (
@@ -208,183 +316,127 @@ export default function LiveExclusive() {
             </p>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="w-full max-w-md flex flex-col gap-4">
-
-            {/* First + Last name row */}
-            <div className="flex gap-3">
-              <div className="flex flex-col gap-1 flex-1">
-                <label className="text-xs text-gray-500 uppercase tracking-wider">First Name</label>
-                <input
-                  type="text"
-                  required
-                  placeholder="First"
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
-                  disabled={formState === "loading"}
-                  className="w-full rounded-xl px-4 py-3 text-white placeholder-gray-600 outline-none transition-all"
-                  style={inputStyle}
-                  onFocus={onFocus}
-                  onBlur={onBlur}
-                />
-              </div>
-              <div className="flex flex-col gap-1 flex-1">
-                <label className="text-xs text-gray-500 uppercase tracking-wider">Last Name</label>
-                <input
-                  type="text"
-                  required
-                  placeholder="Last"
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
-                  disabled={formState === "loading"}
-                  className="w-full rounded-xl px-4 py-3 text-white placeholder-gray-600 outline-none transition-all"
-                  style={inputStyle}
-                  onFocus={onFocus}
-                  onBlur={onBlur}
-                />
-              </div>
-            </div>
-
-            {/* Email */}
-            <div className="flex flex-col gap-1">
-              <label className="text-xs text-gray-500 uppercase tracking-wider">Email Address</label>
-              <input
-                type="email"
-                required
-                placeholder="you@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                disabled={formState === "loading"}
-                className="w-full rounded-xl px-4 py-3 text-white placeholder-gray-600 outline-none transition-all"
-                style={inputStyle}
-                onFocus={onFocus}
-                onBlur={onBlur}
-              />
-            </div>
-
-            {/* Discord (optional) */}
-            <div className="flex flex-col gap-1">
-              <label className="text-xs text-gray-500 uppercase tracking-wider">
-                Discord Username{" "}
-                <span className="normal-case text-gray-600 tracking-normal">(optional)</span>
-              </label>
-              <input
-                type="text"
-                placeholder="yourname#0000 or @yourname"
-                value={discord}
-                onChange={(e) => setDiscord(e.target.value)}
-                disabled={formState === "loading"}
-                className="w-full rounded-xl px-4 py-3 text-white placeholder-gray-600 outline-none transition-all"
-                style={inputStyle}
-                onFocus={onFocus}
-                onBlur={onBlur}
-              />
-            </div>
-
-            {formState === "error" && (
-              <p className="text-red-400 text-sm text-center">{errorMsg}</p>
-            )}
-
-            <button
-              type="submit"
-              disabled={formState === "loading" || !firstName.trim() || !lastName.trim() || !email.trim()}
-              className="w-full rounded-xl py-4 font-black text-white text-base uppercase tracking-wider transition-all duration-200"
-              style={{
-                background:
-                  formState === "loading" || !firstName.trim() || !lastName.trim() || !email.trim()
-                    ? "rgba(239,68,68,0.4)"
-                    : "linear-gradient(135deg, #ef4444, #b91c1c)",
-                cursor:
-                  formState === "loading" || !firstName.trim() || !lastName.trim() || !email.trim()
-                    ? "not-allowed"
-                    : "pointer",
-                boxShadow:
-                  formState === "loading" || !firstName.trim() || !lastName.trim() || !email.trim()
-                    ? "none"
-                    : "0 0 40px rgba(239,68,68,0.4)",
-                fontSize: "1rem",
-                letterSpacing: "0.05em",
-              }}
+          <div className="w-full max-w-md">
+            <h2
+              className="text-center font-black mb-6"
+              style={{ fontSize: "clamp(1.3rem, 3.5vw, 1.8rem)", letterSpacing: "-0.01em" }}
             >
-              {formState === "loading" ? (
-                <span className="flex items-center justify-center gap-2">
-                  <span
-                    className="w-4 h-4 rounded-full border-2 border-t-transparent animate-spin"
-                    style={{ borderColor: "white", borderTopColor: "transparent" }}
+              Claim Your Free Membership
+            </h2>
+
+            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+              {/* First + Last name row */}
+              <div className="flex gap-3">
+                <div className="flex flex-col gap-1 flex-1">
+                  <label className="text-xs text-gray-500 uppercase tracking-wider">First Name</label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="First"
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                    disabled={formState === "loading"}
+                    className="w-full rounded-xl px-4 py-3 text-white placeholder-gray-600 outline-none transition-all"
+                    style={inputStyle}
+                    onFocus={onFocus}
+                    onBlur={onBlur}
                   />
-                  Claiming your membership...
-                </span>
-              ) : (
-                "Claim My Free Membership →"
+                </div>
+                <div className="flex flex-col gap-1 flex-1">
+                  <label className="text-xs text-gray-500 uppercase tracking-wider">Last Name</label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="Last"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                    disabled={formState === "loading"}
+                    className="w-full rounded-xl px-4 py-3 text-white placeholder-gray-600 outline-none transition-all"
+                    style={inputStyle}
+                    onFocus={onFocus}
+                    onBlur={onBlur}
+                  />
+                </div>
+              </div>
+
+              {/* Email */}
+              <div className="flex flex-col gap-1">
+                <label className="text-xs text-gray-500 uppercase tracking-wider">Email Address</label>
+                <input
+                  type="email"
+                  required
+                  placeholder="you@example.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  disabled={formState === "loading"}
+                  className="w-full rounded-xl px-4 py-3 text-white placeholder-gray-600 outline-none transition-all"
+                  style={inputStyle}
+                  onFocus={onFocus}
+                  onBlur={onBlur}
+                />
+              </div>
+
+              {/* Discord (optional) */}
+              <div className="flex flex-col gap-1">
+                <label className="text-xs text-gray-500 uppercase tracking-wider">
+                  Discord Username{" "}
+                  <span className="normal-case text-gray-600 tracking-normal">(optional)</span>
+                </label>
+                <input
+                  type="text"
+                  placeholder="yourname#0000 or @yourname"
+                  value={discord}
+                  onChange={(e) => setDiscord(e.target.value)}
+                  disabled={formState === "loading"}
+                  className="w-full rounded-xl px-4 py-3 text-white placeholder-gray-600 outline-none transition-all"
+                  style={inputStyle}
+                  onFocus={onFocus}
+                  onBlur={onBlur}
+                />
+              </div>
+
+              {formState === "error" && (
+                <p className="text-red-400 text-sm text-center">{errorMsg}</p>
               )}
-            </button>
 
-            <p className="text-center text-xs text-gray-600">
-              No credit card required. One claim per email. Invite delivered within 15 minutes.
-            </p>
-          </form>
-        )}
-
-        {/* ── What's included ── */}
-        {formState !== "success" && (
-          <div
-            className="w-full max-w-md mt-12 rounded-2xl p-6"
-            style={{
-              background: "rgba(255,255,255,0.02)",
-              border: "1px solid rgba(255,255,255,0.06)",
-            }}
-          >
-            <h3 className="text-sm font-bold uppercase tracking-widest text-gray-400 mb-5 text-center">
-              What's included — full $49/month membership
-            </h3>
-            <ul className="space-y-4">
-              {[
-                {
-                  label: "Complete AI Filmmaking Course",
-                  detail: "Step-by-step workflow from concept to final cut — Kling, Veo, Midjourney and more",
-                },
-                {
-                  label: "Official Skill Certification",
-                  detail: "LinkedIn-ready badge you earn by completing the program",
-                },
-                {
-                  label: "Private Community — 1,100+ Creators",
-                  detail: "Active members sharing work, feedback, and collabs daily",
-                },
-                {
-                  label: "Insider Live Events",
-                  detail: "Weekly sessions, Q&As, and early access to new tools and workflows",
-                },
-                {
-                  label: "Project-Based Exercises",
-                  detail: "Real assignments that build a portfolio, not just passive watching",
-                },
-              ].map((item) => (
-                <li key={item.label} className="flex items-start gap-3">
-                  <span
-                    className="mt-0.5 flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center text-xs font-black"
-                    style={{ background: "rgba(239,68,68,0.15)", color: "#ef4444" }}
-                  >
-                    ✓
+              <button
+                type="submit"
+                disabled={formState === "loading" || !firstName.trim() || !lastName.trim() || !email.trim()}
+                className="w-full rounded-xl py-4 font-black text-white text-base uppercase tracking-wider transition-all duration-200"
+                style={{
+                  background:
+                    formState === "loading" || !firstName.trim() || !lastName.trim() || !email.trim()
+                      ? "rgba(239,68,68,0.4)"
+                      : "linear-gradient(135deg, #ef4444, #b91c1c)",
+                  cursor:
+                    formState === "loading" || !firstName.trim() || !lastName.trim() || !email.trim()
+                      ? "not-allowed"
+                      : "pointer",
+                  boxShadow:
+                    formState === "loading" || !firstName.trim() || !lastName.trim() || !email.trim()
+                      ? "none"
+                      : "0 0 40px rgba(239,68,68,0.4)",
+                  fontSize: "1rem",
+                  letterSpacing: "0.05em",
+                }}
+              >
+                {formState === "loading" ? (
+                  <span className="flex items-center justify-center gap-2">
+                    <span
+                      className="w-4 h-4 rounded-full border-2 border-t-transparent animate-spin"
+                      style={{ borderColor: "white", borderTopColor: "transparent" }}
+                    />
+                    Claiming your membership...
                   </span>
-                  <div>
-                    <p className="text-white text-sm font-semibold">{item.label}</p>
-                    <p className="text-gray-500 text-xs mt-0.5">{item.detail}</p>
-                  </div>
-                </li>
-              ))}
-            </ul>
+                ) : (
+                  "Claim My Free Membership →"
+                )}
+              </button>
 
-            {/* Value reminder */}
-            <div
-              className="mt-6 rounded-xl px-4 py-3 text-center"
-              style={{ background: "rgba(239,68,68,0.07)", border: "1px solid rgba(239,68,68,0.15)" }}
-            >
-              <p className="text-xs text-gray-400">
-                Regular members pay{" "}
-                <span className="text-white font-bold">$49/month</span> for everything above.
-                You're getting it free — today only.
+              <p className="text-center text-xs text-gray-600">
+                No credit card required. One claim per email. Invite delivered within 15 minutes.
               </p>
-            </div>
+            </form>
           </div>
         )}
       </main>
