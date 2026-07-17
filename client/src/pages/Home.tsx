@@ -260,43 +260,6 @@ function FullscreenHero() {
           ))}
         </div>
       </div>
-
-      {/* Scroll indicator */}
-      <div
-        style={{
-          position: "absolute",
-          bottom: "2rem",
-          left: "50%",
-          transform: "translateX(-50%)",
-          zIndex: 10,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          gap: "6px",
-          animation: "fade-up 0.6s ease 0.8s both",
-        }}
-      >
-        <span
-          style={{
-            fontFamily: "'JetBrains Mono', monospace",
-            fontSize: "0.55rem",
-            letterSpacing: "0.2em",
-            textTransform: "uppercase",
-            color: "rgba(245,245,240,0.3)",
-          }}
-        >
-          Scroll
-        </span>
-        <div
-          style={{
-            width: "1px",
-            height: "40px",
-            background:
-              "linear-gradient(to bottom, rgba(245,245,240,0.3), transparent)",
-            animation: "pulse 2s ease infinite",
-          }}
-        />
-      </div>
     </section>
   );
 }

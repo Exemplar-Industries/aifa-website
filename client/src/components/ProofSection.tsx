@@ -94,8 +94,14 @@ export default function ProofSection() {
             <p className="mt-5 max-w-2xl text-sm leading-6 text-white/67 md:text-base md:leading-7">
               AI Film Academy helped run the Directors Cup with Machine Cinema, bringing creators and films together inside a broader global filmmaking event. Creators showed up live and put their skills to the test with a four-hour time limit.
             </p>
-            <a href="https://hub.machinecinema.ai/directors-cup/replay" target="_blank" rel="noopener noreferrer" className="mt-7 inline-flex w-fit items-center gap-2 text-sm font-semibold text-white transition-colors hover:text-[#E63329]">
-              Watch the Full Replay on Machine Cinema <ArrowUpRight className="h-4 w-4" />
+            <a
+              href="https://hub.machinecinema.ai/directors-cup/replay"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-primary mt-7 w-fit px-6 py-4 text-sm font-bold md:px-7 md:py-4"
+              aria-label="Watch the full Directors Cup replay on Machine Cinema"
+            >
+              Watch the Full Replay on Machine Cinema <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
             </a>
           </div>
         </article>

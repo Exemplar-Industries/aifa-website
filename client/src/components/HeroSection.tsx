@@ -400,32 +400,6 @@ export default function HeroSection() {
         </div>
       </div>
 
-      {/* Scroll indicator */}
-      <div
-        className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-20"
-        style={{ opacity: 0.35 }}
-      >
-        <span
-          style={{
-            fontFamily: "'JetBrains Mono', monospace",
-            fontSize: "0.55rem",
-            letterSpacing: "0.2em",
-            textTransform: "uppercase",
-            color: "#F5F5F0",
-          }}
-        >
-          Scroll
-        </span>
-        <div
-          style={{
-            width: "1px",
-            height: "32px",
-            background: "rgba(245,245,240,0.4)",
-            animation: "pulse 2s ease-in-out infinite",
-          }}
-        />
-      </div>
-
       <style>{`
         @keyframes spin {
           to { transform: rotate(360deg); }
