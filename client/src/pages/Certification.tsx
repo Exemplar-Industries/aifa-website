@@ -466,14 +466,14 @@ function IntroScreen({
   return (
     <div className="min-h-screen bg-[#0A0A0A] flex items-center justify-center px-5 py-16">
       <div className="w-full max-w-lg">
-        {/* AFA wordmark */}
+        {/* AIFA wordmark */}
         <div className="mb-10 flex items-center gap-3">
           <div className="w-8 h-8 bg-[#E63329] flex items-center justify-center">
             <span
               className="text-white text-xs font-black"
               style={{ fontFamily: "'Bebas Neue', sans-serif" }}
             >
-              AFA
+              AIFA
             </span>
           </div>
           <span
@@ -602,7 +602,7 @@ function QuizScreen({
               className="text-white text-[9px] font-black"
               style={{ fontFamily: "'Bebas Neue', sans-serif" }}
             >
-              AFA
+              AIFA
             </span>
           </div>
           <span
@@ -740,14 +740,14 @@ function ResultScreen({
   return (
     <div className="min-h-screen bg-[#0A0A0A] px-5 py-16">
       <div className="max-w-xl mx-auto">
-        {/* AFA mark */}
+        {/* AIFA mark */}
         <div className="flex items-center gap-3 mb-12">
           <div className="w-6 h-6 bg-[#E63329] flex items-center justify-center shrink-0">
             <span
               className="text-white text-[9px] font-black"
               style={{ fontFamily: "'Bebas Neue', sans-serif" }}
             >
-              AFA
+              AIFA
             </span>
           </div>
           <span
@@ -1118,14 +1118,14 @@ export default function Certification() {
     return (
       <div className="min-h-screen bg-[#0A0A0A] flex items-center justify-center px-5 py-16">
         <div className="w-full max-w-lg">
-          {/* AFA wordmark */}
+          {/* AIFA wordmark */}
           <div className="mb-10 flex items-center gap-3">
             <div className="w-8 h-8 bg-[#E63329] flex items-center justify-center">
               <span
                 className="text-white text-xs font-black"
                 style={{ fontFamily: "'Bebas Neue', sans-serif" }}
               >
-                AFA
+                AIFA
               </span>
             </div>
             <span

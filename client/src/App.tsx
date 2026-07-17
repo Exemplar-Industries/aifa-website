@@ -12,11 +12,15 @@ import CertificationStatus from "./pages/CertificationStatus";
 import LPV3 from "./pages/LPV3";
 import Invite from "./pages/Invite";
 import LiveExclusive from "./pages/LiveExclusive";
+import FAQ from "./pages/FAQ";
+import Showcase from "./pages/Showcase";
 
 function Router() {
   return (
     <Switch>
       <Route path={"/"} component={Home} />
+      <Route path={"/faq"} component={FAQ} />
+      <Route path={"/showcase"} component={Showcase} />
       <Route path={"/consulting"} component={Consulting} />
       <Route path={"/certification"} component={Certification} />
       <Route path={"/certification-status"} component={CertificationStatus} />
