@@ -1,159 +1,83 @@
 /*
- * Footer — Minimal, legal, links
- * Design: "The Director's Cut" — dark, clean, no clutter
+ * AI Film Academy — Global Footer
+ * Design: "The Director's Cut" — compact utility navigation with clear discovery paths.
+ * Pricing is intentionally absent; social and learning destinations remain easy to find.
  */
 
-import { useSkoolUrl } from "@/contexts/AffiliateLinkContext";
 const LOGO_URL = "https://d2xsxph8kpxj0f.cloudfront.net/310419663032668673/9znEqYZ2JpzLxCzomcgMbf/afa-logo-long_9672f3eb.png";
 
+const columns = [
+  {
+    heading: "Explore",
+    links: [
+      { label: "Home", href: "/" },
+      { label: "FAQ", href: "/faq" },
+      { label: "Showcase", href: "/showcase" },
+      { label: "Join AIFA", href: "https://www.skool.com/aifilmacademy/about", external: true },
+    ],
+  },
+  {
+    heading: "Learn & Follow",
+    links: [
+      { label: "Free Workshop", href: "https://workshop.aifilmacademy.com/", external: true },
+      { label: "YouTube", href: "https://www.youtube.com/channel/UC1zRjoLJcN4cuMLs_A7kIMg", external: true },
+      { label: "Instagram", href: "https://www.instagram.com/theaifilmacademy/", external: true },
+      { label: "Email Us", href: "mailto:hello@aifilmacademy.com" },
+    ],
+  },
+  {
+    heading: "Legal",
+    links: [
+      { label: "Privacy Policy", href: "/privacy" },
+      { label: "Terms of Service", href: "/terms" },
+    ],
+  },
+];
+
 export default function Footer() {
-  const skoolUrl = useSkoolUrl();
   return (
-    <footer className="bg-[#060606] border-t border-white/5">
-      <div className="container py-12">
-        <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-8 mb-12">
-          {/* Brand */}
-          <div className="sm:col-span-2 md:col-span-1">
-            <img
-              src={LOGO_URL}
-              alt="AI Film Academy (AIFA)"
-              className="h-10 w-auto object-contain mb-4"
-              style={{ maxWidth: '160px', filter: 'brightness(0) invert(1) opacity(0.7)' }}
-            />
-            <p className="text-white/40 text-sm leading-relaxed max-w-xs" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-              The professional standard for AI filmmaking education. Join 1,100+ creators mastering the future of film.
+    <footer className="border-t border-white/8 bg-[#050505]">
+      <div className="container py-12 md:py-16">
+        <div className="grid gap-12 lg:grid-cols-[1.2fr_1.8fr]">
+          <div>
+            <a href="/" className="inline-flex items-center" aria-label="AI Film Academy home">
+              <img
+                src={LOGO_URL}
+                alt="AI Film Academy"
+                className="h-11 w-auto object-contain opacity-75"
+                style={{ maxWidth: "190px", filter: "brightness(0) invert(1)" }}
+              />
+            </a>
+            <p className="mt-5 max-w-sm text-sm leading-6 text-white/40">
+              A clear workflow, expert feedback, and a creative community for building premium AI films—and a portfolio worth sharing.
             </p>
           </div>
 
-          {/* Academy */}
-          <div>
-            <h4
-              className="text-white/70 text-xs font-semibold mb-4 uppercase tracking-widest"
-              style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.6rem" }}
-            >
-              Academy
-            </h4>
-            <div className="flex flex-col gap-2">
-              {[
-                { label: "What You Get", href: "#what-you-get" },
-                { label: "The Workflow", href: "#workflow" },
-                { label: "Pricing", href: "#pricing" },
-                { label: "Join Now", href: skoolUrl, external: true },
-              ].map((link) => (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  target={link.external ? "_blank" : undefined}
-                  rel={link.external ? "noopener noreferrer" : undefined}
-                  className="text-sm text-white/40 hover:text-white/80 transition-colors"
-                  style={{ fontFamily: "'DM Sans', sans-serif" }}
-                >
-                  {link.label}
-                </a>
-              ))}
-            </div>
-          </div>
-
-          {/* Community */}
-          <div>
-            <h4
-              className="text-white/70 text-xs font-semibold mb-4 uppercase tracking-widest"
-              style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.6rem" }}
-            >
-              Community
-            </h4>
-            <div className="flex flex-col gap-2">
-              {[
-                { label: "Skool Community", href: skoolUrl, external: true },
-                { label: "YouTube Channel", href: "https://www.youtube.com/channel/UC1zRjoLJcN4cuMLs_A7kIMg", external: true },
-                { label: "Instagram", href: "https://www.instagram.com/theaifilmacademy/", external: true },
-              ].map((link) => (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm text-white/40 hover:text-white/80 transition-colors"
-                  style={{ fontFamily: "'DM Sans', sans-serif" }}
-                >
-                  {link.label}
-                </a>
-              ))}
-            </div>
-          </div>
-
-          {/* Legal */}
-          <div>
-            <h4
-              className="text-white/70 text-xs font-semibold mb-4 uppercase tracking-widest"
-              style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.6rem" }}
-            >
-              Legal
-            </h4>
-            <div className="flex flex-col gap-2">
-              {[
-                { label: "Privacy Policy", href: "/privacy" },
-                { label: "Terms of Service", href: "/terms" },
-                { label: "Contact Us", href: "mailto:hello@aifilmacademy.com" },
-              ].map((link) => (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  className="text-sm text-white/40 hover:text-white/80 transition-colors"
-                  style={{ fontFamily: "'DM Sans', sans-serif" }}
-                >
-                  {link.label}
-                </a>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Partners strip */}
-        <div className="pt-8 pb-8 border-t border-white/5">
-          <p
-            className="text-center text-white/20 text-xs uppercase tracking-[0.2em] mb-5"
-            style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.55rem" }}
-          >
-            Trusted Partners
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-8">
-            {[
-              { name: "Anthum", url: "https://anthum.ai", badge: "Creative Partner" },
-              { name: "Outskill", url: "https://www.outskill.com", badge: "Education Partner" },
-            ].map((p) => (
-              <a
-                key={p.name}
-                href={p.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 opacity-30 hover:opacity-60 transition-opacity"
-              >
-                <span
-                  className="text-white text-sm font-black"
-                  style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.08em" }}
-                >
-                  {p.name}
-                </span>
-                <span
-                  className="text-white/40 text-xs"
-                  style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.5rem", letterSpacing: "0.15em", textTransform: "uppercase" }}
-                >
-                  {p.badge}
-                </span>
-              </a>
+          <div className="grid gap-9 sm:grid-cols-3">
+            {columns.map((column) => (
+              <div key={column.heading}>
+                <h2 className="mb-4 font-mono text-[0.58rem] font-semibold uppercase tracking-[0.18em] text-white/65">{column.heading}</h2>
+                <div className="flex flex-col gap-2.5">
+                  {column.links.map((link) => (
+                    <a
+                      key={link.label}
+                      href={link.href}
+                      target={link.external ? "_blank" : undefined}
+                      rel={link.external ? "noopener noreferrer" : undefined}
+                      className="text-sm text-white/38 transition-colors hover:text-white/80"
+                    >
+                      {link.label}
+                    </a>
+                  ))}
+                </div>
+              </div>
             ))}
           </div>
         </div>
 
-        {/* Bottom bar */}
-        <div className="pt-6 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-white/25 text-xs" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            © {new Date().getFullYear()} AI Film Academy™ (AIFA). All rights reserved.
-          </p>
-          <p className="text-white/25 text-xs" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            Built for creators who refuse to fall behind.
-          </p>
+        <div className="mt-12 flex flex-col gap-5 border-t border-white/8 pt-7 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-xs text-white/22">© {new Date().getFullYear()} AI Film Academy™. All rights reserved.</p>
+          <p className="font-mono text-[0.55rem] uppercase tracking-[0.16em] text-white/20">Create · Improve · Build</p>
         </div>
       </div>
     </footer>

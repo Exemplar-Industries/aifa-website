@@ -2,28 +2,20 @@
  * AI Film Academy — Home Page (Landing Page)
  * Design: "The Director's Cut" — Cinematic Dark
  * Hero: Fullscreen video background — video IS the hero, text overlaid
- * Goal: Convert cold Meta Ads traffic → $19/month Skool subscription
+ * Goal: Route qualified visitors to the Skool About page or free workshop.
  *
- * CONVERSION-OPTIMIZED SECTION ORDER:
- * 1. Hero          — Fullscreen video background, headline, CTA
- * 2. StatsBar      — Quick credibility numbers
- * 3. Testimonials  — Google reviews while attention is highest
- * 4. Problem       — "AI filmmaking is overwhelming. We fixed that."
- * 5. Workflow      — "One Workflow. Three Steps." — the solution
- * 6. Pricing       — The close
- * 7. FinalCTA      — "The Decision" — last push
- * 8. FAQ           — Objection handling for those who scroll past the close
- * 9. Footer        — Links, legal, copyright
+ * LOCKED FOUR-SECTION ORDER:
+ * 1. Hero          — Existing fullscreen background video and composition preserved
+ * 2. Inside AIFA    — Create, Improve, Build, Participate progression
+ * 3. Results       — World Cup, B2B reach, metrics, reviews, testimonials
+ * 4. Start Here    — Skool primary path, free workshop secondary path
+ * Footer is utility navigation and does not count as a content section.
  */
 
 import Navbar from "@/components/Navbar";
-import StatsBar from "@/components/StatsBar";
-import TestimonialsSection from "@/components/TestimonialsSection";
-import ProblemSection from "@/components/ProblemSection";
-import WorkflowSection from "@/components/WorkflowSection";
-import PricingSection from "@/components/PricingSection";
-import FAQSection from "@/components/FAQSection";
-import FinalCTASection from "@/components/FinalCTASection";
+import InsideAFASection from "@/components/InsideAFASection";
+import ProofSection from "@/components/ProofSection";
+import StartHereSection from "@/components/StartHereSection";
 import Footer from "@/components/Footer";
 import { useSkoolUrl } from "@/contexts/AffiliateLinkContext";
 import { useRef, useEffect, useState } from "react";
@@ -151,40 +143,6 @@ function FullscreenHero() {
         className="relative flex flex-col items-center justify-center text-center h-full"
         style={{ zIndex: 10, padding: "0 1.5rem" }}
       >
-        {/* Eyebrow */}
-        <div
-          style={{
-            fontFamily: "'JetBrains Mono', monospace",
-            fontSize: "0.62rem",
-            letterSpacing: "0.22em",
-            textTransform: "uppercase",
-            color: "oklch(0.60 0.22 25)",
-            marginBottom: "1.2rem",
-            display: "flex",
-            alignItems: "center",
-            gap: "12px",
-            animation: "fade-up 0.5s ease 0.2s both",
-          }}
-        >
-          <span
-            style={{
-              display: "inline-block",
-              width: "28px",
-              height: "1.5px",
-              background: "oklch(0.58 0.22 25)",
-            }}
-          />
-          The Professional Standard for AI Video
-          <span
-            style={{
-              display: "inline-block",
-              width: "28px",
-              height: "1.5px",
-              background: "oklch(0.58 0.22 25)",
-            }}
-          />
-        </div>
-
         {/* Headline */}
         <h1
           style={{
@@ -199,7 +157,7 @@ function FullscreenHero() {
             animation: "fade-up 0.6s ease 0.3s both",
           }}
         >
-          Master AI Filmmaking.
+          Turn Impossible Ideas Into
           <br />
           <span
             style={{
@@ -209,7 +167,7 @@ function FullscreenHero() {
               display: "block",
             }}
           >
-            Upgrade Your Career.
+            Premium Video.
           </span>
         </h1>
 
@@ -226,15 +184,19 @@ function FullscreenHero() {
             animation: "fade-up 0.6s ease 0.45s both",
           }}
         >
-          Stop drowning in 12 different tools. Get{" "}
+          Turn your ideas into polished AI films, ads, trailers, and animation with{" "}
           <strong style={{ color: "rgba(245,245,240,0.95)" }}>
             one clear workflow
           </strong>
-          , a proven tech stack, and a{" "}
+          ,{" "}
           <strong style={{ color: "rgba(245,245,240,0.95)" }}>
-            LinkedIn certification
-          </strong>{" "}
-          — all for less than a Netflix subscription.
+            expert feedback
+          </strong>
+          , and{" "}
+          <strong style={{ color: "rgba(245,245,240,0.95)" }}>
+            creative exercises
+          </strong>
+          .
         </p>
 
         {/* CTAs */}
@@ -249,17 +211,19 @@ function FullscreenHero() {
             className="btn-primary pulse-cta px-8 py-4 text-base font-bold"
             style={{ fontSize: "1rem", letterSpacing: "0.03em" }}
           >
-            Join the Academy — From $19/mo
+            Join the Program
           </a>
           <a
-            href="#workflow"
+            href="https://workshop.aifilmacademy.com/"
+            target="_blank"
+            rel="noopener noreferrer"
             className="btn-outline px-8 py-4 text-base font-semibold"
             style={{
               backdropFilter: "blur(8px)",
               background: "rgba(255,255,255,0.06)",
             }}
           >
-            See What's Inside
+            Attend a Free Workshop
           </a>
         </div>
 
@@ -272,9 +236,9 @@ function FullscreenHero() {
           }}
         >
           {[
-            "Cancel anytime",
-            "1,100+ active creators",
-            "Google Certified AI Educator",
+            "Expert Feedback & Support",
+            "30,000+ global students",
+            "Events, challenges & certification",
           ].map((item) => (
             <span
               key={item}
@@ -342,13 +306,9 @@ export default function Home() {
     <div style={{ background: "#080808", minHeight: "100vh" }}>
       <Navbar />
       <FullscreenHero />
-      <StatsBar />
-      <TestimonialsSection />
-      <ProblemSection />
-      <WorkflowSection />
-      <PricingSection />
-      <FinalCTASection />
-      <FAQSection />
+      <InsideAFASection />
+      <ProofSection />
+      <StartHereSection />
       <Footer />
     </div>
   );

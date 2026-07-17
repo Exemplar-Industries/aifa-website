@@ -106,37 +106,6 @@ export default function HeroSection() {
         {/* Top label + headline */}
         <div className="container pt-28 pb-6 md:pt-32 md:pb-8">
           <div className="text-center">
-            {/* Eyebrow label */}
-            <div
-              className="inline-flex items-center gap-3 mb-5"
-              style={{
-                fontFamily: "'JetBrains Mono', monospace",
-                fontSize: "0.65rem",
-                letterSpacing: "0.2em",
-                textTransform: "uppercase",
-                color: "oklch(0.58 0.22 25)",
-                animation: "fade-up 0.5s ease forwards",
-              }}
-            >
-              <span
-                style={{
-                  display: "inline-block",
-                  width: "28px",
-                  height: "1.5px",
-                  background: "oklch(0.58 0.22 25)",
-                }}
-              />
-              The Professional Standard for AI Video
-              <span
-                style={{
-                  display: "inline-block",
-                  width: "28px",
-                  height: "1.5px",
-                  background: "oklch(0.58 0.22 25)",
-                }}
-              />
-            </div>
-
             {/* Main headline */}
             <h1
               style={{

@@ -119,7 +119,7 @@ export default function TestimonialsSection() {
                   ))}
                 </div>
                 <p className="text-white/40 text-xs" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-                  5.0 · 33 Google reviews
+                  5.0 · 33 member ratings
                 </p>
               </div>
             </div>

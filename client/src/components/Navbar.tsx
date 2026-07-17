@@ -1,13 +1,21 @@
 /*
- * Navbar — Minimal, sticky, dark
- * Design: "The Director's Cut" — transparent on top, dark on scroll
+ * AI Film Academy — Global Navigation
+ * Design: "The Director's Cut" — transparent over cinematic heroes, solid on scroll.
+ * IA: Home, FAQ, Showcase, and one clear Free Workshop conversion action. Showcase is ready for six verified creations.
  */
-import { useState, useEffect } from "react";
-import { useSkoolUrl } from "@/contexts/AffiliateLinkContext";
+
+import { useEffect, useState } from "react";
+import { ExternalLink, Menu, X } from "lucide-react";
+
 const LOGO_URL = "https://d2xsxph8kpxj0f.cloudfront.net/310419663032668673/9znEqYZ2JpzLxCzomcgMbf/afa-logo-long_9672f3eb.png";
 
+const navLinks = [
+  { label: "Home", href: "/" },
+  { label: "FAQ", href: "/faq" },
+  { label: "Showcase", href: "/showcase" },
+];
+
 export default function Navbar() {
-  const skoolUrl = useSkoolUrl();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -17,92 +25,69 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const navLinks = [
-    { label: "The System", href: "#workflow" },
-    { label: "Testimonials", href: "#testimonials" },
-    { label: "Pricing", href: "#pricing" },
-  ];
-
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? "bg-[#0A0A0A]/95 backdrop-blur-md border-b border-white/5"
-          : "bg-transparent"
+      className={`fixed inset-x-0 top-0 z-50 border-b transition-all duration-300 ${
+        scrolled || menuOpen ? "border-white/8 bg-[#080808]/95 backdrop-blur-xl" : "border-transparent bg-gradient-to-b from-black/55 to-transparent"
       }`}
     >
-      <div className="container flex items-center justify-between h-16 md:h-18">
-        {/* Logo */}
-        <a href="/" className="flex items-center gap-2 shrink-0">
+      <div className="container flex h-16 items-center justify-between md:h-[4.5rem]">
+        <a href="/" className="group flex shrink-0 items-center" aria-label="AI Film Academy home">
           <img
             src={LOGO_URL}
             alt="AI Film Academy"
-            className="h-10 w-auto object-contain"
-            style={{ maxWidth: '180px', filter: 'brightness(0) invert(1)' }}
+            className="h-10 w-auto object-contain transition-opacity duration-200 group-hover:opacity-80"
+            style={{ maxWidth: "180px", filter: "brightness(0) invert(1)" }}
           />
         </a>
 
-        {/* Desktop nav links */}
-        <div className="hidden md:flex items-center gap-6">
+        <div className="hidden items-center gap-7 md:flex">
           {navLinks.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              className="text-sm text-white/60 hover:text-white transition-colors duration-150 font-medium"
-              style={{ fontFamily: "'DM Sans', sans-serif" }}
-            >
+            <a key={link.href} href={link.href} className="text-sm font-medium text-white/58 transition-colors duration-150 hover:text-white">
               {link.label}
             </a>
           ))}
         </div>
 
-        {/* CTA Button */}
         <div className="flex items-center gap-3">
           <a
-            href={skoolUrl}
+            href="https://workshop.aifilmacademy.com/"
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-primary px-4 py-2 text-sm font-semibold hidden sm:flex"
+            className="btn-primary hidden items-center gap-2 px-4 py-2 text-sm font-semibold sm:inline-flex"
           >
-            Join for $19/mo
+            Free Workshop <ExternalLink className="h-3.5 w-3.5" />
           </a>
-          {/* Mobile menu button */}
           <button
-            className="md:hidden p-2 text-white/70 hover:text-white"
-            onClick={() => setMenuOpen(!menuOpen)}
-            aria-label="Toggle menu"
+            type="button"
+            className="inline-flex h-10 w-10 items-center justify-center text-white/72 transition-colors hover:text-white md:hidden"
+            onClick={() => setMenuOpen((open) => !open)}
+            aria-expanded={menuOpen}
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
           >
-            <div className="w-5 flex flex-col gap-1.5">
-              <span className={`block h-0.5 bg-current transition-all ${menuOpen ? "rotate-45 translate-y-2" : ""}`} />
-              <span className={`block h-0.5 bg-current transition-all ${menuOpen ? "opacity-0" : ""}`} />
-              <span className={`block h-0.5 bg-current transition-all ${menuOpen ? "-rotate-45 -translate-y-2" : ""}`} />
-            </div>
+            {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
         </div>
       </div>
 
-      {/* Mobile menu */}
       {menuOpen && (
-        <div className="md:hidden bg-[#0D0D0D] border-t border-white/5 px-5 py-4 flex flex-col gap-4">
-          {navLinks.map((link) => (
+        <div className="border-t border-white/8 bg-[#080808] md:hidden">
+          <div className="container flex flex-col py-5">
+            {navLinks.map((link) => (
+              <a key={link.href} href={link.href} className="border-b border-white/8 py-4 text-base font-medium text-white/72" onClick={() => setMenuOpen(false)}>
+                {link.label}
+              </a>
+            ))}
             <a
-              key={link.href}
-              href={link.href}
-              className="text-base text-white/70 hover:text-white transition-colors font-medium py-1"
+              href="https://workshop.aifilmacademy.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-primary mt-5 inline-flex items-center justify-center gap-2 px-5 py-3.5 text-base font-semibold"
               onClick={() => setMenuOpen(false)}
             >
-              {link.label}
+              Free Workshop <ExternalLink className="h-4 w-4" />
             </a>
-          ))}
-          <a
-            href={skoolUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-primary px-5 py-3 text-base font-semibold text-center mt-2"
-            onClick={() => setMenuOpen(false)}
-          >
-            Join for $19/mo
-          </a>
+          </div>
         </div>
       )}
     </nav>

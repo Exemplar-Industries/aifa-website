@@ -267,7 +267,7 @@ export default function CertificationStatus() {
               className="text-white text-xs font-bold"
               style={{ fontFamily: "'Bebas Neue', sans-serif" }}
             >
-              AFA
+              AIFA
             </span>
           </div>
           <span className="text-xs text-gray-400 uppercase tracking-widest font-mono">
@@ -303,7 +303,7 @@ export default function CertificationStatus() {
           {isTenureBlock
             ? "The AI Media Specialist Certification is reserved for members who have demonstrated real commitment to the craft. Monthly members unlock it automatically after 90 days — or you can fast-track it right now."
             : isNotFound
-            ? "We couldn't find an active AFA membership linked to that email. Join the community first, then come back to get certified."
+            ? "We couldn't find an active AIFA membership linked to that email. Join the community first, then come back to get certified."
             : "Your membership status doesn't currently qualify for certification access. Upgrade to unlock it instantly."}
         </p>
 
@@ -340,7 +340,7 @@ export default function CertificationStatus() {
             title="Become a Member First"
             description="The certification is exclusive to AI Film Academy members. Join now and start your journey — you'll unlock the certification test after 90 days, or instantly with an Annual plan."
             bullets={[
-              "Access to the full AFA curriculum",
+              "Access to the full AIFA curriculum",
               "Monthly plan: $19/month",
               "Annual plan: instant certification access",
               "Join 500+ AI filmmakers",
