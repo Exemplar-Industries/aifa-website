@@ -6,7 +6,6 @@ import {
   Copy,
   Instagram,
   Linkedin,
-  Mail,
 } from "lucide-react";
 
 /**
@@ -33,11 +32,6 @@ const actions = [
     label: "Instagram",
     href: "https://www.instagram.com/theaifilmacademy/",
     icon: Instagram,
-  },
-  {
-    label: "Email",
-    href: `mailto:${emailAddress}`,
-    icon: Mail,
   },
 ];
 
