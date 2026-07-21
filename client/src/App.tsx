@@ -14,6 +14,7 @@ import Invite from "./pages/Invite";
 import LiveExclusive from "./pages/LiveExclusive";
 import FAQ from "./pages/FAQ";
 import Showcase from "./pages/Showcase";
+import Connect from "./pages/Connect";
 
 function Router() {
   return (
@@ -21,6 +22,7 @@ function Router() {
       <Route path={"/"} component={Home} />
       <Route path={"/faq"} component={FAQ} />
       <Route path={"/showcase"} component={Showcase} />
+      <Route path={"/connect"} component={Connect} />
       <Route path={"/consulting"} component={Consulting} />
       <Route path={"/certification"} component={Certification} />
       <Route path={"/certification-status"} component={CertificationStatus} />
