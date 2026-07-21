@@ -49,7 +49,6 @@ const stats = [
   ["30,000+", "Global learners reached"],
   ["5+", "B2B Educational Partnerships"],
   ["1,100+", "Private Community Members"],
-  ["40+", "Countries represented"],
 ];
 
 function Stars() {
@@ -115,7 +114,7 @@ export default function ProofSection() {
               AI Film Academy has supported workshops, curriculum, mentorship, and AI media events across more than five Southern California organizations—reaching over 30,000 learners through live education in addition to the global Academy community.
             </p>
           </div>
-          <div className="mt-8 grid gap-px border border-white/10 bg-white/10 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-8 grid gap-px border border-white/10 bg-white/10 sm:grid-cols-3">
             {stats.map(([number, label]) => (
               <div key={label} className="bg-[#0A0A0A] p-6 md:p-8">
                 <p className="stat-number text-4xl text-white md:text-5xl">{number}</p>
