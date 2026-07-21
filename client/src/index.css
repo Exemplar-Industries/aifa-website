@@ -461,8 +461,10 @@
 .connect-copy-value {
   overflow: hidden;
   font-family: "DM Sans", sans-serif;
-  font-size: clamp(0.72rem, 1.2vw, 0.87rem);
-  line-height: 1.2;
+  font-size: clamp(0.92rem, 1.55vw, 1.06rem);
+  font-weight: 750;
+  letter-spacing: 0.01em;
+  line-height: 1.25;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -557,7 +559,7 @@
 
 .connect-links {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.8rem;
   padding: clamp(1.5rem, 4vw, 3.5rem);
   border-top: 1px solid #2c2a28;
@@ -620,8 +622,9 @@
   .connect-portrait {
     height: auto;
     min-height: 0;
-    aspect-ratio: 4 / 3;
-    object-position: center 30%;
+    aspect-ratio: auto;
+    object-fit: contain;
+    object-position: center;
   }
 
   .connect-summary,
