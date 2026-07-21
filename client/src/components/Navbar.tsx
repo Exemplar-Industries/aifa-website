@@ -1,7 +1,7 @@
 /*
  * AI Film Academy — Global Navigation
  * Design: "The Director's Cut" — transparent over cinematic heroes, solid on scroll.
- * IA: Home, FAQ, Showcase, and one clear Free Workshop conversion action. Showcase is ready for six verified creations.
+ * IA: Home, FAQ, and one clear Free Workshop conversion action. Showcase remains intentionally unlisted until the curated video launch.
  */
 
 import { useEffect, useState } from "react";
@@ -12,7 +12,6 @@ const LOGO_URL = "https://d2xsxph8kpxj0f.cloudfront.net/310419663032668673/9znEq
 const navLinks = [
   { label: "Home", href: "/" },
   { label: "FAQ", href: "/faq" },
-  { label: "Showcase", href: "/showcase" },
 ];
 
 export default function Navbar() {

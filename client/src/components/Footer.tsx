@@ -12,7 +12,6 @@ const columns = [
     links: [
       { label: "Home", href: "/" },
       { label: "FAQ", href: "/faq" },
-      { label: "Showcase", href: "/showcase" },
       { label: "Join AIFA", href: "https://www.skool.com/aifilmacademy/about", external: true },
     ],
   },
