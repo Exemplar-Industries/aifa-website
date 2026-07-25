@@ -181,6 +181,17 @@ async function startServer() {
   const app = express();
   const server = createServer(app);
 
+  // Redirect non-www to www, preserving full path and query string
+  app.use((req, res, next) => {
+    const host = req.headers.host || "";
+    if (host === "aifilmacademy.com" || host === "aifilmacademy.com:443") {
+      const redirectUrl = `https://www.aifilmacademy.com${req.originalUrl}`;
+      res.redirect(301, redirectUrl);
+      return;
+    }
+    next();
+  });
+
   // Raw body needed for Stripe webhook signature verification
   app.use("/api/stripe-webhook", express.raw({ type: "application/json" }));
 
