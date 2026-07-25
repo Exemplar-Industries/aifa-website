@@ -4,6 +4,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import axios from "axios";
 import crypto from "crypto";
+import fs from "fs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -394,6 +395,34 @@ async function startServer() {
 
     // Fallback (should not reach here)
     res.json({ eligible: false, reason: "not_active_member", rechecked: true, syncTriggered });
+  });
+
+  // Save edited slide HTML back to disk
+  app.post("/api/slides/save", async (req, res) => {
+    const { deck, slideId, html } = req.body ?? {};
+    const ALLOWED_DECKS = ["week1", "week4"];
+    if (!deck || !slideId || !html || !ALLOWED_DECKS.includes(deck)) {
+      res.status(400).json({ error: "Invalid request" });
+      return;
+    }
+    // Sanitize slideId — only allow alphanumeric, underscore, hyphen
+    if (!/^[a-zA-Z0-9_-]+$/.test(slideId)) {
+      res.status(400).json({ error: "Invalid slideId" });
+      return;
+    }
+    const staticPath =
+      process.env.NODE_ENV === "production"
+        ? path.resolve(__dirname, "public")
+        : path.resolve(__dirname, "..", "dist", "public");
+    const slidePath = path.join(staticPath, "slides", deck, `${slideId}.html`);
+    try {
+      await fs.promises.writeFile(slidePath, html, "utf8");
+      console.log(`[slide-save] Saved ${deck}/${slideId}.html`);
+      res.json({ ok: true });
+    } catch (err) {
+      console.error("[slide-save] Error:", err);
+      res.status(500).json({ error: "Failed to save slide" });
+    }
   });
 
   // Serve static files from dist/public in production
