@@ -15,6 +15,7 @@ import LiveExclusive from "./pages/LiveExclusive";
 import FAQ from "./pages/FAQ";
 import Showcase from "./pages/Showcase";
 import Connect from "./pages/Connect";
+import InternalLessons from "./pages/InternalLessons";
 
 function Router() {
   return (
@@ -29,6 +30,7 @@ function Router() {
       <Route path={"/lpv3"} component={LPV3} />
       <Route path={"/anthum-exclusive"} component={Invite} />
       <Route path={"/live-exclusive"} component={LiveExclusive} />
+      <Route path={"/internal/lessons"} component={InternalLessons} />
       <Route path={"/404"} component={NotFound} />
       <Route component={NotFound} />
     </Switch>
