@@ -12,8 +12,7 @@ const DECK_DATA: Record<string, { title: string; slides: string[]; folder: strin
       "slide_15","slide_16","slide_17","slide_18","slide_19","slide_20",
       "slide_21","slide_22","slide_23","slide_25","slide_24","slide_26",
       "slide_27","slide_28","slide_29","slide_31","slide_30","slide_32",
-      "slide_33","slide_34","slide_41","slide_42",
-      "slide_36","slide_37","slide_39","slide_40","slide_3"
+      "slide_33","slide_34","slide_35","slide_41","slide_42"
     ],
   },
   "week-4": {
@@ -54,7 +53,6 @@ export default function SlideViewer() {
         e.preventDefault();
         setCurrent((c) => Math.max(c - 1, 0));
       } else if (e.key === "Escape") {
-        if (document.exitFullscreen) document.exitFullscreen();
         setIsFullscreen(false);
       }
     };
@@ -164,7 +162,7 @@ export default function SlideViewer() {
         <iframe key={slideUrl} src={slideUrl} style={{ flex: 1, border: "none", width: "100%", height: "100%" }} title={`Slide ${current + 1}`} />
         <div style={{ position: "fixed", top: 16, right: 16, display: "flex", gap: 8, zIndex: 100 }}>
           <span style={{ color: "rgba(255,255,255,0.4)", fontSize: 12, fontFamily: "Montserrat, sans-serif", letterSpacing: 2, padding: "6px 12px" }}>{current + 1} / {total}</span>
-          <button onClick={(e) => { e.stopPropagation(); if (document.exitFullscreen) document.exitFullscreen(); setIsFullscreen(false); }}
+          <button onClick={(e) => { e.stopPropagation(); setIsFullscreen(false); }}
             style={{ background: "rgba(0,0,0,0.7)", color: "#fff", border: "1px solid #444", padding: "6px 16px", fontSize: 11, fontWeight: 700, letterSpacing: 3, cursor: "pointer", fontFamily: "Montserrat, sans-serif" }}>EXIT</button>
         </div>
         <div style={{ position: "fixed", bottom: 16, left: "50%", transform: "translateX(-50%)", color: "rgba(255,255,255,0.2)", fontSize: 11, fontFamily: "Montserrat, sans-serif", letterSpacing: 2 }}>CLICK OR ← → TO NAVIGATE · ESC TO EXIT</div>
@@ -207,12 +205,7 @@ export default function SlideViewer() {
             </button>
 
             {/* Present */}
-            <button onClick={() => {
-                const el = document.documentElement;
-                if (el.requestFullscreen) { el.requestFullscreen(); }
-                else if ((el as any).webkitRequestFullscreen) { (el as any).webkitRequestFullscreen(); }
-                setIsFullscreen(true);
-              }}
+            <button onClick={() => setIsFullscreen(true)}
               style={{ background: "#1a1a1a", color: "#ccc", border: "1px solid #333", padding: "6px 18px", fontSize: 11, fontWeight: 700, letterSpacing: 3, cursor: "pointer", fontFamily: "Montserrat, sans-serif" }}>
               PRESENT
             </button>
