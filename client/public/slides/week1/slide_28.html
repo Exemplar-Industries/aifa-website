@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            background-color: #000000;
+            background-image: radial-gradient(circle at center left, #1a0000 0%, #000000 100%);
+            position: relative;
+            font-family: 'Montserrat', sans-serif;
+            color: #ffffff;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .grain {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: url('data:image/svg+xml;utf8,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)" opacity="0.05"/%3E%3C/svg%3E');
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .letterbox-top, .letterbox-bottom {
+            position: absolute;
+            left: 0; right: 0; height: 40px;
+            background: #000; z-index: 2;
+        }
+        .letterbox-top { top: 0; }
+        .letterbox-bottom { bottom: 0; }
+
+        .header {
+            position: relative;
+            z-index: 3;
+            padding-top: 80px;
+            padding-left: 80px;
+            padding-right: 80px;
+        }
+
+        .lesson-tag {
+            color: #E31E24;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 48px;
+            font-weight: 900;
+            text-transform: uppercase;
+            line-height: 1.1;
+            margin-bottom: 20px; /* reduced from 30px */
+            border-left: 8px solid #E31E24;
+            padding-left: 24px;
+        }
+
+        .content-area {
+            position: relative;
+            z-index: 3;
+            display: flex;
+            padding-left: 80px;
+            padding-right: 80px;
+            gap: 40px; /* reduced from 50px */
+            align-items: flex-start; /* don't stretch columns to save space */
+            flex-grow: 1;
+            margin-bottom: 20px; /* reduced */
+        }
+
+        .left-col {
+            flex: 0.45;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .number-block {
+            background-color: #E31E24;
+            color: #0a0a0a;
+            padding: 20px; /* reduced from 30px */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border: 2px solid #E31E24;
+            margin-bottom: 20px; /* reduced */
+        }
+
+        .big-number {
+            font-size: 80px; /* reduced from 100px */
+            font-weight: 900;
+            line-height: 1;
+            margin-bottom: 10px;
+        }
+
+        .number-text {
+            font-size: 20px; /* reduced */
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .quote-text {
+            font-size: 22px; /* reduced */
+            line-height: 1.4;
+            color: #ffffff;
+            font-weight: 700;
+            font-style: italic;
+            border-left: 4px solid #E31E24;
+            padding-left: 20px;
+        }
+
+        .right-col {
+            flex: 0.55;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        .bullet-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px; /* reduced from 20px */
+        }
+
+        .bullet-list li {
+            font-size: 18px; /* reduced */
+            line-height: 1.4;
+            display: flex;
+            align-items: flex-start;
+            color: #e0e0e0;
+            background-color: rgba(255, 255, 255, 0.03);
+            padding: 16px; /* reduced from 20px */
+            border-left: 4px solid #333333;
+        }
+
+        .bullet-list li i {
+            color: #E31E24;
+            font-size: 20px; /* reduced */
+            margin-top: 2px;
+            margin-right: 16px;
+            min-width: 24px;
+            text-align: center;
+        }
+
+        .bullet-list li strong {
+            color: #ffffff;
+            font-weight: 700;
+            display: block;
+            margin-bottom: 4px; /* reduced */
+            font-size: 20px; /* reduced */
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <div class="grain"></div>
+        <div class="letterbox-top"></div>
+        
+        <div class="header">
+            <div class="lesson-tag">The Manifesto</div>
+            <h2>Principle 5: Stay Curious</h2>
+        </div>
+
+        <div class="content-area">
+            <div class="left-col">
+                <div class="number-block">
+                    <div class="big-number">05</div>
+                    <div class="number-text">Principle</div>
+                </div>
+                <div class="quote-text">
+                    "The AI landscape changes weekly. Curiosity is your greatest competitive advantage."
+                </div>
+            </div>
+            
+            <div class="right-col">
+                <ul class="bullet-list">
+                    <li>
+                        <i class="fas fa-compass"></i>
+                        <div>
+                            <strong>Embrace the Unknown</strong>
+                            <span>Don't be intimidated by new tools or updates. Explore them with an open mind and a willingness to break things.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fas fa-sync-alt"></i>
+                        <div>
+                            <strong>Continuous Learning</strong>
+                            <span>Dedicate time every week to test new workflows, prompts, and models outside of your main projects.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fas fa-users"></i>
+                        <div>
+                            <strong>Community Engagement</strong>
+                            <span>Share your findings and learn from what others in the AI Film Academy are discovering. We evolve together.</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="letterbox-bottom"></div>
+    </div>
+</body>
+</html>

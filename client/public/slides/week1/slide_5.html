@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            background-color: #000000;
+            background-image: radial-gradient(circle at center right, #1a0000 0%, #000000 100%);
+            position: relative;
+            font-family: 'Montserrat', sans-serif;
+            color: #ffffff;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .grain {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: url('data:image/svg+xml;utf8,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)" opacity="0.05"/%3E%3C/svg%3E');
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .letterbox-top, .letterbox-bottom {
+            position: absolute;
+            left: 0; right: 0; height: 40px;
+            background: #000; z-index: 2;
+        }
+        .letterbox-top { top: 0; }
+        .letterbox-bottom { bottom: 0; }
+
+        .header {
+            position: relative;
+            z-index: 3;
+            padding-top: 80px; /* keep as required */
+            padding-left: 48px;
+            padding-right: 48px;
+        }
+
+        .lesson-tag {
+            color: #E31E24;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 44px;
+            font-weight: 900;
+            text-transform: uppercase;
+            line-height: 1.2;
+            margin-bottom: 18px;
+            border-left: 8px solid #E31E24;
+            padding-left: 24px;
+            max-width: 1000px;
+        }
+
+        .content-area {
+            position: relative;
+            z-index: 3;
+            display: flex;
+            padding-left: 48px;
+            padding-right: 48px;
+            gap: 40px;
+            align-items: flex-start;
+            flex-grow: 1;
+            padding-bottom: 20px;
+        }
+
+        .left-col {
+            flex: 0.65;
+        }
+
+        .right-col {
+            flex: 0.35;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .body-text {
+            font-size: 22px;
+            line-height: 1.6;
+            color: #cccccc;
+            margin-bottom: 12px;
+            font-weight: 400;
+        }
+
+        .bullet-list {
+            list-style: none;
+            margin-top: 12px;
+        }
+
+        .bullet-list li {
+            font-size: 20px;
+            line-height: 1.5;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: flex-start;
+            color: #e0e0e0;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 10px 14px;
+            border-left: 2px solid rgba(227, 30, 36, 0.3);
+        }
+
+        .bullet-list li.highlight-item {
+            border-left: 4px solid #E31E24;
+            background: rgba(227, 30, 36, 0.1);
+            color: #ffffff;
+            font-weight: 700;
+        }
+
+        .bullet-list li i {
+            color: #E31E24;
+            font-size: 20px;
+            margin-top: 4px;
+            margin-right: 12px;
+        }
+
+        .icon-container {
+            font-size: 180px;
+            color: #E31E24;
+            text-shadow: 0 0 60px rgba(227, 30, 36, 0.4);
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <div class="grain"></div>
+        <div class="letterbox-top"></div>
+        
+        <div class="header">
+            <div class="lesson-tag">The Opportunity Window</div>
+            <h2>Early Movers in AI Film Will Define the Next Decade of Storytelling</h2>
+        </div>
+
+        <div class="content-area">
+            <div class="left-col">
+                <p class="body-text">
+                    We are in the "early adopter" phase of AI filmmaking. The creators who learn these tools now — and build a portfolio — will be positioned as experts when the mainstream catches up.
+                </p>
+                
+                <ul class="bullet-list">
+                    <li><i class="fas fa-chart-line"></i> AI filmmaking job postings are growing month over month</li>
+                    <li><i class="fas fa-building"></i> Brands need AI-generated content at scale — and they're paying for it</li>
+                    <li><i class="fas fa-exchange-alt"></i> The skills you learn here are transferable across advertising, entertainment, and social media</li>
+                    <li class="highlight-item"><i class="fas fa-exclamation-circle"></i> This is not a trend. It is a permanent shift in how visual media is made.</li>
+                </ul>
+            </div>
+            
+            <div class="right-col">
+                <div class="icon-container">
+                    <i class="fas fa-door-open"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="letterbox-bottom"></div>
+    </div>
+</body>
+</html>

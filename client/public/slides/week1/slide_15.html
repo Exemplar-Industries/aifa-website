@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            background-color: #000000;
+            background-image: radial-gradient(circle at center left, #1a0000 0%, #000000 100%);
+            position: relative;
+            font-family: 'Montserrat', sans-serif;
+            color: #ffffff;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+.grain {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: url('data:image/svg+xml;utf8,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)" opacity="0.05"/%3E%3C/svg%3E');
+            pointer-events: none;
+            z-index: 1;
+        }
+.letterbox-top, .letterbox-bottom {
+            position: absolute;
+            left: 0; right: 0; height: 40px;
+            background: #000; z-index: 2;
+        }
+        .letterbox-top { top: 0; }
+        .letterbox-bottom { bottom: 0; }
+.header {
+            position: relative;
+            z-index: 3;
+            padding-top: 80px;
+            padding-left: 80px;
+            padding-right: 80px;
+        }
+.lesson-tag {
+            color: #E31E24;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+h2 {
+            font-size: 38px;
+            font-weight: 900;
+            text-transform: uppercase;
+            line-height: 1.2;
+            margin-bottom: 30px;
+            border-left: 8px solid #E31E24;
+            padding-left: 24px;
+            max-width: 1100px;
+        }
+.content-area {
+            position: relative;
+            z-index: 3;
+            padding-left: 80px;
+            padding-right: 80px;
+            display: flex;
+            gap: 30px;
+            align-items: flex-start;
+            /* removed flex-grow to avoid stretching to full container height */
+            padding-bottom: 12px;
+        }
+.left-col {
+            flex: 0.4;
+            display: flex;
+            flex-direction: column;
+        }
+.body-text {
+            font-size: 22px;
+            line-height: 1.6;
+            color: #cccccc;
+            font-weight: 400;
+            margin-bottom: 16px;
+        }
+.highlight {
+            color: #ffffff;
+            font-weight: 700;
+        }
+.visual-block {
+            background-color: #E31E24;
+            border: 2px solid #E31E24;
+            padding: 20px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            /* prevent the block from stretching to fill column */
+            align-self: flex-start;
+            margin-bottom: 12px;
+        }
+.visual-block i {
+            font-size: 60px;
+            color: #0a0a0a;
+            margin-bottom: 12px;
+        }
+.visual-block span {
+            font-size: 28px;
+            font-weight: 900;
+            color: #0a0a0a;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            line-height: 1;
+        }
+.right-col {
+            flex: 0.6;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+.reason-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+.reason-item {
+            display: flex;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.03);
+            border-left: 4px solid #E31E24;
+            padding: 10px 16px;
+        }
+.reason-icon {
+            color: #E31E24;
+            font-size: 24px;
+            min-width: 36px;
+            text-align: center;
+            margin-right: 12px;
+        }
+.reason-content {
+            display: flex;
+            flex-direction: column;
+        }
+.reason-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+.reason-desc {
+            font-size: 18px;
+            color: #aaaaaa;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body><div class="slide-container">
+        <div class="grain"></div>
+        <div class="letterbox-top"></div>
+<div class="header">
+            <div class="lesson-tag">Why Google Flow</div>
+            <h2>Google Flow Is the Most Consistent, Accessible, and Future-Proof Platform</h2>
+        </div>
+<div class="content-area">
+            <div class="left-col">
+                <p class="body-text">
+                    With so many tools available, we had to make a choice. <span class="highlight">Google Flow</span> is our primary platform for this course — and here is exactly why.
+                </p>
+                <div class="visual-block">
+                    <i class="fas fa-layer-group"></i>
+                    <span>Primary<br>Engine</span>
+                </div>
+            </div>
+<div class="right-col">
+                <div class="reason-list">
+                    <div class="reason-item">
+                        <i class="fas fa-cubes reason-icon"></i>
+                        <div class="reason-content">
+                            <div class="reason-title">Integrated Ecosystem</div>
+                            <div class="reason-desc">NBPro (unlimited images) + Veo 3 (video) in one platform.</div>
+                        </div>
+                    </div>
+<div class="reason-item">
+                        <i class="fas fa-server reason-icon"></i>
+                        <div class="reason-content">
+                            <div class="reason-title">Consistency</div>
+                            <div class="reason-desc">Google's infrastructure means fewer outages and reliable output quality.</div>
+                        </div>
+                    </div>
+<div class="reason-item">
+                        <i class="fas fa-unlock-alt reason-icon"></i>
+                        <div class="reason-content">
+                            <div class="reason-title">Accessibility</div>
+                            <div class="reason-desc">Free tier available, no specialized hardware required.</div>
+                        </div>
+                    </div>
+<div class="reason-item">
+                        <i class="fas fa-film reason-icon"></i>
+                        <div class="reason-content">
+                            <div class="reason-title">Cinematic Quality</div>
+                            <div class="reason-desc">Veo 3 produces premium-quality video with synchronized audio. You can produce up to 50 video generations for only $20</div>
+                        </div>
+                    </div>
+<div class="reason-item">
+                        <i class="fas fa-rocket reason-icon"></i>
+                        <div class="reason-content">
+                            <div class="reason-title">Future-Proof</div>
+                            <div class="reason-desc">Google's investment in AI media is among the largest in the world.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+<div class="letterbox-bottom"></div>
+    </div>
+</body>
+</html>

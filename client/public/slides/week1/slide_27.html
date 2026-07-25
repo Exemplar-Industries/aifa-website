@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            background-color: #000000;
+            background-image: radial-gradient(circle at center right, #1a0000 0%, #000000 100%);
+            position: relative;
+            font-family: 'Montserrat', sans-serif;
+            color: #ffffff;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+.grain { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-image: url('data:image/svg+xml;utf8,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)" opacity="0.05"/%3E%3C/svg%3E'); pointer-events: none; z-index: 1; }
+.letterbox-top, .letterbox-bottom { position: absolute; left: 0; right: 0; height: 40px; background: #000; z-index: 2; }
+        .letterbox-top { top: 0; }
+        .letterbox-bottom { bottom: 0; }
+.header { position: relative; z-index: 3; padding-top: 80px; padding-left: 80px; padding-right: 80px; }
+.lesson-tag { color: #E31E24; font-size: 14px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 10px; }
+h2 { font-size: 48px; font-weight: 900; text-transform: uppercase; line-height: 1.1; margin-bottom: 24px; border-left: 8px solid #E31E24; padding-left: 24px; }
+.content-area {
+            position: relative;
+            z-index: 3;
+            display: flex;
+            padding-left: 80px;
+            padding-right: 80px;
+            gap: 30px;
+            align-items: flex-start; /* avoid forcing equal column heights */
+            margin-bottom: 20px; /* reduced to save vertical space */
+        }
+.left-col { flex: 0.4; display: flex; flex-direction: column; }
+.statement-block {
+            background-color: #E31E24;
+            color: #0a0a0a;
+            padding: 20px; /* reduced from 40px */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border: 4px solid #E31E24;
+        }
+.quote-icon { color: #0a0a0a; font-size: 48px; margin-bottom: 12px; }
+.statement-text { font-size: 28px; line-height: 1.4; font-weight: 900; text-transform: uppercase; }
+.right-col { flex: 0.6; display: flex; flex-direction: column; justify-content: flex-start; }
+.intro-text { font-size: 22px; line-height: 1.6; color: #cccccc; margin-bottom: 16px; font-weight: 400; }
+.bullet-list {
+            list-style: none;
+            display: grid; /* changed to grid to reduce vertical stacking */
+            grid-template-columns: 1fr 1fr;
+            gap: 12px 20px; /* tightened row-gap to save space */
+            align-items: start;
+        }
+.bullet-list li {
+            font-size: 20px;
+            line-height: 1.5;
+            display: flex;
+            align-items: flex-start;
+            color: #e0e0e0;
+            background-color: rgba(255, 255, 255, 0.03);
+            padding: 12px; /* reduced from 20px */
+            border-left: 4px solid #333333;
+        }
+.bullet-list li i { color: #E31E24; font-size: 24px; margin-top: 0; margin-right: 16px; min-width: 30px; text-align: center; }
+.bullet-list li strong { color: #ffffff; font-weight: 700; display: block; margin-bottom: 6px; font-size: 22px; text-transform: uppercase; letter-spacing: 1px; }
+    </style>
+</head>
+<body><div class="slide-container">
+        <div class="grain"></div>
+        <div class="letterbox-top"></div>
+<div class="header">
+            <div class="lesson-tag">The Manifesto</div>
+            <h2>Principle 4: Build in Public</h2>
+        </div>
+<div class="content-area">
+            <div class="left-col">
+                <div class="statement-block">
+                    <i class="fas fa-bullhorn quote-icon"></i>
+                    <div class="statement-text">
+                        "Your portfolio is your resume. Nobody cares about your degree; they care about what you published yesterday."
+                    </div>
+                </div>
+            </div>
+<div class="right-col" style="transform: translate(0px, -11px);">
+                <p class="intro-text">The AI community moves too fast to work in isolation. If you hide your work until it's perfect, you will be left behind.</p>
+<ul class="bullet-list">
+                    <li>
+                        <i class="fas fa-share-alt"></i>
+                        <div>
+                            <strong>Share the Process</strong>
+                            <span>People connect with the journey. Post your failures, your prompts, and your work-in-progress.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fas fa-comments"></i>
+                        <div>
+                            <strong>Embrace Feedback</strong>
+                            <span>The community will spot flaws you missed and suggest techniques you haven't tried.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fas fa-globe"></i>
+                        <div>
+                            <strong>Attract Opportunity</strong>
+                            <span>When you build in public, clients and collaborators find you. Visibility creates luck.</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+<div class="letterbox-bottom"></div>
+    </div>
+</body>
+</html>

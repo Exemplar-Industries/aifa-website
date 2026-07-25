@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            background-color: #000000;
+            background-image: radial-gradient(circle at center, #1a0000 0%, #000000 100%);
+            position: relative;
+            font-family: 'Montserrat', sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #ffffff;
+            overflow: hidden;
+        }
+        .grain {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: url('data:image/svg+xml;utf8,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)" opacity="0.05"/%3E%3C/svg%3E');
+            pointer-events: none;
+            z-index: 1;
+        }
+        .letterbox-top, .letterbox-bottom {
+            position: absolute;
+            left: 0; right: 0; height: 40px; background: #000; z-index: 2;
+        }
+        .letterbox-top { top: 0; }
+        .letterbox-bottom { bottom: 0; }
+        .content-wrapper {
+            position: relative; z-index: 3; text-align: center; padding: 0 100px; width: 100%;
+        }
+        .lesson-number {
+            color: #E31E24; font-size: 24px; font-weight: 700; letter-spacing: 6px; text-transform: uppercase; margin-bottom: 20px; position: relative; display: inline-block;
+        }
+        .main-title {
+            font-size: 72px; font-weight: 900; line-height: 1.1; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 30px; text-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        }
+        .subtitle {
+            font-size: 24px; font-weight: 400; color: #aaaaaa; max-width: 800px; margin: 0 auto; line-height: 1.6;
+        }
+        .grid-layout {
+            display: flex; gap: 40px; justify-content: center; margin-top: 40px; width: 100%;
+        }
+        .card {
+            background: rgba(20, 0, 0, 0.6); border: 1px solid #330000; padding: 40px; border-radius: 8px; flex: 1; text-align: left; position: relative; overflow: hidden;
+        }
+        .card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: #E31E24;
+        }
+        .card h3 {
+            font-size: 28px; font-weight: 700; margin-bottom: 20px; color: #E31E24;
+        }
+        .card p {
+            font-size: 18px; color: #cccccc; line-height: 1.6; margin-bottom: 15px;
+        }
+        .card ul {
+            list-style: none;
+        }
+        .card ul li {
+            font-size: 18px; color: #cccccc; line-height: 1.6; margin-bottom: 10px; position: relative; padding-left: 20px;
+        }
+        .card ul li::before {
+            content: '•'; position: absolute; left: 0; color: #E31E24; font-weight: bold;
+        }
+        .highlight { color: #E31E24; font-weight: 700; }
+    </style>
+</head>
+<body><div class="slide-container">
+        <div class="grain"></div>
+        <div class="letterbox-top"></div>
+        <div class="content-wrapper">
+            <div class="lesson-number">THE STATE OF AI MEDIA</div>
+            <h1 class="main-title">Phase 1: Pre-Production</h1>
+    <div class="grid-layout">
+        <div class="card">
+            <h3>Objective</h3>
+            <p>Define the central concept of your story.</p>
+            <h3 style="margin-top: 30px;">Tools</h3>
+            <p>Google Docs, Canva</p>
+        </div>
+        <div class="card">
+            <h3>Tasks</h3>
+            <ul>
+                <li>Write a compelling Script</li>
+                <li>Create a Character Sheet<br>Storyboard</li>
+            </ul>
+        </div>
+    </div>
+        </div>
+        <div class="letterbox-bottom"></div>
+    </div>
+</body>
+</html>

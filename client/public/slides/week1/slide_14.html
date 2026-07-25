@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            background-color: #000000;
+            background-image: radial-gradient(circle at center, #1a0000 0%, #000000 100%);
+            position: relative;
+            font-family: 'Montserrat', sans-serif;
+            color: #ffffff;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+.grain {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: url('data:image/svg+xml;utf8,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)" opacity="0.05"/%3E%3C/svg%3E');
+            pointer-events: none;
+            z-index: 1;
+        }
+.letterbox-top, .letterbox-bottom {
+            position: absolute;
+            left: 0; right: 0; height: 40px;
+            background: #000; z-index: 2;
+        }
+        .letterbox-top { top: 0; }
+        .letterbox-bottom { bottom: 0; }
+.header {
+            position: relative;
+            z-index: 3;
+            padding-top: 80px;
+            padding-left: 80px;
+            padding-right: 80px;
+        }
+.lesson-tag {
+            color: #E31E24;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+h2 {
+            font-size: 44px;
+            font-weight: 900;
+            text-transform: uppercase;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            border-left: 8px solid #E31E24;
+            padding-left: 24px;
+        }
+.content-area {
+            position: relative;
+            z-index: 3;
+            padding-left: 80px;
+            padding-right: 80px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+.custom-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 0; /* reduced from 10px to remove extra gap and avoid overflow */
+            background-color: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+.custom-table th {
+            background-color: rgba(227, 30, 36, 0.1);
+            color: #E31E24;
+            font-size: 16px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            padding: 12px 20px; /* reduced vertical padding to save height */
+            text-align: left;
+            border-top: 4px solid #E31E24;
+            border-bottom: 2px solid #E31E24;
+        }
+.custom-table td {
+            padding: 12px 20px; /* reduced vertical padding to save height */
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 20px;
+            color: #e0e0e0;
+            vertical-align: middle;
+        }
+.custom-table tr:last-child td {
+            border-bottom: 2px solid rgba(227, 30, 36, 0.3);
+        }
+.custom-table tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.02);
+        }
+.cat-col {
+            color: #888888 !important;
+            font-size: 14px !important;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            width: 20%;
+        }
+.tool-col {
+            color: #ffffff !important;
+            font-weight: 700;
+            width: 35%;
+            font-size: 22px !important;
+        }
+.why-col {
+            color: #cccccc !important;
+            width: 45%;
+            line-height: 1.4;
+        }
+.tool-icon {
+            color: #E31E24;
+            margin-right: 12px;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body><div class="slide-container">
+        <div class="grain"></div>
+        <div class="letterbox-top"></div>
+<div class="header">
+            <div class="lesson-tag">Best-in-Class Tools 2025</div>
+            <h2>These Are the Tools That<br>Are Winning Right Now</h2>
+        </div>
+<div class="content-area">
+            <table class="custom-table">
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Tool</th>
+                        <th>Why It Matters</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="cat-col">AI Images</td>
+                        <td class="tool-col" style="width: 420.482px; min-width: 420.482px; max-width: 420.482px; transform: translate(0px, 0px);"><i class="fas fa-image tool-icon"></i>Nano Banana Pro/GPT Image</td>
+                        <td class="why-col">Consistent, photorealistic, free tier</td>
+                    </tr>
+                    <tr>
+                        <td class="cat-col">AI Images</td>
+                        <td class="tool-col"><i class="fas fa-paint-brush tool-icon"></i>Midjourney</td>
+                        <td class="why-col">Best for cinematic art direction</td>
+                    </tr>
+                    <tr>
+                        <td class="cat-col">AI Video</td>
+                        <td class="tool-col"><i class="fas fa-video tool-icon"></i>Google Veo 3</td>
+                        <td class="why-col">Cinematic quality + synchronized audio</td>
+                    </tr>
+                    <tr>
+                        <td class="cat-col">AI Video</td>
+                        <td class="tool-col"><i class="fas fa-bolt tool-icon"></i>Kling AI</td>
+                        <td class="why-col">Best for realistic motion</td>
+                    </tr>
+                    <tr>
+</tr>
+                    <tr>
+                        <td class="cat-col">Editing</td>
+                        <td class="tool-col"><i class="fas fa-cut tool-icon"></i>CapCut</td>
+                        <td class="why-col">Fast, free, mobile-friendly</td>
+                    </tr>
+                    <tr>
+                        <td class="cat-col">Editing</td>
+                        <td class="tool-col"><i class="fas fa-layer-group tool-icon"></i>Adobe After Effects</td>
+                        <td class="why-col">Professional VFX</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+<div class="letterbox-bottom"></div>
+    </div>
+</body>
+</html>

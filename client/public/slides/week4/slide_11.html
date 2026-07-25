@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expect Success</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background-color: #000; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow: hidden; }
+        .slide-container { 
+            width: 1280px; 
+            min-height: 720px; 
+            background-color: #0a0a0a; 
+            background-image: radial-gradient(circle at top left, #1a1a1a 0%, #000000 100%);
+            display: flex; 
+            flex-direction: column; 
+            position: relative;
+            color: #ffffff;
+        }
+        
+        /* Header Area */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 40px 50px 0 50px;
+            width: 100%;
+        }
+        .branding {
+            font-size: 18px;
+            font-weight: 700;
+            color: #E31E24;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .step-indicator {
+            font-size: 14px;
+            font-weight: 600;
+            color: #888;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* Main Content Area */
+        .main-content {
+            padding: 40px 80px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+        
+        h1 {
+            font-size: 42px;
+            font-weight: 800;
+            margin-bottom: 15px;
+            color: #ffffff;
+            border-bottom: 2px solid #E31E24;
+            padding-bottom: 10px;
+            display: inline-block;
+            align-self: flex-start;
+        }
+        
+        .intro-text {
+            font-size: 22px;
+            color: #cccccc;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        /* UI Wireframe / Content Boxes */
+        .ui-wireframe {
+            display: flex;
+            flex-direction: column;
+            border: 2px solid #333;
+            height: 350px;
+            background: #050505;
+            margin-bottom: 30px;
+        }
+        
+        .ui-top {
+            height: 70px;
+            border-bottom: 2px solid #333;
+            background: #111;
+            display: flex;
+            align-items: center;
+            padding: 0 25px;
+            gap: 20px;
+        }
+        
+        .ui-body {
+            display: flex;
+            flex: 1;
+        }
+        
+        .ui-left {
+            width: 280px;
+            border-right: 2px solid #333;
+            background: #0a0a0a;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .ui-center {
+            flex: 1;
+            background: #000;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            border-right: 2px solid #333;
+        }
+        
+        .ui-right {
+            width: 320px;
+            background: #0a0a0a;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .ui-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #E31E24;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .ui-desc {
+            font-size: 16px;
+            color: #aaa;
+            line-height: 1.5;
+        }
+        
+        .ui-desc strong {
+            color: #fff;
+        }
+
+        /* Callout Box */
+        .key-point {
+            background: rgba(227, 30, 36, 0.1);
+            border-left: 4px solid #E31E24;
+            padding: 20px 25px;
+            font-size: 22px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-top: auto;
+            margin-bottom: 20px;
+        }
+        
+        .key-point i {
+            color: #E31E24;
+            font-size: 28px;
+        }
+
+        /* Standard Content Box */
+        .content-box {
+            background: #111;
+            border-left: 4px solid #E31E24;
+            padding: 24px 30px;
+            font-size: 20px;
+            line-height: 1.6;
+            color: #aaa;
+            margin-bottom: 20px;
+        }
+        .content-box strong { color: #fff; }
+        .content-box ul { margin-top: 15px; margin-left: 25px; }
+        .content-box li { margin-bottom: 10px; }
+
+        /* Grid Layouts */
+        .three-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 24px;
+            margin-top: 20px;
+        }
+        .col-box {
+            background: #111;
+            border-top: 4px solid #E31E24;
+            padding: 24px 20px;
+            font-size: 18px;
+            line-height: 1.6;
+            color: #aaa;
+        }
+        .col-box h3 {
+            color: #E31E24;
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+        .col-box ul { margin-left: 18px; }
+        .col-box li { margin-bottom: 8px; }
+
+        /* Center Title Layout */
+        .center-title {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            text-align: center;
+            margin-top: 100px;
+        }
+        .center-title h1 {
+            font-size: 64px;
+            border-bottom: none;
+            align-self: center;
+        }
+        .center-title .subtitle {
+            font-size: 28px;
+            color: #E31E24;
+            margin-top: 20px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <div class="header">
+            <div class="branding">
+                <i class="fas fa-film"></i> AI Film Academy
+            </div>
+            <div class="step-indicator">
+                Cinematic Editing
+            </div>
+        </div>
+        
+        <div class="main-content">
+
+<div class="center-title">
+    <h1>Expect Success</h1>
+    <div class="subtitle" style="color:#aaa; font-size:24px; font-weight:400; max-width:800px; line-height:1.5; margin-top:30px;">
+        You have the footage. You know the pacing.<br><br>
+        Apply the 3-5 second rule. Layer the sound. Make the hard cut.<br><br>
+        <strong style="color:#E31E24; font-size:32px;">Expect Success.</strong>
+    </div>
+</div>
+
+        </div>
+    </div>
+</body>
+</html>

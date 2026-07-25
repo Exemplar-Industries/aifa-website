@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            background-color: #000000;
+            background-image: radial-gradient(circle at center, #1a0000 0%, #000000 100%);
+            position: relative;
+            font-family: 'Montserrat', sans-serif;
+            color: #ffffff;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .grain {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: url('data:image/svg+xml;utf8,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)" opacity="0.05"/%3E%3C/svg%3E');
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .letterbox-top, .letterbox-bottom {
+            position: absolute;
+            left: 0; right: 0; height: 40px;
+            background: #000; z-index: 2;
+        }
+        .letterbox-top { top: 0; }
+        .letterbox-bottom { bottom: 0; }
+
+        .content-wrapper {
+            position: relative;
+            z-index: 3;
+            max-width: 1000px;
+            padding: 0 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .lesson-tag {
+            color: #E31E24;
+            font-size: 18px;
+            font-weight: 900;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+            border: 2px solid #E31E24;
+            padding: 10px 20px;
+            display: inline-block;
+        }
+
+        h2 {
+            font-size: 56px;
+            font-weight: 900;
+            text-transform: uppercase;
+            line-height: 1.1;
+            margin-bottom: 40px;
+            color: #ffffff;
+        }
+
+        .body-text {
+            font-size: 26px;
+            line-height: 1.6;
+            color: #cccccc;
+            font-weight: 400;
+            margin-bottom: 60px;
+        }
+
+        .cta-block {
+            background-color: #E31E24;
+            color: #0a0a0a;
+            font-size: 28px;
+            font-weight: 900;
+            text-transform: uppercase;
+            padding: 20px 40px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            letter-spacing: 2px;
+        }
+
+        .cta-block i {
+            font-size: 32px;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <div class="grain"></div>
+        <div class="letterbox-top"></div>
+        
+        <div class="content-wrapper">
+            <div class="lesson-tag">Next Step</div>
+            <h2>The AI Filmmaker's<br>Manifesto</h2>
+            
+            <p class="body-text">
+                Now that you know the tools and the workflow, it's time to talk about mindset. The next lesson covers the core principles that separate successful AI filmmakers from those who just play with tools.
+            </p>
+            
+            <div class="cta-block">
+                <span>Move on to Lesson 3</span>
+                <i class="fas fa-arrow-right"></i>
+            </div>
+        </div>
+
+        <div class="letterbox-bottom"></div>
+    </div>
+</body>
+</html>

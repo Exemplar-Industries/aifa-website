@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            background-color: #000000;
+            background-image: radial-gradient(circle at center, #1a0000 0%, #000000 100%);
+            position: relative;
+            font-family: 'Montserrat', sans-serif;
+            display: flex;
+            flex-direction: column;
+            color: #ffffff;
+            overflow: hidden;
+        }
+        .grain {
+            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background-image: url('data:image/svg+xml;utf8,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)" opacity="0.05"/%3E%3C/svg%3E');
+            pointer-events: none; z-index: 1;
+        }
+        .letterbox-top, .letterbox-bottom {
+            position: absolute; left: 0; right: 0; height: 40px; background: #000; z-index: 2;
+        }
+        .letterbox-top { top: 0; }
+        .letterbox-bottom { bottom: 0; }
+        .header {
+            position: relative; z-index: 3;
+            padding-top: 58px; padding-left: 80px; padding-right: 80px; text-align: center;
+        }
+        .lesson-tag {
+            color: #E31E24; font-size: 14px; font-weight: 700;
+            letter-spacing: 4px; text-transform: uppercase; margin-bottom: 10px;
+        }
+        .main-title {
+            font-size: 52px; font-weight: 900; line-height: 1.1;
+            text-transform: uppercase; letter-spacing: 2px; margin-bottom: 6px;
+        }
+        .body-wrapper {
+            position: relative; z-index: 3;
+            padding-left: 60px; padding-right: 60px; padding-top: 20px;
+            display: grid; grid-template-columns: 1fr 4px 1fr; gap: 0; flex: 1;
+        }
+        .divider-line {
+            background: #330000; width: 1px; margin: 0 20px;
+        }
+        .column-label {
+            font-size: 12px; font-weight: 700; color: #666666;
+            text-transform: uppercase; letter-spacing: 3px; margin-bottom: 14px;
+            text-align: center;
+        }
+        .bubbles-wrap {
+            display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
+        }
+        .bubble {
+            background: rgba(30, 0, 0, 0.7); border: 1px solid #440000;
+            padding: 7px 16px; font-size: 13px; font-weight: 700;
+            color: #aaaaaa; text-transform: uppercase; letter-spacing: 1px;
+            white-space: nowrap;
+        }
+        .bubble.ai {
+            background: rgba(227, 30, 36, 0.12); border: 1px solid #660000;
+            color: #dddddd;
+        }
+        .bubble.ai.hero {
+            background: #E31E24; color: #000000; font-size: 14px; border-color: #E31E24;
+        }
+        .tagline {
+            position: relative; z-index: 3;
+            text-align: center; padding-top: 14px;
+            font-size: 16px; color: #666666; font-weight: 400; font-style: italic;
+        }
+        .tagline strong { color: #E31E24; font-style: normal; }
+    </style>
+</head>
+<body>
+<div class="slide-container">
+    <div class="grain"></div>
+    <div class="letterbox-top"></div>
+    <div class="header">
+        <div class="lesson-tag">The State of AI Media</div>
+        <h1 class="main-title">Gen AI Models Are The New Cameras</h1>
+    </div>
+    <div class="body-wrapper">
+        <div>
+            <div class="column-label">Traditional Camera Brands</div>
+            <div class="bubbles-wrap">
+                <div class="bubble">Sony</div>
+                <div class="bubble">RED</div>
+                <div class="bubble">Arri</div>
+                <div class="bubble">Canon</div>
+                <div class="bubble">Blackmagic</div>
+                <div class="bubble">Panasonic</div>
+                <div class="bubble">Nikon</div>
+                <div class="bubble">Fujifilm</div>
+                <div class="bubble">DJI</div>
+                <div class="bubble">GoPro</div>
+                <div class="bubble">Leica</div>
+                <div class="bubble">Hasselblad</div>
+            </div>
+        </div>
+        <div class="divider-line"></div>
+        <div>
+            <div class="column-label">Generative AI Models</div>
+            <div class="bubbles-wrap">
+                <div class="bubble ai hero">Google Flow</div>
+                <div class="bubble ai hero">Nano Banana Pro</div>
+                <div class="bubble ai hero">Veo 3</div>
+                <div class="bubble ai">Kling AI</div>
+                <div class="bubble ai">Runway</div>
+                <div class="bubble ai">Midjourney</div>
+                <div class="bubble ai">Luma Dream Machine</div>
+                <div class="bubble ai">Sora</div>
+                <div class="bubble ai">Pika</div>
+                <div class="bubble ai">Stable Diffusion</div>
+                <div class="bubble ai">Leonardo AI</div>
+                <div class="bubble ai">ComfyUI</div>
+            </div>
+        </div>
+    </div>
+    <p class="tagline">Just like pros have <strong>1–2 favorite cameras</strong> they swear by — pick your stack, master it, and <strong>ignore the rest.</strong></p>
+    <div class="letterbox-bottom"></div>
+</div>
+</body>
+</html>

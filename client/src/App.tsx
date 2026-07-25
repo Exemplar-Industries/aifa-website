@@ -16,6 +16,7 @@ import FAQ from "./pages/FAQ";
 import Showcase from "./pages/Showcase";
 import Connect from "./pages/Connect";
 import InternalLessons from "./pages/InternalLessons";
+import SlideViewer from "./pages/SlideViewer";
 
 function Router() {
   return (
@@ -31,6 +32,7 @@ function Router() {
       <Route path={"/anthum-exclusive"} component={Invite} />
       <Route path={"/live-exclusive"} component={LiveExclusive} />
       <Route path={"/internal/lessons"} component={InternalLessons} />
+      <Route path={"/lessons/:week"} component={SlideViewer} />
       <Route path={"/404"} component={NotFound} />
       <Route component={NotFound} />
     </Switch>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            background-color: #000000;
+            background-image: radial-gradient(circle at top center, #1a0000 0%, #000000 70%);
+            position: relative;
+            font-family: 'Montserrat', sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #ffffff;
+            overflow: hidden;
+        }
+        .grain {
+            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background-image: url('data:image/svg+xml;utf8,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)" opacity="0.05"/%3E%3C/svg%3E');
+            pointer-events: none; z-index: 1;
+        }
+        .letterbox-top, .letterbox-bottom {
+            position: absolute; left: 0; right: 0; height: 40px; background: #000; z-index: 2;
+        }
+        .letterbox-top { top: 0; }
+        .letterbox-bottom { bottom: 0; }
+        .content {
+            position: relative; z-index: 3; text-align: center; padding: 0 120px;
+        }
+        .eyebrow {
+            font-size: 13px; font-weight: 700; color: #E31E24;
+            letter-spacing: 5px; text-transform: uppercase; margin-bottom: 24px;
+        }
+        .main-title {
+            font-size: 80px; font-weight: 900; text-transform: uppercase;
+            line-height: 1.0; letter-spacing: 3px;
+            margin-bottom: 20px;
+        }
+        .main-title span { color: #E31E24; }
+        .divider-line {
+            width: 120px; height: 4px; background: #E31E24; margin: 24px auto;
+        }
+        .next-label {
+            font-size: 14px; font-weight: 700; color: #666666;
+            text-transform: uppercase; letter-spacing: 4px; margin-bottom: 12px;
+        }
+        .next-title {
+            font-size: 28px; font-weight: 900; text-transform: uppercase;
+            color: #ffffff; letter-spacing: 2px;
+        }
+        .next-desc {
+            font-size: 16px; color: #888888; font-weight: 400; margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="slide-container">
+    <div class="grain"></div>
+    <div class="letterbox-top"></div>
+    <div class="content">
+        <div class="eyebrow">Week 1 Complete</div>
+        <h1 class="main-title">Expect<br><span>Success.</span></h1>
+        <div class="divider-line"></div>
+        <div class="next-label">Coming Up Next</div>
+        <div class="next-title">Week 2: Pre-Production</div>
+        <p class="next-desc">Script → Character Sheet → Storyboard → Style Reference → You're ready to generate.</p>
+    </div>
+    <div class="letterbox-bottom"></div>
+</div>
+</body>
+</html>

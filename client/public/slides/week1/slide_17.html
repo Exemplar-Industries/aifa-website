@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        .slide-container {
+            width: 1280px;
+            min-height: 720px; /* keep as required */
+            background-color: #000000;
+            background-image: radial-gradient(circle at center, #1a0000 0%, #000000 100%);
+            position: relative;
+            font-family: 'Montserrat', sans-serif;
+            color: #ffffff;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+.grain {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: url('data:image/svg+xml;utf8,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)" opacity="0.05"/%3E%3C/svg%3E');
+            pointer-events: none;
+            z-index: 1;
+        }
+.letterbox-top, .letterbox-bottom {
+            position: absolute;
+            left: 0; right: 0; height: 40px;
+            background: #000; z-index: 2;
+        }
+        .letterbox-top { top: 0; }
+        .letterbox-bottom { bottom: 0; }
+.header {
+            position: relative;
+            z-index: 3;
+            padding-top: 80px; /* must keep */
+            padding-left: 80px;
+            padding-right: 80px;
+        }
+.lesson-tag {
+            color: #E31E24;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+h2 {
+            font-size: 48px;
+            font-weight: 900;
+            text-transform: uppercase;
+            line-height: 1.1;
+            margin-bottom: 8px; /* reduced from 40 to save vertical space */
+            border-left: 8px solid #E31E24;
+            padding-left: 24px;
+        }
+.content-area {
+            position: relative;
+            z-index: 3;
+            display: flex;
+            padding-left: 80px;
+            padding-right: 80px;
+            gap: 24px; /* reduced gap */
+            align-items: stretch;
+            flex-grow: 1;
+            padding-bottom: 24px; /* reduced */
+        }
+.left-col {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+.statement-block {
+            border: 4px solid #E31E24;
+            background-color: rgba(227, 30, 36, 0.05);
+            padding: 16px; /* reduced from 40 */
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+.quote-icon {
+            color: #E31E24;
+            font-size: 40px;
+            margin-bottom: 12px; /* slightly reduced */
+            opacity: 0.8;
+        }
+.statement-text {
+            font-size: 28px;
+            line-height: 1.5;
+            color: #ffffff;
+            font-weight: 700;
+            margin-bottom: 12px; /* reduced */
+        }
+.statement-subtext {
+            font-size: 20px;
+            line-height: 1.6;
+            color: #cccccc;
+            font-weight: 400;
+        }
+.highlight {
+            color: #E31E24;
+        }
+.right-col {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+.principles-title {
+            font-size: 20px;
+            font-weight: 900;
+            color: #888888;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+        }
+.bullet-list {
+            list-style: none;
+            display: grid; /* reorganized to two columns */
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+.bullet-list li {
+            font-size: 20px;
+            line-height: 1.5;
+            display: flex;
+            align-items: flex-start;
+            color: #e0e0e0;
+            background-color: rgba(255, 255, 255, 0.03);
+            padding: 12px; /* reduced */
+            border-left: 4px solid #333333;
+        }
+.bullet-list li i {
+            color: #E31E24;
+            font-size: 24px;
+            margin-top: 2px;
+            margin-right: 12px;
+            min-width: 30px;
+            text-align: center;
+        }
+.bullet-list li strong {
+            color: #ffffff;
+            font-weight: 700;
+            display: block;
+            margin-bottom: 4px;
+            font-size: 22px;
+        }
+    </style>
+</head>
+<body><div class="slide-container">
+        <div class="grain"></div>
+        <div class="letterbox-top"></div>
+<div class="header">
+            <div class="lesson-tag">The Core Philosophy</div>
+            <h2>Tools Change,<br>Principles Don't</h2>
+        </div>
+<div class="content-area">
+            <div class="left-col">
+                <div class="statement-block">
+                    <i class="fas fa-quote-left quote-icon"></i>
+                    <div class="statement-text">
+                        The interface of Google Flow might change tomorrow. A new tool might launch next week that beats Veo 3.
+                    </div>
+                    <div class="statement-subtext">
+                        <span class="highlight">That doesn't matter.</span> Learn the underlying principles of AI filmmaking and you'll adapt to any tool.
+                    </div>
+                </div>
+            </div>
+<div class="right-col">
+                <div class="principles-title">What We Actually Teach</div>
+                <ul class="bullet-list">
+                    <li>
+                        <i class="fas fa-pen-nib"></i>
+                        <div>
+                            <strong>Cinematic Framing</strong>
+                            <span>Communicate visual ideas to machines.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fas fa-film"></i>
+                        <div>
+                            <strong>Cinematic Pacing</strong>
+                            <span>Structure shots, movement, and rhythm.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fas fa-book-open"></i>
+                        <div>
+                            <strong>Storytelling</strong>
+                            <span>Make an audience care about the pixels.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fas fa-project-diagram"></i>
+                        <div>
+                            <strong>The 3-Step Workflow</strong>
+                            <span>A repeatable process that outlasts updates.</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+<div class="letterbox-bottom"></div>
+    </div>
+</body>
+</html>

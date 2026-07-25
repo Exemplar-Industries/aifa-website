@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            background-color: #000000;
+            background-image: radial-gradient(circle at top center, #1a0000 0%, #000000 100%);
+            position: relative;
+            font-family: 'Montserrat', sans-serif;
+            color: #ffffff;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .grain {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: url('data:image/svg+xml;utf8,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)" opacity="0.05"/%3E%3C/svg%3E');
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .letterbox-top, .letterbox-bottom {
+            position: absolute;
+            left: 0; right: 0; height: 40px;
+            background: #000; z-index: 2;
+        }
+        .letterbox-top { top: 0; }
+        .letterbox-bottom { bottom: 0; }
+
+        .header {
+            position: relative;
+            z-index: 3;
+            padding-top: 80px;
+            padding-left: 80px;
+            padding-right: 80px;
+        }
+
+        .lesson-tag {
+            color: #E31E24;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 44px;
+            font-weight: 900;
+            text-transform: uppercase;
+            line-height: 1.2;
+            margin-bottom: 30px;
+            border-left: 8px solid #E31E24;
+            padding-left: 24px;
+        }
+
+        .content-area {
+            position: relative;
+            z-index: 3;
+            padding-left: 80px;
+            padding-right: 80px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .intro-text {
+            font-size: 24px;
+            line-height: 1.6;
+            color: #cccccc;
+            font-weight: 400;
+            max-width: 1050px;
+        }
+
+        .intro-text .highlight {
+            color: #E31E24;
+            font-weight: 700;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .stat-box {
+            background-color: rgba(255, 255, 255, 0.03);
+            border-top: 6px solid #E31E24;
+            padding-top: 30px;
+            padding-left: 25px;
+            padding-right: 25px;
+            display: flex;
+            flex-direction: column;
+            min-height: 260px;
+        }
+
+        .stat-icon {
+            font-size: 40px;
+            color: #E31E24;
+            margin-bottom: 20px;
+        }
+
+        .stat-title {
+            font-size: 22px;
+            font-weight: 900;
+            color: #ffffff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            line-height: 1.3;
+        }
+
+        .stat-desc {
+            font-size: 18px;
+            color: #aaaaaa;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <div class="grain"></div>
+        <div class="letterbox-top"></div>
+        
+        <div class="header">
+            <div class="lesson-tag">The Hiring Opportunity</div>
+            <h2>The Market Is Actively Hiring<br>For These Skills</h2>
+        </div>
+
+        <div class="content-area">
+            <p class="intro-text">
+                We don't just teach Google Flow because it's powerful. We teach it because it's what the industry is asking for. The demand for creators who can reliably produce <span class="highlight">cinematic AI video</span> is rapidly outpacing the supply.
+            </p>
+            
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <i class="fas fa-building stat-icon"></i>
+                    <div class="stat-title">Agencies & Brands</div>
+                    <div class="stat-desc">
+                        Looking for creators who can produce high-quality ad variations at scale using Veo 3 and ImageFX without massive production budgets.
+                    </div>
+                </div>
+                
+                <div class="stat-box">
+                    <i class="fas fa-video stat-icon"></i>
+                    <div class="stat-title">Studios & Production</div>
+                    <div class="stat-desc">
+                        Hiring AI specialists for rapid pre-visualization, storyboarding, concept pitching, and generating background plates.
+                    </div>
+                </div>
+                
+                <div class="stat-box">
+                    <i class="fas fa-laptop-house stat-icon"></i>
+                    <div class="stat-title">The Freelance Edge</div>
+                    <div class="stat-desc">
+                        Independent AI directors are commanding premium rates for end-to-end commercial production, acting as a one-person studio.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="letterbox-bottom"></div>
+    </div>
+</body>
+</html>
