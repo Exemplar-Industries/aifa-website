@@ -17,6 +17,7 @@ import Showcase from "./pages/Showcase";
 import Connect from "./pages/Connect";
 import InternalLessons from "./pages/InternalLessons";
 import SlideViewer from "./pages/SlideViewer";
+import Masterclass from "./pages/Masterclass";
 
 function Router() {
   return (
@@ -33,6 +34,7 @@ function Router() {
       <Route path={"/live-exclusive"} component={LiveExclusive} />
       <Route path={"/internal/lessons"} component={InternalLessons} />
       <Route path={"/lessons/:week"} component={SlideViewer} />
+      <Route path={"/masterclass"} component={Masterclass} />
       <Route path={"/404"} component={NotFound} />
       <Route component={NotFound} />
     </Switch>
