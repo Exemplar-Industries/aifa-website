@@ -108,8 +108,6 @@ export default function GenJamOffer() {
       <section style={{ borderTop: "1px solid rgba(255,255,255,0.06)", borderBottom: "1px solid rgba(255,255,255,0.06)", background: "#111", padding: "clamp(4rem,8vw,6rem) clamp(1.5rem,5vw,3rem)" }}>
         <div style={{ maxWidth: "1000px", margin: "0 auto", textAlign: "center" }}>
 
-          <p style={{ color: "#ef4444", fontWeight: 700, fontSize: "0.8rem", textTransform: "uppercase", letterSpacing: "0.18em", marginBottom: "1.5rem" }}>Exclusive Private Community</p>
-
           <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2.8rem,8vw,5.5rem)", lineHeight: 1, letterSpacing: "0.02em", color: "#F5F5F0", marginBottom: "1.5rem" }}>
             As a GenJam Alumni,<br />
             <span style={{ color: "#ef4444" }}>You're Invited In.</span>
