@@ -115,10 +115,6 @@ export default function GenJamOffer() {
             <span style={{ color: "#ef4444" }}>getting access to.</span>
           </h2>
 
-          <p style={{ fontSize: "clamp(1.05rem,2.5vw,1.3rem)", color: "rgba(255,255,255,0.55)", lineHeight: 1.7, maxWidth: "640px", margin: "0 auto 3rem" }}>
-            AI Film Academy is a private, structured community for filmmakers who are serious about turning AI skills into paid creative work. Not a course dump. Not a Discord. A real creative home.
-          </p>
-
           {/* Big stats row */}
           <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "1px", background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: "16px", overflow: "hidden", marginBottom: "3rem" }}>
             {[
@@ -133,35 +129,7 @@ export default function GenJamOffer() {
             ))}
           </div>
 
-          {/* What's inside pills */}
-          <p style={{ fontSize: "0.78rem", color: "rgba(255,255,255,0.3)", textTransform: "uppercase", letterSpacing: "0.15em", marginBottom: "1rem", fontWeight: 600 }}>Inside the community</p>
-          <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "0.65rem", marginBottom: "3rem" }}>
-            {[
-              "AI Filmmaking Courses",
-              "Monthly 5-Hour GenJams",
-              "Weekly Creative Exercises",
-              "Personalized Video Feedback",
-              "Curated Job Listings",
-              "Industry Certification",
-              "Expert Guest Speakers",
-              "Private Creator Network",
-            ].map(tag => (
-              <span key={tag} style={{ background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.2)", borderRadius: "100px", padding: "8px 18px", fontSize: "clamp(0.8rem,2vw,0.95rem)", color: "rgba(255,255,255,0.7)", fontWeight: 600 }}>{tag}</span>
-            ))}
-          </div>
 
-          {/* Preview CTA */}
-          <a
-            href={SKOOL_COMMUNITY_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ display: "inline-flex", alignItems: "center", gap: "0.6rem", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: "12px", padding: "14px 28px", color: "rgba(255,255,255,0.7)", fontSize: "1rem", fontWeight: 600, textDecoration: "none", transition: "all 0.2s" }}
-            onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(239,68,68,0.1)"; (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(239,68,68,0.3)"; (e.currentTarget as HTMLAnchorElement).style.color = "#fff"; }}
-            onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.05)"; (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.12)"; (e.currentTarget as HTMLAnchorElement).style.color = "rgba(255,255,255,0.7)"; }}
-          >
-            <span>👀</span>
-            <span>Preview the community before you join →</span>
-          </a>
         </div>
       </section>
 
@@ -173,7 +141,7 @@ export default function GenJamOffer() {
               What's Included in Your AI Film Academy Membership
             </p>
             <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2rem,6vw,4rem)", letterSpacing: "0.04em", color: "#F5F5F0", lineHeight: 1 }}>
-              Everything. No Upsells. No Paywalls.
+              What's Inside Your Membership
             </h2>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "1rem" }}>
@@ -228,7 +196,10 @@ export default function GenJamOffer() {
                   </li>
                 ))}
               </ul>
-              <CTAButton size="lg" />
+              <a href={STRIPE_PAYMENT_LINK}
+                style={{ display: "block", width: "100%", textAlign: "center", background: "linear-gradient(135deg,#ef4444,#b91c1c)", borderRadius: "12px", padding: "18px 16px", color: "#fff", fontWeight: 800, fontSize: "clamp(1rem,3vw,1.1rem)", textTransform: "uppercase", letterSpacing: "0.06em", textDecoration: "none", boxShadow: "0 0 40px rgba(239,68,68,0.4)", boxSizing: "border-box" }}>
+                Join at the Partner Rate — ${PARTNER_ANNUAL}/yr →
+              </a>
             </div>
           </div>
 
@@ -256,6 +227,19 @@ export default function GenJamOffer() {
         <p style={{ marginTop: "1.25rem", fontSize: "0.8rem", color: "rgba(255,255,255,0.25)" }}>
           Secure checkout via Stripe. Skool invite delivered automatically after payment.
         </p>
+        <div style={{ marginTop: "1.5rem" }}>
+          <a
+            href={SKOOL_COMMUNITY_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", color: "rgba(255,255,255,0.4)", fontSize: "0.9rem", textDecoration: "none", borderBottom: "1px solid rgba(255,255,255,0.15)", paddingBottom: "2px", transition: "color 0.2s" }}
+            onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.color = "rgba(255,255,255,0.75)"; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.color = "rgba(255,255,255,0.4)"; }}
+          >
+            <span>👀</span>
+            <span>Preview the community before you join →</span>
+          </a>
+        </div>
       </section>
 
       <footer style={{ borderTop: "1px solid rgba(255,255,255,0.05)", padding: "1.5rem", textAlign: "center" }}>
