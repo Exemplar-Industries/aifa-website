@@ -1,188 +1,96 @@
 /*
  * AI Film Academy — GenJam Freebie Landing Page
  * Route: /genjam-freebie
- * Purpose: 150 complimentary AFA memberships for Machine Cinema GenJam attendees
- *          Distributed via email blast — first 150 to claim get free access
- *
- * Architecture: Reuses Anthum invite infrastructure
- *   - Supabase: slot tracking (invite_claims table) + duplicate prevention
- *   - Skool webhook: auto-invites claimant into AFA community at 100% free
- *   - 150 slots (up from 100 on Anthum page)
- *   - Source tag: "genjam_freebie" for analytics separation
+ * Purpose: 150 complementary AFA memberships for Machine Cinema GenJam attendees
+ * Design: Full-width, cinematic dark, massive text, dark card grid for benefits
  */
 import { useState, useEffect, useCallback } from "react";
 import { supabase, SUPABASE_URL } from "@/lib/supabase";
 
-// ─── Config ───────────────────────────────────────────────────────────────────
 const TOTAL_SLOTS = 150;
 
-// ─── Types ────────────────────────────────────────────────────────────────────
 type FormState = "idle" | "loading" | "success" | "error" | "duplicate" | "full";
 type WaitlistState = "idle" | "loading" | "success" | "error" | "duplicate";
 
-// ─── Animated Slot Counter ────────────────────────────────────────────────────
+// ─── Slot Counter ─────────────────────────────────────────────────────────────
 function SlotCounter({ value, total }: { value: number; total: number }) {
   const [displayed, setDisplayed] = useState(value);
-
   useEffect(() => {
     if (displayed === value) return;
     const step = displayed > value ? -1 : 1;
     const timer = setInterval(() => {
-      setDisplayed((prev) => {
-        if (prev === value) { clearInterval(timer); return prev; }
-        return prev + step;
-      });
+      setDisplayed((prev) => { if (prev === value) { clearInterval(timer); return prev; } return prev + step; });
     }, 30);
     return () => clearInterval(timer);
   }, [value]);
-
   const claimed = total - displayed;
   const pct = Math.max(0, Math.min(100, (claimed / total) * 100));
   const isLow = displayed <= 20;
-
   return (
-    <div className="w-full max-w-sm mx-auto">
-      <div className="flex items-end justify-center gap-2 mb-3">
-        <span
-          className="font-black tabular-nums leading-none"
-          style={{
-            fontSize: "clamp(3rem, 12vw, 5rem)",
-            color: isLow ? "#f97316" : "#ef4444",
-            textShadow: isLow ? "0 0 40px rgba(249,115,22,0.6)" : "0 0 40px rgba(239,68,68,0.5)",
-            transition: "color 0.5s, text-shadow 0.5s",
-          }}
-        >
-          {displayed}
-        </span>
-        <span className="text-gray-400 text-xl font-semibold mb-3">/ {total}</span>
+    <div style={{ textAlign: "center", width: "100%", maxWidth: "500px", margin: "0 auto" }}>
+      <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "center", gap: "0.75rem", marginBottom: "0.5rem" }}>
+        <span style={{
+          fontFamily: "'Bebas Neue', sans-serif",
+          fontSize: "clamp(5rem, 16vw, 9rem)",
+          lineHeight: 1,
+          color: isLow ? "#f97316" : "#ef4444",
+          textShadow: isLow ? "0 0 80px rgba(249,115,22,0.5)" : "0 0 80px rgba(239,68,68,0.4)",
+          transition: "color 0.5s",
+        }}>{displayed}</span>
+        <span style={{ fontSize: "clamp(1.5rem, 4vw, 2.5rem)", color: "rgba(255,255,255,0.35)", fontWeight: 700, marginBottom: "1rem" }}>/ {total}</span>
       </div>
-      <p className="text-gray-400 text-sm uppercase tracking-widest mb-4 text-center">
-        spots remaining
-      </p>
-      <div className="w-full h-2 rounded-full bg-white/10 overflow-hidden">
-        <div
-          className="h-full rounded-full transition-all duration-700"
-          style={{
-            width: `${pct}%`,
-            background: isLow
-              ? "linear-gradient(90deg, #f97316, #ef4444)"
-              : "linear-gradient(90deg, #ef4444, #b91c1c)",
-          }}
-        />
+      <p style={{ textTransform: "uppercase", letterSpacing: "0.15em", color: "rgba(255,255,255,0.4)", fontSize: "0.85rem", fontWeight: 600, marginBottom: "1rem" }}>spots remaining</p>
+      <div style={{ width: "100%", height: "4px", borderRadius: "4px", background: "rgba(255,255,255,0.08)", overflow: "hidden" }}>
+        <div style={{ width: `${pct}%`, height: "100%", borderRadius: "4px", background: isLow ? "linear-gradient(90deg,#f97316,#ef4444)" : "linear-gradient(90deg,#ef4444,#b91c1c)", transition: "width 0.7s" }} />
       </div>
-      {isLow && displayed > 0 && (
-        <p className="text-orange-400 text-xs text-center mt-3 font-semibold animate-pulse">
-          Almost gone — claim yours now
-        </p>
-      )}
+      {isLow && displayed > 0 && <p style={{ color: "#f97316", fontWeight: 700, marginTop: "0.75rem", fontSize: "0.95rem" }}>Almost gone — claim yours now</p>}
     </div>
   );
 }
 
-// ─── Waitlist Form (shown when slots are full) ────────────────────────────────
+// ─── Waitlist Form ────────────────────────────────────────────────────────────
 function WaitlistForm() {
   const [wState, setWState] = useState<WaitlistState>("idle");
   const [wError, setWError] = useState("");
   const [wFirst, setWFirst] = useState("");
   const [wEmail, setWEmail] = useState("");
-
-  const inputStyle = {
-    background: "rgba(255,255,255,0.04)",
-    border: "1px solid rgba(255,255,255,0.1)",
-    borderRadius: "12px",
-  };
-
+  const inp: React.CSSProperties = { background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: "10px", fontSize: "1.05rem", padding: "14px 18px", color: "#fff", width: "100%", outline: "none", boxSizing: "border-box" };
   const handleWaitlist = async (e: React.FormEvent) => {
     e.preventDefault();
     if (wState === "loading") return;
-    const trimFirst = wFirst.trim();
-    const trimEmail = wEmail.trim().toLowerCase();
-    if (!trimFirst || !trimEmail) return;
-    setWState("loading");
-    setWError("");
+    const tf = wFirst.trim(), te = wEmail.trim().toLowerCase();
+    if (!tf || !te) return;
+    setWState("loading"); setWError("");
     try {
-      const { error } = await supabase.from("anthum_waitlist").insert({
-        name: trimFirst,
-        email: trimEmail,
-        source: "genjam_freebie_waitlist",
-      });
-      if (error) {
-        if (error.code === "23505" || error.message?.toLowerCase().includes("unique")) {
-          setWState("duplicate");
-          return;
-        }
-        throw error;
-      }
+      const { error } = await supabase.from("anthum_waitlist").insert({ name: tf, email: te, source: "genjam_freebie_waitlist" });
+      if (error) { if (error.code === "23505" || error.message?.toLowerCase().includes("unique")) { setWState("duplicate"); return; } throw error; }
       setWState("success");
-    } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : "Something went wrong. Please try again.";
-      setWError(msg);
-      setWState("error");
-    }
+    } catch (err: unknown) { setWError(err instanceof Error ? err.message : "Something went wrong."); setWState("error"); }
   };
-
-  if (wState === "success") {
-    return (
-      <div className="text-center py-6">
-        <div className="text-4xl mb-4">📬</div>
-        <h3 className="text-xl font-bold text-white mb-2">You're on the list.</h3>
-        <p className="text-gray-400 text-sm">
-          We'll notify you if a spot opens up or when the next round launches.
-        </p>
-      </div>
-    );
-  }
-
-  if (wState === "duplicate") {
-    return (
-      <div className="text-center py-6">
-        <p className="text-gray-400 text-sm">
-          You're already on the waitlist. We'll reach out when spots open.
-        </p>
-      </div>
-    );
-  }
-
+  if (wState === "success") return <div style={{ textAlign: "center", padding: "2rem 0" }}><div style={{ fontSize: "3rem", marginBottom: "1rem" }}>📬</div><h3 style={{ fontSize: "1.4rem", fontWeight: 800, color: "#fff", marginBottom: "0.5rem" }}>You're on the list.</h3><p style={{ color: "rgba(255,255,255,0.45)", fontSize: "1rem" }}>We'll notify you if a spot opens up.</p></div>;
+  if (wState === "duplicate") return <p style={{ color: "rgba(255,255,255,0.45)", textAlign: "center", padding: "1.5rem 0" }}>You're already on the waitlist.</p>;
   return (
-    <form onSubmit={handleWaitlist} className="w-full max-w-md mx-auto space-y-3">
-      <p className="text-gray-400 text-sm text-center mb-4">
-        All 150 spots have been claimed. Join the waitlist to be notified when more open up.
-      </p>
-      <input
-        type="text"
-        required
-        placeholder="First Name"
-        value={wFirst}
-        onChange={(e) => setWFirst(e.target.value)}
-        disabled={wState === "loading"}
-        className="w-full rounded-xl px-4 py-3 text-white placeholder-gray-600 outline-none"
-        style={inputStyle}
-      />
-      <input
-        type="email"
-        required
-        placeholder="Email Address"
-        value={wEmail}
-        onChange={(e) => setWEmail(e.target.value)}
-        disabled={wState === "loading"}
-        className="w-full rounded-xl px-4 py-3 text-white placeholder-gray-600 outline-none"
-        style={inputStyle}
-      />
-      {wState === "error" && <p className="text-red-400 text-sm text-center">{wError}</p>}
-      <button
-        type="submit"
-        disabled={wState === "loading" || !wFirst.trim() || !wEmail.trim()}
-        className="w-full rounded-xl py-4 font-bold text-white text-base uppercase tracking-wider transition-all duration-200"
-        style={{
-          background: "rgba(239,68,68,0.3)",
-          border: "1px solid rgba(239,68,68,0.4)",
-        }}
-      >
-        {wState === "loading" ? "Joining waitlist..." : "Join Waitlist →"}
+    <form onSubmit={handleWaitlist} style={{ display: "flex", flexDirection: "column", gap: "0.85rem" }}>
+      <p style={{ color: "rgba(255,255,255,0.45)", fontSize: "0.95rem", textAlign: "center" }}>All 150 spots have been claimed. Join the waitlist below.</p>
+      <input type="text" required placeholder="First Name" value={wFirst} onChange={e => setWFirst(e.target.value)} disabled={wState === "loading"} style={inp} />
+      <input type="email" required placeholder="Email Address" value={wEmail} onChange={e => setWEmail(e.target.value)} disabled={wState === "loading"} style={inp} />
+      {wState === "error" && <p style={{ color: "#f87171", textAlign: "center", fontSize: "0.85rem" }}>{wError}</p>}
+      <button type="submit" disabled={wState === "loading" || !wFirst.trim() || !wEmail.trim()} style={{ background: "rgba(239,68,68,0.2)", border: "1px solid rgba(239,68,68,0.35)", borderRadius: "10px", padding: "14px", color: "#fff", fontWeight: 700, fontSize: "0.95rem", textTransform: "uppercase", letterSpacing: "0.08em", cursor: "pointer" }}>
+        {wState === "loading" ? "Joining..." : "Join Waitlist →"}
       </button>
     </form>
   );
 }
+
+// ─── Benefits ─────────────────────────────────────────────────────────────────
+const BENEFITS = [
+  { icon: "🎬", label: "Full Course Library", desc: "50+ video lessons covering every stage of AI filmmaking — concept, production, post" },
+  { icon: "🤖", label: "AIFA Workflow System", desc: "The exact AI tool stack and production process used by AFA members to ship real films" },
+  { icon: "🏆", label: "AI Media Specialist Certificate", desc: "LinkedIn-ready certification that signals your skills to clients and employers" },
+  { icon: "🎥", label: "Monthly GenJams", desc: "Live collaborative filmmaking sessions every month — the same experience you just had" },
+  { icon: "👥", label: "Private Community", desc: "1,100+ active AI creators — get feedback, find collaborators, stay ahead of the tools" },
+  { icon: "🔄", label: "Continuous Updates", desc: "New lessons added monthly as AI tools evolve — your membership never goes stale" },
+];
 
 // ─── Main Page ────────────────────────────────────────────────────────────────
 export default function GenJamFreebie() {
@@ -192,370 +100,180 @@ export default function GenJamFreebie() {
   const [email, setEmail] = useState("");
   const [slotsRemaining, setSlotsRemaining] = useState<number>(TOTAL_SLOTS);
   const [slotsLoaded, setSlotsLoaded] = useState(false);
-
   const showWaitlist = slotsLoaded && slotsRemaining <= 0;
 
-  // ── Fetch slot count ────────────────────────────────────────────────────────
   const fetchSlots = useCallback(async () => {
     try {
-      const { count, error } = await supabase
-        .from("invite_claims")
-        .select("*", { count: "exact", head: true })
-        .eq("source", "genjam_freebie");
-      if (!error) {
-        setSlotsRemaining(Math.max(0, TOTAL_SLOTS - (count ?? 0)));
-      }
-    } catch {
-      // fail silently — don't block the page
-    } finally {
-      setSlotsLoaded(true);
-    }
+      const { count, error } = await supabase.from("invite_claims").select("*", { count: "exact", head: true }).eq("source", "genjam_freebie");
+      if (!error) setSlotsRemaining(Math.max(0, TOTAL_SLOTS - (count ?? 0)));
+    } catch { /* silent */ } finally { setSlotsLoaded(true); }
   }, []);
 
   useEffect(() => {
     fetchSlots();
-    // Real-time slot updates
-    const channel = supabase
-      .channel("genjam_freebie_claims")
-      .on(
-        "postgres_changes",
-        { event: "INSERT", schema: "public", table: "invite_claims", filter: "source=eq.genjam_freebie" },
-        () => { fetchSlots(); }
-      )
-      .subscribe();
-    return () => { supabase.removeChannel(channel); };
+    const ch = supabase.channel("genjam_freebie_claims").on("postgres_changes", { event: "INSERT", schema: "public", table: "invite_claims", filter: "source=eq.genjam_freebie" }, () => fetchSlots()).subscribe();
+    return () => { supabase.removeChannel(ch); };
   }, [fetchSlots]);
 
-  // ── Form submission ─────────────────────────────────────────────────────────
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     if (formState === "loading") return;
-
-    const trimFirst = firstName.trim();
-    const trimEmail = email.trim().toLowerCase();
-    if (!trimFirst || !trimEmail) return;
-
-    setFormState("loading");
-    setErrorMsg("");
-
+    const tf = firstName.trim(), te = email.trim().toLowerCase();
+    if (!tf || !te) return;
+    setFormState("loading"); setErrorMsg("");
     try {
-      // 1. Re-check slots server-side
-      const { count } = await supabase
-        .from("invite_claims")
-        .select("*", { count: "exact", head: true })
-        .eq("source", "genjam_freebie");
-
-      if ((count ?? 0) >= TOTAL_SLOTS) {
-        setSlotsRemaining(0);
-        setFormState("full");
-        return;
-      }
-
-      // 2. Insert claim
-      const { error: insertError } = await supabase.from("invite_claims").insert({
-        name: trimFirst,
-        email: trimEmail,
-        source: "genjam_freebie",
-      });
-
-      if (insertError) {
-        if (insertError.code === "23505" || insertError.message?.toLowerCase().includes("unique")) {
-          setFormState("duplicate");
-          return;
-        }
-        throw insertError;
-      }
-
-      // 3. Fire Skool invite via edge function
+      const { count } = await supabase.from("invite_claims").select("*", { count: "exact", head: true }).eq("source", "genjam_freebie");
+      if ((count ?? 0) >= TOTAL_SLOTS) { setSlotsRemaining(0); setFormState("full"); return; }
+      const { error: ie } = await supabase.from("invite_claims").insert({ name: tf, email: te, source: "genjam_freebie" });
+      if (ie) { if (ie.code === "23505" || ie.message?.toLowerCase().includes("unique")) { setFormState("duplicate"); return; } throw ie; }
       try {
-        const res = await fetch(`${SUPABASE_URL}/functions/v1/send-skool-invite`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: trimEmail }),
-        });
-        if (res.ok) {
-          await supabase
-            .from("invite_claims")
-            .update({ zapier_triggered: true, zapier_triggered_at: new Date().toISOString() })
-            .eq("email", trimEmail);
-        }
-      } catch {
-        console.warn("Skool invite edge function failed — claim saved, invite may need manual follow-up");
-      }
-
-      // 4. Refresh counter
+        const res = await fetch(`${SUPABASE_URL}/functions/v1/send-skool-invite`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email: te }) });
+        if (res.ok) await supabase.from("invite_claims").update({ zapier_triggered: true, zapier_triggered_at: new Date().toISOString() }).eq("email", te);
+      } catch { console.warn("Skool invite edge function failed — claim saved"); }
       await fetchSlots();
       setFormState("success");
-    } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : "Something went wrong. Please try again.";
-      setErrorMsg(msg);
-      setFormState("error");
-    }
+    } catch (err: unknown) { setErrorMsg(err instanceof Error ? err.message : "Something went wrong."); setFormState("error"); }
   }, [formState, firstName, email, fetchSlots]);
 
-  const inputStyle = {
-    background: "rgba(255,255,255,0.04)",
-    border: "1px solid rgba(255,255,255,0.1)",
-    borderRadius: "12px",
-  };
-
-  const onFocus = (e: React.FocusEvent<HTMLInputElement>) => {
-    e.target.style.border = "1px solid rgba(239,68,68,0.5)";
-    e.target.style.background = "rgba(255,255,255,0.06)";
-  };
-  const onBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-    e.target.style.border = "1px solid rgba(255,255,255,0.1)";
-    e.target.style.background = "rgba(255,255,255,0.04)";
-  };
+  const inp: React.CSSProperties = { background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: "12px", fontSize: "1.1rem", padding: "16px 20px", color: "#fff", width: "100%", outline: "none", boxSizing: "border-box" };
 
   return (
-    <div
-      className="min-h-screen flex flex-col"
-      style={{ background: "#0A0A0A", color: "#F5F5F0", fontFamily: "'DM Sans', sans-serif" }}
-    >
-      {/* ── Header ── */}
-      <header className="border-b border-white/5 py-5 px-6 flex justify-center">
-        <img
-          src="/assets/aifa-white-flask-film-academy-180.png"
-          alt="AI Film Academy"
-          style={{ height: "40px", width: "auto" }}
-        />
-      </header>
+    <div style={{ background: "#0A0A0A", color: "#F5F5F0", fontFamily: "'DM Sans', sans-serif", minHeight: "100vh" }}>
 
-      {/* ── Main ── */}
-      <main className="flex-1 flex flex-col items-center px-4 py-12 md:py-20">
-        {/* Badge */}
-        <div
-          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest mb-8"
-          style={{
-            background: "rgba(239,68,68,0.12)",
-            border: "1px solid rgba(239,68,68,0.3)",
-            color: "#ef4444",
-          }}
-        >
-          <span
-            className="w-2 h-2 rounded-full animate-pulse"
-            style={{ background: "#ef4444" }}
-          />
-          Exclusive GenJam Offer
-        </div>
-
-        {/* Headline */}
-        <h1
-          className="text-center font-black mb-4"
-          style={{
-            fontFamily: "'Bebas Neue', sans-serif",
-            fontSize: "clamp(2.8rem, 8vw, 5.5rem)",
-            lineHeight: "1.0",
-            letterSpacing: "0.02em",
-            maxWidth: "800px",
-          }}
-        >
+      {/* ── HERO ── */}
+      <section style={{ maxWidth: "1000px", margin: "0 auto", padding: "clamp(3.5rem,9vw,7rem) clamp(1.5rem,5vw,3rem) clamp(2rem,5vw,4rem)", textAlign: "center" }}>
+        <p style={{ color: "#ef4444", fontWeight: 700, fontSize: "clamp(0.8rem,2vw,0.95rem)", textTransform: "uppercase", letterSpacing: "0.18em", marginBottom: "1.75rem" }}>
+          Machine Cinema × AI Film Academy
+        </p>
+        <h1 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(3.5rem,11vw,7.5rem)", lineHeight: 0.95, letterSpacing: "0.02em", color: "#F5F5F0", margin: "0 0 0.25rem" }}>
           Congratulations on
-          <br />
-          <span style={{ color: "#ef4444" }}>Finishing a GenJam.</span>
         </h1>
-
-        <p
-          className="text-center text-gray-400 mb-10"
-          style={{ fontSize: "clamp(1rem, 2.5vw, 1.2rem)", maxWidth: "560px", lineHeight: "1.6" }}
-        >
+        <h1 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(3.5rem,11vw,7.5rem)", lineHeight: 0.95, letterSpacing: "0.02em", color: "#ef4444", margin: "0 0 2rem" }}>
+          Finishing a GenJam.
+        </h1>
+        <p style={{ fontSize: "clamp(1.1rem,3vw,1.45rem)", color: "rgba(255,255,255,0.65)", lineHeight: 1.65, maxWidth: "680px", margin: "0 auto 3.5rem" }}>
           As an exclusive thank-you for attending live, the first{" "}
-          <strong className="text-white">150 people</strong> to claim this offer get full access to
-          AI Film Academy — completely free.
+          <strong style={{ color: "#fff" }}>150 people</strong> to claim this offer receive
+          complementary access to AI Film Academy.
         </p>
 
         {/* Slot counter */}
         {slotsLoaded && !showWaitlist && (
-          <div className="mb-10">
+          <div style={{ marginBottom: "3.5rem" }}>
             <SlotCounter value={slotsRemaining} total={TOTAL_SLOTS} />
           </div>
         )}
 
-        {/* ── Form states ── */}
+        {/* ── FORM STATES ── */}
         {formState === "success" ? (
-          <div
-            className="w-full max-w-md rounded-2xl p-8 text-center"
-            style={{
-              background: "rgba(239,68,68,0.06)",
-              border: "1px solid rgba(239,68,68,0.2)",
-            }}
-          >
-            <div className="text-5xl mb-4">🎬</div>
-            <h2 className="text-2xl font-bold text-white mb-3">You're in.</h2>
-            <p className="text-gray-400 text-sm leading-relaxed">
-              Check your inbox — your Skool invite is on its way.{" "}
-              <strong className="text-white">It may take up to 15 minutes.</strong>
-              <br /><br />
+          <div style={{ maxWidth: "560px", margin: "0 auto", background: "rgba(239,68,68,0.07)", border: "1px solid rgba(239,68,68,0.2)", borderRadius: "20px", padding: "3rem 2rem", textAlign: "center" }}>
+            <div style={{ fontSize: "4rem", marginBottom: "1rem" }}>🎬</div>
+            <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "2.8rem", color: "#fff", marginBottom: "1rem", letterSpacing: "0.02em" }}>You're in.</h2>
+            <p style={{ color: "rgba(255,255,255,0.55)", fontSize: "1.1rem", lineHeight: 1.65 }}>
+              Check your inbox — your Skool invite is on its way.<br />
+              <strong style={{ color: "#fff" }}>It may take up to 15 minutes.</strong><br /><br />
               Welcome to AI Film Academy. See you inside.
             </p>
           </div>
         ) : formState === "duplicate" ? (
-          <div
-            className="w-full max-w-md rounded-2xl p-8 text-center"
-            style={{
-              background: "rgba(255,255,255,0.03)",
-              border: "1px solid rgba(255,255,255,0.08)",
-            }}
-          >
-            <p className="text-gray-400 text-sm">
-              This email has already been registered. Check your inbox for the invite, or reach out
-              if you need help.
-            </p>
+          <div style={{ maxWidth: "560px", margin: "0 auto", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "20px", padding: "2.5rem", textAlign: "center" }}>
+            <p style={{ color: "rgba(255,255,255,0.45)", fontSize: "1rem" }}>This email has already been registered. Check your inbox for the invite.</p>
           </div>
         ) : formState === "full" || showWaitlist ? (
-          <div
-            className="w-full max-w-md rounded-2xl p-8"
-            style={{
-              background: "rgba(255,255,255,0.03)",
-              border: "1px solid rgba(255,255,255,0.08)",
-            }}
-          >
-            <div className="text-center mb-6">
-              <p
-                className="font-black text-white"
-                style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "2rem" }}
-              >
-                All 150 Spots Claimed
-              </p>
-            </div>
+          <div style={{ maxWidth: "560px", margin: "0 auto", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "20px", padding: "2.5rem" }}>
+            <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "2.2rem", color: "#fff", textAlign: "center", marginBottom: "1.5rem", letterSpacing: "0.02em" }}>All 150 Spots Claimed</h2>
             <WaitlistForm />
           </div>
         ) : (
-          /* ── Claim form ── */
-          <form
-            onSubmit={handleSubmit}
-            className="w-full max-w-md space-y-4"
-            style={{
-              background: "rgba(255,255,255,0.03)",
-              border: "1px solid rgba(255,255,255,0.08)",
-              borderRadius: "20px",
-              padding: "2rem",
-            }}
-          >
-            <h2
-              className="text-center font-bold text-white mb-2"
-              style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "1.6rem", letterSpacing: "0.05em" }}
-            >
-              Claim Your Free Membership
+          /* ── CLAIM FORM ── */
+          <form onSubmit={handleSubmit} style={{ maxWidth: "560px", margin: "0 auto", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.09)", borderRadius: "20px", padding: "clamp(1.75rem,4vw,2.5rem)", display: "flex", flexDirection: "column", gap: "1rem" }}>
+            <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(1.6rem,4vw,2.1rem)", letterSpacing: "0.05em", color: "#fff", textAlign: "center", marginBottom: "0.25rem" }}>
+              Claim Your Complementary Access
             </h2>
-
-            {/* First Name */}
-            <div className="flex flex-col gap-1">
-              <label className="text-xs text-gray-500 uppercase tracking-wider">First Name</label>
-              <input
-                type="text"
-                required
-                placeholder="Your first name"
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-                disabled={formState === "loading"}
-                className="w-full rounded-xl px-4 py-3 text-white placeholder-gray-600 outline-none transition-all"
-                style={inputStyle}
-                onFocus={onFocus}
-                onBlur={onBlur}
-              />
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.35rem" }}>
+              <label style={{ fontSize: "0.72rem", color: "rgba(255,255,255,0.35)", textTransform: "uppercase", letterSpacing: "0.12em" }}>First Name</label>
+              <input type="text" required placeholder="Your first name" value={firstName} onChange={e => setFirstName(e.target.value)} disabled={formState === "loading"} style={inp}
+                onFocus={e => { e.target.style.border = "1px solid rgba(239,68,68,0.55)"; }}
+                onBlur={e => { e.target.style.border = "1px solid rgba(255,255,255,0.12)"; }} />
             </div>
-
-            {/* Email */}
-            <div className="flex flex-col gap-1">
-              <label className="text-xs text-gray-500 uppercase tracking-wider">Email Address</label>
-              <input
-                type="email"
-                required
-                placeholder="you@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                disabled={formState === "loading"}
-                className="w-full rounded-xl px-4 py-3 text-white placeholder-gray-600 outline-none transition-all"
-                style={inputStyle}
-                onFocus={onFocus}
-                onBlur={onBlur}
-              />
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.35rem" }}>
+              <label style={{ fontSize: "0.72rem", color: "rgba(255,255,255,0.35)", textTransform: "uppercase", letterSpacing: "0.12em" }}>Email Address</label>
+              <input type="email" required placeholder="you@example.com" value={email} onChange={e => setEmail(e.target.value)} disabled={formState === "loading"} style={inp}
+                onFocus={e => { e.target.style.border = "1px solid rgba(239,68,68,0.55)"; }}
+                onBlur={e => { e.target.style.border = "1px solid rgba(255,255,255,0.12)"; }} />
             </div>
-
-            {formState === "error" && (
-              <p className="text-red-400 text-sm text-center">{errorMsg}</p>
-            )}
-
-            <button
-              type="submit"
-              disabled={formState === "loading" || !firstName.trim() || !email.trim()}
-              className="w-full rounded-xl py-4 font-bold text-white text-base uppercase tracking-wider transition-all duration-200"
+            {formState === "error" && <p style={{ color: "#f87171", textAlign: "center", fontSize: "0.88rem" }}>{errorMsg}</p>}
+            <button type="submit" disabled={formState === "loading" || !firstName.trim() || !email.trim()}
               style={{
-                background:
-                  formState === "loading" || !firstName.trim() || !email.trim()
-                    ? "rgba(239,68,68,0.4)"
-                    : "linear-gradient(135deg, #ef4444, #b91c1c)",
-                cursor:
-                  formState === "loading" || !firstName.trim() || !email.trim()
-                    ? "not-allowed"
-                    : "pointer",
-                boxShadow:
-                  formState === "loading" || !firstName.trim() || !email.trim()
-                    ? "none"
-                    : "0 0 30px rgba(239,68,68,0.35)",
-              }}
-            >
+                background: formState === "loading" || !firstName.trim() || !email.trim() ? "rgba(239,68,68,0.3)" : "linear-gradient(135deg,#ef4444,#b91c1c)",
+                border: "none", borderRadius: "12px", padding: "18px", color: "#fff", fontWeight: 800,
+                fontSize: "clamp(1rem,2.5vw,1.1rem)", textTransform: "uppercase", letterSpacing: "0.08em",
+                cursor: formState === "loading" || !firstName.trim() || !email.trim() ? "not-allowed" : "pointer",
+                boxShadow: formState === "loading" || !firstName.trim() || !email.trim() ? "none" : "0 0 40px rgba(239,68,68,0.35)",
+              }}>
               {formState === "loading" ? (
-                <span className="flex items-center justify-center gap-2">
-                  <span
-                    className="w-4 h-4 rounded-full border-2 animate-spin"
-                    style={{ borderColor: "white", borderTopColor: "transparent" }}
-                  />
+                <span style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "0.6rem" }}>
+                  <span style={{ width: "18px", height: "18px", borderRadius: "50%", border: "2px solid rgba(255,255,255,0.3)", borderTopColor: "#fff", animation: "spin 0.7s linear infinite", display: "inline-block" }} />
                   Claiming your spot...
                 </span>
-              ) : (
-                "Claim My Free Membership →"
-              )}
+              ) : "Claim My Complementary Access →"}
             </button>
-
-            <p className="text-center text-xs text-gray-600">
+            <p style={{ textAlign: "center", fontSize: "0.78rem", color: "rgba(255,255,255,0.25)" }}>
               One claim per email. No credit card required. Invite delivered within 15 minutes.
             </p>
           </form>
         )}
+      </section>
 
-        {/* ── What's included ── */}
-        {!showWaitlist && formState !== "success" && (
-          <div
-            className="w-full max-w-md mt-12 rounded-2xl p-6"
-            style={{
-              background: "rgba(255,255,255,0.02)",
-              border: "1px solid rgba(255,255,255,0.06)",
-            }}
-          >
-            <h3 className="text-sm font-bold uppercase tracking-widest text-gray-400 mb-5 text-center">
-              What you get with full access
-            </h3>
-            <ul className="space-y-3">
-              {[
-                { label: "Course Access", desc: "Full AI Film Academy curriculum — 50+ video lessons" },
-                { label: "AI Media Specialist Certificate", desc: "LinkedIn-ready certification badge" },
-                { label: "Monthly GenJams", desc: "Live collaborative AI filmmaking sessions every month" },
-                { label: "Private Community", desc: "1,100+ active AI creators — ask questions, share work" },
-                { label: "AIFA Workflow System", desc: "The exact tool stack and process used by AFA members" },
-              ].map((item) => (
-                <li key={item.label} className="flex items-start gap-3">
-                  <span style={{ color: "#ef4444", flexShrink: 0, marginTop: "2px" }}>✓</span>
-                  <span>
-                    <span className="text-sm font-semibold text-white">{item.label}</span>
-                    <span className="text-xs text-gray-500 block">{item.desc}</span>
-                  </span>
-                </li>
+      {/* ── EVERYTHING INCLUDED ── */}
+      {!showWaitlist && formState !== "success" && (
+        <section style={{ padding: "clamp(3rem,7vw,5rem) clamp(1.5rem,5vw,3rem)", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+          <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
+            <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2rem,6vw,4rem)", letterSpacing: "0.04em", color: "#F5F5F0", textAlign: "center", marginBottom: "clamp(2rem,5vw,3rem)", lineHeight: 1 }}>
+              Everything Included in Your Membership
+            </h2>
+
+            {/* 2-col dark card grid — matches screenshot */}
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "1rem" }}>
+              {BENEFITS.map((b) => (
+                <div key={b.label} style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "14px", padding: "clamp(1.25rem,3vw,1.75rem)", display: "flex", alignItems: "flex-start", gap: "1.1rem" }}>
+                  <span style={{ fontSize: "1.75rem", flexShrink: 0, marginTop: "2px" }}>{b.icon}</span>
+                  <div>
+                    <p style={{ fontWeight: 700, fontSize: "clamp(1rem,2.5vw,1.15rem)", color: "#F5F5F0", marginBottom: "0.4rem", lineHeight: 1.2 }}>{b.label}</p>
+                    <p style={{ fontSize: "0.9rem", color: "rgba(255,255,255,0.4)", lineHeight: 1.55 }}>{b.desc}</p>
+                  </div>
+                </div>
               ))}
-            </ul>
+            </div>
           </div>
-        )}
-      </main>
+        </section>
+      )}
 
-      {/* ── Footer ── */}
-      <footer className="border-t border-white/5 py-6 text-center">
-        <p className="text-xs text-gray-700">
-          © 2026 AI Film Academy™ (AIFA). All rights reserved. This offer is exclusively for
-          Machine Cinema GenJam attendees.
+      {/* ── SECOND CTA ── */}
+      {!showWaitlist && formState !== "success" && (
+        <section style={{ textAlign: "center", padding: "clamp(3rem,7vw,5rem) clamp(1.5rem,5vw,3rem)", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+          <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2rem,6vw,4rem)", letterSpacing: "0.02em", color: "#F5F5F0", marginBottom: "0.5rem", lineHeight: 1.05 }}>
+            {slotsLoaded ? `${slotsRemaining} spots left.` : "Limited spots."}{" "}
+            <span style={{ color: "#ef4444" }}>Claim yours now.</span>
+          </h2>
+          <p style={{ color: "rgba(255,255,255,0.45)", fontSize: "clamp(1rem,2.5vw,1.2rem)", marginBottom: "2rem" }}>
+            This offer is exclusively for Machine Cinema GenJam attendees.
+          </p>
+          <button onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            style={{ background: "linear-gradient(135deg,#ef4444,#b91c1c)", border: "none", borderRadius: "12px", padding: "18px 48px", color: "#fff", fontWeight: 800, fontSize: "clamp(1rem,2.5vw,1.1rem)", textTransform: "uppercase", letterSpacing: "0.08em", cursor: "pointer", boxShadow: "0 0 50px rgba(239,68,68,0.4)" }}>
+            Claim My Complementary Access →
+          </button>
+          <p style={{ marginTop: "1rem", fontSize: "0.78rem", color: "rgba(255,255,255,0.25)" }}>No credit card required. Invite delivered within 15 minutes.</p>
+        </section>
+      )}
+
+      <footer style={{ borderTop: "1px solid rgba(255,255,255,0.05)", padding: "1.5rem", textAlign: "center" }}>
+        <p style={{ fontSize: "0.72rem", color: "rgba(255,255,255,0.18)" }}>
+          © 2026 AI Film Academy™ (AIFA). All rights reserved. This offer is exclusively for Machine Cinema GenJam attendees.
         </p>
       </footer>
+
+      <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
     </div>
   );
 }
