@@ -1,25 +1,14 @@
 /*
  * AI Film Academy — Free Video Training
  * Route: /free-video-training
- *
- * Structure (Kristen Lumiere model — 4 sections max, massive text, minimal copy):
- *   SECTION 1 — Hero: Big headline + photo + CTA button (no form yet)
- *   SECTION 2 — Who This Is For: 3 bold checkmarks + CTA
- *   SECTION 3 — 3 Secrets: Title + one line each + CTA
- *   SECTION 4 — Hi I'm Brandon + Registration Form
- *
- * Rules:
- *   - NO pricing
- *   - NO value stack
- *   - NO walls of paragraph text
- *   - Every headline is HUGE
- *   - Max 1-2 sentences of body copy per item
- *   - About Brandon is LAST (Kristen model)
+ * v3 — all Brandon feedback applied 2026-08-08
  */
 
 import { useState, useCallback } from "react";
 
 const FORM_WEBHOOK_URL = "";
+const HEADSHOT_URL = "https://files.manuscdn.com/user_upload_by_module/session_file/310419663032668673/WKJclrZibZNeINxP.jpeg";
+const GUINNESS_URL = "https://statics.myclickfunnels.com/workspace/JzaYQV/image/23028402/file/6f2b11b01b08a1abc0fba38aee72e853.jpg";
 
 type FormState = "idle" | "loading" | "success" | "error";
 
@@ -38,12 +27,13 @@ function CTAButton({ text, onClick }: { text: string; onClick?: () => void }) {
         border: "none",
         borderRadius: "4px",
         padding: "18px 48px",
-        fontSize: "clamp(0.95rem, 2vw, 1.1rem)",
+        fontSize: "clamp(0.9rem, 1.8vw, 1rem)",
         fontWeight: 900,
         cursor: "pointer",
         letterSpacing: "0.06em",
         textTransform: "uppercase",
         display: "inline-block",
+        transition: "background 0.15s",
       }}
     >
       {text}
@@ -54,17 +44,23 @@ function CTAButton({ text, onClick }: { text: string; onClick?: () => void }) {
 // ─── SECTION 1: Hero ──────────────────────────────────────────────────────────
 function Hero() {
   return (
-    <section style={{ background: "#080808" }}>
-      {/* Eyebrow bar */}
+    <section
+      style={{
+        background: "#0a0a0a",
+        backgroundImage:
+          "radial-gradient(ellipse at 20% 50%, rgba(200,16,46,0.07) 0%, transparent 60%), url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.015'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\")",
+      }}
+    >
+      {/* Top bar — thicker */}
       <div
         style={{
           background: "#c8102e",
           textAlign: "center",
-          padding: "10px 16px",
+          padding: "14px 16px",
           color: "#fff",
           fontWeight: 800,
-          fontSize: "clamp(11px, 2vw, 13px)",
-          letterSpacing: "0.12em",
+          fontSize: "clamp(13px, 2.2vw, 15px)",
+          letterSpacing: "0.1em",
           textTransform: "uppercase",
         }}
       >
@@ -78,7 +74,7 @@ function Hero() {
           margin: "0 auto",
           padding: "64px 32px 56px",
           display: "grid",
-          gridTemplateColumns: "minmax(0,1fr) minmax(0,1.05fr)",
+          gridTemplateColumns: "minmax(0,1.1fr) minmax(0,1fr)",
           gap: "56px",
           alignItems: "center",
         }}
@@ -115,15 +111,15 @@ function Hero() {
 
           <p
             style={{
-              color: "#bbb",
-              fontSize: "clamp(1rem, 2.2vw, 1.25rem)",
-              lineHeight: 1.6,
+              color: "#ccc",
+              fontSize: "clamp(1rem, 2.2vw, 1.2rem)",
+              lineHeight: 1.65,
               marginBottom: "36px",
-              maxWidth: "520px",
+              maxWidth: "540px",
             }}
           >
-            I'll show you the exact AI Film System™ I used to build a 6-figure production business
-            and train 30,000+ creators worldwide.
+            I'll show you the exact AI Film System™ my students use to master AI Filmmaking, build
+            premium portfolios, and start charging high ticket for paid creative work.
           </p>
 
           <CTAButton text="Watch the Free Training →" />
@@ -132,7 +128,7 @@ function Hero() {
         {/* Right: photo */}
         <div>
           <img
-            src="https://statics.myclickfunnels.com/workspace/JzaYQV/image/23028402/file/6f2b11b01b08a1abc0fba38aee72e853.jpg"
+            src={GUINNESS_URL}
             alt="Brandon Patino — AI Film Academy"
             style={{
               width: "100%",
@@ -167,8 +163,8 @@ function WhoThisIsFor() {
   ];
 
   const nopes = [
-    "You want a magic button that makes films for you",
-    "You aren't willing to practice and create consistently",
+    "This is not for you if you want a magic button that makes films for you.",
+    "This is not for you if you aren't going to practice your skills and attend events.",
   ];
 
   return (
@@ -192,7 +188,7 @@ function WhoThisIsFor() {
           This Free Training Is for Creators Who Want to:
         </h2>
 
-        <div style={{ display: "flex", flexDirection: "column", gap: "20px", marginBottom: "36px" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "22px", marginBottom: "36px" }}>
           {checks.map((c, i) => (
             <div
               key={i}
@@ -203,7 +199,7 @@ function WhoThisIsFor() {
                 textAlign: "left",
               }}
             >
-              <span style={{ fontSize: "1.4rem", flexShrink: 0, marginTop: "2px" }}>✅</span>
+              <span style={{ fontSize: "1.5rem", flexShrink: 0, marginTop: "1px" }}>✅</span>
               <p
                 style={{
                   color: "#111",
@@ -222,7 +218,7 @@ function WhoThisIsFor() {
         <div style={{ display: "flex", flexDirection: "column", gap: "14px", marginBottom: "44px" }}>
           {nopes.map((n, i) => (
             <div key={i} style={{ display: "flex", gap: "16px", alignItems: "flex-start", textAlign: "left" }}>
-              <span style={{ fontSize: "1.2rem", flexShrink: 0, marginTop: "2px" }}>❌</span>
+              <span style={{ fontSize: "1.3rem", flexShrink: 0, marginTop: "1px" }}>❌</span>
               <p
                 style={{
                   color: "#888",
@@ -238,30 +234,33 @@ function WhoThisIsFor() {
           ))}
         </div>
 
+        {/* Callout box — lighter, readable */}
         <div
           style={{
-            background: "#111",
-            borderRadius: "8px",
-            padding: "28px 32px",
+            background: "#f5f5f5",
+            border: "2px solid #e0e0e0",
+            borderLeft: "5px solid #c8102e",
+            borderRadius: "6px",
+            padding: "24px 28px",
             marginBottom: "36px",
-            textAlign: "center",
+            textAlign: "left",
           }}
         >
           <p
             style={{
-              color: "#fff",
-              fontWeight: 800,
-              fontSize: "clamp(1rem, 2.5vw, 1.2rem)",
-              lineHeight: 1.5,
+              color: "#111",
+              fontWeight: 700,
+              fontSize: "clamp(1rem, 2.2vw, 1.15rem)",
+              lineHeight: 1.55,
               margin: 0,
             }}
           >
-            If you're a green check — tap below and I'll show you the system that turns AI
-            filmmaking into paid creative work.
+            If you're a green check — tap below and I'll show you the system that turns any idea
+            into premium videos.
           </p>
         </div>
 
-        <CTAButton text="I'm Ready to Watch the Training →" />
+        <CTAButton text="Yes, Show Me the System →" />
       </div>
     </section>
   );
@@ -273,25 +272,27 @@ function Secrets() {
     {
       num: "Secret #1",
       headline: "Why Great AI Films Have Almost Nothing to Do With the AI Tools You Use",
-      sub: "The interfaces change. The model names change. The creative job stays the same.",
+      sub: "The interfaces change. The model names change. The creative job stays the same. What separates premium work from slop is the system behind it.",
     },
     {
       num: "Secret #2",
       headline: "Why Complete Beginners Are Creating Better AI Content Than Experienced Creators",
-      sub: "AI changed who is allowed to create. What matters now is the system, not the software.",
+      sub: "AI changed who is allowed to create. What matters now is your ability to communicate an idea, make creative decisions, and follow a repeatable system.",
     },
     {
       num: "Secret #3",
       headline: "The Filmmaking Skills That Stay Valuable No Matter Which AI Tool Comes Out Next",
-      sub: "Storytelling. Camera language. Design. Editing. These never become obsolete.",
+      sub: "Storytelling. Camera language. Design and style. Editing and pacing. These skills never become obsolete. The system lasts. The tools evolve.",
     },
   ];
 
   return (
     <section
       style={{
-        background: "#080808",
-        padding: "72px 32px",
+        background: "#111",
+        backgroundImage:
+          "radial-gradient(ellipse at 80% 20%, rgba(200,16,46,0.08) 0%, transparent 55%), url(\"data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.02' fill-rule='evenodd'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E\")",
+        padding: "80px 32px",
         borderTop: "4px solid #c8102e",
       }}
     >
@@ -300,11 +301,11 @@ function Secrets() {
           style={{
             color: "#c8102e",
             fontWeight: 800,
-            fontSize: "13px",
+            fontSize: "14px",
             letterSpacing: "0.14em",
             textTransform: "uppercase",
             textAlign: "center",
-            marginBottom: "12px",
+            marginBottom: "14px",
           }}
         >
           Here's What You'll Discover
@@ -316,23 +317,20 @@ function Secrets() {
             fontSize: "clamp(2rem, 4.5vw, 3.2rem)",
             textAlign: "center",
             lineHeight: 1.1,
-            marginBottom: "56px",
+            marginBottom: "64px",
             letterSpacing: "-0.02em",
           }}
         >
           The 3 Secrets Behind the AI Film System™
         </h2>
 
-        <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "40px" }}>
           {secrets.map((s, i) => (
             <div
               key={i}
               style={{
                 borderLeft: "4px solid #c8102e",
-                paddingLeft: "28px",
-                paddingTop: "28px",
-                paddingBottom: "28px",
-                marginBottom: "8px",
+                paddingLeft: "32px",
               }}
             >
               <p
@@ -340,9 +338,9 @@ function Secrets() {
                   color: "#c8102e",
                   fontWeight: 800,
                   fontSize: "13px",
-                  letterSpacing: "0.12em",
+                  letterSpacing: "0.14em",
                   textTransform: "uppercase",
-                  marginBottom: "10px",
+                  marginBottom: "12px",
                 }}
               >
                 {s.num}
@@ -351,9 +349,9 @@ function Secrets() {
                 style={{
                   color: "#fff",
                   fontWeight: 900,
-                  fontSize: "clamp(1.3rem, 3vw, 2rem)",
-                  lineHeight: 1.15,
-                  marginBottom: "10px",
+                  fontSize: "clamp(1.5rem, 3.2vw, 2.2rem)",
+                  lineHeight: 1.2,
+                  marginBottom: "14px",
                   letterSpacing: "-0.01em",
                 }}
               >
@@ -361,10 +359,11 @@ function Secrets() {
               </h3>
               <p
                 style={{
-                  color: "#777",
-                  fontSize: "clamp(0.95rem, 2vw, 1.05rem)",
-                  lineHeight: 1.6,
+                  color: "#bbb",
+                  fontSize: "clamp(1rem, 2vw, 1.1rem)",
+                  lineHeight: 1.7,
                   margin: 0,
+                  maxWidth: "680px",
                 }}
               >
                 {s.sub}
@@ -373,8 +372,8 @@ function Secrets() {
           ))}
         </div>
 
-        <div style={{ textAlign: "center", marginTop: "48px" }}>
-          <CTAButton text="Send Me The Free Training →" />
+        <div style={{ textAlign: "center", marginTop: "56px" }}>
+          <CTAButton text="Get the Free Training Now →" />
         </div>
       </div>
     </section>
@@ -403,7 +402,12 @@ function AboutAndForm() {
         await fetch(FORM_WEBHOOK_URL, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ firstName: name, email: emailVal, source: "free_video_training", group: "Free Video Training" }),
+          body: JSON.stringify({
+            firstName: name,
+            email: emailVal,
+            source: "free_video_training",
+            group: "Free Video Training",
+          }),
         });
         setFormState("success");
       } catch {
@@ -414,10 +418,10 @@ function AboutAndForm() {
   );
 
   return (
-    <section style={{ background: "#fff", padding: "72px 32px" }}>
+    <section style={{ background: "#fff", padding: "80px 32px" }}>
       <div
         style={{
-          maxWidth: "1000px",
+          maxWidth: "1060px",
           margin: "0 auto",
           display: "grid",
           gridTemplateColumns: "minmax(0,1fr) minmax(0,1fr)",
@@ -428,6 +432,21 @@ function AboutAndForm() {
       >
         {/* Left: About Brandon */}
         <div>
+          {/* Headshot */}
+          <img
+            src={HEADSHOT_URL}
+            alt="Brandon Patino"
+            style={{
+              width: "140px",
+              height: "140px",
+              borderRadius: "50%",
+              objectFit: "cover",
+              border: "3px solid #c8102e",
+              marginBottom: "24px",
+              display: "block",
+            }}
+          />
+
           <p
             style={{
               color: "#c8102e",
@@ -450,15 +469,14 @@ function AboutAndForm() {
               letterSpacing: "-0.02em",
             }}
           >
-            I Built a Six-Figure Video Business Teaching Creators How to Stop Watching Tutorials and
-            Start Creating.
+            I Spent 15 Years Building a Video Production Business So You Don't Have to Start From Zero.
           </h2>
 
           <p
             style={{
               color: "#444",
               fontSize: "clamp(1rem, 2vw, 1.1rem)",
-              lineHeight: 1.7,
+              lineHeight: 1.75,
               marginBottom: "20px",
             }}
           >
@@ -470,8 +488,8 @@ function AboutAndForm() {
             style={{
               color: "#444",
               fontSize: "clamp(1rem, 2vw, 1.1rem)",
-              lineHeight: 1.7,
-              marginBottom: "28px",
+              lineHeight: 1.75,
+              marginBottom: "32px",
             }}
           >
             In this free training, I'll show you the exact system I use to take any idea and turn it
@@ -479,7 +497,7 @@ function AboutAndForm() {
           </p>
 
           {/* Credibility row */}
-          <div style={{ display: "flex", gap: "24px", flexWrap: "wrap" }}>
+          <div style={{ display: "flex", gap: "32px", flexWrap: "wrap" }}>
             {[
               { n: "30k+", l: "Global Students" },
               { n: "1,000+", l: "Community Members" },
@@ -490,13 +508,13 @@ function AboutAndForm() {
                   style={{
                     color: "#c8102e",
                     fontWeight: 900,
-                    fontSize: "clamp(1.4rem, 3vw, 1.8rem)",
+                    fontSize: "clamp(1.5rem, 3vw, 2rem)",
                     lineHeight: 1,
                   }}
                 >
                   {n}
                 </div>
-                <div style={{ color: "#888", fontSize: "0.8rem", marginTop: "4px" }}>{l}</div>
+                <div style={{ color: "#888", fontSize: "0.82rem", marginTop: "5px" }}>{l}</div>
               </div>
             ))}
           </div>
@@ -514,7 +532,7 @@ function AboutAndForm() {
               letterSpacing: "-0.01em",
             }}
           >
-            Watch the Free AI Filmmaking Training Now
+            Get the Free AI Filmmaking Training
           </h3>
           <p
             style={{
@@ -594,7 +612,7 @@ function AboutAndForm() {
                     textTransform: "uppercase",
                   }}
                 >
-                  {formState === "loading" ? "Sending..." : "I'm Ready to Watch the Training ✅"}
+                  {formState === "loading" ? "Sending..." : "Send Me the Free Training ✅"}
                 </button>
                 {formState === "error" && (
                   <p style={{ color: "#dc2626", fontSize: "0.85rem", textAlign: "center" }}>
