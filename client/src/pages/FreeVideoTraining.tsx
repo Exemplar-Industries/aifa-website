@@ -732,7 +732,7 @@ function Footer() {
       }}
     >
       <img
-        src="/assets/afa_logo_white_text.png"
+        src="/assets/afa-logo-horizontal.png"
         alt="AI Film Academy"
         style={{ height: "52px", display: "block" }}
       />
