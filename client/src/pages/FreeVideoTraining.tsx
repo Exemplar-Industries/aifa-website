@@ -1,13 +1,7 @@
 /*
  * AI Film Academy — Free Video Training
  * Route: /free-video-training
- * v4 — Brandon feedback round 3
- *
- * Changes:
- *  - Top bar: much bigger text, more padding
- *  - Section 2: all text bigger, ❌ lines bigger, callout box clean white card style
- *  - Section 3: clean dark bg (no stripes/texture), no subtext under secrets, bigger headlines
- *  - Section 4: fixed form spacing, updated headline
+ * v5 — Brandon feedback round 4
  */
 
 import { useState, useCallback } from "react";
@@ -45,13 +39,33 @@ function CTAButton({ text, onClick }: { text: string; onClick?: () => void }) {
   );
 }
 
-// ─── SECTION 1: Hero ──────────────────────────────────────────────────────────
+// ─── SECTION 1: Hero with animated background ─────────────────────────────────
 function Hero() {
   return (
-    <section style={{ background: "#0a0a0a" }}>
-      {/* Top bar — big, thick, readable */}
+    <section style={{ position: "relative", overflow: "hidden", background: "#0d0d0d" }}>
+      {/* Animated canvas-style background via CSS */}
       <div
         style={{
+          position: "absolute",
+          inset: 0,
+          zIndex: 0,
+          background: "#0d0d0d",
+          overflow: "hidden",
+        }}
+      >
+        {/* Animated red orbs */}
+        <div className="orb orb1" />
+        <div className="orb orb2" />
+        <div className="orb orb3" />
+        {/* Subtle grid overlay */}
+        <div className="grid-overlay" />
+      </div>
+
+      {/* Top bar */}
+      <div
+        style={{
+          position: "relative",
+          zIndex: 2,
           background: "#c8102e",
           textAlign: "center",
           padding: "18px 24px",
@@ -65,11 +79,14 @@ function Hero() {
         Free Video Training for Creators, Filmmakers &amp; Complete Beginners
       </div>
 
+      {/* Hero content */}
       <div
         style={{
+          position: "relative",
+          zIndex: 2,
           maxWidth: "1100px",
           margin: "0 auto",
-          padding: "64px 32px 56px",
+          padding: "72px 32px 64px",
           display: "grid",
           gridTemplateColumns: "minmax(0,1.1fr) minmax(0,1fr)",
           gap: "56px",
@@ -85,7 +102,7 @@ function Hero() {
               fontSize: "clamp(13px, 2vw, 15px)",
               letterSpacing: "0.14em",
               textTransform: "uppercase",
-              marginBottom: "18px",
+              marginBottom: "20px",
             }}
           >
             Free Video Training — AI Film System™
@@ -95,20 +112,22 @@ function Hero() {
               color: "#fff",
               fontWeight: 900,
               fontSize: "clamp(2.4rem, 5.5vw, 4rem)",
-              lineHeight: 1.05,
+              lineHeight: 1.08,
               letterSpacing: "-0.02em",
-              marginBottom: "24px",
+              marginBottom: "28px",
             }}
           >
             Stop Feeling Overwhelmed by AI Tools.{" "}
-            <span style={{ color: "#c8102e" }}>Start Creating Premium Videos That Get You Paid.</span>
+            <span style={{ color: "#c8102e" }}>
+              Start Creating Premium Videos That Get You Paid.
+            </span>
           </h1>
           <p
             style={{
               color: "#ccc",
               fontSize: "clamp(1.05rem, 2.2vw, 1.25rem)",
-              lineHeight: 1.65,
-              marginBottom: "36px",
+              lineHeight: 1.75,
+              marginBottom: "40px",
               maxWidth: "540px",
             }}
           >
@@ -122,7 +141,9 @@ function Hero() {
             src={GUINNESS_URL}
             alt="Brandon Patino — AI Film Academy"
             style={{ width: "100%", display: "block", borderRadius: "8px" }}
-            onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
+            onError={(e) => {
+              (e.target as HTMLImageElement).style.display = "none";
+            }}
           />
         </div>
       </div>
@@ -133,9 +154,18 @@ function Hero() {
 // ─── SECTION 2: Who This Is For ───────────────────────────────────────────────
 function WhoThisIsFor() {
   const checks = [
-    { bold: "Build a Client-Ready Portfolio", rest: " so you can show real work to brands, clients, and employers." },
-    { bold: "Master the AI Video Workflow", rest: " and stop chasing every new tool that gets released." },
-    { bold: "Land Freelance and Business Clients", rest: " by creating films that get recognized." },
+    {
+      bold: "Build a Client-Ready Portfolio",
+      rest: " so you can show real work to brands, clients, and employers.",
+    },
+    {
+      bold: "Master the AI Film Production System",
+      rest: " and stop chasing every new tool that gets released.",
+    },
+    {
+      bold: "Land Freelance and Business Clients",
+      rest: " by creating films that get recognized.",
+    },
   ];
   const nopes = [
     "This is not for you if you want a magic button that makes films for you.",
@@ -143,7 +173,7 @@ function WhoThisIsFor() {
   ];
 
   return (
-    <section style={{ background: "#fff", padding: "80px 32px" }}>
+    <section style={{ background: "#fff", padding: "88px 32px" }}>
       <div style={{ maxWidth: "780px", margin: "0 auto", textAlign: "center" }}>
         <h2
           style={{
@@ -151,50 +181,82 @@ function WhoThisIsFor() {
             fontWeight: 900,
             fontSize: "clamp(2rem, 4.5vw, 3.2rem)",
             lineHeight: 1.1,
-            marginBottom: "52px",
+            marginBottom: "56px",
             letterSpacing: "-0.02em",
           }}
         >
           This Free Training Is for Creators Who Want to:
         </h2>
 
-        <div style={{ display: "flex", flexDirection: "column", gap: "26px", marginBottom: "40px" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "30px", marginBottom: "44px" }}>
           {checks.map((c, i) => (
-            <div key={i} style={{ display: "flex", gap: "18px", alignItems: "flex-start", textAlign: "left" }}>
-              <span style={{ fontSize: "1.8rem", flexShrink: 0, lineHeight: 1.3 }}>✅</span>
-              <p style={{ color: "#111", fontSize: "clamp(1.1rem, 2.5vw, 1.3rem)", lineHeight: 1.55, margin: 0 }}>
-                <strong>{c.bold}</strong>{c.rest}
+            <div
+              key={i}
+              style={{ display: "flex", gap: "20px", alignItems: "flex-start", textAlign: "left" }}
+            >
+              <span style={{ fontSize: "1.9rem", flexShrink: 0, lineHeight: 1.25 }}>✅</span>
+              <p
+                style={{
+                  color: "#111",
+                  fontSize: "clamp(1.15rem, 2.5vw, 1.35rem)",
+                  lineHeight: 1.6,
+                  margin: 0,
+                }}
+              >
+                <strong>{c.bold}</strong>
+                {c.rest}
               </p>
             </div>
           ))}
         </div>
 
-        <div style={{ display: "flex", flexDirection: "column", gap: "18px", marginBottom: "48px" }}>
+        <div
+          style={{ display: "flex", flexDirection: "column", gap: "22px", marginBottom: "52px" }}
+        >
           {nopes.map((n, i) => (
-            <div key={i} style={{ display: "flex", gap: "18px", alignItems: "flex-start", textAlign: "left" }}>
-              <span style={{ fontSize: "1.6rem", flexShrink: 0, lineHeight: 1.3 }}>❌</span>
-              <p style={{ color: "#777", fontSize: "clamp(1rem, 2.2vw, 1.2rem)", fontStyle: "italic", lineHeight: 1.55, margin: 0 }}>
+            <div
+              key={i}
+              style={{ display: "flex", gap: "20px", alignItems: "flex-start", textAlign: "left" }}
+            >
+              <span style={{ fontSize: "1.7rem", flexShrink: 0, lineHeight: 1.25 }}>❌</span>
+              <p
+                style={{
+                  color: "#888",
+                  fontSize: "clamp(1rem, 2.2vw, 1.2rem)",
+                  fontStyle: "italic",
+                  lineHeight: 1.6,
+                  margin: 0,
+                }}
+              >
                 {n}
               </p>
             </div>
           ))}
         </div>
 
-        {/* Clean callout — white card with red accent, no warning-sign feel */}
+        {/* Callout box — clean white, NO red bar, just a subtle border and shadow */}
         <div
           style={{
             background: "#fff",
             border: "2px solid #e8e8e8",
-            borderTop: "4px solid #c8102e",
-            borderRadius: "8px",
-            padding: "28px 32px",
-            marginBottom: "40px",
+            borderRadius: "10px",
+            padding: "30px 36px",
+            marginBottom: "44px",
             textAlign: "center",
-            boxShadow: "0 4px 20px rgba(0,0,0,0.06)",
+            boxShadow: "0 6px 24px rgba(0,0,0,0.07)",
           }}
         >
-          <p style={{ color: "#111", fontWeight: 700, fontSize: "clamp(1.05rem, 2.3vw, 1.25rem)", lineHeight: 1.55, margin: 0 }}>
-            If you're a green check — tap below and I'll show you the system that turns any idea into premium videos.
+          <p
+            style={{
+              color: "#111",
+              fontWeight: 700,
+              fontSize: "clamp(1.05rem, 2.3vw, 1.3rem)",
+              lineHeight: 1.6,
+              margin: 0,
+            }}
+          >
+            If you're a green check — tap below and I'll show you the system that turns any idea
+            into premium videos.
           </p>
         </div>
 
@@ -225,45 +287,33 @@ function Secrets() {
     <section
       style={{
         background: "#1a1a1a",
-        padding: "80px 32px",
+        padding: "88px 32px",
         borderTop: "4px solid #c8102e",
       }}
     >
       <div style={{ maxWidth: "860px", margin: "0 auto" }}>
-        <p
-          style={{
-            color: "#c8102e",
-            fontWeight: 800,
-            fontSize: "clamp(13px, 2vw, 15px)",
-            letterSpacing: "0.14em",
-            textTransform: "uppercase",
-            textAlign: "center",
-            marginBottom: "14px",
-          }}
-        >
-          Here's What You'll Discover
-        </p>
+        {/* No eyebrow label — deleted "Here's What You'll Discover" */}
         <h2
           style={{
-            color: "#fff",
+            color: "#c8102e",
             fontWeight: 900,
             fontSize: "clamp(2rem, 4.5vw, 3.2rem)",
             textAlign: "center",
             lineHeight: 1.1,
-            marginBottom: "64px",
+            marginBottom: "72px",
             letterSpacing: "-0.02em",
           }}
         >
-          The 3 Secrets You'll Discover In This Video Training
+          Discover the 3 Secrets To Premium AI Films Clients Pay High Ticket For
         </h2>
 
-        <div style={{ display: "flex", flexDirection: "column", gap: "48px" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "56px" }}>
           {secrets.map((s, i) => (
             <div
               key={i}
               style={{
                 borderLeft: "5px solid #c8102e",
-                paddingLeft: "36px",
+                paddingLeft: "40px",
               }}
             >
               <p
@@ -273,7 +323,7 @@ function Secrets() {
                   fontSize: "clamp(13px, 2vw, 15px)",
                   letterSpacing: "0.14em",
                   textTransform: "uppercase",
-                  marginBottom: "14px",
+                  marginBottom: "16px",
                 }}
               >
                 {s.num}
@@ -282,8 +332,8 @@ function Secrets() {
                 style={{
                   color: "#fff",
                   fontWeight: 900,
-                  fontSize: "clamp(1.6rem, 3.5vw, 2.4rem)",
-                  lineHeight: 1.2,
+                  fontSize: "clamp(1.7rem, 3.8vw, 2.6rem)",
+                  lineHeight: 1.25,
                   margin: 0,
                   letterSpacing: "-0.01em",
                 }}
@@ -294,7 +344,7 @@ function Secrets() {
           ))}
         </div>
 
-        <div style={{ textAlign: "center", marginTop: "64px" }}>
+        <div style={{ textAlign: "center", marginTop: "72px" }}>
           <CTAButton text="Get the Free Training Now →" />
         </div>
       </div>
@@ -324,7 +374,12 @@ function AboutAndForm() {
         await fetch(FORM_WEBHOOK_URL, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ firstName: name, email: emailVal, source: "free_video_training", group: "Free Video Training" }),
+          body: JSON.stringify({
+            firstName: name,
+            email: emailVal,
+            source: "free_video_training",
+            group: "Free Video Training",
+          }),
         });
         setFormState("success");
       } catch {
@@ -335,7 +390,7 @@ function AboutAndForm() {
   );
 
   return (
-    <section style={{ background: "#f9f9f9", padding: "80px 32px" }}>
+    <section style={{ background: "#f9f9f9", padding: "88px 32px" }}>
       <div
         style={{
           maxWidth: "1060px",
@@ -347,7 +402,7 @@ function AboutAndForm() {
         }}
         className="about-grid"
       >
-        {/* Left: About Brandon */}
+        {/* Left: About Brandon — NO big headline */}
         <div>
           <img
             src={HEADSHOT_URL}
@@ -369,29 +424,17 @@ function AboutAndForm() {
               fontSize: "clamp(13px, 2vw, 15px)",
               letterSpacing: "0.14em",
               textTransform: "uppercase",
-              marginBottom: "14px",
+              marginBottom: "20px",
             }}
           >
             Hi, I'm Brandon
           </p>
-          <h2
-            style={{
-              color: "#111",
-              fontWeight: 900,
-              fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)",
-              lineHeight: 1.1,
-              marginBottom: "28px",
-              letterSpacing: "-0.02em",
-            }}
-          >
-            I Spent 5 Years Building a 6 Figure Video Production Business. Let Me Teach You The Shortcuts With AI Filmmaking.
-          </h2>
           <p
             style={{
-              color: "#444",
-              fontSize: "clamp(1rem, 2vw, 1.15rem)",
-              lineHeight: 1.8,
-              marginBottom: "20px",
+              color: "#333",
+              fontSize: "clamp(1.05rem, 2vw, 1.2rem)",
+              lineHeight: 1.85,
+              marginBottom: "22px",
             }}
           >
             I've trained <strong>30,000+ students globally</strong>, built a private community of
@@ -399,37 +442,46 @@ function AboutAndForm() {
           </p>
           <p
             style={{
-              color: "#444",
-              fontSize: "clamp(1rem, 2vw, 1.15rem)",
-              lineHeight: 1.8,
-              marginBottom: "36px",
+              color: "#333",
+              fontSize: "clamp(1.05rem, 2vw, 1.2rem)",
+              lineHeight: 1.85,
+              marginBottom: "40px",
             }}
           >
             In this free training, I'll show you the exact system I use to take any idea and turn it
             into a premium AI film — without needing 12 different tools or a film school background.
           </p>
-          <div style={{ display: "flex", gap: "36px", flexWrap: "wrap" }}>
+          <div style={{ display: "flex", gap: "40px", flexWrap: "wrap" }}>
             {[
               { n: "30k+", l: "Global Students" },
               { n: "1,000+", l: "Community Members" },
               { n: "5.0 ★", l: "Google Reviews" },
             ].map(({ n, l }) => (
               <div key={l}>
-                <div style={{ color: "#c8102e", fontWeight: 900, fontSize: "clamp(1.6rem, 3vw, 2.2rem)", lineHeight: 1 }}>{n}</div>
-                <div style={{ color: "#888", fontSize: "0.85rem", marginTop: "6px" }}>{l}</div>
+                <div
+                  style={{
+                    color: "#c8102e",
+                    fontWeight: 900,
+                    fontSize: "clamp(1.6rem, 3vw, 2.2rem)",
+                    lineHeight: 1,
+                  }}
+                >
+                  {n}
+                </div>
+                <div style={{ color: "#888", fontSize: "0.88rem", marginTop: "7px" }}>{l}</div>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Right: Form */}
+        {/* Right: Form card */}
         <div
           id="fvt-form"
           style={{
             background: "#fff",
-            borderRadius: "10px",
-            padding: "40px 36px",
-            boxShadow: "0 4px 32px rgba(0,0,0,0.08)",
+            borderRadius: "12px",
+            padding: "44px 40px",
+            boxShadow: "0 6px 40px rgba(0,0,0,0.09)",
             border: "1px solid #eee",
           }}
         >
@@ -439,7 +491,7 @@ function AboutAndForm() {
               fontWeight: 900,
               fontSize: "clamp(1.5rem, 3vw, 2rem)",
               lineHeight: 1.2,
-              marginBottom: "10px",
+              marginBottom: "12px",
               letterSpacing: "-0.01em",
             }}
           >
@@ -449,8 +501,8 @@ function AboutAndForm() {
             style={{
               color: "#666",
               fontSize: "clamp(0.95rem, 2vw, 1.05rem)",
-              lineHeight: 1.65,
-              marginBottom: "32px",
+              lineHeight: 1.7,
+              marginBottom: "36px",
             }}
           >
             Enter your info and I'll send it straight to your inbox. Watch on your own schedule.
@@ -462,17 +514,19 @@ function AboutAndForm() {
                 background: "#f0fdf4",
                 border: "1px solid #86efac",
                 borderRadius: "8px",
-                padding: "36px",
+                padding: "40px",
                 textAlign: "center",
               }}
             >
-              <p style={{ color: "#166534", fontWeight: 800, fontSize: "1.15rem", margin: 0 }}>
+              <p
+                style={{ color: "#166534", fontWeight: 800, fontSize: "1.15rem", margin: 0 }}
+              >
                 You're in. Check your inbox for the free training.
               </p>
             </div>
           ) : (
             <form onSubmit={handleSubmit}>
-              <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
                 <input
                   type="text"
                   placeholder="First Name"
@@ -482,7 +536,7 @@ function AboutAndForm() {
                   style={{
                     border: "2px solid #e0e0e0",
                     borderRadius: "5px",
-                    padding: "16px 20px",
+                    padding: "17px 20px",
                     fontSize: "1.05rem",
                     outline: "none",
                     width: "100%",
@@ -500,7 +554,7 @@ function AboutAndForm() {
                   style={{
                     border: "2px solid #e0e0e0",
                     borderRadius: "5px",
-                    padding: "16px 20px",
+                    padding: "17px 20px",
                     fontSize: "1.05rem",
                     outline: "none",
                     width: "100%",
@@ -517,7 +571,7 @@ function AboutAndForm() {
                     color: "#fff",
                     border: "none",
                     borderRadius: "5px",
-                    padding: "18px",
+                    padding: "19px",
                     fontSize: "1.05rem",
                     fontWeight: 900,
                     cursor: formState === "loading" ? "not-allowed" : "pointer",
@@ -529,11 +583,26 @@ function AboutAndForm() {
                   {formState === "loading" ? "Sending..." : "Send Me the Free Training ✅"}
                 </button>
                 {formState === "error" && (
-                  <p style={{ color: "#dc2626", fontSize: "0.88rem", textAlign: "center", margin: 0 }}>
+                  <p
+                    style={{
+                      color: "#dc2626",
+                      fontSize: "0.88rem",
+                      textAlign: "center",
+                      margin: 0,
+                    }}
+                  >
                     Something went wrong. Please try again.
                   </p>
                 )}
-                <p style={{ color: "#bbb", fontSize: "0.8rem", textAlign: "center", lineHeight: 1.5, margin: 0 }}>
+                <p
+                  style={{
+                    color: "#bbb",
+                    fontSize: "0.8rem",
+                    textAlign: "center",
+                    lineHeight: 1.5,
+                    margin: 0,
+                  }}
+                >
                   No spam. Unsubscribe anytime.
                 </p>
               </div>
@@ -548,7 +617,14 @@ function AboutAndForm() {
 // ─── Footer ───────────────────────────────────────────────────────────────────
 function Footer() {
   return (
-    <footer style={{ background: "#050505", borderTop: "1px solid rgba(255,255,255,0.05)", padding: "28px", textAlign: "center" }}>
+    <footer
+      style={{
+        background: "#050505",
+        borderTop: "1px solid rgba(255,255,255,0.05)",
+        padding: "28px",
+        textAlign: "center",
+      }}
+    >
       <img
         src="/assets/aifa-white-flask-film-academy-180.png"
         alt="AI Film Academy"
@@ -561,12 +637,63 @@ function Footer() {
   );
 }
 
-// ─── Responsive CSS ───────────────────────────────────────────────────────────
+// ─── Responsive + Animation CSS ───────────────────────────────────────────────
 const CSS = `
   @media (max-width: 720px) {
     .hero-grid { grid-template-columns: 1fr !important; }
     .hero-grid > div:last-child { order: -1; max-width: 320px; margin: 0 auto; }
     .about-grid { grid-template-columns: 1fr !important; }
+  }
+
+  /* Animated orb backgrounds for hero */
+  .orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.18;
+    animation: orbFloat 12s ease-in-out infinite;
+  }
+  .orb1 {
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, #c8102e 0%, transparent 70%);
+    top: -120px;
+    left: -100px;
+    animation-delay: 0s;
+    animation-duration: 14s;
+  }
+  .orb2 {
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, #8a0b20 0%, transparent 70%);
+    bottom: -80px;
+    right: 10%;
+    animation-delay: -5s;
+    animation-duration: 18s;
+  }
+  .orb3 {
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, #c8102e 0%, transparent 70%);
+    top: 40%;
+    left: 50%;
+    animation-delay: -9s;
+    animation-duration: 22s;
+    opacity: 0.1;
+  }
+  @keyframes orbFloat {
+    0%   { transform: translate(0px, 0px) scale(1); }
+    33%  { transform: translate(30px, -40px) scale(1.05); }
+    66%  { transform: translate(-20px, 20px) scale(0.97); }
+    100% { transform: translate(0px, 0px) scale(1); }
+  }
+
+  /* Subtle dot grid overlay */
+  .grid-overlay {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size: 32px 32px;
   }
 `;
 
