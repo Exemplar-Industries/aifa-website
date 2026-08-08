@@ -18,6 +18,7 @@ import Connect from "./pages/Connect";
 import InternalLessons from "./pages/InternalLessons";
 import SlideViewer from "./pages/SlideViewer";
 import Masterclass from "./pages/Masterclass";
+import FreeVideoTraining from "./pages/FreeVideoTraining";
 
 function Router() {
   return (
@@ -35,6 +36,7 @@ function Router() {
       <Route path={"/internal/lessons"} component={InternalLessons} />
       <Route path={"/lessons/:week"} component={SlideViewer} />
       <Route path={"/masterclass"} component={Masterclass} />
+      <Route path={"/free-video-training"} component={FreeVideoTraining} />
       <Route path={"/404"} component={NotFound} />
       <Route component={NotFound} />
     </Switch>
