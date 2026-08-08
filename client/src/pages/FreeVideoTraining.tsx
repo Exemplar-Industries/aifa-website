@@ -595,6 +595,7 @@ function AboutAndForm() {
               lineHeight: 1.2,
               marginBottom: "12px",
               letterSpacing: "-0.01em",
+              textAlign: "center",
             }}
           >
             Get the Free AI Filmmaking Training
@@ -605,6 +606,7 @@ function AboutAndForm() {
               fontSize: "clamp(0.95rem, 2vw, 1.05rem)",
               lineHeight: 1.7,
               marginBottom: "36px",
+              textAlign: "center",
             }}
           >
             Enter your info and I'll send it straight to your inbox. Watch on your own schedule.
