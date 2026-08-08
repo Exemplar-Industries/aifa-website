@@ -409,7 +409,7 @@ function Secrets() {
           style={{
             color: "#c8102e",
             fontWeight: 900,
-            fontSize: "clamp(1.8rem, 4vw, 3rem)",
+            fontSize: "clamp(1.4rem, 3.2vw, 2.4rem)",
             textAlign: "center",
             lineHeight: 1.1,
             marginBottom: "72px",
