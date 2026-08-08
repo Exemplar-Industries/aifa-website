@@ -39,6 +39,114 @@ function CTAButton({ text, onClick }: { text: string; onClick?: () => void }) {
   );
 }
 
+// ─── Hero Inline Form ────────────────────────────────────────────────────────
+function HeroForm() {
+  const [formState, setFormState] = useState<FormState>("idle");
+  const [firstName, setFirstName] = useState("");
+  const [email, setEmail] = useState("");
+
+  const handleSubmit = useCallback(
+    async (e: React.FormEvent) => {
+      e.preventDefault();
+      if (formState === "loading") return;
+      const name = firstName.trim();
+      const emailVal = email.trim().toLowerCase();
+      if (!name || !emailVal) return;
+      setFormState("loading");
+      if (!FORM_WEBHOOK_URL) {
+        setTimeout(() => setFormState("success"), 700);
+        return;
+      }
+      try {
+        await fetch(FORM_WEBHOOK_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ firstName: name, email: emailVal, source: "free_video_training", group: "Free Video Training" }),
+        });
+        setFormState("success");
+      } catch {
+        setFormState("error");
+      }
+    },
+    [formState, firstName, email]
+  );
+
+  if (formState === "success") {
+    return (
+      <div style={{ background: "rgba(255,255,255,0.08)", borderRadius: "8px", padding: "20px", textAlign: "center" }}>
+        <p style={{ color: "#fff", fontWeight: 800, fontSize: "1rem", margin: 0 }}>
+          You're in. Check your inbox.
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+        <input
+          type="text"
+          placeholder="First Name"
+          value={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
+          required
+          style={{
+            background: "rgba(255,255,255,0.08)",
+            border: "1px solid rgba(255,255,255,0.2)",
+            borderRadius: "5px",
+            padding: "14px 18px",
+            color: "#fff",
+            fontSize: "1rem",
+            outline: "none",
+            width: "100%",
+            boxSizing: "border-box" as const,
+          }}
+        />
+        <input
+          type="email"
+          placeholder="Best Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+          style={{
+            background: "rgba(255,255,255,0.08)",
+            border: "1px solid rgba(255,255,255,0.2)",
+            borderRadius: "5px",
+            padding: "14px 18px",
+            color: "#fff",
+            fontSize: "1rem",
+            outline: "none",
+            width: "100%",
+            boxSizing: "border-box" as const,
+          }}
+        />
+        <button
+          type="submit"
+          disabled={formState === "loading"}
+          style={{
+            background: formState === "loading" ? "#8a0b20" : "#c8102e",
+            color: "#fff",
+            border: "none",
+            borderRadius: "5px",
+            padding: "15px",
+            fontSize: "0.95rem",
+            fontWeight: 900,
+            cursor: formState === "loading" ? "not-allowed" : "pointer",
+            letterSpacing: "0.05em",
+            textTransform: "uppercase" as const,
+          }}
+        >
+          {formState === "loading" ? "Sending..." : "Send Me the Free Training ✅"}
+        </button>
+        {formState === "error" && (
+          <p style={{ color: "#f87171", fontSize: "0.8rem", textAlign: "center", margin: 0 }}>Something went wrong. Try again.</p>
+        )}
+        <p style={{ color: "rgba(255,255,255,0.35)", fontSize: "0.75rem", textAlign: "center", margin: 0 }}>No spam. Unsubscribe anytime.</p>
+      </div>
+    </form>
+  );
+}
+
 // ─── SECTION 1: Hero with animated background ─────────────────────────────────
 function Hero() {
   return (
@@ -133,6 +241,11 @@ function Hero() {
             premium portfolios, and start charging high ticket for paid creative work.
           </p>
           <CTAButton text="Watch the Free Training →" />
+
+          {/* Hero inline mini-form */}
+          <div style={{ marginTop: "28px", maxWidth: "480px" }}>
+            <HeroForm />
+          </div>
         </div>
         <div>
           <img
@@ -167,7 +280,8 @@ function WhoThisIsFor() {
   ];
   const nopes = [
     "This is not for you if you want a magic button that makes films for you.",
-    "This is not for you if you aren't going to practice your skills and attend events.",
+    "This is not for you if you're going to watch the training and do nothing with it.",
+    "This is not for you if you're not serious about building a portfolio and attracting paid work.",
   ];
 
   return (
@@ -175,7 +289,7 @@ function WhoThisIsFor() {
       <div style={{ maxWidth: "780px", margin: "0 auto", textAlign: "center" }}>
         <h2
           style={{
-            color: "#111",
+            color: "#c8102e",
             fontWeight: 900,
             fontSize: "clamp(2rem, 4.5vw, 3.2rem)",
             lineHeight: 1.1,
@@ -208,31 +322,7 @@ function WhoThisIsFor() {
           ))}
         </div>
 
-        <div
-          style={{ display: "flex", flexDirection: "column", gap: "22px", marginBottom: "52px" }}
-        >
-          {nopes.map((n, i) => (
-            <div
-              key={i}
-              style={{ display: "flex", gap: "20px", alignItems: "flex-start", textAlign: "left" }}
-            >
-              <span style={{ fontSize: "1.7rem", flexShrink: 0, lineHeight: 1.25 }}>❌</span>
-              <p
-                style={{
-                  color: "#888",
-                  fontSize: "clamp(1rem, 2.2vw, 1.2rem)",
-                  fontStyle: "italic",
-                  lineHeight: 1.6,
-                  margin: 0,
-                }}
-              >
-                {n}
-              </p>
-            </div>
-          ))}
-        </div>
-
-        {/* Callout box — clean white, NO red bar, just a subtle border and shadow */}
+        {/* Callout box */}
         <div
           style={{
             background: "#fff",
@@ -259,6 +349,31 @@ function WhoThisIsFor() {
         </div>
 
         <CTAButton text="Yes, Show Me the System →" />
+
+        {/* ❌ Not for you — below CTA */}
+        <div
+          style={{ display: "flex", flexDirection: "column", gap: "18px", marginTop: "40px" }}
+        >
+          {nopes.map((n, i) => (
+            <div
+              key={i}
+              style={{ display: "flex", gap: "16px", alignItems: "flex-start", textAlign: "left" }}
+            >
+              <span style={{ fontSize: "1.5rem", flexShrink: 0, lineHeight: 1.3 }}>❌</span>
+              <p
+                style={{
+                  color: "#aaa",
+                  fontSize: "clamp(0.95rem, 2vw, 1.05rem)",
+                  fontStyle: "italic",
+                  lineHeight: 1.6,
+                  margin: 0,
+                }}
+              >
+                {n}
+              </p>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );
@@ -474,14 +589,14 @@ function AboutAndForm() {
           </div>
         </div>
 
-        {/* Right: Form card */}
+        {/* Right: Form card — bigger */}
         <div
           id="fvt-form"
           style={{
             background: "#fff",
             borderRadius: "12px",
-            padding: "44px 40px",
-            boxShadow: "0 6px 40px rgba(0,0,0,0.09)",
+            padding: "56px 52px",
+            boxShadow: "0 8px 48px rgba(0,0,0,0.11)",
             border: "1px solid #eee",
           }}
         >
