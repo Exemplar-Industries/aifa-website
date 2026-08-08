@@ -1,7 +1,7 @@
 /*
  * AI Film Academy — Free Video Training
  * Route: /free-video-training
- * v5 — Brandon feedback round 4
+ * v6 — animation fix, S3 headline, mobile
  */
 
 import { useState, useCallback } from "react";
@@ -49,15 +49,13 @@ function Hero() {
           position: "absolute",
           inset: 0,
           zIndex: 0,
-          background: "#0d0d0d",
+          background: "transparent",
           overflow: "hidden",
         }}
       >
-        {/* Animated red orbs */}
         <div className="orb orb1" />
         <div className="orb orb2" />
         <div className="orb orb3" />
-        {/* Subtle grid overlay */}
         <div className="grid-overlay" />
       </div>
 
@@ -297,14 +295,16 @@ function Secrets() {
           style={{
             color: "#c8102e",
             fontWeight: 900,
-            fontSize: "clamp(2rem, 4.5vw, 3.2rem)",
+            fontSize: "clamp(1.8rem, 4vw, 3rem)",
             textAlign: "center",
             lineHeight: 1.1,
             marginBottom: "72px",
             letterSpacing: "-0.02em",
+            whiteSpace: "nowrap" as const,
           }}
+          className="secrets-headline"
         >
-          Discover the 3 Secrets To Premium AI Films Clients Pay High Ticket For
+          3 Secrets Every AI Filmmaker Needs to Know
         </h2>
 
         <div style={{ display: "flex", flexDirection: "column", gap: "56px" }}>
@@ -345,7 +345,7 @@ function Secrets() {
         </div>
 
         <div style={{ textAlign: "center", marginTop: "72px" }}>
-          <CTAButton text="Get the Free Training Now →" />
+          <CTAButton text="I Want to Discover the 3 AI Filmmaking Secrets →" />
         </div>
       </div>
     </section>
@@ -640,51 +640,54 @@ function Footer() {
 // ─── Responsive + Animation CSS ───────────────────────────────────────────────
 const CSS = `
   @media (max-width: 720px) {
-    .hero-grid { grid-template-columns: 1fr !important; }
-    .hero-grid > div:last-child { order: -1; max-width: 320px; margin: 0 auto; }
-    .about-grid { grid-template-columns: 1fr !important; }
+    .hero-grid { grid-template-columns: 1fr !important; gap: 32px !important; padding: 40px 20px 48px !important; }
+    .hero-grid > div:last-child { order: -1; max-width: 300px; margin: 0 auto; }
+    .about-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
+    .secrets-headline { white-space: normal !important; font-size: clamp(1.6rem, 7vw, 2.2rem) !important; }
+  }
+  @media (max-width: 480px) {
+    .hero-grid { padding: 32px 16px 40px !important; }
+    .about-grid { padding: 0 !important; }
   }
 
   /* Animated orb backgrounds for hero */
   .orb {
     position: absolute;
     border-radius: 50%;
-    filter: blur(80px);
-    opacity: 0.18;
+    filter: blur(60px);
     animation: orbFloat 12s ease-in-out infinite;
   }
   .orb1 {
-    width: 500px;
-    height: 500px;
-    background: radial-gradient(circle, #c8102e 0%, transparent 70%);
-    top: -120px;
-    left: -100px;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(200,16,46,0.55) 0%, transparent 65%);
+    top: -150px;
+    left: -120px;
     animation-delay: 0s;
     animation-duration: 14s;
   }
   .orb2 {
-    width: 400px;
-    height: 400px;
-    background: radial-gradient(circle, #8a0b20 0%, transparent 70%);
-    bottom: -80px;
-    right: 10%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(138,11,32,0.45) 0%, transparent 65%);
+    bottom: -100px;
+    right: 5%;
     animation-delay: -5s;
     animation-duration: 18s;
   }
   .orb3 {
-    width: 300px;
-    height: 300px;
-    background: radial-gradient(circle, #c8102e 0%, transparent 70%);
-    top: 40%;
-    left: 50%;
+    width: 350px;
+    height: 350px;
+    background: radial-gradient(circle, rgba(200,16,46,0.3) 0%, transparent 65%);
+    top: 35%;
+    left: 45%;
     animation-delay: -9s;
     animation-duration: 22s;
-    opacity: 0.1;
   }
   @keyframes orbFloat {
     0%   { transform: translate(0px, 0px) scale(1); }
-    33%  { transform: translate(30px, -40px) scale(1.05); }
-    66%  { transform: translate(-20px, 20px) scale(0.97); }
+    33%  { transform: translate(40px, -50px) scale(1.06); }
+    66%  { transform: translate(-25px, 25px) scale(0.96); }
     100% { transform: translate(0px, 0px) scale(1); }
   }
 
@@ -692,8 +695,13 @@ const CSS = `
   .grid-overlay {
     position: absolute;
     inset: 0;
-    background-image: radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px);
-    background-size: 32px 32px;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+
+  /* Secrets headline — allow wrap on mobile */
+  .secrets-headline {
+    white-space: normal !important;
   }
 `;
 
