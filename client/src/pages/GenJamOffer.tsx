@@ -104,99 +104,64 @@ export default function GenJamOffer() {
         </p>
       </section>
 
-      {/* ── SECTION 2: PRIVATE COMMUNITY SHOWCASE ── */}
-      <section style={{ borderTop: "1px solid rgba(255,255,255,0.06)", borderBottom: "1px solid rgba(255,255,255,0.06)", padding: "clamp(4rem,8vw,6rem) clamp(1.5rem,5vw,3rem)", background: "linear-gradient(180deg, #0d0d0d 0%, #111 50%, #0d0d0d 100%)" }}>
-        <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
+      {/* ── SECTION 2: COMMUNITY SHOWCASE ── */}
+      <section style={{ borderTop: "1px solid rgba(255,255,255,0.06)", borderBottom: "1px solid rgba(255,255,255,0.06)", background: "#111", padding: "clamp(4rem,8vw,6rem) clamp(1.5rem,5vw,3rem)" }}>
+        <div style={{ maxWidth: "1000px", margin: "0 auto", textAlign: "center" }}>
 
-          {/* Section label */}
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "0.6rem", marginBottom: "1.5rem" }}>
-            <div style={{ height: "1px", flex: 1, background: "rgba(239,68,68,0.2)", maxWidth: "80px" }} />
-            <span style={{ color: "#ef4444", fontWeight: 700, fontSize: "0.8rem", textTransform: "uppercase", letterSpacing: "0.18em" }}>Exclusive Private Community</span>
-            <div style={{ height: "1px", flex: 1, background: "rgba(239,68,68,0.2)", maxWidth: "80px" }} />
-          </div>
+          <p style={{ color: "#ef4444", fontWeight: 700, fontSize: "0.8rem", textTransform: "uppercase", letterSpacing: "0.18em", marginBottom: "1.5rem" }}>Exclusive Private Community</p>
 
-          <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2.5rem,7vw,5rem)", lineHeight: 1, letterSpacing: "0.02em", color: "#F5F5F0", textAlign: "center", marginBottom: "clamp(2.5rem,5vw,4rem)" }}>
+          <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2.8rem,8vw,5.5rem)", lineHeight: 1, letterSpacing: "0.02em", color: "#F5F5F0", marginBottom: "1.5rem" }}>
             This is what you're<br />
             <span style={{ color: "#ef4444" }}>getting access to.</span>
           </h2>
 
-          {/* Two-column layout: community card + description */}
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "clamp(1.5rem,4vw,3rem)", alignItems: "center" }}>
+          <p style={{ fontSize: "clamp(1.05rem,2.5vw,1.3rem)", color: "rgba(255,255,255,0.55)", lineHeight: 1.7, maxWidth: "640px", margin: "0 auto 3rem" }}>
+            AI Film Academy is a private, structured community for filmmakers who are serious about turning AI skills into paid creative work. Not a course dump. Not a Discord. A real creative home.
+          </p>
 
-            {/* Left: Community card mockup */}
-            <div style={{ background: "#1a1a1a", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "20px", overflow: "hidden", boxShadow: "0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(239,68,68,0.1)" }}>
-              {/* Card header */}
-              <div style={{ background: "#141414", borderBottom: "1px solid rgba(255,255,255,0.07)", padding: "1rem 1.25rem", display: "flex", alignItems: "center", gap: "0.75rem" }}>
-                <div style={{ width: "36px", height: "36px", borderRadius: "50%", background: "linear-gradient(135deg,#ef4444,#b91c1c)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1rem", flexShrink: 0 }}>🎬</div>
-                <div>
-                  <p style={{ fontWeight: 700, fontSize: "0.95rem", color: "#fff", lineHeight: 1.2 }}>AI Film Academy™</p>
-                  <p style={{ fontSize: "0.72rem", color: "rgba(255,255,255,0.35)" }}>skool.com/aifilmacademy</p>
-                </div>
-                <div style={{ marginLeft: "auto", background: "rgba(239,68,68,0.15)", border: "1px solid rgba(239,68,68,0.3)", borderRadius: "100px", padding: "3px 10px" }}>
-                  <span style={{ color: "#ef4444", fontSize: "0.7rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em" }}>Private</span>
-                </div>
+          {/* Big stats row */}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "1px", background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: "16px", overflow: "hidden", marginBottom: "3rem" }}>
+            {[
+              { num: "1,100+", label: "Active Members" },
+              { num: "5.0★", label: "Google Rating (33 Reviews)" },
+              { num: "30k+", label: "Global Students Trained" },
+            ].map((s, i) => (
+              <div key={i} style={{ background: "rgba(255,255,255,0.03)", padding: "clamp(1.5rem,4vw,2.5rem) 1rem", textAlign: "center" }}>
+                <p style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2.5rem,7vw,4rem)", color: "#ef4444", lineHeight: 1, marginBottom: "0.5rem", textShadow: "0 0 40px rgba(239,68,68,0.3)" }}>{s.num}</p>
+                <p style={{ fontSize: "clamp(0.75rem,1.8vw,0.9rem)", color: "rgba(255,255,255,0.4)", textTransform: "uppercase", letterSpacing: "0.1em", fontWeight: 600 }}>{s.label}</p>
               </div>
-
-              {/* Stats row */}
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
-                {[{ num: "1.1k", label: "Members" }, { num: "7", label: "Online Now" }, { num: "5.0★", label: "Google Rating" }].map((s, i) => (
-                  <div key={i} style={{ padding: "1rem", textAlign: "center", borderRight: i < 2 ? "1px solid rgba(255,255,255,0.06)" : "none" }}>
-                    <p style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "1.6rem", color: "#ef4444", lineHeight: 1 }}>{s.num}</p>
-                    <p style={{ fontSize: "0.7rem", color: "rgba(255,255,255,0.35)", textTransform: "uppercase", letterSpacing: "0.08em", marginTop: "0.2rem" }}>{s.label}</p>
-                  </div>
-                ))}
-              </div>
-
-              {/* Community description */}
-              <div style={{ padding: "1.25rem" }}>
-                <p style={{ fontSize: "0.9rem", color: "rgba(255,255,255,0.6)", lineHeight: 1.65, marginBottom: "1rem" }}>
-                  Want to stop feeling overwhelmed by AI tools and start creating premium videos that get you paid creative work?
-                </p>
-                <p style={{ fontSize: "0.85rem", color: "rgba(255,255,255,0.4)", lineHeight: 1.6, marginBottom: "1.25rem" }}>
-                  AI Film Academy helps you master the fundamentals, build a high-quality portfolio, and position yourself for paid opportunities.
-                </p>
-
-                {/* Feature pills */}
-                <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
-                  {["Weekly Exercises", "Monthly GenJams", "Job Listings", "Certification", "Video Feedback", "New Courses Monthly"].map(tag => (
-                    <span key={tag} style={{ background: "rgba(239,68,68,0.1)", border: "1px solid rgba(239,68,68,0.2)", borderRadius: "100px", padding: "4px 12px", fontSize: "0.72rem", color: "rgba(255,255,255,0.6)", fontWeight: 600 }}>{tag}</span>
-                  ))}
-                </div>
-              </div>
-
-              {/* Card footer */}
-              <div style={{ background: "#141414", borderTop: "1px solid rgba(255,255,255,0.06)", padding: "0.85rem 1.25rem", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                <span style={{ fontSize: "0.78rem", color: "rgba(255,255,255,0.3)" }}>By Brandon Patino · 30,000+ Global Students</span>
-                <a href={SKOOL_COMMUNITY_URL} target="_blank" rel="noopener noreferrer" style={{ fontSize: "0.75rem", color: "#ef4444", textDecoration: "none", fontWeight: 600 }}>Preview →</a>
-              </div>
-            </div>
-
-            {/* Right: Value proposition text */}
-            <div style={{ display: "flex", flexDirection: "column", gap: "1.75rem" }}>
-              <div>
-                <h3 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(1.8rem,4vw,2.8rem)", color: "#F5F5F0", letterSpacing: "0.02em", lineHeight: 1.05, marginBottom: "0.75rem" }}>
-                  A private community for serious AI filmmakers.
-                </h3>
-                <p style={{ fontSize: "clamp(1rem,2vw,1.15rem)", color: "rgba(255,255,255,0.55)", lineHeight: 1.7 }}>
-                  Not a course platform. Not a Discord server. A structured community where you learn, create, get feedback, and find paid work — all in one place.
-                </p>
-              </div>
-
-              {[
-                { icon: "🔒", title: "Private & Curated", desc: "Members are vetted. The community stays focused, high-signal, and free of noise." },
-                { icon: "🎯", title: "Built for Paid Work", desc: "Every resource — exercises, feedback, job listings — is designed to help you land clients and build a real portfolio." },
-                { icon: "🚀", title: "Always Evolving", desc: "New courses, new GenJams, new trainings added monthly. Your membership never goes stale." },
-              ].map(item => (
-                <div key={item.title} style={{ display: "flex", gap: "1rem", alignItems: "flex-start" }}>
-                  <span style={{ fontSize: "1.5rem", flexShrink: 0, marginTop: "2px" }}>{item.icon}</span>
-                  <div>
-                    <p style={{ fontWeight: 700, fontSize: "1rem", color: "#F5F5F0", marginBottom: "0.3rem" }}>{item.title}</p>
-                    <p style={{ fontSize: "0.88rem", color: "rgba(255,255,255,0.4)", lineHeight: 1.55 }}>{item.desc}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
+            ))}
           </div>
+
+          {/* What's inside pills */}
+          <p style={{ fontSize: "0.78rem", color: "rgba(255,255,255,0.3)", textTransform: "uppercase", letterSpacing: "0.15em", marginBottom: "1rem", fontWeight: 600 }}>Inside the community</p>
+          <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "0.65rem", marginBottom: "3rem" }}>
+            {[
+              "AI Filmmaking Courses",
+              "Monthly 5-Hour GenJams",
+              "Weekly Creative Exercises",
+              "Personalized Video Feedback",
+              "Curated Job Listings",
+              "Industry Certification",
+              "Expert Guest Speakers",
+              "Private Creator Network",
+            ].map(tag => (
+              <span key={tag} style={{ background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.2)", borderRadius: "100px", padding: "8px 18px", fontSize: "clamp(0.8rem,2vw,0.95rem)", color: "rgba(255,255,255,0.7)", fontWeight: 600 }}>{tag}</span>
+            ))}
+          </div>
+
+          {/* Preview CTA */}
+          <a
+            href={SKOOL_COMMUNITY_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ display: "inline-flex", alignItems: "center", gap: "0.6rem", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: "12px", padding: "14px 28px", color: "rgba(255,255,255,0.7)", fontSize: "1rem", fontWeight: 600, textDecoration: "none", transition: "all 0.2s" }}
+            onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(239,68,68,0.1)"; (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(239,68,68,0.3)"; (e.currentTarget as HTMLAnchorElement).style.color = "#fff"; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.05)"; (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.12)"; (e.currentTarget as HTMLAnchorElement).style.color = "rgba(255,255,255,0.7)"; }}
+          >
+            <span>👀</span>
+            <span>Preview the community before you join →</span>
+          </a>
         </div>
       </section>
 
