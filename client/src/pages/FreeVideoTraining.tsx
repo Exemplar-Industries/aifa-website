@@ -240,9 +240,7 @@ function Hero() {
             I'll show you the exact AI Film System™ my students use to master AI Filmmaking, build
             premium portfolios, and start charging high ticket for paid creative work.
           </p>
-          <CTAButton text="Watch the Free Training →" />
-
-          {/* Hero inline mini-form */}
+          {/* Hero inline mini-form — button removed, form is the CTA */}
           <div style={{ marginTop: "28px", maxWidth: "480px" }}>
             <HeroForm />
           </div>
@@ -359,12 +357,13 @@ function WhoThisIsFor() {
               key={i}
               style={{ display: "flex", gap: "16px", alignItems: "flex-start", textAlign: "left" }}
             >
-              <span style={{ fontSize: "1.5rem", flexShrink: 0, lineHeight: 1.3 }}>❌</span>
+              <span style={{ fontSize: "1.6rem", flexShrink: 0, lineHeight: 1.3 }}>❌</span>
               <p
                 style={{
-                  color: "#aaa",
-                  fontSize: "clamp(0.95rem, 2vw, 1.05rem)",
-                  fontStyle: "italic",
+                  color: "#444",
+                  fontSize: "clamp(1.05rem, 2.2vw, 1.2rem)",
+                  fontStyle: "normal",
+                  fontWeight: 500,
                   lineHeight: 1.6,
                   margin: 0,
                 }}
@@ -773,29 +772,29 @@ const CSS = `
     animation: orbFloat 12s ease-in-out infinite;
   }
   .orb1 {
-    width: 600px;
-    height: 600px;
-    background: radial-gradient(circle, rgba(200,16,46,0.55) 0%, transparent 65%);
-    top: -150px;
-    left: -120px;
+    width: 320px;
+    height: 320px;
+    background: radial-gradient(circle, rgba(200,16,46,0.5) 0%, transparent 65%);
+    top: -80px;
+    left: -60px;
     animation-delay: 0s;
     animation-duration: 14s;
   }
   .orb2 {
-    width: 500px;
-    height: 500px;
-    background: radial-gradient(circle, rgba(138,11,32,0.45) 0%, transparent 65%);
-    bottom: -100px;
-    right: 5%;
+    width: 260px;
+    height: 260px;
+    background: radial-gradient(circle, rgba(138,11,32,0.4) 0%, transparent 65%);
+    bottom: -60px;
+    right: 8%;
     animation-delay: -5s;
     animation-duration: 18s;
   }
   .orb3 {
-    width: 350px;
-    height: 350px;
+    width: 200px;
+    height: 200px;
     background: radial-gradient(circle, rgba(200,16,46,0.3) 0%, transparent 65%);
-    top: 35%;
-    left: 45%;
+    top: 40%;
+    left: 48%;
     animation-delay: -9s;
     animation-duration: 22s;
   }
@@ -812,6 +811,20 @@ const CSS = `
     inset: 0;
     background-image: radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);
     background-size: 28px 28px;
+  }
+
+  /* Animated particles */
+  .particle {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(200,16,46,0.7);
+    animation: particleDrift linear infinite;
+  }
+  @keyframes particleDrift {
+    0%   { transform: translateY(0px) translateX(0px); opacity: 0; }
+    10%  { opacity: 1; }
+    90%  { opacity: 0.6; }
+    100% { transform: translateY(-120px) translateX(var(--drift, 20px)); opacity: 0; }
   }
 
   /* Secrets headline — allow wrap on mobile */
