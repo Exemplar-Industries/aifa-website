@@ -110,7 +110,7 @@ export default function GenJamOffer() {
 
           <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2.8rem,8vw,5.5rem)", lineHeight: 1, letterSpacing: "0.02em", color: "#F5F5F0", marginBottom: "1.5rem" }}>
             As a GenJam Alumni,<br />
-            <span style={{ color: "#ef4444" }}>You're Invited In.</span>
+            <span style={{ color: "#ef4444" }}>You're Invited To An Exclusive Community.</span>
           </h2>
 
           {/* Big stats row */}
