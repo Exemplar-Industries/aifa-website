@@ -209,7 +209,7 @@ export default function GenJamOffer() {
             <p style={{ fontSize: "clamp(0.95rem,2.5vw,1.1rem)", color: "rgba(255,255,255,0.6)", lineHeight: 1.6 }}>
               At the public rate of <strong style={{ color: "rgba(255,255,255,0.8)" }}>${PUBLIC_MONTHLY}/month</strong>, you'd pay{" "}
               <strong style={{ color: "rgba(255,255,255,0.8)" }}>${PUBLIC_ANNUAL}/year</strong>. The Machine Cinema Partner Rate saves you{" "}
-              <strong style={{ color: "#ef4444" }}>${SAVINGS} every year</strong> — locked in as long as you stay a member.
+              <strong style={{ color: "#ef4444" }}>${SAVINGS} every year</strong>.
             </p>
           </div>
         </div>
