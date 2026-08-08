@@ -211,9 +211,9 @@ function Hero() {
               marginBottom: "28px",
             }}
           >
-            Stop Feeling Overwhelmed by AI Tools.{" "}
+            How To Build a Premium AI Film Portfolio and Start Charging High Ticket in 30 Days —{" "}
             <span style={{ color: "#c8102e" }}>
-              Start Creating Premium Videos That Get You Paid.
+              Without a Film School Background or Dozens of Tools
             </span>
           </h1>
           <p
