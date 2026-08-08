@@ -4,7 +4,7 @@
  * Pricing is intentionally absent; social and learning destinations remain easy to find.
  */
 
-const LOGO_URL = "https://d2xsxph8kpxj0f.cloudfront.net/310419663032668673/9znEqYZ2JpzLxCzomcgMbf/afa-logo-long_9672f3eb.png";
+const LOGO_URL = "/assets/afa_logo_long_v2.png";
 
 const columns = [
   {
@@ -18,7 +18,7 @@ const columns = [
   {
     heading: "Learn & Follow",
     links: [
-      { label: "Free Workshop", href: "https://workshop.aifilmacademy.com/", external: true },
+      { label: "Free Training", href: "https://www.aifilmacademy.com/free-video-training", external: true },
       { label: "YouTube", href: "https://www.youtube.com/channel/UC1zRjoLJcN4cuMLs_A7kIMg", external: true },
       { label: "Instagram", href: "https://www.instagram.com/theaifilmacademy/", external: true },
       { label: "Email Us", href: "mailto:hello@aifilmacademy.com" },
@@ -44,7 +44,7 @@ export default function Footer() {
                 src={LOGO_URL}
                 alt="AI Film Academy"
                 className="h-11 w-auto object-contain opacity-75"
-                style={{ maxWidth: "190px", filter: "brightness(0) invert(1)" }}
+                style={{ maxWidth: "190px" }}
               />
             </a>
             <p className="mt-5 max-w-sm text-sm leading-6 text-white/40">

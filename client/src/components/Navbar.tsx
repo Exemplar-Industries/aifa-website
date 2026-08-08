@@ -1,13 +1,13 @@
 /*
  * AI Film Academy — Global Navigation
  * Design: "The Director's Cut" — transparent over cinematic heroes, solid on scroll.
- * IA: Home, FAQ, and one clear Free Workshop conversion action. Showcase remains intentionally unlisted until the curated video launch.
+ * IA: Home, FAQ, and one clear Free Training conversion action. Showcase remains intentionally unlisted until the curated video launch.
  */
 
 import { useEffect, useState } from "react";
 import { ExternalLink, Menu, X } from "lucide-react";
 
-const LOGO_URL = "https://d2xsxph8kpxj0f.cloudfront.net/310419663032668673/9znEqYZ2JpzLxCzomcgMbf/afa-logo-long_9672f3eb.png";
+const LOGO_URL = "/assets/afa_logo_long_v2.png";
 
 const navLinks = [
   { label: "Home", href: "/" },
@@ -36,7 +36,7 @@ export default function Navbar() {
             src={LOGO_URL}
             alt="AI Film Academy"
             className="h-10 w-auto object-contain transition-opacity duration-200 group-hover:opacity-80"
-            style={{ maxWidth: "180px", filter: "brightness(0) invert(1)" }}
+            style={{ maxWidth: "180px" }}
           />
         </a>
 
@@ -50,12 +50,12 @@ export default function Navbar() {
 
         <div className="flex items-center gap-3">
           <a
-            href="https://workshop.aifilmacademy.com/"
+            href="https://www.aifilmacademy.com/free-video-training"
             target="_blank"
             rel="noopener noreferrer"
             className="btn-primary hidden items-center gap-2 px-4 py-2 text-sm font-semibold sm:inline-flex"
           >
-            Free Workshop <ExternalLink className="h-3.5 w-3.5" />
+            Free Training <ExternalLink className="h-3.5 w-3.5" />
           </a>
           <button
             type="button"
@@ -78,13 +78,13 @@ export default function Navbar() {
               </a>
             ))}
             <a
-              href="https://workshop.aifilmacademy.com/"
+              href="https://www.aifilmacademy.com/free-video-training"
               target="_blank"
               rel="noopener noreferrer"
               className="btn-primary mt-5 inline-flex items-center justify-center gap-2 px-5 py-3.5 text-base font-semibold"
               onClick={() => setMenuOpen(false)}
             >
-              Free Workshop <ExternalLink className="h-4 w-4" />
+              Free Training <ExternalLink className="h-4 w-4" />
             </a>
           </div>
         </div>

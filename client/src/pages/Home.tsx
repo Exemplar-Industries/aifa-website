@@ -2,13 +2,13 @@
  * AI Film Academy — Home Page (Landing Page)
  * Design: "The Director's Cut" — Cinematic Dark
  * Hero: Fullscreen video background — video IS the hero, text overlaid
- * Goal: Route qualified visitors to the Skool About page or free workshop.
+ * Goal: Route qualified visitors to the Skool About page or free training.
  *
  * LOCKED FOUR-SECTION ORDER:
  * 1. Hero          — Existing fullscreen background video and composition preserved
  * 2. Inside AIFA    — Create, Improve, Build, Participate progression
  * 3. Results       — World Cup, B2B reach, metrics, reviews, testimonials
- * 4. Start Here    — Skool primary path, free workshop secondary path
+ * 4. Start Here    — Skool primary path, free training secondary path
  * Footer is utility navigation and does not count as a content section.
  */
 
@@ -214,7 +214,7 @@ function FullscreenHero() {
             Join the Program
           </a>
           <a
-            href="https://workshop.aifilmacademy.com/"
+            href="https://www.aifilmacademy.com/free-video-training"
             target="_blank"
             rel="noopener noreferrer"
             className="btn-outline px-8 py-4 text-base font-semibold"
@@ -223,7 +223,7 @@ function FullscreenHero() {
               background: "rgba(255,255,255,0.06)",
             }}
           >
-            Attend a Free Workshop
+            Watch Free Training
           </a>
         </div>
 

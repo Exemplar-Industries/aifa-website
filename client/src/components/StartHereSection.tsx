@@ -1,7 +1,7 @@
 /*
  * AI Film Academy — Start Here
  * Design: "The Director's Cut" — one decisive close, two levels of intent.
- * Conversion: Skool is primary; the free workshop is the lower-commitment path.
+ * Conversion: Skool is primary; the free training is the lower-commitment path.
  */
 
 import { ArrowUpRight, Play } from "lucide-react";
@@ -24,7 +24,7 @@ export default function StartHereSection() {
             <span className="text-[oklch(0.55_0.22_25)]">Next Step</span>
           </h2>
           <p className="mx-auto mt-7 max-w-2xl text-base leading-7 text-white/55 md:text-lg">
-            Join the community when you are ready to build with feedback and support, or attend the next free workshop to experience the production method first.
+            Join the community when you are ready to build with feedback and support, or watch the free training to experience the production method first.
           </p>
         </div>
 
@@ -47,17 +47,17 @@ export default function StartHereSection() {
 
           <article className="flex min-h-[310px] flex-col bg-[#101010] p-7 md:p-10">
             <p className="font-mono text-[0.62rem] uppercase tracking-[0.2em] text-white/35">Want to see the method first?</p>
-            <h3 className="mt-5 text-4xl text-white md:text-5xl">Attend The Next Free Workshop.</h3>
+            <h3 className="mt-5 text-4xl text-white md:text-5xl">Watch The Free Training.</h3>
             <p className="mt-4 max-w-md text-sm leading-6 text-white/54 md:text-base">
               Learn how the AIFA production system turns an idea into polished AI video without getting trapped in tool overwhelm.
             </p>
             <a
-              href="https://workshop.aifilmacademy.com/"
+              href="https://www.aifilmacademy.com/free-video-training"
               target="_blank"
               rel="noopener noreferrer"
               className="btn-outline mt-auto px-7 py-4 text-base font-semibold"
             >
-              <Play className="h-4 w-4 fill-current" /> Attend the Next Free Workshop
+              <Play className="h-4 w-4 fill-current" /> Watch the Free Training
             </a>
           </article>
         </div>

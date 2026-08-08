@@ -47,7 +47,7 @@ const faqGroups = [
     questions: [
       ["Can people make money with AI filmmaking?", "Yes, when the work solves a real creative or business need. AI filmmaking can support advertisements, trailers, branded content, animation, and other forms of video production. The strongest opportunities combine technical capability with storytelling, reliability, and a credible portfolio."],
       ["Where is AI filmmaking going next?", "As the tools become more accessible, audiences will increasingly judge the work the way they judge other films: whether it is engaging, emotionally effective, and worth watching. Storytelling and creative judgment will matter even more."],
-      ["Where should I start if I want to learn more?", "Choose one workflow, begin with a manageable project, and get feedback early. Explore the AIFA community for the complete member experience, or watch the free workshop to learn the core production approach first."],
+      ["Where should I start if I want to learn more?", "Choose one workflow, begin with a manageable project, and get feedback early. Explore the AIFA community for the complete member experience, or watch the free training to learn the core production approach first."],
     ],
   },
 ];
@@ -122,7 +122,7 @@ export default function FAQ() {
               <a href="https://www.skool.com/aifilmacademy/about" target="_blank" rel="noopener noreferrer" className="btn-primary px-7 py-4 font-bold">
                 Join AIFA <ArrowUpRight className="h-4 w-4" />
               </a>
-              <a href="https://workshop.aifilmacademy.com/" target="_blank" rel="noopener noreferrer" className="btn-outline px-7 py-4 font-semibold">Watch the Free Workshop</a>
+              <a href="https://www.aifilmacademy.com/free-video-training" target="_blank" rel="noopener noreferrer" className="btn-outline px-7 py-4 font-semibold">Watch the Free Training</a>
             </div>
           </div>
         </section>
