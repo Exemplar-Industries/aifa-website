@@ -104,56 +104,54 @@ export default function GenJamOffer() {
         </p>
       </section>
 
-      {/* ── SECTION 2: WHAT'S INSIDE YOUR MEMBERSHIP ── */}
-      <section style={{ background: "#0A0A0A", padding: "clamp(4rem,8vw,6rem) clamp(1.5rem,5vw,3rem)" }}>
-        <div style={{ maxWidth: "680px", margin: "0 auto" }}>
+      {/* ── SECTION 2: COMMUNITY SHOWCASE ── */}
+      <section style={{ borderTop: "1px solid rgba(255,255,255,0.06)", borderBottom: "1px solid rgba(255,255,255,0.06)", background: "#111", padding: "clamp(4rem,8vw,6rem) clamp(1.5rem,5vw,3rem)" }}>
+        <div style={{ maxWidth: "1000px", margin: "0 auto", textAlign: "center" }}>
 
-          {/* Section heading — all-caps bold, matches screenshot */}
-          <h2 style={{
-            fontFamily: "'Bebas Neue', sans-serif",
-            fontSize: "clamp(2rem,6vw,2.8rem)",
-            letterSpacing: "0.06em",
-            color: "#F5F5F0",
-            textAlign: "center",
-            marginBottom: "clamp(2rem,5vw,3rem)",
-            lineHeight: 1,
-            textTransform: "uppercase",
-          }}>
-            What's Inside Your Membership
+          <p style={{ color: "#ef4444", fontWeight: 700, fontSize: "0.8rem", textTransform: "uppercase", letterSpacing: "0.18em", marginBottom: "1.5rem" }}>Exclusive Private Community</p>
+
+          <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2.8rem,8vw,5.5rem)", lineHeight: 1, letterSpacing: "0.02em", color: "#F5F5F0", marginBottom: "1.5rem" }}>
+            This is what you're<br />
+            <span style={{ color: "#ef4444" }}>getting access to.</span>
           </h2>
 
-          {/* Single-column card stack */}
-          <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+          {/* Big stats row */}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "1px", background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: "16px", overflow: "hidden", marginBottom: "3rem" }}>
+            {[
+              { num: "1,100+", label: "Active Members" },
+              { num: "5.0★", label: "Google Rating (33 Reviews)" },
+              { num: "30k+", label: "Global Students Trained" },
+            ].map((s, i) => (
+              <div key={i} style={{ background: "rgba(255,255,255,0.03)", padding: "clamp(1.5rem,4vw,2.5rem) 1rem", textAlign: "center" }}>
+                <p style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2.5rem,7vw,4rem)", color: "#ef4444", lineHeight: 1, marginBottom: "0.5rem", textShadow: "0 0 40px rgba(239,68,68,0.3)" }}>{s.num}</p>
+                <p style={{ fontSize: "clamp(0.75rem,1.8vw,0.9rem)", color: "rgba(255,255,255,0.4)", textTransform: "uppercase", letterSpacing: "0.1em", fontWeight: 600 }}>{s.label}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Skool community screenshot */}
+          <div style={{ marginBottom: "3rem", borderRadius: "16px", overflow: "hidden", border: "1px solid rgba(255,255,255,0.1)", boxShadow: "0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(239,68,68,0.08)" }}>
+            <img
+              src="/assets/skool_about_screenshot.png"
+              alt="AI Film Academy community on Skool"
+              style={{ width: "100%", display: "block" }}
+            />
+          </div>
+
+          {/* What's inside heading */}
+          <h3 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(1.8rem,5vw,3rem)", letterSpacing: "0.04em", color: "#F5F5F0", textAlign: "center", marginBottom: "1.5rem", lineHeight: 1 }}>
+            What's Inside Your Membership
+          </h3>
+
+          {/* Benefits grid */}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1rem" }}>
             {INCLUDED.map((item) => (
-              <div
-                key={item.label}
-                style={{
-                  background: "#1A1A1A",
-                  border: "1px solid rgba(255,255,255,0.07)",
-                  borderRadius: "18px",
-                  padding: "clamp(1.4rem,4vw,2rem) clamp(1.4rem,4vw,2rem)",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  textAlign: "center",
-                  gap: "0.75rem",
-                }}
-              >
-                <span style={{ fontSize: "2.4rem", lineHeight: 1 }}>{item.icon}</span>
-                <p style={{
-                  fontWeight: 700,
-                  fontSize: "clamp(1.05rem,3vw,1.2rem)",
-                  color: "#FFFFFF",
-                  lineHeight: 1.25,
-                  margin: 0,
-                }}>{item.label}</p>
-                <p style={{
-                  fontSize: "clamp(0.9rem,2.2vw,1rem)",
-                  color: "rgba(255,255,255,0.42)",
-                  lineHeight: 1.6,
-                  margin: 0,
-                  maxWidth: "480px",
-                }}>{item.desc}</p>
+              <div key={item.label} style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "14px", padding: "clamp(1.25rem,3vw,1.75rem)", display: "flex", alignItems: "flex-start", gap: "1.1rem" }}>
+                <span style={{ fontSize: "1.75rem", flexShrink: 0, marginTop: "2px" }}>{item.icon}</span>
+                <div>
+                  <p style={{ fontWeight: 700, fontSize: "clamp(1rem,2.5vw,1.1rem)", color: "#F5F5F0", marginBottom: "0.4rem", lineHeight: 1.2 }}>{item.label}</p>
+                  <p style={{ fontSize: "0.88rem", color: "rgba(255,255,255,0.38)", lineHeight: 1.55 }}>{item.desc}</p>
+                </div>
               </div>
             ))}
           </div>

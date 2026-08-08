@@ -4,7 +4,7 @@
  * Pricing is intentionally absent; social and learning destinations remain easy to find.
  */
 
-const LOGO_URL = "/assets/afa_logo_long_v2.png";
+const LOGO_URL = "/assets/afa-logo-horizontal.png";
 
 const columns = [
   {

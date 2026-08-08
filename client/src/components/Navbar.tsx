@@ -7,7 +7,7 @@
 import { useEffect, useState } from "react";
 import { ExternalLink, Menu, X } from "lucide-react";
 
-const LOGO_URL = "/assets/afa_logo_long_v2.png";
+const LOGO_URL = "/assets/afa-logo-horizontal.png";
 
 const navLinks = [
   { label: "Home", href: "/" },

@@ -1,99 +1,88 @@
 /*
- * AI Film Academy — What Happens Inside AIFA
- * Design: "The Director's Cut" — compact cinematic editorial progression.
- * Purpose: explain the portfolio outcome without extending the homepage.
+ * AI Film Academy — What's Inside Your Membership
+ * Design: "The Director's Cut" — single-column dark card stack.
+ * Purpose: Show every membership benefit clearly, matching the GenJam offer page card style.
  */
 
-import { CalendarDays, Clapperboard, Hammer, MessageSquareText } from "lucide-react";
-
-const stages = [
-  {
-    number: "01",
-    title: "Create",
-    icon: Clapperboard,
-    copy: "Follow one clear production workflow and learn only the tools your project actually needs.",
-    detail: "Films · ads · trailers · animation",
-  },
-  {
-    number: "02",
-    title: "Improve",
-    icon: MessageSquareText,
-    copy: "Get peer review, live expert feedback, and personalized Loom guidance while the work is still in progress.",
-    detail: "Live reviews · Loom support · office hours",
-  },
-  {
-    number: "03",
-    title: "Build",
-    icon: Hammer,
-    copy: "Use weekly exercises, practice briefs, and creative challenges to finish portfolio-ready work one project at a time.",
-    detail: "Practice · challenges · portfolio",
-  },
-  {
-    number: "04",
-    title: "Participate",
-    icon: CalendarDays,
-    copy: "Join live events, pursue certification, discover festivals, and step into curated creative opportunities with the community.",
-    detail: "Events · certification · opportunities",
-  },
+const INCLUDED = [
+  { icon: "🎬", label: "Master AI Filmmaking in 30 Days", desc: "The complete AI filmmaking course — concept to final cut, updated August 2026" },
+  { icon: "🤖", label: "AIFA Workflow System", desc: "The exact AI tool stack and production process used by AFA members to ship real films" },
+  { icon: "🏆", label: "Industry Certification", desc: "LinkedIn-ready AI Media Specialist certification that signals your skills to clients and employers" },
+  { icon: "🎥", label: "Monthly 5-Hour GenJams", desc: "Live collaborative filmmaking sessions every month — build a real film alongside the community" },
+  { icon: "📋", label: "Weekly Creative Exercises", desc: "Structured weekly practice to build real skills and a portfolio you can show clients" },
+  { icon: "🎤", label: "Personalized Video Feedback", desc: "Get your work reviewed with Loom feedback from instructors and working creators" },
+  { icon: "💼", label: "Curated Job Listings", desc: "Hand-picked AI filmmaking opportunities, freelance gigs, and industry contests" },
+  { icon: "👥", label: "Private Community", desc: "1,100+ active AI creators — get feedback, find collaborators, stay ahead of the tools" },
 ];
 
 export default function InsideAFASection() {
   return (
-    <section id="inside" className="relative overflow-hidden bg-[#0A0A0A] py-20 md:py-28 grain-overlay">
+    <section
+      id="inside"
+      className="relative overflow-hidden bg-[#0A0A0A] py-20 md:py-28 grain-overlay"
+    >
       <div className="container relative z-10">
-        <div className="grid items-end gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
-          <div>
-            <div className="section-label mb-5">What happens inside</div>
-            <h2 className="max-w-3xl text-[clamp(3rem,7vw,6.4rem)] leading-[0.9] text-[#F5F5F0]">
-              Master The Workflow.
-              <br />
-              <span className="text-[oklch(0.55_0.22_25)]">Build Your Portfolio.</span>
-            </h2>
-            <p className="mt-7 max-w-xl text-base leading-7 text-white/58 md:text-lg">
-              AI Film Academy (AIFA) is a community ecosystem built to help you turn ideas into finished films, ads, trailers, and animated content you feel confident sharing online.
-            </p>
-          </div>
+        <div className="mx-auto max-w-2xl">
 
-          <div className="relative min-h-[320px] overflow-hidden rounded-md border border-white/10 bg-[#111]">
-            <img
-              src="/assets/afa-outcome-charart1.png"
-              onError={(event) => {
-                event.currentTarget.onerror = null;
-                event.currentTarget.src = "https://images.unsplash.com/photo-1593697821252-0c9137d9fc45?auto=format&fit=crop&w=1600&q=85";
-              }}
-              alt="AI creator developing a cinematic character project at a laptop"
-              className="absolute inset-0 h-full w-full object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/25 to-transparent" />
-            <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
-              <p className="font-mono text-[0.62rem] uppercase tracking-[0.2em] text-[#E63329]">The outcome</p>
-              <p className="mt-2 max-w-md text-lg font-medium leading-7 text-white md:text-xl">
-                Finish work that proves what you can do—not just lessons that say what you watched.
-              </p>
-            </div>
-          </div>
-        </div>
+          {/* Section heading */}
+          <h2
+            className="text-center text-[#F5F5F0] mb-10 md:mb-14"
+            style={{
+              fontFamily: "'Bebas Neue', sans-serif",
+              fontSize: "clamp(2.2rem,6vw,3.2rem)",
+              letterSpacing: "0.06em",
+              lineHeight: 1,
+              textTransform: "uppercase",
+            }}
+          >
+            What's Inside Your Membership
+          </h2>
 
-        <div className="mt-12 grid gap-px border border-white/10 bg-white/10 sm:grid-cols-2 xl:grid-cols-4">
-          {stages.map((stage) => {
-            const Icon = stage.icon;
-            return (
-              <article
-                key={stage.title}
-                className="group relative bg-[#0A0A0A] px-6 py-8 md:px-8 md:py-10"
+          {/* Single-column card stack */}
+          <div className="flex flex-col gap-4">
+            {INCLUDED.map((item) => (
+              <div
+                key={item.label}
+                style={{
+                  background: "#1A1A1A",
+                  border: "1px solid rgba(255,255,255,0.07)",
+                  borderRadius: "18px",
+                  padding: "clamp(1.4rem,4vw,2rem)",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  textAlign: "center",
+                  gap: "0.75rem",
+                }}
               >
-                <div className="mb-8 flex items-center justify-between">
-                  <span className="font-mono text-xs tracking-[0.2em] text-white/32">{stage.number}</span>
-                  <Icon className="h-5 w-5 text-[#E63329] transition-transform duration-200 group-hover:-translate-y-0.5" aria-hidden="true" />
-                </div>
-                <h3 className="text-4xl text-white md:text-5xl">{stage.title}</h3>
-                <p className="mt-3 max-w-sm text-sm leading-6 text-white/58 md:text-base">{stage.copy}</p>
-                <p className="mt-5 font-mono text-[0.62rem] uppercase tracking-[0.13em] text-white/30">{stage.detail}</p>
-              </article>
-            );
-          })}
-        </div>
+                <span style={{ fontSize: "2.4rem", lineHeight: 1 }}>{item.icon}</span>
+                <p
+                  style={{
+                    fontWeight: 700,
+                    fontSize: "clamp(1.05rem,3vw,1.2rem)",
+                    color: "#FFFFFF",
+                    lineHeight: 1.25,
+                    margin: 0,
+                  }}
+                >
+                  {item.label}
+                </p>
+                <p
+                  style={{
+                    fontSize: "clamp(0.9rem,2.2vw,1rem)",
+                    color: "rgba(255,255,255,0.42)",
+                    lineHeight: 1.6,
+                    margin: 0,
+                    maxWidth: "480px",
+                  }}
+                >
+                  {item.desc}
+                </p>
+              </div>
+            ))}
+          </div>
 
+        </div>
       </div>
     </section>
   );
