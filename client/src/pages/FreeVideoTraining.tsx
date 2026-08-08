@@ -201,18 +201,6 @@ function Hero() {
         className="hero-grid"
       >
         <div>
-          <p
-            style={{
-              color: "#c8102e",
-              fontWeight: 800,
-              fontSize: "clamp(13px, 2vw, 15px)",
-              letterSpacing: "0.14em",
-              textTransform: "uppercase",
-              marginBottom: "20px",
-            }}
-          >
-            Free Video Training — AI Film System™
-          </p>
           <h1
             style={{
               color: "#fff",
