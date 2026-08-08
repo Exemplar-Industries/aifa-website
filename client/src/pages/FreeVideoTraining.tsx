@@ -754,6 +754,9 @@ const CSS = `
     .about-grid > div:first-child { text-align: center; }
     .about-grid > div:first-child img { margin: 0 auto 24px; }
     .about-grid > div:first-child > div { justify-content: center; }
+    .hero-grid > div:first-child { text-align: center; }
+    .hero-grid > div:first-child p { margin-left: auto; margin-right: auto; }
+    .hero-grid > div:first-child form { text-align: left; }
     .secrets-headline { white-space: normal !important; font-size: clamp(1.5rem, 6vw, 2rem) !important; }
   }
   @media (max-width: 480px) {
