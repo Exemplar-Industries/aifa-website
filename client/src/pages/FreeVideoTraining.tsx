@@ -1,39 +1,388 @@
 /*
- * AI Film Academy — Free Video Training Registration Page
+ * AI Film Academy — Free Video Training
  * Route: /free-video-training
- * Purpose: On-demand video training lead capture — feeds MailerLite "Free Video Training" group
  *
- * Structure (Kristen Lumiere model, black/red AFA brand):
- *   1. Top bar — audience qualifier
- *   2. Hero — Brandon photo + headline + form (dark, 2-col)
- *   3. "You Are In The Right Room If..." — qualification section
- *   4. "Hi, I'm Brandon" — credibility / origin story
- *   5. 3 Secrets — what they'll learn in the training
- *   6. Student proof — Tamer, Theresa, Jacob
- *   7. What's inside AFA — the offer teaser
- *   8. Final CTA form repeat
- *   9. Footer
+ * Structure (Kristen Lumiere model — 4 sections max, massive text, minimal copy):
+ *   SECTION 1 — Hero: Big headline + photo + CTA button (no form yet)
+ *   SECTION 2 — Who This Is For: 3 bold checkmarks + CTA
+ *   SECTION 3 — 3 Secrets: Title + one line each + CTA
+ *   SECTION 4 — Hi I'm Brandon + Registration Form
  *
- * Form: Posts to FORM_WEBHOOK_URL — swap in MailerLite embed action URL when ready.
- * Copy source: Webinar script V4, Slides V3, live webinar transcript.
+ * Rules:
+ *   - NO pricing
+ *   - NO value stack
+ *   - NO walls of paragraph text
+ *   - Every headline is HUGE
+ *   - Max 1-2 sentences of body copy per item
+ *   - About Brandon is LAST (Kristen model)
  */
 
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback } from "react";
 
-// ─── Config ───────────────────────────────────────────────────────────────────
-// Swap this with MailerLite embedded form action URL when ready
 const FORM_WEBHOOK_URL = "";
 
-// ─── Types ────────────────────────────────────────────────────────────────────
 type FormState = "idle" | "loading" | "success" | "error";
 
-// ─── Shared scroll-to-form helper ─────────────────────────────────────────────
 function scrollToForm() {
   document.getElementById("fvt-form")?.scrollIntoView({ behavior: "smooth" });
 }
 
-// ─── Shared form logic ────────────────────────────────────────────────────────
-function useRegistrationForm() {
+// ─── CTA Button ───────────────────────────────────────────────────────────────
+function CTAButton({ text, onClick }: { text: string; onClick?: () => void }) {
+  return (
+    <button
+      onClick={onClick || scrollToForm}
+      style={{
+        background: "#c8102e",
+        color: "#fff",
+        border: "none",
+        borderRadius: "4px",
+        padding: "18px 48px",
+        fontSize: "clamp(0.95rem, 2vw, 1.1rem)",
+        fontWeight: 900,
+        cursor: "pointer",
+        letterSpacing: "0.06em",
+        textTransform: "uppercase",
+        display: "inline-block",
+      }}
+    >
+      {text}
+    </button>
+  );
+}
+
+// ─── SECTION 1: Hero ──────────────────────────────────────────────────────────
+function Hero() {
+  return (
+    <section style={{ background: "#080808" }}>
+      {/* Eyebrow bar */}
+      <div
+        style={{
+          background: "#c8102e",
+          textAlign: "center",
+          padding: "10px 16px",
+          color: "#fff",
+          fontWeight: 800,
+          fontSize: "clamp(11px, 2vw, 13px)",
+          letterSpacing: "0.12em",
+          textTransform: "uppercase",
+        }}
+      >
+        Free Video Training for Creators, Filmmakers &amp; Complete Beginners
+      </div>
+
+      {/* 2-col hero */}
+      <div
+        style={{
+          maxWidth: "1100px",
+          margin: "0 auto",
+          padding: "64px 32px 56px",
+          display: "grid",
+          gridTemplateColumns: "minmax(0,1fr) minmax(0,1.05fr)",
+          gap: "56px",
+          alignItems: "center",
+        }}
+        className="hero-grid"
+      >
+        {/* Left: copy */}
+        <div>
+          <p
+            style={{
+              color: "#c8102e",
+              fontWeight: 800,
+              fontSize: "clamp(12px, 1.8vw, 14px)",
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+              marginBottom: "16px",
+            }}
+          >
+            Free Video Training — AI Film System™
+          </p>
+
+          <h1
+            style={{
+              color: "#fff",
+              fontWeight: 900,
+              fontSize: "clamp(2.4rem, 5.5vw, 4rem)",
+              lineHeight: 1.05,
+              letterSpacing: "-0.02em",
+              marginBottom: "24px",
+            }}
+          >
+            Stop Feeling Overwhelmed by AI Tools.{" "}
+            <span style={{ color: "#c8102e" }}>Start Creating Premium Videos That Get You Paid.</span>
+          </h1>
+
+          <p
+            style={{
+              color: "#bbb",
+              fontSize: "clamp(1rem, 2.2vw, 1.25rem)",
+              lineHeight: 1.6,
+              marginBottom: "36px",
+              maxWidth: "520px",
+            }}
+          >
+            I'll show you the exact AI Film System™ I used to build a 6-figure production business
+            and train 30,000+ creators worldwide.
+          </p>
+
+          <CTAButton text="Watch the Free Training →" />
+        </div>
+
+        {/* Right: photo */}
+        <div>
+          <img
+            src="https://statics.myclickfunnels.com/workspace/JzaYQV/image/23028402/file/6f2b11b01b08a1abc0fba38aee72e853.jpg"
+            alt="Brandon Patino — AI Film Academy"
+            style={{
+              width: "100%",
+              display: "block",
+              borderRadius: "8px",
+            }}
+            onError={(e) => {
+              (e.target as HTMLImageElement).style.display = "none";
+            }}
+          />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── SECTION 2: Who This Is For ───────────────────────────────────────────────
+function WhoThisIsFor() {
+  const checks = [
+    {
+      bold: "Build a Client-Ready Portfolio",
+      rest: " so you can show real work to brands, clients, and employers.",
+    },
+    {
+      bold: "Master the AI Video Workflow",
+      rest: " and stop chasing every new tool that gets released.",
+    },
+    {
+      bold: "Land Freelance and Business Clients",
+      rest: " by creating films that get recognized.",
+    },
+  ];
+
+  const nopes = [
+    "You want a magic button that makes films for you",
+    "You aren't willing to practice and create consistently",
+  ];
+
+  return (
+    <section
+      style={{
+        background: "#fff",
+        padding: "72px 32px",
+      }}
+    >
+      <div style={{ maxWidth: "760px", margin: "0 auto", textAlign: "center" }}>
+        <h2
+          style={{
+            color: "#111",
+            fontWeight: 900,
+            fontSize: "clamp(2rem, 4.5vw, 3.2rem)",
+            lineHeight: 1.1,
+            marginBottom: "48px",
+            letterSpacing: "-0.02em",
+          }}
+        >
+          This Free Training Is for Creators Who Want to:
+        </h2>
+
+        <div style={{ display: "flex", flexDirection: "column", gap: "20px", marginBottom: "36px" }}>
+          {checks.map((c, i) => (
+            <div
+              key={i}
+              style={{
+                display: "flex",
+                gap: "16px",
+                alignItems: "flex-start",
+                textAlign: "left",
+              }}
+            >
+              <span style={{ fontSize: "1.4rem", flexShrink: 0, marginTop: "2px" }}>✅</span>
+              <p
+                style={{
+                  color: "#111",
+                  fontSize: "clamp(1rem, 2.2vw, 1.2rem)",
+                  lineHeight: 1.5,
+                  margin: 0,
+                }}
+              >
+                <strong>{c.bold}</strong>
+                {c.rest}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        <div style={{ display: "flex", flexDirection: "column", gap: "14px", marginBottom: "44px" }}>
+          {nopes.map((n, i) => (
+            <div key={i} style={{ display: "flex", gap: "16px", alignItems: "flex-start", textAlign: "left" }}>
+              <span style={{ fontSize: "1.2rem", flexShrink: 0, marginTop: "2px" }}>❌</span>
+              <p
+                style={{
+                  color: "#888",
+                  fontSize: "clamp(0.95rem, 2vw, 1.05rem)",
+                  fontStyle: "italic",
+                  lineHeight: 1.5,
+                  margin: 0,
+                }}
+              >
+                {n}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        <div
+          style={{
+            background: "#111",
+            borderRadius: "8px",
+            padding: "28px 32px",
+            marginBottom: "36px",
+            textAlign: "center",
+          }}
+        >
+          <p
+            style={{
+              color: "#fff",
+              fontWeight: 800,
+              fontSize: "clamp(1rem, 2.5vw, 1.2rem)",
+              lineHeight: 1.5,
+              margin: 0,
+            }}
+          >
+            If you're a green check — tap below and I'll show you the system that turns AI
+            filmmaking into paid creative work.
+          </p>
+        </div>
+
+        <CTAButton text="I'm Ready to Watch the Training →" />
+      </div>
+    </section>
+  );
+}
+
+// ─── SECTION 3: 3 Secrets ─────────────────────────────────────────────────────
+function Secrets() {
+  const secrets = [
+    {
+      num: "Secret #1",
+      headline: "Why Great AI Films Have Almost Nothing to Do With the AI Tools You Use",
+      sub: "The interfaces change. The model names change. The creative job stays the same.",
+    },
+    {
+      num: "Secret #2",
+      headline: "Why Complete Beginners Are Creating Better AI Content Than Experienced Creators",
+      sub: "AI changed who is allowed to create. What matters now is the system, not the software.",
+    },
+    {
+      num: "Secret #3",
+      headline: "The Filmmaking Skills That Stay Valuable No Matter Which AI Tool Comes Out Next",
+      sub: "Storytelling. Camera language. Design. Editing. These never become obsolete.",
+    },
+  ];
+
+  return (
+    <section
+      style={{
+        background: "#080808",
+        padding: "72px 32px",
+        borderTop: "4px solid #c8102e",
+      }}
+    >
+      <div style={{ maxWidth: "860px", margin: "0 auto" }}>
+        <p
+          style={{
+            color: "#c8102e",
+            fontWeight: 800,
+            fontSize: "13px",
+            letterSpacing: "0.14em",
+            textTransform: "uppercase",
+            textAlign: "center",
+            marginBottom: "12px",
+          }}
+        >
+          Here's What You'll Discover
+        </p>
+        <h2
+          style={{
+            color: "#fff",
+            fontWeight: 900,
+            fontSize: "clamp(2rem, 4.5vw, 3.2rem)",
+            textAlign: "center",
+            lineHeight: 1.1,
+            marginBottom: "56px",
+            letterSpacing: "-0.02em",
+          }}
+        >
+          The 3 Secrets Behind the AI Film System™
+        </h2>
+
+        <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
+          {secrets.map((s, i) => (
+            <div
+              key={i}
+              style={{
+                borderLeft: "4px solid #c8102e",
+                paddingLeft: "28px",
+                paddingTop: "28px",
+                paddingBottom: "28px",
+                marginBottom: "8px",
+              }}
+            >
+              <p
+                style={{
+                  color: "#c8102e",
+                  fontWeight: 800,
+                  fontSize: "13px",
+                  letterSpacing: "0.12em",
+                  textTransform: "uppercase",
+                  marginBottom: "10px",
+                }}
+              >
+                {s.num}
+              </p>
+              <h3
+                style={{
+                  color: "#fff",
+                  fontWeight: 900,
+                  fontSize: "clamp(1.3rem, 3vw, 2rem)",
+                  lineHeight: 1.15,
+                  marginBottom: "10px",
+                  letterSpacing: "-0.01em",
+                }}
+              >
+                {s.headline}
+              </h3>
+              <p
+                style={{
+                  color: "#777",
+                  fontSize: "clamp(0.95rem, 2vw, 1.05rem)",
+                  lineHeight: 1.6,
+                  margin: 0,
+                }}
+              >
+                {s.sub}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        <div style={{ textAlign: "center", marginTop: "48px" }}>
+          <CTAButton text="Send Me The Free Training →" />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── SECTION 4: About + Form ──────────────────────────────────────────────────
+function AboutAndForm() {
   const [formState, setFormState] = useState<FormState>("idle");
   const [firstName, setFirstName] = useState("");
   const [email, setEmail] = useState("");
@@ -46,7 +395,6 @@ function useRegistrationForm() {
       const emailVal = email.trim().toLowerCase();
       if (!name || !emailVal) return;
       setFormState("loading");
-
       if (!FORM_WEBHOOK_URL) {
         setTimeout(() => setFormState("success"), 700);
         return;
@@ -55,12 +403,7 @@ function useRegistrationForm() {
         await fetch(FORM_WEBHOOK_URL, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            firstName: name,
-            email: emailVal,
-            source: "free_video_training",
-            group: "Free Video Training",
-          }),
+          body: JSON.stringify({ firstName: name, email: emailVal, source: "free_video_training", group: "Free Video Training" }),
         });
         setFormState("success");
       } catch {
@@ -70,857 +413,223 @@ function useRegistrationForm() {
     [formState, firstName, email]
   );
 
-  return { formState, firstName, setFirstName, email, setEmail, handleSubmit };
-}
-
-// ─── Reusable Form Block ──────────────────────────────────────────────────────
-function FormBlock({
-  formState,
-  firstName,
-  setFirstName,
-  email,
-  setEmail,
-  handleSubmit,
-  ctaText = "Send Me The Free Training →",
-}: {
-  formState: FormState;
-  firstName: string;
-  setFirstName: (v: string) => void;
-  email: string;
-  setEmail: (v: string) => void;
-  handleSubmit: (e: React.FormEvent) => void;
-  ctaText?: string;
-}) {
-  if (formState === "success") {
-    return (
+  return (
+    <section style={{ background: "#fff", padding: "72px 32px" }}>
       <div
         style={{
-          background: "rgba(200,16,46,0.1)",
-          border: "1px solid rgba(200,16,46,0.4)",
-          borderRadius: "8px",
-          padding: "36px 28px",
-          textAlign: "center",
-        }}
-      >
-        <div
-          style={{
-            width: "52px",
-            height: "52px",
-            borderRadius: "50%",
-            background: "#c8102e",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            margin: "0 auto 16px",
-          }}
-        >
-          <svg width="22" height="18" viewBox="0 0 22 18" fill="none">
-            <path d="M1 9L8 16L21 1" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </div>
-        <h3 style={{ color: "#fff", fontWeight: 900, fontSize: "1.3rem", marginBottom: "10px" }}>
-          You're In. Check Your Inbox.
-        </h3>
-        <p style={{ color: "#aaa", lineHeight: 1.6, fontSize: "0.95rem" }}>
-          The free video training is on its way. Watch it on your own schedule.
-        </p>
-      </div>
-    );
-  }
-
-  return (
-    <form onSubmit={handleSubmit}>
-      <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-        <input
-          type="text"
-          placeholder="First Name"
-          value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
-          required
-          style={{
-            background: "rgba(255,255,255,0.07)",
-            border: "1px solid rgba(255,255,255,0.15)",
-            borderRadius: "5px",
-            padding: "15px 18px",
-            color: "#fff",
-            fontSize: "1rem",
-            outline: "none",
-            width: "100%",
-            boxSizing: "border-box",
-          }}
-        />
-        <input
-          type="email"
-          placeholder="Email Address"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          style={{
-            background: "rgba(255,255,255,0.07)",
-            border: "1px solid rgba(255,255,255,0.15)",
-            borderRadius: "5px",
-            padding: "15px 18px",
-            color: "#fff",
-            fontSize: "1rem",
-            outline: "none",
-            width: "100%",
-            boxSizing: "border-box",
-          }}
-        />
-        <button
-          type="submit"
-          disabled={formState === "loading"}
-          style={{
-            background: formState === "loading" ? "#8a0b20" : "#c8102e",
-            color: "#fff",
-            border: "none",
-            borderRadius: "5px",
-            padding: "17px",
-            fontSize: "1rem",
-            fontWeight: 800,
-            cursor: formState === "loading" ? "not-allowed" : "pointer",
-            letterSpacing: "0.03em",
-            transition: "background 0.2s",
-          }}
-        >
-          {formState === "loading" ? "Sending..." : ctaText}
-        </button>
-        {formState === "error" && (
-          <p style={{ color: "#f87171", fontSize: "0.85rem", textAlign: "center" }}>
-            Something went wrong. Please try again.
-          </p>
-        )}
-        <p style={{ color: "#555", fontSize: "0.78rem", textAlign: "center", lineHeight: 1.5 }}>
-          No spam. Unsubscribe anytime. Your info is safe.
-        </p>
-      </div>
-    </form>
-  );
-}
-
-// ─── 1. Top Bar ───────────────────────────────────────────────────────────────
-function TopBar() {
-  return (
-    <div
-      style={{
-        background: "#c8102e",
-        color: "#fff",
-        textAlign: "center",
-        padding: "10px 16px",
-        fontSize: "clamp(12px, 2.2vw, 14px)",
-        fontWeight: 700,
-        letterSpacing: "0.05em",
-        textTransform: "uppercase",
-      }}
-    >
-      Free Video Training for Creators, Filmmakers, Brand Owners &amp; Complete Beginners
-    </div>
-  );
-}
-
-// ─── 2. Hero ──────────────────────────────────────────────────────────────────
-function HeroSection({ form }: { form: ReturnType<typeof useRegistrationForm> }) {
-  return (
-    <section style={{ background: "#080808", padding: "56px 24px 48px" }}>
-      <div
-        style={{
-          maxWidth: "1040px",
+          maxWidth: "1000px",
           margin: "0 auto",
           display: "grid",
-          gridTemplateColumns: "minmax(0,1fr) minmax(0,1.1fr)",
-          gap: "48px",
-          alignItems: "center",
+          gridTemplateColumns: "minmax(0,1fr) minmax(0,1fr)",
+          gap: "64px",
+          alignItems: "start",
         }}
-        className="hero-grid"
+        className="about-grid"
       >
-        {/* Left: Brandon photo */}
-        <div>
-          <img
-            src="https://statics.myclickfunnels.com/workspace/JzaYQV/image/23028402/file/6f2b11b01b08a1abc0fba38aee72e853.jpg"
-            alt="Brandon Patino — AI Film Academy"
-            style={{
-              width: "100%",
-              display: "block",
-              borderRadius: "10px",
-              border: "2px solid rgba(200,16,46,0.3)",
-            }}
-            onError={(e) => {
-              (e.target as HTMLImageElement).style.display = "none";
-            }}
-          />
-        </div>
-
-        {/* Right: copy + form */}
+        {/* Left: About Brandon */}
         <div>
           <p
             style={{
               color: "#c8102e",
-              fontWeight: 700,
+              fontWeight: 800,
               fontSize: "13px",
-              letterSpacing: "0.12em",
+              letterSpacing: "0.14em",
               textTransform: "uppercase",
-              marginBottom: "14px",
+              marginBottom: "12px",
             }}
           >
-            Free Video Training — AI Film System™
+            Hi, I'm Brandon
           </p>
-          <h1
+          <h2
             style={{
-              color: "#fff",
+              color: "#111",
               fontWeight: 900,
-              fontSize: "clamp(1.9rem, 4.5vw, 3rem)",
+              fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)",
               lineHeight: 1.1,
-              marginBottom: "16px",
+              marginBottom: "24px",
               letterSpacing: "-0.02em",
             }}
           >
-            How I Create Premium AI Films From Any Idea And{" "}
-            <span style={{ color: "#c8102e" }}>Charge High-Ticket Prices</span>{" "}
-            Without Needing 12 Different AI Tools
-          </h1>
+            I Built a Six-Figure Video Business Teaching Creators How to Stop Watching Tutorials and
+            Start Creating.
+          </h2>
+
           <p
             style={{
-              color: "#999",
-              fontSize: "clamp(0.95rem, 2vw, 1.1rem)",
-              lineHeight: 1.65,
+              color: "#444",
+              fontSize: "clamp(1rem, 2vw, 1.1rem)",
+              lineHeight: 1.7,
+              marginBottom: "20px",
+            }}
+          >
+            I've trained <strong>30,000+ students globally</strong>, built a private community of
+            over 1,000 AI filmmakers, and host live AI workshops for companies worldwide.
+          </p>
+
+          <p
+            style={{
+              color: "#444",
+              fontSize: "clamp(1rem, 2vw, 1.1rem)",
+              lineHeight: 1.7,
               marginBottom: "28px",
             }}
           >
-            Master the fundamentals. Build a quality portfolio. Attract paid client work — even if
-            you've never made a video before.
+            In this free training, I'll show you the exact system I use to take any idea and turn it
+            into a premium AI film — without needing 12 different tools or a film school background.
           </p>
 
-          {/* Form */}
-          <div id="fvt-form">
-            <FormBlock {...form} ctaText="Send Me The Free Training →" />
+          {/* Credibility row */}
+          <div style={{ display: "flex", gap: "24px", flexWrap: "wrap" }}>
+            {[
+              { n: "30k+", l: "Global Students" },
+              { n: "1,000+", l: "Community Members" },
+              { n: "5.0 ★", l: "Google Reviews" },
+            ].map(({ n, l }) => (
+              <div key={l}>
+                <div
+                  style={{
+                    color: "#c8102e",
+                    fontWeight: 900,
+                    fontSize: "clamp(1.4rem, 3vw, 1.8rem)",
+                    lineHeight: 1,
+                  }}
+                >
+                  {n}
+                </div>
+                <div style={{ color: "#888", fontSize: "0.8rem", marginTop: "4px" }}>{l}</div>
+              </div>
+            ))}
           </div>
         </div>
-      </div>
-    </section>
-  );
-}
 
-// ─── 3. Right Room / Qualification ───────────────────────────────────────────
-const RIGHT_ROOM = [
-  "Creators & Filmmakers who want to produce premium AI content",
-  "YouTubers & Freelancers looking to attract high-ticket clients",
-  "Brand Owners & Marketers who want better content without expensive agencies",
-  "Complete Beginners who have never made a video but want to start",
-];
-
-const NOT_FOR = [
-  "People who want a magic button that makes films for them",
-  "People who aren't willing to practice and build their skills",
-  "People who aren't interested in creating content consistently",
-];
-
-function QualificationSection() {
-  return (
-    <section style={{ background: "#0d0d0d", padding: "64px 24px", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
-      <div
-        style={{
-          maxWidth: "900px",
-          margin: "0 auto",
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr",
-          gap: "40px",
-        }}
-        className="qual-grid"
-      >
-        {/* Right room */}
-        <div>
-          <h2
+        {/* Right: Form */}
+        <div id="fvt-form">
+          <h3
             style={{
-              color: "#c8102e",
+              color: "#111",
               fontWeight: 900,
-              fontSize: "clamp(1.1rem, 2.5vw, 1.4rem)",
-              textTransform: "uppercase",
-              letterSpacing: "0.06em",
-              marginBottom: "24px",
+              fontSize: "clamp(1.5rem, 3vw, 2.2rem)",
+              lineHeight: 1.15,
+              marginBottom: "8px",
+              letterSpacing: "-0.01em",
             }}
           >
-            You Are In The Right Room If...
-          </h2>
-          {RIGHT_ROOM.map((item, i) => (
-            <div key={i} style={{ display: "flex", gap: "12px", marginBottom: "16px", alignItems: "flex-start" }}>
-              <div
-                style={{
-                  width: "22px",
-                  height: "22px",
-                  borderRadius: "50%",
-                  background: "#c8102e",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  flexShrink: 0,
-                  marginTop: "2px",
-                }}
-              >
-                <svg width="11" height="9" viewBox="0 0 11 9" fill="none">
-                  <path d="M1 4.5L4 7.5L10 1.5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </div>
-              <p style={{ color: "#ccc", lineHeight: 1.6, fontSize: "0.95rem", margin: 0 }}>{item}</p>
-            </div>
-          ))}
-        </div>
-
-        {/* Not for */}
-        <div>
-          <h2
+            Watch the Free AI Filmmaking Training Now
+          </h3>
+          <p
             style={{
-              color: "#555",
-              fontWeight: 900,
-              fontSize: "clamp(1.1rem, 2.5vw, 1.4rem)",
-              textTransform: "uppercase",
-              letterSpacing: "0.06em",
-              marginBottom: "24px",
+              color: "#666",
+              fontSize: "1rem",
+              lineHeight: 1.6,
+              marginBottom: "28px",
             }}
           >
-            This Is Not For You If...
-          </h2>
-          {NOT_FOR.map((item, i) => (
-            <div key={i} style={{ display: "flex", gap: "12px", marginBottom: "16px", alignItems: "flex-start" }}>
-              <div
-                style={{
-                  width: "22px",
-                  height: "22px",
-                  borderRadius: "50%",
-                  background: "#2a2a2a",
-                  border: "1px solid #444",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  flexShrink: 0,
-                  marginTop: "2px",
-                }}
-              >
-                <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-                  <path d="M2 2L8 8M8 2L2 8" stroke="#666" strokeWidth="2" strokeLinecap="round" />
-                </svg>
-              </div>
-              <p style={{ color: "#666", lineHeight: 1.6, fontSize: "0.95rem", margin: 0 }}>{item}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
+            Enter your info and I'll send it straight to your inbox. Watch on your own schedule.
+          </p>
 
-// ─── 4. About Brandon ─────────────────────────────────────────────────────────
-function AboutSection() {
-  return (
-    <section style={{ background: "#080808", padding: "72px 24px", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
-      <div style={{ maxWidth: "820px", margin: "0 auto" }}>
-        <p
-          style={{
-            color: "#c8102e",
-            fontWeight: 700,
-            fontSize: "13px",
-            letterSpacing: "0.12em",
-            textTransform: "uppercase",
-            marginBottom: "12px",
-            textAlign: "center",
-          }}
-        >
-          Hi, I'm Brandon
-        </p>
-        <h2
-          style={{
-            color: "#fff",
-            fontWeight: 900,
-            fontSize: "clamp(1.7rem, 3.5vw, 2.4rem)",
-            textAlign: "center",
-            marginBottom: "40px",
-            lineHeight: 1.2,
-          }}
-        >
-          I Didn't Wake Up One Morning Making Premium AI Videos
-        </h2>
-
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: "16px", marginBottom: "40px" }} className="stats-grid">
-          {[
-            { stat: "15+", label: "Years in digital media" },
-            { stat: "30k+", label: "Global learners taught" },
-            { stat: "1,000+", label: "Member private community" },
-            { stat: "$1k/min", label: "Client production rate" },
-          ].map(({ stat, label }) => (
+          {formState === "success" ? (
             <div
-              key={label}
               style={{
-                background: "rgba(200,16,46,0.07)",
-                border: "1px solid rgba(200,16,46,0.2)",
+                background: "#f0fdf4",
+                border: "1px solid #86efac",
                 borderRadius: "8px",
-                padding: "20px 16px",
+                padding: "32px",
                 textAlign: "center",
               }}
             >
-              <div style={{ color: "#c8102e", fontWeight: 900, fontSize: "clamp(1.4rem, 3vw, 1.8rem)", marginBottom: "6px" }}>
-                {stat}
-              </div>
-              <div style={{ color: "#888", fontSize: "0.8rem", lineHeight: 1.4 }}>{label}</div>
+              <p style={{ color: "#166534", fontWeight: 800, fontSize: "1.1rem", margin: 0 }}>
+                You're in. Check your inbox for the free training.
+              </p>
             </div>
-          ))}
-        </div>
-
-        <p style={{ color: "#aaa", lineHeight: 1.8, marginBottom: "16px", fontSize: "1rem" }}>
-          I started where most of you are right now. I was running a 6-figure video production agency,
-          charging clients $1,000 for 30 seconds of 3D-modeled footage that took my team{" "}
-          <strong style={{ color: "#fff" }}>45 days to deliver.</strong> That was just normal.
-        </p>
-        <p style={{ color: "#aaa", lineHeight: 1.8, marginBottom: "16px", fontSize: "1rem" }}>
-          Around 2022, I went deep into early AI animation. The tools were terrible — ComfyUI, Stable
-          Diffusion, nodes and pipelines that made me feel like I needed to become an engineer instead
-          of a creator. Morphing characters, missing fingers, no lip sync. I spent two years in the
-          rabbit hole so you don't have to.
-        </p>
-        <p style={{ color: "#aaa", lineHeight: 1.8, fontSize: "1rem" }}>
-          By 2024 the quality finally reached a real client. He said:{" "}
-          <em style={{ color: "#ddd" }}>"You've been doing great work for a long time. I trust you. Let's take the bet."</em>{" "}
-          We charged $1,000 per finished minute. The system was working. That became the foundation of
-          the AI Film System™ — and everything I teach inside AI Film Academy.
-        </p>
-      </div>
-    </section>
-  );
-}
-
-// ─── 5. 3 Secrets ─────────────────────────────────────────────────────────────
-const SECRETS = [
-  {
-    num: "01",
-    title: "Great AI Films Have Almost Nothing to Do With the AI Tools You Use",
-    body: "Every AI platform does one of three things: generate images, generate video, or aggregate models. The interfaces change. The model names change. The creative job stays the same. What separates premium work from slop is the production system behind it — not the tool.",
-    slide: "SECRET #1",
-  },
-  {
-    num: "02",
-    title: "Complete Beginners Can Earn Income Fast With AI Filmmaking",
-    body: "AI changed who is allowed to create. You no longer need years of 3D modeling, specialized hardware, a studio, or millions of dollars. What matters now is your ability to communicate an idea, make creative decisions, and follow a repeatable system. The barrier has completely collapsed.",
-    slide: "SECRET #2",
-  },
-  {
-    num: "03",
-    title: "The Filmmaking Skills That Stay Valuable No Matter Which AI Tool Comes Out Next",
-    body: "Storytelling. Camera language. Design and style. Editing and pacing. These skills never become obsolete. When a new tool drops, you don't panic and restart — you evaluate whether it adds value to the workflow you've already mastered. The system lasts. The tools evolve.",
-    slide: "SECRET #3",
-  },
-];
-
-function SecretsSection() {
-  return (
-    <section style={{ background: "#0d0d0d", padding: "72px 24px", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
-      <div style={{ maxWidth: "860px", margin: "0 auto" }}>
-        <p
-          style={{
-            color: "#c8102e",
-            fontWeight: 700,
-            fontSize: "13px",
-            letterSpacing: "0.12em",
-            textTransform: "uppercase",
-            textAlign: "center",
-            marginBottom: "12px",
-          }}
-        >
-          What You'll Learn in the Free Training
-        </p>
-        <h2
-          style={{
-            color: "#fff",
-            fontWeight: 900,
-            fontSize: "clamp(1.7rem, 3.5vw, 2.4rem)",
-            textAlign: "center",
-            marginBottom: "52px",
-            lineHeight: 1.2,
-          }}
-        >
-          The 3 Secrets Behind the AI Film System™
-        </h2>
-
-        <div style={{ display: "flex", flexDirection: "column", gap: "36px" }}>
-          {SECRETS.map((s) => (
-            <div
-              key={s.num}
-              style={{
-                display: "grid",
-                gridTemplateColumns: "72px 1fr",
-                gap: "24px",
-                alignItems: "start",
-                padding: "28px",
-                background: "rgba(255,255,255,0.025)",
-                border: "1px solid rgba(255,255,255,0.06)",
-                borderRadius: "10px",
-              }}
-            >
-              <div style={{ textAlign: "center" }}>
-                <div
+          ) : (
+            <form onSubmit={handleSubmit}>
+              <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                <input
+                  type="text"
+                  placeholder="First Name"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  required
                   style={{
-                    width: "56px",
-                    height: "56px",
-                    borderRadius: "50%",
-                    background: "rgba(200,16,46,0.12)",
-                    border: "2px solid rgba(200,16,46,0.5)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    color: "#c8102e",
-                    fontWeight: 900,
-                    fontSize: "15px",
-                    margin: "0 auto",
+                    border: "2px solid #e5e5e5",
+                    borderRadius: "4px",
+                    padding: "15px 18px",
+                    fontSize: "1rem",
+                    outline: "none",
+                    width: "100%",
+                    boxSizing: "border-box",
+                    color: "#111",
                   }}
-                >
-                  {s.num}
-                </div>
-                <div
+                />
+                <input
+                  type="email"
+                  placeholder="Best Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
                   style={{
-                    color: "#c8102e",
-                    fontSize: "9px",
-                    fontWeight: 800,
-                    letterSpacing: "0.1em",
-                    marginTop: "8px",
+                    border: "2px solid #e5e5e5",
+                    borderRadius: "4px",
+                    padding: "15px 18px",
+                    fontSize: "1rem",
+                    outline: "none",
+                    width: "100%",
+                    boxSizing: "border-box",
+                    color: "#111",
+                  }}
+                />
+                <button
+                  type="submit"
+                  disabled={formState === "loading"}
+                  style={{
+                    background: formState === "loading" ? "#8a0b20" : "#c8102e",
+                    color: "#fff",
+                    border: "none",
+                    borderRadius: "4px",
+                    padding: "17px",
+                    fontSize: "1rem",
+                    fontWeight: 900,
+                    cursor: formState === "loading" ? "not-allowed" : "pointer",
+                    letterSpacing: "0.05em",
                     textTransform: "uppercase",
                   }}
                 >
-                  {s.slide}
-                </div>
+                  {formState === "loading" ? "Sending..." : "I'm Ready to Watch the Training ✅"}
+                </button>
+                {formState === "error" && (
+                  <p style={{ color: "#dc2626", fontSize: "0.85rem", textAlign: "center" }}>
+                    Something went wrong. Please try again.
+                  </p>
+                )}
+                <p style={{ color: "#bbb", fontSize: "0.78rem", textAlign: "center", lineHeight: 1.5 }}>
+                  No spam. Unsubscribe anytime.
+                </p>
               </div>
-              <div>
-                <h3
-                  style={{
-                    color: "#fff",
-                    fontWeight: 800,
-                    fontSize: "clamp(1rem, 2.5vw, 1.2rem)",
-                    marginBottom: "10px",
-                    lineHeight: 1.3,
-                  }}
-                >
-                  {s.title}
-                </h3>
-                <p style={{ color: "#888", lineHeight: 1.75, fontSize: "0.95rem", margin: 0 }}>{s.body}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div style={{ textAlign: "center", marginTop: "48px" }}>
-          <button
-            onClick={scrollToForm}
-            style={{
-              background: "#c8102e",
-              color: "#fff",
-              border: "none",
-              borderRadius: "6px",
-              padding: "16px 40px",
-              fontSize: "1rem",
-              fontWeight: 800,
-              cursor: "pointer",
-              letterSpacing: "0.03em",
-            }}
-          >
-            Send Me The Free Training →
-          </button>
+            </form>
+          )}
         </div>
       </div>
     </section>
   );
 }
 
-// ─── 6. Student Proof ─────────────────────────────────────────────────────────
-const TESTIMONIALS = [
-  {
-    handle: "@Tamer Osman",
-    quote:
-      "I thought I needed to master every AI tool before I could create professional films. The AI Film Production System™ showed me that mastering the process matters more than mastering the tools.",
-  },
-  {
-    handle: "@Theresa Marshall",
-    quote:
-      "Before joining AI Film Academy, I had never created a professional AI film. I thought I wasn't creative enough and that all the AI tools were too overwhelming. Once I followed Brandon's system, everything finally clicked. I created films I never thought I was capable of.",
-  },
-  {
-    handle: "@Jacob Atisha",
-    quote:
-      "Before joining, I felt like there was a new AI tool I had to learn every single week. Brandon's system completely changed the way I look at AI. Instead of chasing every new tool, I learned the filmmaking process behind great videos. Now when a new tool comes out, I don't panic.",
-  },
-];
-
-function TestimonialsSection() {
-  return (
-    <section style={{ background: "#080808", padding: "72px 24px", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
-      <div style={{ maxWidth: "960px", margin: "0 auto" }}>
-        <p
-          style={{
-            color: "#c8102e",
-            fontWeight: 700,
-            fontSize: "13px",
-            letterSpacing: "0.12em",
-            textTransform: "uppercase",
-            textAlign: "center",
-            marginBottom: "12px",
-          }}
-        >
-          The System Worked For Them Too
-        </p>
-        <h2
-          style={{
-            color: "#fff",
-            fontWeight: 900,
-            fontSize: "clamp(1.6rem, 3.5vw, 2.2rem)",
-            textAlign: "center",
-            marginBottom: "48px",
-            lineHeight: 1.2,
-          }}
-        >
-          Creators Just Like You
-        </h2>
-
-        <div
-          style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: "20px" }}
-          className="testimonials-grid"
-        >
-          {TESTIMONIALS.map((t) => (
-            <div
-              key={t.handle}
-              style={{
-                background: "#0f0f0f",
-                border: "1px solid rgba(255,255,255,0.07)",
-                borderRadius: "10px",
-                padding: "24px",
-              }}
-            >
-              <p
-                style={{
-                  color: "#ccc",
-                  lineHeight: 1.7,
-                  fontSize: "0.9rem",
-                  marginBottom: "16px",
-                  fontStyle: "italic",
-                }}
-              >
-                "{t.quote}"
-              </p>
-              <p style={{ color: "#c8102e", fontWeight: 700, fontSize: "0.85rem", margin: 0 }}>{t.handle}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// ─── 7. What's Inside AFA ─────────────────────────────────────────────────────
-const OFFER_ITEMS = [
-  {
-    title: "AI Film System™ Curriculum",
-    desc: "A proven step-by-step system. From idea to script, storyboard, animation, and finished film. Master AI filmmaking in 30 days.",
-    value: "$2,000 Value",
-  },
-  {
-    title: "Live Creative GenJam Events",
-    desc: "5-hour live creation competitions. Organizations pay $10,000 for one. You get access monthly as part of the community.",
-    value: "$10,000 Value",
-  },
-  {
-    title: "1-on-1 Support & Personal Film Reviews",
-    desc: "Personal Loom reviews with real creative direction you can apply immediately. The same way I review my own production team.",
-    value: "$2,000 Value",
-  },
-  {
-    title: "AI Film Academy Certification",
-    desc: "Proof you can produce professional AI films. A credential that stands out to clients, brands, and employers.",
-    value: "$1,000 Value",
-  },
-];
-
-function OfferSection() {
-  return (
-    <section style={{ background: "#0d0d0d", padding: "72px 24px", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
-      <div style={{ maxWidth: "860px", margin: "0 auto" }}>
-        <p
-          style={{
-            color: "#c8102e",
-            fontWeight: 700,
-            fontSize: "13px",
-            letterSpacing: "0.12em",
-            textTransform: "uppercase",
-            textAlign: "center",
-            marginBottom: "12px",
-          }}
-        >
-          After You Watch the Free Training
-        </p>
-        <h2
-          style={{
-            color: "#fff",
-            fontWeight: 900,
-            fontSize: "clamp(1.6rem, 3.5vw, 2.2rem)",
-            textAlign: "center",
-            marginBottom: "12px",
-            lineHeight: 1.2,
-          }}
-        >
-          The Main Outcome: Build a Real Portfolio That Attracts Paid Client Work
-        </h2>
-        <p
-          style={{
-            color: "#777",
-            textAlign: "center",
-            marginBottom: "44px",
-            fontSize: "1rem",
-            lineHeight: 1.6,
-          }}
-        >
-          Everything inside AI Film Academy is built around one goal — finished work that proves you
-          can take any idea through pre-production, production, and post-production.
-        </p>
-
-        <div style={{ display: "flex", flexDirection: "column", gap: "16px", marginBottom: "36px" }}>
-          {OFFER_ITEMS.map((item, i) => (
-            <div
-              key={i}
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr auto",
-                gap: "16px",
-                alignItems: "center",
-                padding: "20px 24px",
-                background: "rgba(255,255,255,0.025)",
-                border: "1px solid rgba(255,255,255,0.06)",
-                borderRadius: "8px",
-              }}
-            >
-              <div>
-                <h3 style={{ color: "#fff", fontWeight: 800, fontSize: "1rem", marginBottom: "6px" }}>
-                  {item.title}
-                </h3>
-                <p style={{ color: "#777", fontSize: "0.88rem", lineHeight: 1.5, margin: 0 }}>{item.desc}</p>
-              </div>
-              <div
-                style={{
-                  color: "#c8102e",
-                  fontWeight: 800,
-                  fontSize: "0.85rem",
-                  whiteSpace: "nowrap",
-                  textAlign: "right",
-                }}
-              >
-                {item.value}
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div
-          style={{
-            background: "rgba(200,16,46,0.07)",
-            border: "1px solid rgba(200,16,46,0.25)",
-            borderRadius: "8px",
-            padding: "20px 24px",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            marginBottom: "36px",
-            flexWrap: "wrap",
-            gap: "12px",
-          }}
-        >
-          <div>
-            <p style={{ color: "#aaa", fontSize: "0.85rem", marginBottom: "4px" }}>Total Value</p>
-            <p style={{ color: "#fff", fontWeight: 900, fontSize: "1.6rem", margin: 0 }}>$15,000</p>
-          </div>
-          <div style={{ textAlign: "right" }}>
-            <p style={{ color: "#aaa", fontSize: "0.85rem", marginBottom: "4px" }}>Join Today For</p>
-            <p style={{ color: "#c8102e", fontWeight: 900, fontSize: "1.6rem", margin: 0 }}>
-              $499 <span style={{ fontSize: "1rem", color: "#888" }}>or $79/month</span>
-            </p>
-          </div>
-        </div>
-
-        <p
-          style={{
-            color: "#666",
-            textAlign: "center",
-            fontSize: "0.85rem",
-            lineHeight: 1.6,
-          }}
-        >
-          Watch the free training first. The offer will make complete sense after you see the system.
-          Price increases after August 31. 30-day money-back guarantee.
-        </p>
-      </div>
-    </section>
-  );
-}
-
-// ─── 8. Final CTA Form ────────────────────────────────────────────────────────
-function FinalCTA({ form }: { form: ReturnType<typeof useRegistrationForm> }) {
-  return (
-    <section
-      style={{
-        background: "#080808",
-        padding: "72px 24px",
-        borderTop: "1px solid rgba(255,255,255,0.06)",
-      }}
-    >
-      <div style={{ maxWidth: "520px", margin: "0 auto", textAlign: "center" }}>
-        <p
-          style={{
-            color: "#c8102e",
-            fontWeight: 700,
-            fontSize: "13px",
-            letterSpacing: "0.12em",
-            textTransform: "uppercase",
-            marginBottom: "12px",
-          }}
-        >
-          Get Instant Access
-        </p>
-        <h2
-          style={{
-            color: "#fff",
-            fontWeight: 900,
-            fontSize: "clamp(1.7rem, 3.5vw, 2.3rem)",
-            marginBottom: "14px",
-            lineHeight: 1.2,
-          }}
-        >
-          Watch the Free AI Filmmaking Training Now
-        </h2>
-        <p
-          style={{
-            color: "#777",
-            marginBottom: "32px",
-            lineHeight: 1.65,
-            fontSize: "1rem",
-          }}
-        >
-          Enter your info below and I'll send you the free video training on demand. Watch it on your
-          own schedule.
-        </p>
-        <FormBlock {...form} ctaText="Send Me The Free Training →" />
-      </div>
-    </section>
-  );
-}
-
-// ─── 9. Footer ────────────────────────────────────────────────────────────────
+// ─── Footer ───────────────────────────────────────────────────────────────────
 function Footer() {
   return (
     <footer
       style={{
         background: "#050505",
         borderTop: "1px solid rgba(255,255,255,0.05)",
-        padding: "28px 24px",
+        padding: "24px",
         textAlign: "center",
       }}
     >
       <img
         src="/assets/aifa-white-flask-film-academy-180.png"
         alt="AI Film Academy"
-        style={{ height: "28px", opacity: 0.6, marginBottom: "12px" }}
+        style={{ height: "26px", opacity: 0.5, marginBottom: "10px" }}
       />
-      <p style={{ color: "#333", fontSize: "0.78rem" }}>
+      <p style={{ color: "#333", fontSize: "0.75rem" }}>
         © {new Date().getFullYear()} AI Film Academy · Exemplar Industries LLC
       </p>
     </footer>
@@ -929,31 +638,23 @@ function Footer() {
 
 // ─── Responsive CSS ───────────────────────────────────────────────────────────
 const CSS = `
-  @media (max-width: 700px) {
+  @media (max-width: 720px) {
     .hero-grid { grid-template-columns: 1fr !important; }
-    .hero-grid > div:first-child { max-width: 340px; margin: 0 auto; }
-    .qual-grid { grid-template-columns: 1fr !important; }
-    .stats-grid { grid-template-columns: repeat(2,1fr) !important; }
-    .testimonials-grid { grid-template-columns: 1fr !important; }
+    .hero-grid > div:last-child { order: -1; max-width: 320px; margin: 0 auto; }
+    .about-grid { grid-template-columns: 1fr !important; }
   }
 `;
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 export default function FreeVideoTraining() {
-  const form = useRegistrationForm();
-
   return (
     <>
       <style>{CSS}</style>
-      <div style={{ background: "#080808", minHeight: "100vh", fontFamily: "inherit" }}>
-        <TopBar />
-        <HeroSection form={form} />
-        <QualificationSection />
-        <AboutSection />
-        <SecretsSection />
-        <TestimonialsSection />
-        <OfferSection />
-        <FinalCTA form={form} />
+      <div style={{ fontFamily: "inherit" }}>
+        <Hero />
+        <WhoThisIsFor />
+        <Secrets />
+        <AboutAndForm />
         <Footer />
       </div>
     </>
