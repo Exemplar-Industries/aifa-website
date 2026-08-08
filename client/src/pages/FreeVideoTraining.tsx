@@ -747,9 +747,9 @@ function Footer() {
 const CSS = `
   @media (max-width: 720px) {
     .hero-grid { grid-template-columns: 1fr !important; gap: 24px !important; padding: 36px 20px 44px !important; }
-    /* On mobile: copy first, photo second */
-    .hero-grid > div:first-child { order: 1; }
-    .hero-grid > div:last-child { order: 2; max-width: 280px; margin: 0 auto; }
+    /* On mobile: photo first, copy second (matches ClickFunnels layout) */
+    .hero-grid > div:first-child { order: 2; }
+    .hero-grid > div:last-child { order: 1; max-width: 280px; margin: 0 auto; }
     .about-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
     .about-grid > div:first-child { text-align: center; }
     .about-grid > div:first-child img { margin: 0 auto 24px; }
