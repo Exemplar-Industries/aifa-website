@@ -19,6 +19,8 @@ import InternalLessons from "./pages/InternalLessons";
 import SlideViewer from "./pages/SlideViewer";
 import Masterclass from "./pages/Masterclass";
 import FreeVideoTraining from "./pages/FreeVideoTraining";
+import GenJamFreebie from "./pages/GenJamFreebie";
+import GenJamOffer from "./pages/GenJamOffer";
 
 function Router() {
   return (
@@ -37,6 +39,8 @@ function Router() {
       <Route path={"/lessons/:week"} component={SlideViewer} />
       <Route path={"/masterclass"} component={Masterclass} />
       <Route path={"/free-video-training"} component={FreeVideoTraining} />
+      <Route path={"/genjam-freebie"} component={GenJamFreebie} />
+      <Route path={"/genjam-offer"} component={GenJamOffer} />
       <Route path={"/404"} component={NotFound} />
       <Route component={NotFound} />
     </Switch>
