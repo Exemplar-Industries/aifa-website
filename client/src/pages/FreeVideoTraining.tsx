@@ -735,16 +735,20 @@ function Footer() {
       style={{
         background: "#050505",
         borderTop: "1px solid rgba(255,255,255,0.05)",
-        padding: "28px",
+        padding: "36px 24px",
         textAlign: "center",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: "12px",
       }}
     >
       <img
-        src="/assets/aifa-white-flask-film-academy-180.png"
+        src="/assets/afa_logo_white_text.png"
         alt="AI Film Academy"
-        style={{ height: "28px", opacity: 0.5, marginBottom: "10px" }}
+        style={{ height: "52px", display: "block" }}
       />
-      <p style={{ color: "#333", fontSize: "0.78rem" }}>
+      <p style={{ color: "#444", fontSize: "0.78rem", margin: 0 }}>
         © {new Date().getFullYear()} AI Film Academy · Exemplar Industries LLC
       </p>
     </footer>
@@ -754,14 +758,18 @@ function Footer() {
 // ─── Responsive + Animation CSS ───────────────────────────────────────────────
 const CSS = `
   @media (max-width: 720px) {
-    .hero-grid { grid-template-columns: 1fr !important; gap: 32px !important; padding: 40px 20px 48px !important; }
-    .hero-grid > div:last-child { order: -1; max-width: 300px; margin: 0 auto; }
+    .hero-grid { grid-template-columns: 1fr !important; gap: 24px !important; padding: 36px 20px 44px !important; }
+    /* On mobile: copy first, photo second */
+    .hero-grid > div:first-child { order: 1; }
+    .hero-grid > div:last-child { order: 2; max-width: 280px; margin: 0 auto; }
     .about-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
-    .secrets-headline { white-space: normal !important; font-size: clamp(1.6rem, 7vw, 2.2rem) !important; }
+    .about-grid > div:first-child { text-align: center; }
+    .about-grid > div:first-child img { margin: 0 auto 24px; }
+    .about-grid > div:first-child > div { justify-content: center; }
+    .secrets-headline { white-space: normal !important; font-size: clamp(1.5rem, 6vw, 2rem) !important; }
   }
   @media (max-width: 480px) {
-    .hero-grid { padding: 32px 16px 40px !important; }
-    .about-grid { padding: 0 !important; }
+    .hero-grid { padding: 28px 16px 36px !important; }
   }
 
   /* Animated orb backgrounds for hero */
