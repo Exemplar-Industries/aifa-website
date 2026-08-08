@@ -418,7 +418,7 @@ function Secrets() {
           }}
           className="secrets-headline"
         >
-          3 Secrets Every AI Filmmaker Needs to Know
+          Discover 3 Secrets That Unlock High Ticket Creative Work
         </h2>
 
         <div style={{ display: "flex", flexDirection: "column", gap: "56px" }}>
