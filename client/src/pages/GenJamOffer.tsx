@@ -22,7 +22,7 @@ const PARTNER_MONTHLY_EQUIV = Math.round(PARTNER_ANNUAL / 12); // $33
 const SAVINGS = PUBLIC_ANNUAL - PARTNER_ANNUAL; // $549
 
 const INCLUDED = [
-  { icon: "🎬", label: "Full Course Library", desc: "50+ video lessons covering every stage of AI filmmaking — concept, production, post" },
+  { icon: "🎬", label: "Master AI Filmmaking in 30 Days", desc: "The complete AI filmmaking course — concept to final cut, updated August 2026" },
   { icon: "🤖", label: "AIFA Workflow System", desc: "The exact AI tool stack and production process used by AFA members to ship real films" },
   { icon: "🏆", label: "Industry Certification", desc: "LinkedIn-ready AI Media Specialist certification that signals your skills to clients and employers" },
   { icon: "🎥", label: "Monthly 5-Hour GenJams", desc: "Live collaborative filmmaking sessions every month — the same experience you just had" },
@@ -129,22 +129,22 @@ export default function GenJamOffer() {
             ))}
           </div>
 
-
-        </div>
-      </section>
-
-      {/* ── SECTION 3: WHAT'S INCLUDED ── */}
-      <section style={{ padding: "clamp(4rem,8vw,6rem) clamp(1.5rem,5vw,3rem)" }}>
-        <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
-          <div style={{ textAlign: "center", marginBottom: "clamp(2rem,5vw,3rem)" }}>
-            <p style={{ color: "#ef4444", fontWeight: 700, fontSize: "0.8rem", textTransform: "uppercase", letterSpacing: "0.18em", marginBottom: "0.75rem" }}>
-              What's Included in Your AI Film Academy Membership
-            </p>
-            <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2rem,6vw,4rem)", letterSpacing: "0.04em", color: "#F5F5F0", lineHeight: 1 }}>
-              What's Inside Your Membership
-            </h2>
+          {/* Skool community screenshot */}
+          <div style={{ marginBottom: "3rem", borderRadius: "16px", overflow: "hidden", border: "1px solid rgba(255,255,255,0.1)", boxShadow: "0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(239,68,68,0.08)" }}>
+            <img
+              src="/assets/skool_about_screenshot.png"
+              alt="AI Film Academy community on Skool"
+              style={{ width: "100%", display: "block" }}
+            />
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "1rem" }}>
+
+          {/* What's inside heading */}
+          <h3 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(1.8rem,5vw,3rem)", letterSpacing: "0.04em", color: "#F5F5F0", textAlign: "center", marginBottom: "1.5rem", lineHeight: 1 }}>
+            What's Inside Your Membership
+          </h3>
+
+          {/* Benefits grid */}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1rem" }}>
             {INCLUDED.map((item) => (
               <div key={item.label} style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "14px", padding: "clamp(1.25rem,3vw,1.75rem)", display: "flex", alignItems: "flex-start", gap: "1.1rem" }}>
                 <span style={{ fontSize: "1.75rem", flexShrink: 0, marginTop: "2px" }}>{item.icon}</span>
@@ -155,6 +155,7 @@ export default function GenJamOffer() {
               </div>
             ))}
           </div>
+
         </div>
       </section>
 
