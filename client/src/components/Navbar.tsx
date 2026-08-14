@@ -10,6 +10,7 @@ import ThemeToggle from "./ThemeToggle";
 const LOGO_URL = "/assets/afa-logo-horizontal.png";
 
 const navLinks = [
+  { label: "Home", href: "/" },
   { label: "Membership", href: "/membership" },
   { label: "Showcase", href: "/showcase" },
   { label: "Production", href: "/productions" },

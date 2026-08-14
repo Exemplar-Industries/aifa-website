@@ -29,7 +29,7 @@ export default function InsideAFASection() {
           <h2 className="max-w-4xl text-[clamp(3.1rem,6.2vw,5.85rem)] leading-[0.9] text-[#F5F5F0]">
             Join the Future of <span style={{ color: "var(--afa-red)" }}>Creative Work.</span>
           </h2>
-          <p className="max-w-2xl text-[clamp(1.22rem,1.85vw,1.55rem)] font-medium leading-[1.48] text-white">
+          <p className="creative-system-statement max-w-3xl text-[clamp(1.55rem,2.35vw,2.08rem)] font-semibold leading-[1.42] text-white">
             Most AI resources leave creators and freelancers overwhelmed. AIFA gives you one production system to move from idea to final piece, build a premium portfolio, and land more paid work.
           </p>
         </div>
@@ -37,10 +37,13 @@ export default function InsideAFASection() {
         <div className="mt-14 grid gap-7 md:grid-cols-3 md:gap-8">
           {CREATIVE_SYSTEM_STEPS.map((step) => (
             <article key={step.title} className="border-t-2 pt-7" style={{ borderColor: "var(--afa-red)" }}>
-              <h3 className="flex min-h-[3.2rem] items-start text-[clamp(1.42rem,2vw,1.78rem)] font-extrabold uppercase leading-[1.04] tracking-[-0.025em] text-[#F5F5F0]">
+              <h3
+                className="flex min-h-[3.55rem] items-start text-[clamp(1.62rem,2.35vw,2.14rem)] font-extrabold leading-[1.08] tracking-[-0.015em] text-[#F5F5F0]"
+                style={{ fontFamily: "'DM Sans', sans-serif" }}
+              >
                 {step.title}
               </h3>
-              <p className="mt-5 max-w-md text-[clamp(1.08rem,1.45vw,1.25rem)] leading-[1.55] text-white/92">
+              <p className="creative-system-card-copy mt-6 max-w-md text-[clamp(1.28rem,1.8vw,1.52rem)] font-medium leading-[1.5] text-white">
                 {step.description}
               </p>
             </article>
