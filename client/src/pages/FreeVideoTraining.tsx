@@ -203,19 +203,18 @@ function Hero() {
           <h1
             style={{
               color: "#fff",
-              fontFamily: "'Bebas Neue', sans-serif",
-              fontWeight: 400,
-              fontSize: "clamp(2.25rem, 4.7vw, 3.65rem)",
-              lineHeight: 1.18,
-              letterSpacing: "0.018em",
+              fontFamily: "'DM Sans', sans-serif",
+              fontWeight: 900,
+              fontSize: "clamp(2rem, 3.75vw, 3.15rem)",
+              lineHeight: 1.15,
+              letterSpacing: "0.005em",
               margin: "0 auto 28px",
               maxWidth: "640px",
             }}
           >
-            <span style={{ display: "block" }}>How To Build a</span>
-            <span style={{ color: "#c8102e", display: "block" }}>Premium AI Film Portfolio</span>
-            <span style={{ display: "block" }}>And Start Charging</span>
-            <span style={{ color: "#c8102e", display: "block" }}>High Ticket in 30 Days</span>
+            <span style={{ display: "block" }}>How To Build a Premium</span>
+            <span style={{ display: "block" }}>AI Film Portfolio and Start Charging</span>
+            <span style={{ color: "#c8102e", display: "block", marginTop: "8px" }}>High Ticket in 30 Days</span>
           </h1>
           <p
             style={{
