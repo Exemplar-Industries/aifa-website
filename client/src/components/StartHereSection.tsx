@@ -1,7 +1,7 @@
 /*
  * AI Film Academy — Start Here
  * Design: "The Director's Cut" — one decisive close, two levels of intent.
- * Conversion: Skool is primary; the free training is the lower-commitment path.
+ * Conversion: membership sales page is primary; the free training is the lower-commitment path.
  */
 
 import { ArrowUpRight, Play } from "lucide-react";
@@ -24,24 +24,22 @@ export default function StartHereSection() {
             <span className="text-[oklch(0.55_0.22_25)]">Next Step</span>
           </h2>
           <p className="mx-auto mt-7 max-w-2xl text-base leading-7 text-white/55 md:text-lg">
-            Join the community when you are ready to build with feedback and support, or watch the free training to experience the production method first.
+            Choose a membership built around finished work, feedback, and creative momentum—or watch the free training to experience the production method first.
           </p>
         </div>
 
         <div className="mx-auto mt-12 grid max-w-5xl gap-px overflow-hidden border border-white/10 bg-white/10 md:grid-cols-2">
           <article className="flex min-h-[310px] flex-col bg-[#0C0C0C] p-7 md:p-10">
             <p className="font-mono text-[0.62rem] uppercase tracking-[0.2em] text-[#E63329]">Ready to build your portfolio?</p>
-            <h3 className="mt-5 text-4xl text-white md:text-5xl">Join The Program.</h3>
+            <h3 className="mt-5 text-4xl text-white md:text-5xl">Explore Membership.</h3>
             <p className="mt-4 max-w-md text-sm leading-6 text-white/54 md:text-base">
-              Enter the working community for structured practice, portfolio feedback, live support, events, certification, and creative opportunities.
+              See the complete AIFA experience, choose monthly or annual access, and get automatic community access after verified payment.
             </p>
             <a
-              href="https://www.skool.com/aifilmacademy/about"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="/membership"
               className="btn-primary mt-auto px-7 py-4 text-base font-bold"
             >
-              Join the AI Film Academy <ArrowUpRight className="h-4 w-4" />
+              Explore Membership <ArrowUpRight className="h-4 w-4" />
             </a>
           </article>
 
@@ -52,9 +50,7 @@ export default function StartHereSection() {
               Learn how the AIFA production system turns an idea into polished AI video without getting trapped in tool overwhelm.
             </p>
             <a
-              href="https://www.aifilmacademy.com/free-video-training"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="/free-video-training"
               className="btn-outline mt-auto px-7 py-4 text-base font-semibold"
             >
               <Play className="h-4 w-4 fill-current" /> Watch the Free Training

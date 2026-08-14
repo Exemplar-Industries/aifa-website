@@ -12,13 +12,15 @@ const columns = [
     links: [
       { label: "Home", href: "/" },
       { label: "FAQ", href: "/faq" },
-      { label: "Join AIFA", href: "https://www.skool.com/aifilmacademy/about", external: true },
+      { label: "Explore Membership", href: "/membership" },
+      { label: "Work With Us", href: "/work-with-us" },
+      { label: "AI Film Events", href: "/events" },
     ],
   },
   {
     heading: "Learn & Follow",
     links: [
-      { label: "Free Training", href: "https://www.aifilmacademy.com/free-video-training", external: true },
+      { label: "Free Training", href: "/free-video-training" },
       { label: "YouTube", href: "https://www.youtube.com/channel/UC1zRjoLJcN4cuMLs_A7kIMg", external: true },
       { label: "Instagram", href: "https://www.instagram.com/theaifilmacademy/", external: true },
       { label: "Email Us", href: "mailto:hello@aifilmacademy.com" },
@@ -29,6 +31,7 @@ const columns = [
     links: [
       { label: "Privacy Policy", href: "/privacy" },
       { label: "Terms of Service", href: "/terms" },
+      { label: "Refund Policy", href: "/refund-policy" },
     ],
   },
 ];
