@@ -20,9 +20,9 @@ const columns: FooterColumn[] = [
   {
     heading: "Start Here",
     links: [
-      { label: "Explore Membership", href: "/membership" },
-      { label: "Watch Free Training", href: "/free-video-training" },
-      { label: "See What's Possible", href: "/showcase" },
+      { label: "Membership", href: "/membership" },
+      { label: "Try Free", href: "/free-video-training" },
+      { label: "Showcase", href: "/showcase" },
       { label: "FAQ", href: "/faq" },
     ],
   },
@@ -30,9 +30,9 @@ const columns: FooterColumn[] = [
     heading: "Explore AIFA",
     links: [
       { label: "AI Film Events", href: "/events" },
-      { label: "Done For You Production", href: "/productions" },
-      { label: "Workshops & Events", href: "/education-events" },
-      { label: "Contact Us", href: "/contact" },
+      { label: "Production", href: "/productions" },
+      { label: "Events", href: "/education-events" },
+      { label: "Contact", href: "/contact" },
     ],
   },
   {
@@ -82,7 +82,7 @@ export default function Footer() {
                       href={link.href}
                       target={link.external ? "_blank" : undefined}
                       rel={link.external ? "noopener noreferrer" : undefined}
-                      className="text-[1rem] font-medium text-white/85 transition-colors hover:text-[#ff7068]"
+                      className="footer-link text-[1rem] font-medium text-white/85 transition-colors"
                     >
                       {link.label}
                     </a>

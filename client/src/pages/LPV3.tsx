@@ -105,7 +105,7 @@ function FullscreenHero() {
               fontSize: "0.65rem",
               letterSpacing: "0.25em",
               textTransform: "uppercase",
-              color: "oklch(0.62 0.24 25)",
+              color: "var(--afa-red)",
             }}
           >
             AI Film Academy
@@ -115,7 +115,7 @@ function FullscreenHero() {
               display: "inline-block",
               width: "28px",
               height: "1.5px",
-              background: "oklch(0.58 0.22 25)",
+              background: "var(--afa-red)",
             }}
           />
         </div>
@@ -137,7 +137,7 @@ function FullscreenHero() {
           <br />
           <span
             style={{
-              color: "oklch(0.62 0.24 25)",
+              color: "var(--afa-red)",
               textShadow:
                 "0 0 80px oklch(0.48 0.22 25 / 0.6), 0 4px 40px rgba(0,0,0,0.9)",
               display: "block",
@@ -217,7 +217,7 @@ function FullscreenHero() {
                   width: "5px",
                   height: "5px",
                   borderRadius: "50%",
-                  background: "oklch(0.55 0.22 25)",
+                  background: "var(--afa-red)",
                   display: "inline-block",
                   flexShrink: 0,
                 }}

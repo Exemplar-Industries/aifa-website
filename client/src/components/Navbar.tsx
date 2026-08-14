@@ -1,19 +1,20 @@
 /*
  * AI Film Academy - Global Navigation
- * Persistent public-site shell with the complete AFA sitemap.
+ * Persistent public-site shell with short, scannable primary routes.
  */
 
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
+import ThemeToggle from "./ThemeToggle";
 
 const LOGO_URL = "/assets/afa-logo-horizontal.png";
 
 const navLinks = [
-  { label: "Explore Membership", href: "/membership" },
-  { label: "See What's Possible", href: "/showcase" },
-  { label: "Done For You Production", href: "/productions" },
-  { label: "Workshops & Events", href: "/education-events" },
-  { label: "Contact Us", href: "/contact" },
+  { label: "Membership", href: "/membership" },
+  { label: "Showcase", href: "/showcase" },
+  { label: "Production", href: "/productions" },
+  { label: "Events", href: "/education-events" },
+  { label: "Contact", href: "/contact" },
   { label: "FAQ", href: "/faq" },
 ];
 
@@ -29,13 +30,13 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`sticky inset-x-0 top-0 z-[100] border-b transition-colors duration-200 ${
+      className={`site-nav sticky inset-x-0 top-0 z-[100] border-b transition-colors duration-200 ${
         scrolled || menuOpen
           ? "border-white/15 bg-[#080808]/98 backdrop-blur-xl"
           : "border-white/12 bg-[#090909]"
       }`}
     >
-      <div className="container flex min-h-[4.75rem] items-center justify-between gap-4">
+      <div className="container flex min-h-[4.75rem] items-center justify-between gap-3">
         <a href="/" className="group flex shrink-0 items-center" aria-label="AI Film Academy home">
           <img
             src={LOGO_URL}
@@ -45,12 +46,12 @@ export default function Navbar() {
           />
         </a>
 
-        <div className="hidden min-w-0 items-center justify-center gap-x-5 gap-y-2 xl:flex">
+        <div className="hidden min-w-0 items-center justify-center gap-x-6 gap-y-2 xl:flex">
           {navLinks.map((link) => (
             <a
               key={link.href}
               href={link.href}
-              className="whitespace-nowrap text-[0.98rem] font-semibold text-white/85 transition-colors duration-150 hover:text-[#ff7068]"
+              className="nav-link whitespace-nowrap text-[0.98rem] font-semibold transition-colors duration-150"
             >
               {link.label}
             </a>
@@ -60,13 +61,14 @@ export default function Navbar() {
         <div className="flex shrink-0 items-center gap-2 sm:gap-3">
           <a
             href="/free-video-training"
-            className="btn-primary inline-flex min-h-11 items-center gap-2 px-3.5 py-2.5 text-[0.92rem] font-bold sm:px-4"
+            className="btn-primary inline-flex min-h-11 items-center gap-2 px-3.5 py-2.5 text-[0.94rem] font-bold sm:px-4"
           >
-            <span>Watch Free Training</span>
+            <span>Try Free</span>
           </a>
+          <ThemeToggle />
           <button
             type="button"
-            className="inline-flex h-11 w-11 items-center justify-center border border-white/25 text-white transition-colors hover:border-[#ff7068] hover:text-[#ff7068] xl:hidden"
+            className="menu-toggle inline-flex h-11 w-11 items-center justify-center border border-white/25 text-white transition-colors xl:hidden"
             onClick={() => setMenuOpen((open) => !open)}
             aria-expanded={menuOpen}
             aria-controls="afa-mobile-menu"
@@ -78,13 +80,13 @@ export default function Navbar() {
       </div>
 
       {menuOpen && (
-        <div id="afa-mobile-menu" className="border-t border-white/15 bg-[#080808] xl:hidden">
+        <div id="afa-mobile-menu" className="site-mobile-menu border-t border-white/15 bg-[#080808] xl:hidden">
           <div className="container grid gap-0 py-3">
             {navLinks.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
-                className="border-b border-white/12 py-4 text-[1.08rem] font-semibold text-white/90 transition-colors hover:text-[#ff7068]"
+                className="nav-link border-b border-white/12 py-4 text-[1.08rem] font-semibold transition-colors"
                 onClick={() => setMenuOpen(false)}
               >
                 {link.label}
@@ -95,7 +97,7 @@ export default function Navbar() {
               className="btn-primary mt-4 inline-flex min-h-12 items-center justify-center px-5 py-3 text-[1rem] font-bold"
               onClick={() => setMenuOpen(false)}
             >
-              Watch Free Training
+              Try Free
             </a>
           </div>
         </div>

@@ -1,7 +1,7 @@
 /*
  * AI Film Academy — "The Director's Cut" Design System
  * Design Movement: Neo-Brutalist Cinema / Dark Editorial
- * Color: Near-black #0A0A0A bg, off-white #F5F5F0 text, cinematic red #E63329 accent
+ * Color: near-black #0A0A0A bg, off-white #F5F5F0 text, one rich primary CTA red accent
  * Typography: Bebas Neue (display) + DM Sans (body) + JetBrains Mono (labels)
  * Philosophy: Darkness as authority, typographic hierarchy, controlled red for urgency
  */
@@ -49,9 +49,8 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
   
-  /* AFA Brand Colors */
+  /* AFA Brand Colors: the primary CTA red is the only red token. */
   --color-afa-red: oklch(0.48 0.22 25);
-  --color-afa-red-hover: oklch(0.55 0.22 25);
   --color-afa-dark: oklch(0.08 0 0);
   --color-afa-card: oklch(0.12 0 0);
   --color-afa-border: oklch(0.22 0 0);
@@ -61,13 +60,14 @@
 
 :root {
   --radius: 0.375rem;
+  --afa-red: oklch(0.48 0.22 25);
   --background: oklch(0.08 0 0);
   --foreground: oklch(0.97 0.003 90);
   --card: oklch(0.12 0 0);
   --card-foreground: oklch(0.97 0.003 90);
   --popover: oklch(0.12 0 0);
   --popover-foreground: oklch(0.97 0.003 90);
-  --primary: oklch(0.48 0.22 25);
+  --primary: var(--afa-red);
   --primary-foreground: oklch(0.97 0.003 90);
   --secondary: oklch(0.18 0 0);
   --secondary-foreground: oklch(0.97 0.003 90);
@@ -75,24 +75,47 @@
   --muted-foreground: oklch(0.72 0 0);
   --accent: oklch(0.18 0 0);
   --accent-foreground: oklch(0.97 0.003 90);
-  --destructive: oklch(0.48 0.22 25);
+  --destructive: var(--afa-red);
   --destructive-foreground: oklch(0.97 0.003 90);
   --border: oklch(0.22 0 0);
   --input: oklch(0.22 0 0);
-  --ring: oklch(0.48 0.22 25);
-  --chart-1: oklch(0.48 0.22 25);
-  --chart-2: oklch(0.55 0.22 25);
-  --chart-3: oklch(0.62 0.22 25);
-  --chart-4: oklch(0.35 0.15 25);
-  --chart-5: oklch(0.28 0.12 25);
+  --ring: var(--afa-red);
+  --chart-1: var(--afa-red);
+  --chart-2: var(--afa-red);
+  --chart-3: var(--afa-red);
+  --chart-4: var(--afa-red);
+  --chart-5: var(--afa-red);
   --sidebar: oklch(0.10 0 0);
   --sidebar-foreground: oklch(0.97 0.003 90);
-  --sidebar-primary: oklch(0.48 0.22 25);
+  --sidebar-primary: var(--afa-red);
   --sidebar-primary-foreground: oklch(0.97 0.003 90);
   --sidebar-accent: oklch(0.18 0 0);
   --sidebar-accent-foreground: oklch(0.97 0.003 90);
   --sidebar-border: oklch(0.22 0 0);
-  --sidebar-ring: oklch(0.48 0.22 25);
+  --sidebar-ring: var(--afa-red);
+}
+
+/* Bright preview mode: a retained alternative, not a replacement for the cinematic dark default. */
+html.light {
+  --background: #f7f4ef;
+  --foreground: #171513;
+  --card: #fffdf9;
+  --card-foreground: #171513;
+  --popover: #fffdf9;
+  --popover-foreground: #171513;
+  --secondary: #eee9e2;
+  --secondary-foreground: #171513;
+  --muted: #eee9e2;
+  --muted-foreground: #5a544d;
+  --accent: #eee9e2;
+  --accent-foreground: #171513;
+  --border: #d9d1c7;
+  --input: #d9d1c7;
+  --sidebar: #fffdf9;
+  --sidebar-foreground: #171513;
+  --sidebar-accent: #eee9e2;
+  --sidebar-accent-foreground: #171513;
+  --sidebar-border: #d9d1c7;
 }
 
 @layer base {
@@ -191,16 +214,16 @@
   /* AFA Button Styles */
   .btn-primary {
     @apply inline-flex items-center justify-center gap-2 font-semibold transition-all duration-200;
-    background-color: oklch(0.48 0.22 25);
+    background-color: var(--afa-red);
     color: oklch(0.97 0.003 90);
     font-family: 'DM Sans', sans-serif;
     letter-spacing: 0.03em;
     border-radius: 4px;
   }
   .btn-primary:hover {
-    background-color: oklch(0.55 0.22 25);
+    background-color: var(--afa-red);
     transform: translateY(-1px);
-    box-shadow: 0 8px 24px oklch(0.48 0.22 25 / 0.35);
+    box-shadow: 0 8px 24px color-mix(in srgb, var(--afa-red) 35%, transparent);
   }
   .btn-primary:active {
     transform: translateY(0);
@@ -214,10 +237,91 @@
     border-radius: 4px;
   }
   .btn-outline:hover {
-    border-color: oklch(0.97 0.003 90 / 0.7);
-    background-color: oklch(0.97 0.003 90 / 0.05);
+    border-color: var(--afa-red);
+    color: var(--afa-red);
+    background-color: color-mix(in srgb, var(--afa-red) 8%, transparent);
+  }
+
+  .nav-link,
+  .footer-link,
+  .theme-toggle,
+  .menu-toggle {
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  .nav-link:hover,
+  .footer-link:hover,
+  .theme-toggle:hover,
+  .menu-toggle:hover {
+    color: var(--afa-red);
+    border-color: var(--afa-red);
   }
   
+  /* Backward-compatible utility mapping: every existing primary-red utility resolves to one token. */
+  .aifa-readable :where([class*="text-[#E63329]"], [class*="text-[#e63329]"]) {
+    color: var(--afa-red) !important;
+  }
+
+  .aifa-readable :where([class*="bg-[#E63329]"], [class*="bg-[#e63329]"]) {
+    background-color: var(--afa-red) !important;
+  }
+
+  .aifa-readable :where([class*="border-[#E63329]"], [class*="border-[#e63329]"]) {
+    border-color: var(--afa-red) !important;
+  }
+
+  .aifa-readable :where([class*="focus:border-[#E63329]"], [class*="focus:border-[#e63329]"]):focus {
+    border-color: var(--afa-red) !important;
+  }
+
+  .homepage-hero-overlay {
+    z-index: 1;
+    background: rgba(0, 0, 0, 0.34);
+  }
+
+  .homepage-hero-bottom-gradient {
+    z-index: 2;
+    background: linear-gradient(to top, rgba(8, 8, 8, 0.92) 0%, rgba(8, 8, 8, 0.27) 38%, rgba(8, 8, 8, 0.08) 72%);
+  }
+
+  .homepage-hero-vignette {
+    z-index: 3;
+    pointer-events: none;
+    background: radial-gradient(ellipse at 50% 48%, transparent 50%, rgba(0, 0, 0, 0.34) 100%);
+  }
+
+  .homepage-hero-grain {
+    z-index: 4;
+    pointer-events: none;
+    opacity: 0.12;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  }
+
+  .homepage-hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3rem, 8vw, 8.75rem);
+    line-height: 0.9;
+    letter-spacing: 0.01em;
+    text-shadow: 0 4px 40px rgba(0, 0, 0, 0.84), 0 2px 8px rgba(0, 0, 0, 0.72);
+  }
+
+  .homepage-hero-title .text-afa-red {
+    color: var(--afa-red);
+    text-shadow: 0 0 70px color-mix(in srgb, var(--afa-red) 55%, transparent), 0 4px 40px rgba(0, 0, 0, 0.84);
+  }
+
+  .homepage-hero-copy {
+    color: rgba(245, 245, 240, 0.94);
+    font-size: clamp(1rem, 2vw, 1.18rem);
+    line-height: 1.6;
+    text-shadow: 0 2px 14px rgba(0, 0, 0, 0.74);
+  }
+
+  .homepage-hero-outline {
+    backdrop-filter: blur(8px);
+    background: rgba(255, 255, 255, 0.08);
+  }
+
   /* Label / Tag style */
   .label-tag {
     font-family: 'DM Sans', sans-serif;
@@ -225,7 +329,7 @@
     font-weight: 700;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: oklch(0.62 0.24 25);
+    color: var(--afa-red);
   }
   
   /* Film grain overlay */
@@ -245,7 +349,7 @@
   /* Red divider line */
   .red-rule {
     height: 2px;
-    background: linear-gradient(90deg, oklch(0.48 0.22 25), transparent);
+    background: linear-gradient(90deg, var(--afa-red), transparent);
     border: none;
   }
   
@@ -256,7 +360,7 @@
     font-weight: 700;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: oklch(0.62 0.24 25);
+    color: var(--afa-red);
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -266,7 +370,7 @@
     display: inline-block;
     width: 24px;
     height: 1.5px;
-    background-color: oklch(0.48 0.22 25);
+    background-color: var(--afa-red);
   }
   
   /* Card hover effect */
@@ -276,7 +380,7 @@
     transition: border-color 0.2s, transform 0.2s;
   }
   .afa-card:hover {
-    border-color: oklch(0.48 0.22 25 / 0.5);
+    border-color: color-mix(in srgb, var(--afa-red) 50%, transparent);
     transform: translateY(-2px);
   }
   
@@ -289,8 +393,8 @@
   
   /* Pulse animation for CTA */
   @keyframes pulse-red {
-    0%, 100% { box-shadow: 0 0 0 0 oklch(0.48 0.22 25 / 0.4); }
-    50% { box-shadow: 0 0 0 8px oklch(0.48 0.22 25 / 0); }
+    0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--afa-red) 40%, transparent); }
+    50% { box-shadow: 0 0 0 8px color-mix(in srgb, var(--afa-red) 0%, transparent); }
   }
   .pulse-cta {
     animation: pulse-red 2.5s ease-in-out infinite;
@@ -322,6 +426,92 @@
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
   }
+}
+
+/* Light mode keeps the CTA red unchanged while lifting public-page surfaces and copy. */
+html.light .site-nav,
+html.light .site-mobile-menu {
+  background: rgba(255, 253, 249, 0.98) !important;
+  border-color: #d9d1c7 !important;
+}
+
+html.light .nav-link,
+html.light .menu-toggle,
+html.light .theme-toggle {
+  color: #171513 !important;
+  border-color: #c8beb4 !important;
+}
+
+html.light .nav-link:hover,
+html.light .menu-toggle:hover,
+html.light .theme-toggle:hover {
+  color: var(--afa-red) !important;
+  border-color: var(--afa-red) !important;
+}
+
+html.light .aifa-readable :where([class*="bg-[#080808]"], [class*="bg-[#090909]"], [class*="bg-[#0A0A0A]"], [class*="bg-[#0D0D0D]"], [class*="bg-[#0C0C0C]"], [class*="bg-[#101010]"], [class*="bg-[#111111]"]) {
+  background-color: var(--background) !important;
+}
+
+html.light .aifa-readable .homepage-hero,
+html.light .aifa-readable .homepage-shell {
+  background-color: #f7f4ef !important;
+}
+
+html.light .homepage-hero-video {
+  filter: brightness(1.16) saturate(0.9);
+}
+
+html.light .homepage-hero-overlay {
+  background: rgba(247, 244, 239, 0.36) !important;
+}
+
+html.light .homepage-hero-bottom-gradient {
+  background: linear-gradient(to top, rgba(247, 244, 239, 0.98) 0%, rgba(247, 244, 239, 0.58) 40%, rgba(247, 244, 239, 0.12) 70%) !important;
+}
+
+html.light .homepage-hero-vignette,
+html.light .homepage-hero-grain {
+  opacity: 0 !important;
+}
+
+html.light .homepage-hero-title {
+  color: #171513 !important;
+  text-shadow: 0 3px 25px rgba(255, 253, 249, 0.85) !important;
+}
+
+html.light .homepage-hero-copy {
+  color: #302c28 !important;
+}
+
+html.light .homepage-hero-outline {
+  border-color: #4c443d !important;
+  color: #171513 !important;
+  background: rgba(255, 253, 249, 0.6) !important;
+}
+
+html.light .aifa-readable :where([class*="border-white"], [class*="bg-white/"]) {
+  border-color: #d9d1c7 !important;
+}
+
+html.light .aifa-readable :where([class*="text-white"]):not(.btn-primary):not([class*="bg-[#E63329]"]) {
+  color: var(--foreground) !important;
+}
+
+html.light .aifa-readable :where([class*="text-[#ff7068]"], [class*="text-[oklch(0.62_0.24_25)"]) {
+  color: var(--afa-red) !important;
+}
+
+html.light .aifa-readable :where([class*="bg-[#E63329]"], [class*="bg-[#ff7068]"]) {
+  background-color: var(--afa-red) !important;
+}
+
+html.light .aifa-readable :where([class*="text-[#E63329]"]) {
+  color: var(--afa-red) !important;
+}
+
+html.light .footer-link:hover {
+  color: var(--afa-red) !important;
 }
 
 
