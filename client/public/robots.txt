@@ -1,2 +1,3 @@
 User-agent: *
 Disallow: /connect
+Sitemap: https://www.aifilmacademy.com/sitemap.xml

@@ -17,14 +17,12 @@ import InsideAFASection from "@/components/InsideAFASection";
 import ProofSection from "@/components/ProofSection";
 import StartHereSection from "@/components/StartHereSection";
 import Footer from "@/components/Footer";
-import { useSkoolUrl } from "@/contexts/AffiliateLinkContext";
 import { useRef, useEffect, useState } from "react";
 
 const HERO_VIDEO_URL =
   "https://d2xsxph8kpxj0f.cloudfront.net/310419663032668673/9znEqYZ2JpzLxCzomcgMbf/LPV2BG_601839be.mp4";
 
 function FullscreenHero() {
-  const skoolUrl = useSkoolUrl();
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoLoaded, setVideoLoaded] = useState(false);
 
@@ -205,18 +203,14 @@ function FullscreenHero() {
           style={{ animation: "fade-up 0.6s ease 0.55s both" }}
         >
           <a
-            href={skoolUrl}
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/membership"
             className="btn-primary pulse-cta px-8 py-4 text-base font-bold"
             style={{ fontSize: "1rem", letterSpacing: "0.03em" }}
           >
-            Join the Program
+            Explore Membership
           </a>
           <a
-            href="https://www.aifilmacademy.com/free-video-training"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/free-video-training"
             className="btn-outline px-8 py-4 text-base font-semibold"
             style={{
               backdropFilter: "blur(8px)",

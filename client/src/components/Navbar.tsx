@@ -1,16 +1,19 @@
 /*
  * AI Film Academy — Global Navigation
  * Design: "The Director's Cut" — transparent over cinematic heroes, solid on scroll.
- * IA: Home, FAQ, and one clear Free Training conversion action. Showcase remains intentionally unlisted until the curated video launch.
+ * IA: Home, Membership, FAQ, and one clear Free Training conversion action. Showcase remains intentionally unlisted until the curated video launch.
  */
 
 import { useEffect, useState } from "react";
-import { ExternalLink, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 
 const LOGO_URL = "/assets/afa-logo-horizontal.png";
 
 const navLinks = [
   { label: "Home", href: "/" },
+  { label: "Membership", href: "/membership" },
+  { label: "Work With Us", href: "/work-with-us" },
+  { label: "Events", href: "/events" },
   { label: "FAQ", href: "/faq" },
 ];
 
@@ -50,12 +53,10 @@ export default function Navbar() {
 
         <div className="flex items-center gap-3">
           <a
-            href="https://www.aifilmacademy.com/free-video-training"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/free-video-training"
             className="btn-primary hidden items-center gap-2 px-4 py-2 text-sm font-semibold sm:inline-flex"
           >
-            Free Training <ExternalLink className="h-3.5 w-3.5" />
+            Watch Free Training
           </a>
           <button
             type="button"
@@ -78,13 +79,11 @@ export default function Navbar() {
               </a>
             ))}
             <a
-              href="https://www.aifilmacademy.com/free-video-training"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="/free-video-training"
               className="btn-primary mt-5 inline-flex items-center justify-center gap-2 px-5 py-3.5 text-base font-semibold"
               onClick={() => setMenuOpen(false)}
             >
-              Free Training <ExternalLink className="h-4 w-4" />
+              Watch Free Training
             </a>
           </div>
         </div>

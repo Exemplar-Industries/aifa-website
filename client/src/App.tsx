@@ -21,6 +21,15 @@ import Masterclass from "./pages/Masterclass";
 import FreeVideoTraining from "./pages/FreeVideoTraining";
 import GenJamFreebie from "./pages/GenJamFreebie";
 import GenJamOffer from "./pages/GenJamOffer";
+import Membership from "./pages/Membership";
+import MembershipSuccess from "./pages/MembershipSuccess";
+import RefundPolicy from "./pages/RefundPolicy";
+import Terms from "./pages/Terms";
+import Privacy from "./pages/Privacy";
+import WorkWithUs from "./pages/WorkWithUs";
+import Productions from "./pages/Productions";
+import EducationEvents from "./pages/EducationEvents";
+import Events from "./pages/Events";
 
 function Router() {
   return (
@@ -39,6 +48,15 @@ function Router() {
       <Route path={"/lessons/:week"} component={SlideViewer} />
       <Route path={"/masterclass"} component={Masterclass} />
       <Route path={"/free-video-training"} component={FreeVideoTraining} />
+      <Route path={"/membership"} component={Membership} />
+      <Route path={"/membership/success"} component={MembershipSuccess} />
+      <Route path={"/refund-policy"} component={RefundPolicy} />
+      <Route path={"/terms"} component={Terms} />
+      <Route path={"/privacy"} component={Privacy} />
+      <Route path={"/work-with-us"} component={WorkWithUs} />
+      <Route path={"/productions"} component={Productions} />
+      <Route path={"/education-events"} component={EducationEvents} />
+      <Route path={"/events"} component={Events} />
       <Route path={"/genjam-freebie"} component={GenJamFreebie} />
       <Route path={"/genjam-offer"} component={GenJamOffer} />
       <Route path={"/404"} component={NotFound} />

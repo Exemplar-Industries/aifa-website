@@ -177,6 +177,74 @@ async function grantFastPass(email: string): Promise<boolean> {
   return patchResp.status === 200;
 }
 
+// ─── PAID MEMBERSHIP CONFIGURATION ───────────────────────────────────────────
+type MembershipBillingCycle = "monthly" | "annual";
+
+const AIFA_MEMBERSHIP_MONTHLY_PRICE_ID = process.env.AIFA_MEMBERSHIP_MONTHLY_PRICE_ID ?? "price_1U3n1qAtNs5zyUU7yqfNuVrg";
+const AIFA_MEMBERSHIP_ANNUAL_PRICE_ID = process.env.AIFA_MEMBERSHIP_ANNUAL_PRICE_ID ?? "price_1U3n22AtNs5zyUU7RW9EP9V2";
+const AIFA_SKOOL_INVITE_FUNCTION_URL = process.env.AIFA_SKOOL_INVITE_FUNCTION_URL ?? "https://mdjjmanqnlfgttwtlufx.supabase.co/functions/v1/send-skool-invite";
+
+function getMembershipPlanFromPrice(priceId: string): MembershipBillingCycle | null {
+  if (priceId === AIFA_MEMBERSHIP_MONTHLY_PRICE_ID) return "monthly";
+  if (priceId === AIFA_MEMBERSHIP_ANNUAL_PRICE_ID) return "annual";
+  return null;
+}
+
+async function upsertPaidMembership(
+  email: string,
+  billingCycle: MembershipBillingCycle
+): Promise<void> {
+  const normalizedEmail = email.toLowerCase().trim();
+  const plan = billingCycle === "annual" ? "Annual" : "Monthly";
+  const status = billingCycle === "annual" ? "ANNUAL_PAYING" : "MONTHLY_PAYING";
+  const joinedAt = new Date().toISOString().split("T")[0];
+  const query = `
+    query FindPaidMember($email: String!) {
+      people(filter: { emails: { primaryEmail: { eq: $email } } }, first: 1) {
+        edges { node { id } }
+      }
+    }
+  `;
+  const findResponse = await axios.post(
+    TWENTY_GRAPHQL_URL,
+    { query, variables: { email: normalizedEmail } },
+    { headers: { Authorization: `Bearer ${TWENTY_API_KEY}`, "Content-Type": "application/json" }, timeout: 10000 }
+  );
+  const edges = findResponse.data?.data?.people?.edges ?? [];
+  const payload = {
+    afaSubscriptionPlan: plan,
+    membershipStatus: status,
+    dateJoined: joinedAt,
+    source: "Stripe",
+  };
+
+  if (edges.length === 0) {
+    await axios.post(
+      `${TWENTY_GRAPHQL_URL.replace("/graphql", "/rest/people")}`,
+      { emails: { primaryEmail: normalizedEmail }, ...payload },
+      { headers: { Authorization: `Bearer ${TWENTY_API_KEY}`, "Content-Type": "application/json" }, timeout: 10000 }
+    );
+    return;
+  }
+
+  await axios.patch(
+    `${TWENTY_GRAPHQL_URL.replace("/graphql", `/rest/people/${edges[0].node.id}`)}`,
+    payload,
+    { headers: { Authorization: `Bearer ${TWENTY_API_KEY}`, "Content-Type": "application/json" }, timeout: 10000 }
+  );
+}
+
+async function sendPaidMemberSkoolInvite(email: string): Promise<void> {
+  if (!AIFA_SKOOL_INVITE_FUNCTION_URL) {
+    throw new Error("AIFA_SKOOL_INVITE_FUNCTION_URL is not configured");
+  }
+  await axios.post(
+    AIFA_SKOOL_INVITE_FUNCTION_URL,
+    { email: email.toLowerCase().trim(), source: "stripe_paid_membership" },
+    { headers: { "Content-Type": "application/json" }, timeout: 15000 }
+  );
+}
+
 // ─── SERVER ───────────────────────────────────────────────────────────────────
 async function startServer() {
   const app = express();
@@ -219,7 +287,59 @@ async function startServer() {
     }
   });
 
-  // ── STRIPE FAST-PASS WEBHOOK ─────────────────────────────────────────────
+  // ── MEMBERSHIP CHECKOUT SESSION ──────────────────────────────────────────
+  // The browser sends only the approved billing cycle. The server determines the
+  // corresponding Stripe Price ID and creates the hosted subscription checkout.
+  app.post("/api/create-membership-checkout", async (req, res) => {
+    const billingCycle = req.body?.billingCycle as MembershipBillingCycle | undefined;
+    if (billingCycle !== "monthly" && billingCycle !== "annual") {
+      res.status(400).json({ error: "Choose a valid membership plan." });
+      return;
+    }
+
+    const priceId = billingCycle === "monthly" ? AIFA_MEMBERSHIP_MONTHLY_PRICE_ID : AIFA_MEMBERSHIP_ANNUAL_PRICE_ID;
+    if (!STRIPE_SECRET_KEY || !priceId) {
+      console.error("[membership-checkout] Stripe membership price configuration is incomplete");
+      res.status(503).json({ error: "Secure checkout is not configured yet. Please try again shortly." });
+      return;
+    }
+
+    try {
+      const siteUrl = "https://www.aifilmacademy.com";
+      const form = new URLSearchParams({
+        mode: "subscription",
+        success_url: `${siteUrl}/membership/success?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${siteUrl}/membership?checkout=cancelled`,
+        "line_items[0][price]": priceId,
+        "line_items[0][quantity]": "1",
+        "metadata[aifa_product]": "membership",
+        "metadata[aifa_billing_cycle]": billingCycle,
+        "subscription_data[metadata][aifa_product]": "membership",
+        "subscription_data[metadata][aifa_billing_cycle]": billingCycle,
+      });
+      const stripeResponse = await axios.post(
+        "https://api.stripe.com/v1/checkout/sessions",
+        form.toString(),
+        {
+          headers: {
+            Authorization: `Bearer ${STRIPE_SECRET_KEY}`,
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          timeout: 15000,
+        }
+      );
+      const checkoutUrl = stripeResponse.data?.url;
+      if (!checkoutUrl || typeof checkoutUrl !== "string") {
+        throw new Error("Stripe did not return a hosted checkout URL");
+      }
+      res.json({ url: checkoutUrl });
+    } catch (error) {
+      console.error("[membership-checkout] Checkout session creation failed:", error);
+      res.status(502).json({ error: "Secure checkout is temporarily unavailable. Please try again shortly." });
+    }
+  });
+
+  // ── STRIPE FAST-PASS + PAID MEMBERSHIP WEBHOOK ─────────────────────────────
   // Stripe sends checkout.session.completed when a Fast-Pass is purchased.
   // We verify the signature, confirm the product matches, then tag the CRM.
   app.post("/api/stripe-webhook", async (req, res) => {
@@ -252,7 +372,7 @@ async function startServer() {
       }
     }
 
-    let event: { type: string; data: { object: Record<string, unknown> } };
+    let event: { id?: string; type: string; data: { object: Record<string, unknown> } };
     try {
       event = JSON.parse(rawBody.toString("utf8"));
     } catch {
@@ -267,9 +387,10 @@ async function startServer() {
         ((session.customer_details as Record<string, unknown>)?.email as string) ??
         "";
 
-      // Confirm this is a Fast-Pass purchase by checking line items via Stripe API
-      // (We check product ID to avoid tagging unrelated purchases)
+      // Confirm the exact purchased product through Stripe line items. Payment
+      // fulfillment must never rely on browser-provided price or product details.
       let isFastPass = false;
+      let paidMembershipCycle: MembershipBillingCycle | null = null;
       try {
         if (STRIPE_SECRET_KEY && session.id) {
           const lineResp = await axios.get(
@@ -284,17 +405,34 @@ async function startServer() {
             (item: Record<string, unknown>) =>
               (item.price as Record<string, unknown>)?.product === FAST_PASS_PRODUCT_ID
           );
+          for (const item of items as Record<string, unknown>[]) {
+            const priceId = (item.price as Record<string, unknown>)?.id as string | undefined;
+            if (priceId) {
+              const cycle = getMembershipPlanFromPrice(priceId);
+              if (cycle) paidMembershipCycle = cycle;
+            }
+          }
         } else {
-          // No Stripe key configured — trust the webhook event (less secure)
+          // Existing Fast-Pass legacy behavior. Paid memberships never fail open.
           isFastPass = true;
         }
       } catch (err) {
         console.error("[stripe-webhook] Line item check failed:", err);
-        // Fail open — if we can't verify the product, still grant access
+        // Existing Fast-Pass legacy behavior. Paid memberships never fail open.
         isFastPass = true;
       }
 
-      if (isFastPass && email) {
+      if (paidMembershipCycle && email) {
+        try {
+          await upsertPaidMembership(email, paidMembershipCycle);
+          await sendPaidMemberSkoolInvite(email);
+          console.log(`[stripe-webhook] ${paidMembershipCycle} membership fulfilled for ${email}`);
+        } catch (err) {
+          console.error(`[stripe-webhook] Paid membership fulfillment failed for ${email}:`, err);
+          res.status(500).json({ error: "Membership fulfillment failed; Stripe will retry this event." });
+          return;
+        }
+      } else if (isFastPass && email) {
         try {
           const granted = await grantFastPass(email);
           console.log(`[stripe-webhook] Fast-Pass granted for ${email}: ${granted}`);
@@ -302,7 +440,7 @@ async function startServer() {
           console.error(`[stripe-webhook] CRM update failed for ${email}:`, err);
         }
       } else {
-        console.log(`[stripe-webhook] Skipping — not a Fast-Pass or no email. isFastPass=${isFastPass}, email=${email}`);
+        console.log(`[stripe-webhook] Skipping — not a configured membership, not a Fast-Pass, or no email. isFastPass=${isFastPass}, membership=${paidMembershipCycle}, email=${email}`);
       }
     }
 
