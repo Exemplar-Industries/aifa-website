@@ -15,7 +15,7 @@ export default function StartHereSection() {
               <span style={{ color: "var(--afa-red)" }}>journey starts here.</span>
             </h2>
             <p className="mx-auto mt-7 max-w-4xl text-[clamp(1.15rem,2vw,1.48rem)] leading-8 text-white/92 md:leading-9">
-              Master one clear production system, make work that gets seen, and build a premium portfolio for higher-ticket creative work.
+              Master one production system, create a premium portfolio, and land high ticket creative work.
             </p>
             <div className="mt-10 flex flex-col justify-center gap-4 sm:flex-row">
               <a href="/membership" className="btn-primary min-h-14 min-w-[220px] px-8 py-4 text-[1rem] font-bold">
