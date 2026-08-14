@@ -55,6 +55,21 @@ const MEMBERSHIP_BENEFITS = [
   },
 ];
 
+const MEMBERSHIP_PROOF_ASSETS = [
+  {
+    src: "/images/membership-proof/reviews.png",
+    alt: "AI Film Academy member reviews highlighting award-winning work, certification, confidence, and creative support.",
+  },
+  {
+    src: "/images/membership-proof/creative-opportunities.png",
+    alt: "AI Film Academy creative opportunities including AI filmmaking roles, freelance work, festivals, and competitions.",
+  },
+  {
+    src: "/images/membership-proof/founder-credibility.png",
+    alt: "Brandon Patino, founder of AI Film Academy, with his production, education, workshop, and community experience.",
+  },
+];
+
 const FAQS = [
   {
     question: "Who is AI Film Academy for?",
@@ -190,6 +205,7 @@ export default function Membership() {
           .membership-proof-grid { grid-template-columns: 1fr !important; }
           .membership-benefit-grid { grid-template-columns: 1fr !important; }
           .membership-process-grid { grid-template-columns: 1fr !important; }
+          .membership-gallery-grid { grid-template-columns: 1fr !important; }
         }
       `}</style>
 
@@ -293,6 +309,21 @@ export default function Membership() {
                 <h3 style={{ color: "#fff", fontSize: "1.15rem", fontWeight: 800, marginBottom: "0.65rem" }}>{title}</h3>
                 <p style={{ color: "rgba(255,255,255,0.86)", lineHeight: 1.7, fontSize: "1rem" }}>{copy}</p>
               </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section style={{ padding: "clamp(4.5rem, 9vw, 7rem) 1.5rem", background: "#101010", borderTop: "1px solid rgba(255,255,255,0.07)", borderBottom: "1px solid rgba(255,255,255,0.07)" }}>
+        <div style={{ maxWidth: "1120px", margin: "0 auto" }}>
+          <h2 style={{ maxWidth: "780px", margin: "0 auto 2.5rem", textAlign: "center", color: "#F5F5F0", fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(3rem, 7vw, 5.5rem)", lineHeight: 0.95, letterSpacing: "0.02em" }}>
+            Build work people <span style={{ color: "#ef4444" }}>notice.</span>
+          </h2>
+          <div className="membership-gallery-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, minmax(0, 1fr))", gap: "1rem" }}>
+            {MEMBERSHIP_PROOF_ASSETS.map((asset) => (
+              <figure key={asset.src} style={{ margin: 0, borderRadius: "14px", overflow: "hidden", border: "1px solid rgba(255,255,255,0.12)", background: "#fff", boxShadow: "0 10px 28px rgba(0,0,0,0.28)" }}>
+                <img src={asset.src} alt={asset.alt} loading="lazy" width="1440" height="813" style={{ display: "block", width: "100%", height: "auto" }} />
+              </figure>
             ))}
           </div>
         </div>
