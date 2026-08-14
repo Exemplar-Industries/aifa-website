@@ -83,10 +83,10 @@ export default function Contact() {
 
   const labelStyle: React.CSSProperties = {
     display: "block",
-    color: "rgba(255,255,255,0.54)",
-    fontSize: "0.68rem",
-    fontWeight: 800,
-    letterSpacing: "0.12em",
+    color: "rgba(255,255,255,0.86)",
+    fontSize: "0.95rem",
+    fontWeight: 700,
+    letterSpacing: "0.04em",
     marginBottom: "0.5rem",
     textTransform: "uppercase",
   };
@@ -113,8 +113,7 @@ export default function Contact() {
 
       <section style={{ position: "relative", padding: "clamp(6.5rem, 12vw, 10rem) 1.5rem 5rem", borderBottom: "1px solid rgba(255,255,255,0.08)", background: "radial-gradient(ellipse at 85% 15%, rgba(190,24,24,0.28), transparent 38%), radial-gradient(ellipse at 16% 80%, rgba(99,16,16,0.18), transparent 32%), #080808" }}>
         <div style={{ maxWidth: "1160px", margin: "0 auto" }}>
-          <a href="/" style={{ color: "rgba(255,255,255,0.48)", fontSize: "0.82rem", textDecoration: "none" }}>← AI Film Academy</a>
-          <p style={{ color: "#ef4444", fontSize: "0.72rem", fontWeight: 800, letterSpacing: "0.18em", textTransform: "uppercase", margin: "3rem 0 1.15rem" }}>Contact AI Film Academy</p>
+          <a href="/" style={{ color: "rgba(255,255,255,0.82)", fontSize: "1rem", fontWeight: 700, textDecoration: "none" }}>← AI Film Academy</a>
           <h1 style={{ maxWidth: "900px", fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(4rem, 10vw, 8.8rem)", fontWeight: 400, letterSpacing: "0.02em", lineHeight: 0.84, margin: 0 }}>
             Start a conversation <span style={{ color: "#ef4444" }}>worth having.</span>
           </h1>
@@ -123,15 +122,13 @@ export default function Contact() {
       </section>
 
       <section style={{ maxWidth: "1160px", margin: "0 auto", padding: "4.5rem 1.5rem" }}>
-        <p style={{ color: "rgba(255,255,255,0.38)", fontSize: "0.72rem", fontWeight: 800, letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: "0.85rem" }}>How can we help?</p>
         <h2 style={{ maxWidth: "700px", fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2.8rem, 6vw, 5.1rem)", fontWeight: 400, letterSpacing: "0.02em", lineHeight: 0.92, margin: "0 0 2.4rem" }}>A clear question deserves a clear <span style={{ color: "#ef4444" }}>next step.</span></h2>
         <div className="work-grid">
           {PATHS.map((path, index) => (
             <button key={path.id} type="button" className="work-path" onClick={() => choosePath(path.id)} style={{ boxShadow: intent === path.id ? "inset 0 0 0 1px #ef4444" : undefined }}>
-              <span style={{ display: "block", color: path.accent ? "#f87171" : "rgba(255,255,255,0.34)", fontSize: "0.67rem", fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: "2.5rem" }}>0{index + 1} · {path.eyebrow}</span>
               <h3 style={{ color: "#F5F5F0", fontFamily: "'Bebas Neue', sans-serif", fontSize: "2.2rem", fontWeight: 400, letterSpacing: "0.02em", lineHeight: 0.95, marginBottom: "1rem" }}>{path.title}</h3>
-              <p style={{ color: "rgba(255,255,255,0.52)", fontSize: "0.92rem", lineHeight: 1.65, margin: 0 }}>{path.description}</p>
-              <span style={{ display: "block", color: "#ef4444", fontSize: "0.78rem", fontWeight: 800, marginTop: "2rem" }}>Explore this path →</span>
+              <p style={{ color: "rgba(255,255,255,0.82)", fontSize: "1.06rem", lineHeight: 1.65, margin: 0 }}>{path.description}</p>
+              <span style={{ display: "block", color: "#f87171", fontSize: "1rem", fontWeight: 800, marginTop: "2rem" }}>Explore this path →</span>
             </button>
           ))}
         </div>
@@ -140,61 +137,55 @@ export default function Contact() {
       <section id="qualification" style={{ borderTop: "1px solid rgba(255,255,255,0.08)", borderBottom: "1px solid rgba(255,255,255,0.08)", background: "#0d0d0d", scrollMarginTop: "2rem" }}>
         <div className="work-form-shell" style={{ maxWidth: "1280px", margin: "0 auto" }}>
           <aside style={{ padding: "clamp(2rem, 5vw, 4rem) clamp(1.5rem, 4vw, 3.5rem)", background: "linear-gradient(145deg, rgba(131,24,24,.34), rgba(8,8,8,.96) 62%)" }}>
-            <p style={{ color: "#f87171", fontSize: "0.68rem", fontWeight: 800, letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: "1.2rem" }}>The right next step</p>
             {intent === "education" && <>
               <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2.8rem, 5vw, 4.7rem)", lineHeight: 0.88, letterSpacing: "0.02em", marginBottom: "1.2rem" }}>Build your own <span style={{ color: "#ef4444" }}>creative practice.</span></h2>
-              <p style={{ color: "rgba(255,255,255,0.62)", lineHeight: 1.7 }}>AI Film Academy membership is the best first move if you want the workflow, feedback, community, GenJams, and finished work that move a personal portfolio forward.</p>
+              <p style={{ color: "rgba(255,255,255,0.82)", fontSize: "1.06rem", lineHeight: 1.7 }}>AI Film Academy membership is the best first move if you want the workflow, feedback, community, GenJams, and finished work that move a personal portfolio forward.</p>
             </>}
             {intent === "production" && <>
               <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2.8rem, 5vw, 4.7rem)", lineHeight: 0.88, letterSpacing: "0.02em", marginBottom: "1.2rem" }}>A serious brief deserves <span style={{ color: "#ef4444" }}>serious craft.</span></h2>
-              <p style={{ color: "rgba(255,255,255,0.62)", lineHeight: 1.7 }}>We work best with brands, founders, and creative teams that value original direction, strong visual storytelling, and a clear commercial purpose.</p>
-              <a href="/productions" style={{ display: "inline-block", color: "#f87171", fontSize: "0.82rem", fontWeight: 800, marginTop: "1.35rem", textDecoration: "none" }}>View the production approach →</a>
+              <p style={{ color: "rgba(255,255,255,0.82)", fontSize: "1.06rem", lineHeight: 1.7 }}>We work best with brands, founders, and creative teams that value original direction, strong visual storytelling, and a clear commercial purpose.</p>
+              <a href="/productions" style={{ display: "inline-block", color: "#f87171", fontSize: "1rem", fontWeight: 800, marginTop: "1.35rem", textDecoration: "none" }}>View the production approach →</a>
             </>}
             {intent === "events" && <>
               <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2.8rem, 5vw, 4.7rem)", lineHeight: 0.88, letterSpacing: "0.02em", marginBottom: "1.2rem" }}>Give your people an AI experience they will <span style={{ color: "#ef4444" }}>actually use.</span></h2>
-              <p style={{ color: "rgba(255,255,255,0.62)", lineHeight: 1.7 }}>GenJams, workshops, and keynotes are designed to turn passive interest into creative momentum—with practical, memorable exercises that make the technology real.</p>
-              <a href="/education-events" style={{ display: "inline-block", color: "#f87171", fontSize: "0.82rem", fontWeight: 800, marginTop: "1.35rem", textDecoration: "none" }}>View the education formats →</a>
+              <p style={{ color: "rgba(255,255,255,0.82)", fontSize: "1.06rem", lineHeight: 1.7 }}>GenJams, workshops, and keynotes are designed to turn passive interest into creative momentum, with practical, memorable exercises that make the technology real.</p>
+              <a href="/education-events" style={{ display: "inline-block", color: "#f87171", fontSize: "1rem", fontWeight: 800, marginTop: "1.35rem", textDecoration: "none" }}>View the education formats →</a>
             </>}
             {intent === "collaboration" && <>
               <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2.8rem, 5vw, 4.7rem)", lineHeight: 0.88, letterSpacing: "0.02em", marginBottom: "1.2rem" }}>Have a thoughtful collaboration in mind?</h2>
-              <p style={{ color: "rgba(255,255,255,0.62)", lineHeight: 1.7 }}>For media, partnership, and collaboration ideas that do not fit a production or organization engagement, send a concise note with the opportunity and why AIFA is the right fit.</p>
+              <p style={{ color: "rgba(255,255,255,0.82)", fontSize: "1.06rem", lineHeight: 1.7 }}>For media, partnership, and collaboration ideas that do not fit a production or organization engagement, send a concise note with the opportunity and why AIFA is the right fit.</p>
             </>}
           </aside>
 
           <div style={{ padding: "clamp(2rem, 5vw, 4rem) clamp(1.5rem, 4vw, 3.5rem)", background: "#101010" }}>
             {intent === "education" ? (
               <div>
-                <p style={{ color: "rgba(255,255,255,0.42)", fontSize: "0.72rem", fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: "1rem" }}>Individual education</p>
                 <h3 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2.5rem, 5vw, 4rem)", lineHeight: 0.92, letterSpacing: "0.02em", marginBottom: "1rem" }}>Start with the <span style={{ color: "#ef4444" }}>membership.</span></h3>
-                <p style={{ color: "rgba(255,255,255,0.58)", lineHeight: 1.7, maxWidth: "560px", marginBottom: "1.8rem" }}>You do not need a sales call to begin learning. Explore the membership, see what is included, and choose the path that fits how you want to build.</p>
+                <p style={{ color: "rgba(255,255,255,0.82)", fontSize: "1.06rem", lineHeight: 1.7, maxWidth: "560px", marginBottom: "1.8rem" }}>You do not need a sales call to begin learning. Explore the membership, see what is included, and choose the path that fits how you want to build.</p>
                 <a href="/membership" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", minHeight: "52px", borderRadius: "9px", padding: "0 1.35rem", background: "linear-gradient(135deg, #ef4444, #b91c1c)", color: "#fff", fontSize: "0.9rem", fontWeight: 800, textDecoration: "none", boxShadow: "0 0 30px rgba(239,68,68,.25)" }}>Explore AI Film Academy Membership</a>
               </div>
             ) : intent === "collaboration" ? (
               <div>
-                <p style={{ color: "rgba(255,255,255,0.42)", fontSize: "0.72rem", fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: "1rem" }}>Partnership and media</p>
                 <h3 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2.5rem, 5vw, 4rem)", lineHeight: 0.92, letterSpacing: "0.02em", marginBottom: "1rem" }}>Keep it concise. Make it <span style={{ color: "#ef4444" }}>relevant.</span></h3>
-                <p style={{ color: "rgba(255,255,255,0.58)", lineHeight: 1.7, maxWidth: "560px", marginBottom: "1.8rem" }}>Include your name, organization, the opportunity, relevant timing, and why the collaboration is a fit. The team will review aligned inquiries.</p>
+                <p style={{ color: "rgba(255,255,255,0.82)", fontSize: "1.06rem", lineHeight: 1.7, maxWidth: "560px", marginBottom: "1.8rem" }}>Include your name, organization, the opportunity, relevant timing, and why the collaboration is a fit. The team will review aligned inquiries.</p>
                 <a href="mailto:hello@aifilmacademy.com?subject=Collaboration%20Inquiry%20for%20AI%20Film%20Academy" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", minHeight: "52px", borderRadius: "9px", padding: "0 1.35rem", border: "1px solid rgba(255,255,255,.3)", color: "#fff", fontSize: "0.9rem", fontWeight: 800, textDecoration: "none" }}>Send a collaboration inquiry</a>
               </div>
             ) : formState === "qualified" ? (
               <div>
-                <p style={{ color: "#f87171", fontSize: "0.72rem", fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: "1rem" }}>Qualified next step</p>
                 <h3 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2.5rem, 5vw, 4rem)", lineHeight: 0.92, letterSpacing: "0.02em", marginBottom: "1rem" }}>Let’s talk about the <span style={{ color: "#ef4444" }}>brief.</span></h3>
-                <p style={{ color: "rgba(255,255,255,0.58)", lineHeight: 1.7, maxWidth: "560px", marginBottom: "1.7rem" }}>Your project appears aligned for a strategy call. Choose a time that works and we will use the conversation to confirm objectives, scope, timing, and the smartest next move.</p>
+                <p style={{ color: "rgba(255,255,255,0.82)", fontSize: "1.06rem", lineHeight: 1.7, maxWidth: "560px", marginBottom: "1.7rem" }}>Your project appears aligned for a strategy call. Choose a time that works and we will use the conversation to confirm objectives, scope, timing, and the smartest next move.</p>
                 <a href={calendarHref} target="_blank" rel="noopener noreferrer" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", minHeight: "52px", borderRadius: "9px", padding: "0 1.35rem", background: "linear-gradient(135deg, #ef4444, #b91c1c)", color: "#fff", fontSize: "0.9rem", fontWeight: 800, textDecoration: "none", boxShadow: "0 0 30px rgba(239,68,68,.25)" }}>Choose a strategy-call time →</a>
-                <button type="button" onClick={() => setFormState("idle")} style={{ display: "block", marginTop: "1rem", border: 0, background: "transparent", color: "rgba(255,255,255,.44)", fontSize: "0.8rem", textDecoration: "underline" }}>Edit your answers</button>
+                <button type="button" onClick={() => setFormState("idle")} style={{ display: "block", marginTop: "1rem", border: 0, background: "transparent", color: "rgba(255,255,255,.82)", fontSize: "1rem", fontWeight: 700, textDecoration: "underline" }}>Edit your answers</button>
               </div>
             ) : formState === "not_a_fit" ? (
               <div>
-                <p style={{ color: "rgba(255,255,255,0.42)", fontSize: "0.72rem", fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: "1rem" }}>The best first move</p>
                 <h3 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2.5rem, 5vw, 4rem)", lineHeight: 0.92, letterSpacing: "0.02em", marginBottom: "1rem" }}>This engagement may not be the right fit <span style={{ color: "#ef4444" }}>yet.</span></h3>
-                <p style={{ color: "rgba(255,255,255,0.58)", lineHeight: 1.7, maxWidth: "560px", marginBottom: "1.7rem" }}>Custom production and organizational education engagements begin at $5,000. If you are building your own capabilities or planning a future project, the membership is a strong place to start.</p>
+                <p style={{ color: "rgba(255,255,255,0.82)", fontSize: "1.06rem", lineHeight: 1.7, maxWidth: "560px", marginBottom: "1.7rem" }}>Custom production and organizational education engagements begin at $5,000. If you are building your own capabilities or planning a future project, the membership is a strong place to start.</p>
                 <a href="/membership" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", minHeight: "52px", borderRadius: "9px", padding: "0 1.35rem", border: "1px solid rgba(255,255,255,.3)", color: "#fff", fontSize: "0.9rem", fontWeight: 800, textDecoration: "none" }}>Explore membership instead</a>
-                <button type="button" onClick={() => setFormState("idle")} style={{ display: "block", marginTop: "1rem", border: 0, background: "transparent", color: "rgba(255,255,255,.44)", fontSize: "0.8rem", textDecoration: "underline" }}>Edit your answers</button>
+                <button type="button" onClick={() => setFormState("idle")} style={{ display: "block", marginTop: "1rem", border: 0, background: "transparent", color: "rgba(255,255,255,.82)", fontSize: "1rem", fontWeight: 700, textDecoration: "underline" }}>Edit your answers</button>
               </div>
             ) : (
               <form onSubmit={handleSubmit}>
-                <p style={{ color: "rgba(255,255,255,0.42)", fontSize: "0.72rem", fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: "1rem" }}>A few quick questions</p>
                 <h3 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2.5rem, 5vw, 4rem)", lineHeight: 0.92, letterSpacing: "0.02em", marginBottom: "1.6rem" }}>{intent === "production" ? "Tell us about the production." : "Tell us about the experience."}</h3>
                 <div className="work-field-grid" style={{ marginBottom: "1rem" }}>
                   <label><span style={labelStyle}>Name</span><input required value={name} onChange={(event) => setName(event.target.value)} style={inputStyle} placeholder="Your name" /></label>
@@ -203,9 +194,9 @@ export default function Contact() {
                 <label style={{ display: "block", marginBottom: "1rem" }}><span style={labelStyle}>{intent === "production" ? "Brand or organization" : "Organization"}</span><input required value={organization} onChange={(event) => setOrganization(event.target.value)} style={inputStyle} placeholder={intent === "production" ? "Brand, company, or project" : "Organization or institution"} /></label>
                 <label style={{ display: "block", marginBottom: "1rem" }}><span style={labelStyle}>What best describes the scope?</span><select required value={scope} onChange={(event) => setScope(event.target.value)} style={{ ...inputStyle, appearance: "auto" }}><option value="" disabled>Select one</option>{scopeOptions.map((option) => <option key={option} value={option} style={{ color: "#111" }}>{option}</option>)}</select></label>
                 <label style={{ display: "block", marginBottom: "1rem" }}><span style={labelStyle}>Planned budget</span><select required value={budget} onChange={(event) => setBudget(event.target.value)} style={{ ...inputStyle, appearance: "auto" }}><option value="" disabled>Select one</option>{budgetOptions.map((option) => <option key={option} value={option} style={{ color: "#111" }}>{option}</option>)}</select></label>
-                <label style={{ display: "block", marginBottom: "1.4rem" }}><span style={labelStyle}>Anything else we should know? <span style={{ color: "rgba(255,255,255,.3)", fontWeight: 500 }}>(Optional)</span></span><textarea value={details} onChange={(event) => setDetails(event.target.value)} style={{ ...inputStyle, minHeight: "112px", resize: "vertical" }} placeholder={intent === "production" ? "Goals, audience, launch date, references, or creative direction." : "Audience, location, desired outcomes, timing, or team context."} /></label>
+                <label style={{ display: "block", marginBottom: "1.4rem" }}><span style={labelStyle}>Anything else we should know? <span style={{ color: "rgba(255,255,255,.78)", fontWeight: 600 }}>(Optional)</span></span><textarea value={details} onChange={(event) => setDetails(event.target.value)} style={{ ...inputStyle, minHeight: "112px", resize: "vertical" }} placeholder={intent === "production" ? "Goals, audience, launch date, references, or creative direction." : "Audience, location, desired outcomes, timing, or team context."} /></label>
                 <button type="submit" style={{ minHeight: "54px", width: "100%", border: 0, borderRadius: "9px", background: "linear-gradient(135deg, #ef4444, #b91c1c)", color: "#fff", fontFamily: "'DM Sans', sans-serif", fontSize: "0.93rem", fontWeight: 800, boxShadow: "0 0 30px rgba(239,68,68,.22)" }}>See your next step →</button>
-                <p style={{ color: "rgba(255,255,255,.3)", fontSize: "0.75rem", lineHeight: 1.55, marginTop: "1rem", textAlign: "center" }}>Custom production and organizational education engagements begin at $5,000.</p>
+                <p style={{ color: "rgba(255,255,255,.82)", fontSize: "1rem", lineHeight: 1.55, marginTop: "1rem", textAlign: "center" }}>Custom production and organizational education engagements begin at $5,000.</p>
               </form>
             )}
           </div>
@@ -213,9 +204,8 @@ export default function Contact() {
       </section>
 
       <section style={{ maxWidth: "960px", margin: "0 auto", padding: "4.5rem 1.5rem 5.5rem", textAlign: "center" }}>
-        <p style={{ color: "#f87171", fontSize: "0.7rem", fontWeight: 800, letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: "1rem" }}>Make it clear. Make it matter.</p>
         <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(3rem, 7vw, 6rem)", fontWeight: 400, letterSpacing: "0.02em", lineHeight: 0.88, marginBottom: "1.4rem" }}>The goal is not more AI content. It is <span style={{ color: "#ef4444" }}>better creative work.</span></h2>
-        <a href="/" style={{ color: "rgba(255,255,255,.5)", fontSize: "0.9rem", textDecoration: "none" }}>Back to AI Film Academy</a>
+        <a href="/" style={{ color: "rgba(255,255,255,.84)", fontSize: "1rem", fontWeight: 700, textDecoration: "none" }}>Back to AI Film Academy</a>
       </section>
     </main>
   );
