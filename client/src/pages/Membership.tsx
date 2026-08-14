@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import PageMeta from "@/components/PageMeta";
-import { Instagram, Linkedin } from "lucide-react";
+import { Instagram, Linkedin, UsersRound } from "lucide-react";
 
 type BillingCycle = "monthly" | "annual";
 
@@ -16,7 +16,7 @@ const MEMBERSHIP_BENEFITS = [
     icon: "🤖",
     title: "AIFA Workflow System",
     description:
-      "The AI tool stack and production process AFA members use to develop, direct, and deliver real films.",
+      "The AI tool stack and production system AIFA members use to develop, direct, and deliver real films.",
   },
   {
     icon: "🏆",
@@ -56,15 +56,17 @@ const MEMBERSHIP_BENEFITS = [
   },
 ];
 
-const MEMBERSHIP_COMPARISON_FEATURES = [
-  "Full AI filmmaking curriculum",
-  "AIFA workflow system",
-  "Weekly creative exercises",
-  "Monthly GenJams",
-  "Personalized video feedback",
-  "Industry certification",
-  "Curated paid opportunities",
-  "Private creator community",
+const MEMBERSHIP_COMPARISON_ROWS = [
+  { label: "$701 annual savings", monthly: false, annual: true, annualOnly: true },
+  { label: "Instant certification access", monthly: false, annual: true, annualOnly: true },
+  { label: "Full AI filmmaking curriculum", monthly: true, annual: true },
+  { label: "AIFA production system", monthly: true, annual: true },
+  { label: "Weekly creative exercises", monthly: true, annual: true },
+  { label: "Monthly GenJams", monthly: true, annual: true },
+  { label: "Personalized video feedback", monthly: true, annual: true },
+  { label: "Industry certification", monthly: true, annual: true },
+  { label: "Curated paid opportunities", monthly: true, annual: true },
+  { label: "Private creator community", monthly: true, annual: true },
 ];
 
 const FAQS = [
@@ -100,7 +102,7 @@ const PLANS = {
     name: "Monthly",
     amount: "$125",
     cadence: "/ month",
-    billingLine: "Billed monthly. Cancel before your next renewal.",
+    billingLine: "Billed Monthly. Cancel Anytime.",
     cta: "Start Monthly Membership",
   },
   annual: {
@@ -108,7 +110,7 @@ const PLANS = {
     amount: "$799",
     cadence: "/ year",
     billingLine: "Billed annually. That is $66.58 per month—save $701 versus monthly billing.",
-    cta: "Get Access",
+    cta: "Start Annual Membership",
   },
 } as const;
 
@@ -117,11 +119,13 @@ function PurchaseCta({
   className = "",
   onCheckout,
   isLoading = false,
+  label,
 }: {
   cycle: BillingCycle;
   className?: string;
   onCheckout: (cycle: BillingCycle) => void;
   isLoading?: boolean;
+  label?: string;
 }) {
   const plan = PLANS[cycle];
 
@@ -156,7 +160,7 @@ function PurchaseCta({
         event.currentTarget.style.boxShadow = "0 0 36px color-mix(in srgb, var(--afa-red) 28%, transparent)";
       }}
     >
-      {isLoading ? "Opening secure checkout…" : plan.cta}
+      {isLoading ? "Opening secure checkout…" : label ?? plan.cta}
     </button>
   );
 }
@@ -196,14 +200,18 @@ export default function Membership() {
       />
       <style>{`
         @media (max-width: 760px) {
-          .membership-plan-grid { grid-template-columns: 1fr !important; }
+          .membership-pricing-shell { display: flex !important; flex-direction: column !important; }
+          .membership-plan-grid { order: 2 !important; grid-template-columns: 1fr !important; }
+          .membership-plan-annual { order: -1; }
+          .membership-comparison { order: 1 !important; }
           .membership-proof-grid { grid-template-columns: 1fr !important; }
           .membership-benefit-grid { grid-template-columns: 1fr !important; }
           .membership-process-grid { grid-template-columns: 1fr !important; }
           .membership-gallery-grid { grid-template-columns: 1fr !important; }
-          .membership-comparison-header { display: none !important; }
-          .membership-comparison-row { grid-template-columns: 1fr 1fr !important; gap: 0.6rem !important; }
-          .membership-comparison-feature { grid-column: 1 / -1; }
+          .membership-comparison-header, .membership-comparison-row { grid-template-columns: minmax(0, 1.45fr) 0.65fr 0.65fr !important; gap: 0.35rem !important; }
+          .membership-comparison-header { display: grid !important; font-size: 0.9rem !important; }
+          .membership-comparison-feature { grid-column: auto; font-size: 1rem !important; line-height: 1.3 !important; }
+          .membership-comparison-value { font-size: 1.15rem !important; }
         }
       `}</style>
 
@@ -279,20 +287,20 @@ export default function Membership() {
 
       <section id="checkout" style={{ padding: "clamp(5rem, 10vw, 8rem) 1.5rem", maxWidth: "1180px", margin: "0 auto" }}>
         <div style={{ textAlign: "center", maxWidth: "760px", margin: "0 auto 3.25rem" }}>
-          <h2 style={{ color: "#F5F5F0", fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(3rem, 7vw, 5.5rem)", lineHeight: 0.95, letterSpacing: "0.02em", marginBottom: "1rem" }}>Choose Your <span style={{ color: "var(--afa-red)" }}>Membership.</span></h2>
-          <p style={{ color: "rgba(255,255,255,0.94)", fontSize: "clamp(1.2rem, 1.8vw, 1.45rem)", fontWeight: 600, lineHeight: 1.5 }}>Select the access that fits how you want to build. Every plan includes the full AIFA experience.</p>
+          <h2 style={{ color: "#F5F5F0", fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(3rem, 7vw, 5.5rem)", lineHeight: 0.95, letterSpacing: "0.02em", marginBottom: "1rem" }}>Membership <span style={{ color: "var(--afa-red)" }}>Pricing.</span></h2>
+          <p style={{ color: "rgba(255,255,255,0.94)", fontSize: "clamp(1.2rem, 1.8vw, 1.45rem)", fontWeight: 600, lineHeight: 1.5 }}>Get the complete AIFA membership for $125/month, including training, creative practice, feedback, and community. Save $701 and get instant certification access with annual membership.</p>
         </div>
 
-        <div style={{ maxWidth: "1060px", margin: "0 auto", border: "1px solid rgba(255,255,255,0.16)", borderRadius: "22px", overflow: "hidden", background: "linear-gradient(145deg, rgba(255,255,255,0.055), rgba(255,255,255,0.015))" }}>
-          <div className="membership-plan-grid" style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: 0 }}>
+        <div className="membership-pricing-shell" style={{ maxWidth: "1060px", margin: "0 auto", border: "1px solid rgba(255,255,255,0.16)", borderRadius: "22px", overflow: "hidden", background: "linear-gradient(145deg, rgba(255,255,255,0.055), rgba(255,255,255,0.015))", display: "flex", flexDirection: "column" }}>
+          <div className="membership-plan-grid" style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: 0, order: 1 }}>
             {(Object.keys(PLANS) as BillingCycle[]).map((cycle) => {
               const plan = PLANS[cycle];
               const isAnnual = cycle === "annual";
               return (
-                <article key={cycle} style={{ position: "relative", padding: "clamp(2rem, 5vw, 3rem)", borderLeft: isAnnual ? "1px solid rgba(255,255,255,0.14)" : "none", background: isAnnual ? "linear-gradient(160deg, color-mix(in srgb, var(--afa-red) 20%, transparent), rgba(20,20,20,0.92) 42%)" : "rgba(14,14,14,0.88)" }}>
+                <article key={cycle} className={isAnnual ? "membership-plan-annual" : "membership-plan-monthly"} style={{ position: "relative", padding: "clamp(2rem, 5vw, 3rem)", borderLeft: isAnnual ? "1px solid rgba(255,255,255,0.14)" : "none", background: isAnnual ? "linear-gradient(160deg, color-mix(in srgb, var(--afa-red) 20%, transparent), rgba(20,20,20,0.92) 42%)" : "rgba(14,14,14,0.88)" }}>
                   {isAnnual && <span style={{ position: "absolute", top: "1.25rem", right: "1.25rem", padding: "0.5rem 0.8rem", borderRadius: "999px", background: "var(--afa-red)", color: "#fff", fontSize: "1rem", fontWeight: 800 }}>Best value</span>}
                   <p style={{ color: isAnnual ? "var(--afa-red)" : "#F5F5F0", fontSize: "1.18rem", fontWeight: 800, marginBottom: "1.25rem" }}>{plan.name} Membership</p>
-                  <p style={{ fontFamily: "'Bebas Neue', sans-serif", color: "#fff", fontSize: "clamp(4.3rem, 7vw, 6.1rem)", lineHeight: 0.86, letterSpacing: "0.015em", marginBottom: "0.7rem" }}>{plan.amount}<span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "1.2rem", color: "rgba(255,255,255,0.8)", fontWeight: 700 }}>{plan.cadence}</span></p>
+                  <p style={{ fontFamily: "'DM Sans', sans-serif", color: "#fff", fontSize: "clamp(3.45rem, 6vw, 5rem)", lineHeight: 0.98, letterSpacing: "-0.045em", fontWeight: 800, marginBottom: "0.8rem" }}>{plan.amount}<span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "1.24rem", color: "rgba(255,255,255,0.86)", fontWeight: 700, letterSpacing: 0, marginLeft: "0.28rem" }}>{plan.cadence}</span></p>
                   <p style={{ color: "rgba(255,255,255,0.94)", fontSize: "1.14rem", lineHeight: 1.55, fontWeight: 600, minHeight: "80px", marginBottom: "2rem" }}>{plan.billingLine}</p>
                   <PurchaseCta cycle={cycle} className="w-full px-6" onCheckout={startCheckout} isLoading={checkingOut} />
                 </article>
@@ -300,17 +308,19 @@ export default function Membership() {
             })}
           </div>
 
-          <div className="membership-comparison-header" style={{ display: "grid", gridTemplateColumns: "1.2fr 0.9fr 0.9fr", gap: "1rem", padding: "1.25rem clamp(1.25rem, 3vw, 2.5rem)", borderTop: "1px solid rgba(255,255,255,0.14)", background: "rgba(0,0,0,0.2)", color: "rgba(255,255,255,0.7)", fontWeight: 800, fontSize: "1rem" }}>
+          <div className="membership-comparison" style={{ order: 2, borderTop: "1px solid rgba(255,255,255,0.14)", background: "rgba(0,0,0,0.2)" }}>
+          <div className="membership-comparison-header" style={{ display: "grid", gridTemplateColumns: "1.2fr 0.9fr 0.9fr", gap: "1rem", padding: "1.25rem clamp(1.25rem, 3vw, 2.5rem)", color: "rgba(255,255,255,0.7)", fontWeight: 800, fontSize: "1rem" }}>
             <span>What’s included</span><span style={{ textAlign: "center" }}>Monthly</span><span style={{ textAlign: "center" }}>Annual</span>
           </div>
           <div style={{ padding: "0 clamp(1.25rem, 3vw, 2.5rem) 1.25rem" }}>
-            {MEMBERSHIP_COMPARISON_FEATURES.map((feature, index) => (
-              <div key={feature} className="membership-comparison-row" style={{ display: "grid", gridTemplateColumns: "1.2fr 0.9fr 0.9fr", gap: "1rem", alignItems: "center", padding: "1rem 0", borderTop: index === 0 ? "none" : "1px solid rgba(255,255,255,0.1)" }}>
-                <span className="membership-comparison-feature" style={{ color: "#F5F5F0", fontSize: "1.08rem", fontWeight: 700 }}>{feature}</span>
-                <span style={{ color: "#fff", textAlign: "center", fontSize: "1.35rem", fontWeight: 900 }}>✓</span>
-                <span style={{ color: "var(--afa-red)", textAlign: "center", fontSize: "1.35rem", fontWeight: 900 }}>✓</span>
+            {MEMBERSHIP_COMPARISON_ROWS.map((feature, index) => (
+              <div key={feature.label} className="membership-comparison-row" style={{ display: "grid", gridTemplateColumns: "1.2fr 0.9fr 0.9fr", gap: "1rem", alignItems: "center", padding: "1rem 0", borderTop: index === 0 ? "none" : "1px solid rgba(255,255,255,0.1)", background: feature.annualOnly ? "color-mix(in srgb, var(--afa-red) 8%, transparent)" : "transparent" }}>
+                <span className="membership-comparison-feature" style={{ color: "#F5F5F0", fontSize: "1.08rem", fontWeight: 700 }}>{feature.label}{feature.annualOnly && <span style={{ display: "block", color: "var(--afa-red)", fontSize: "0.88rem", marginTop: "0.25rem" }}>Annual advantage</span>}</span>
+                <span className="membership-comparison-value" style={{ color: feature.monthly ? "rgba(255,255,255,0.85)" : "rgba(255,255,255,0.45)", textAlign: "center", fontSize: "1.35rem", fontWeight: 900 }}>{feature.monthly ? "✓" : "×"}</span>
+                <span className="membership-comparison-value" style={{ color: feature.annual ? "var(--afa-red)" : "rgba(255,255,255,0.45)", textAlign: "center", fontSize: "1.35rem", fontWeight: 900 }}>{feature.annual ? "✓" : "×"}</span>
               </div>
             ))}
+          </div>
           </div>
         </div>
         {checkoutError && <p role="alert" style={{ color: "#fca5a5", fontSize: "1rem", lineHeight: 1.5, margin: "1rem auto 0", textAlign: "center", maxWidth: "580px" }}>{checkoutError}</p>}
@@ -339,12 +349,13 @@ export default function Membership() {
 
       <section style={{ padding: "clamp(5rem, 10vw, 7.5rem) 1.5rem", textAlign: "center", background: "radial-gradient(ellipse at 50% 0%, color-mix(in srgb, var(--afa-red) 17%, transparent), transparent 54%), #0A0A0A", borderTop: "1px solid rgba(255,255,255,0.1)" }}>
         <div style={{ maxWidth: "780px", margin: "0 auto" }}>
-          <h2 style={{ margin: "0 auto 1.15rem", color: "#F5F5F0", fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(3.3rem, 7.8vw, 6rem)", lineHeight: 0.9, letterSpacing: "0.02em" }}>7-Day AIFA <span style={{ color: "var(--afa-red)" }}>Guarantee.</span></h2>
-          <p style={{ color: "rgba(255,255,255,0.96)", fontSize: "clamp(1.35rem, 2.1vw, 1.7rem)", fontWeight: 700, lineHeight: 1.48, maxWidth: "700px", margin: "0 auto 2.25rem" }}>If AIFA is not the right fit for you, request a full refund within 7 days of joining. No questions asked.</p>
-          <PurchaseCta cycle="annual" className="min-w-[250px] px-8" onCheckout={startCheckout} isLoading={checkingOut} />
+          <h2 style={{ margin: "0 auto 1.15rem", color: "#F5F5F0", fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(3.3rem, 7.8vw, 6rem)", lineHeight: 0.9, letterSpacing: "0.02em" }}>The AIFA <span style={{ color: "var(--afa-red)" }}>Promise.</span></h2>
+          <p style={{ color: "rgba(255,255,255,0.96)", fontSize: "clamp(1.35rem, 2.1vw, 1.7rem)", fontWeight: 700, lineHeight: 1.48, maxWidth: "700px", margin: "0 auto 2.25rem" }}>We want AIFA to earn its place in your creative practice. If it is not right for you within your first seven days, request a full refund. No questions asked.</p>
+          <PurchaseCta cycle="annual" label="Get Access" className="min-w-[250px] px-8" onCheckout={startCheckout} isLoading={checkingOut} />
           <div style={{ display: "flex", justifyContent: "center", gap: "0.85rem", marginTop: "3.25rem" }}>
             <a href="https://www.instagram.com/theaifilmacademy/" target="_blank" rel="noreferrer" aria-label="Follow AI Film Academy on Instagram" style={{ width: "48px", height: "48px", display: "inline-flex", alignItems: "center", justifyContent: "center", border: "1px solid rgba(255,255,255,0.7)", borderRadius: "10px", color: "#F5F5F0", background: "rgba(255,255,255,0.04)" }}><Instagram size={24} strokeWidth={2} /></a>
             <a href="https://www.linkedin.com/in/exemplar7" target="_blank" rel="noreferrer" aria-label="Follow AI Film Academy on LinkedIn" style={{ width: "48px", height: "48px", display: "inline-flex", alignItems: "center", justifyContent: "center", border: "1px solid rgba(255,255,255,0.7)", borderRadius: "10px", color: "#F5F5F0", background: "rgba(255,255,255,0.04)" }}><Linkedin size={24} strokeWidth={2} /></a>
+            <a href="https://www.skool.com/aifilmacademy" target="_blank" rel="noreferrer" aria-label="Join the AI Film Academy Skool community" style={{ width: "48px", height: "48px", display: "inline-flex", alignItems: "center", justifyContent: "center", border: "1px solid rgba(255,255,255,0.7)", borderRadius: "10px", color: "#F5F5F0", background: "rgba(255,255,255,0.04)" }}><UsersRound size={24} strokeWidth={2} /></a>
           </div>
         </div>
       </section>

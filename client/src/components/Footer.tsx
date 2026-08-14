@@ -1,6 +1,6 @@
 /*
  * AI Film Academy - Global Footer
- * Readable public-site navigation with primary AFA social channels.
+ * Readable public-site navigation with primary AIFA social channels.
  */
 
 const LOGO_URL = "/assets/afa-logo-horizontal.png";
@@ -40,6 +40,7 @@ const columns: FooterColumn[] = [
     links: [
       { label: "Instagram", href: "https://www.instagram.com/theaifilmacademy/", external: true },
       { label: "LinkedIn", href: "https://www.linkedin.com/in/exemplar7", external: true },
+      { label: "Skool Community", href: "https://www.skool.com/aifilmacademy", external: true },
     ],
   },
   {

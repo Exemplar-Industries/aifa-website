@@ -49,7 +49,7 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
   
-  /* AFA Brand Colors: the primary CTA red is the only red token. */
+  /* AIFA Brand Colors: the primary CTA red is the only red token. */
   --color-afa-red: oklch(0.48 0.22 25);
   --color-afa-dark: oklch(0.08 0 0);
   --color-afa-card: oklch(0.12 0 0);
@@ -129,7 +129,7 @@
 }
 
 @layer components {
-  /* Readability standard: public AFA pages do not use microtype or low-contrast gray copy. */
+  /* Readability standard: public AIFA pages do not use microtype or low-contrast gray copy. */
   /* Public AIFA typography baseline: no microtype. Support copy must be readable before a visitor leans in. */
   .aifa-readable :where(a, button, label, input, textarea, select, summary):not(.stat-number) {
     font-size: max(1.06rem, 1em) !important;
@@ -203,7 +203,7 @@
     }
   }
   
-  /* AFA Button Styles */
+  /* AIFA Button Styles */
   .btn-primary {
     @apply inline-flex items-center justify-center gap-2 font-semibold transition-all duration-200;
     background-color: var(--afa-red);
