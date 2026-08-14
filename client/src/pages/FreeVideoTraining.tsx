@@ -210,9 +210,17 @@ function Hero() {
               marginBottom: "28px",
             }}
           >
-            How To Build a Premium AI Film Portfolio and Start Charging High Ticket in 30 Days —{" "}
-            <span style={{ color: "#c8102e" }}>
-              Without a Film School Background or Dozens of Tools
+            How To Build a Premium AI Film Portfolio
+            <span style={{ display: "block" }}>And Start Charging High Ticket</span>
+            <span
+              style={{
+                color: "#c8102e",
+                display: "block",
+                fontSize: "0.78em",
+                marginTop: "8px",
+              }}
+            >
+              In 30 Days
             </span>
           </h1>
           <p
@@ -224,8 +232,7 @@ function Hero() {
               maxWidth: "540px",
             }}
           >
-            I'll show you the exact AI Film System™ my students use to master AI Filmmaking, build
-            premium portfolios, and start charging high ticket for paid creative work.
+            Without a film school background or dozens of tools. I'll show you the exact AI Film System™ for building work worth paying for.
           </p>
           {/* Hero inline mini-form — button removed, form is the CTA */}
           <div style={{ marginTop: "28px", maxWidth: "480px" }}>
