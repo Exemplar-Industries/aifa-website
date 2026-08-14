@@ -60,27 +60,12 @@ export default function FAQ() {
             <h1 className="max-w-7xl text-[clamp(3.3rem,7vw,6.8rem)] leading-[0.9] text-[#E63329] lg:whitespace-nowrap">
               FREQUENTLY ASKED QUESTIONS
             </h1>
-            <p className="mt-7 max-w-2xl text-sm leading-6 text-white/55 md:text-base md:leading-7">
-              Twenty practical answers to the most common questions about AI filmmaking. Learn about the AIFA workflow, portfolio development, feedback, certification, and creative opportunities.
+            <p className="mt-7 max-w-2xl text-base leading-7 text-white/85 md:text-lg md:leading-8">
+              Twenty practical answers to the most common questions about AI filmmaking, including workflow, portfolio development, feedback, certification, and creative opportunities.
             </p>
           </div>
         </header>
 
-        <div className="border-b border-white/10 bg-[#0B0B0B]">
-          <div className="container grid grid-cols-2 md:grid-cols-4">
-            {[
-              ["01", "Start with one workflow"],
-              ["02", "Improve through feedback"],
-              ["03", "Build a body of work"],
-              ["04", "Prepare for opportunity"],
-            ].map(([number, label], index) => (
-              <div key={number} className={`py-5 md:px-6 ${index > 0 ? "border-l border-white/8" : ""}`}>
-                <p className="font-mono text-[0.58rem] tracking-[0.2em] text-[#E63329]">{number}</p>
-                <p className="mt-2 text-xs font-medium text-white/55 md:text-sm">{label}</p>
-              </div>
-            ))}
-          </div>
-        </div>
 
         <div className="container py-16 md:py-24">
           <div className="grid gap-16">
@@ -88,7 +73,6 @@ export default function FAQ() {
               <section key={group.title} className="grid gap-7 lg:grid-cols-[0.34fr_0.66fr] lg:gap-14">
                 <div className="lg:sticky lg:top-28 lg:self-start">
                   <div className="mb-5 h-px w-16 bg-gradient-to-r from-[#E63329] to-transparent" />
-                  <p className="font-mono text-[0.62rem] uppercase tracking-[0.2em] text-[#E63329]">Section {String(groupIndex + 1).padStart(2, "0")}</p>
                   <h2 className="mt-3 text-4xl leading-none text-white md:text-5xl">{group.title}</h2>
                 </div>
                 <Accordion type="single" collapsible className="border-t border-white/10">
@@ -100,7 +84,7 @@ export default function FAQ() {
                       >
                         {question}
                       </AccordionTrigger>
-                      <AccordionContent className="max-w-3xl pb-6 text-sm leading-7 text-white/58 md:text-base">{answer}</AccordionContent>
+                      <AccordionContent className="max-w-3xl pb-6 text-base leading-7 text-white/85 md:text-lg md:leading-8">{answer}</AccordionContent>
                     </AccordionItem>
                   ))}
                 </Accordion>
@@ -112,7 +96,6 @@ export default function FAQ() {
         <section className="border-t border-white/10 bg-[#0D0D0D] py-16 md:py-20">
           <div className="container flex flex-col justify-between gap-8 md:flex-row md:items-center">
             <div>
-              <p className="font-mono text-[0.62rem] uppercase tracking-[0.2em] text-[#E63329]">Ready to create?</p>
               <h2 className="mt-3 text-4xl text-white md:text-6xl">Turn The Answers Into Finished Work.</h2>
             </div>
             <div className="flex flex-col gap-3 sm:flex-row">

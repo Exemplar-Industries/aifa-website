@@ -211,18 +211,6 @@ export default function Membership() {
           }}
         />
         <div style={{ position: "relative", maxWidth: "1040px", margin: "0 auto", textAlign: "center" }}>
-          <p
-            style={{
-              color: "#ef4444",
-              fontSize: "0.78rem",
-              fontWeight: 800,
-              letterSpacing: "0.18em",
-              textTransform: "uppercase",
-              marginBottom: "1.5rem",
-            }}
-          >
-            AI Film Academy Membership
-          </p>
           <h1
             style={{
               color: "#F5F5F0",
@@ -248,8 +236,8 @@ export default function Membership() {
             Stop collecting tools and unfinished ideas. Get the workflow, feedback, practice, and creator network that help you turn ambitious ideas into finished AI films.
           </p>
           <PurchaseCta cycle="annual" className="px-8" onCheckout={startCheckout} isLoading={checkingOut} />
-          <p style={{ color: "rgba(255,255,255,0.4)", fontSize: "0.82rem", marginTop: "1rem", lineHeight: 1.5 }}>
-            Choose monthly or annual access. Automatic invite delivery begins after verified Stripe payment.
+          <p style={{ color: "rgba(255,255,255,0.86)", fontSize: "1rem", marginTop: "1rem", lineHeight: 1.55 }}>
+            Choose the rhythm that fits you. Every membership includes the workflow, feedback, practice, and creative community built to help you finish stronger work.
           </p>
         </div>
       </section>
@@ -263,7 +251,7 @@ export default function Membership() {
           ].map(([stat, label]) => (
             <div key={label} style={{ padding: "2rem 1rem", background: "#111", textAlign: "center" }}>
               <p style={{ color: "#ef4444", fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2.6rem, 6vw, 4rem)", lineHeight: 1, marginBottom: "0.5rem" }}>{stat}</p>
-              <p style={{ color: "rgba(255,255,255,0.43)", fontSize: "0.76rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase" }}>{label}</p>
+              <p style={{ color: "rgba(255,255,255,0.86)", fontSize: "1rem", fontWeight: 700, lineHeight: 1.35 }}>{label}</p>
             </div>
           ))}
         </div>
@@ -271,7 +259,6 @@ export default function Membership() {
 
       <section style={{ padding: "clamp(5rem, 10vw, 8rem) 1.5rem", maxWidth: "1080px", margin: "0 auto" }}>
         <div style={{ maxWidth: "760px", margin: "0 auto", textAlign: "center" }}>
-          <p style={{ color: "#ef4444", fontSize: "0.73rem", fontWeight: 800, letterSpacing: "0.16em", textTransform: "uppercase", marginBottom: "1rem" }}>What changes inside AIFA</p>
           <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", color: "#F5F5F0", fontSize: "clamp(2.8rem, 7vw, 5.4rem)", letterSpacing: "0.02em", lineHeight: 0.95, marginBottom: "1.25rem" }}>
             More than a course. <span style={{ color: "#ef4444" }}>A creative practice.</span>
           </h2>
@@ -294,19 +281,17 @@ export default function Membership() {
       <section style={{ padding: "clamp(5rem, 10vw, 8rem) 1.5rem", background: "#0D0D0D", borderTop: "1px solid rgba(255,255,255,0.07)", borderBottom: "1px solid rgba(255,255,255,0.07)" }}>
         <div style={{ maxWidth: "1080px", margin: "0 auto" }}>
           <div style={{ maxWidth: "720px", margin: "0 auto 3.5rem", textAlign: "center" }}>
-            <p style={{ color: "#ef4444", fontSize: "0.73rem", fontWeight: 800, letterSpacing: "0.16em", textTransform: "uppercase", marginBottom: "1rem" }}>Your membership path</p>
-            <h2 style={{ color: "#F5F5F0", fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2.8rem, 7vw, 5.4rem)", lineHeight: 0.95, letterSpacing: "0.02em" }}>Learn it. Make it. <span style={{ color: "#ef4444" }}>Show it.</span></h2>
+              <h2 style={{ color: "#F5F5F0", fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2.8rem, 7vw, 5.4rem)", lineHeight: 0.95, letterSpacing: "0.02em" }}>Learn it. Make it. <span style={{ color: "#ef4444" }}>Show it.</span></h2>
           </div>
           <div className="membership-process-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "1rem" }}>
             {[
-              ["01", "Learn the workflow", "Get the structure to take an idea from brief to final cut without losing momentum in the tools."],
-              ["02", "Finish real projects", "Use exercises, GenJams, and your own briefs to build a portfolio of work that demonstrates your taste and process."],
-              ["03", "Get better in public", "Use feedback, community, certification, and opportunities to turn finished projects into professional visibility."],
-            ].map(([number, title, copy]) => (
-              <article key={number} style={{ borderTop: "2px solid #ef4444", padding: "1.5rem 0.5rem 0" }}>
-                <p style={{ color: "#ef4444", fontFamily: "'Bebas Neue', sans-serif", fontSize: "2.2rem", lineHeight: 1, marginBottom: "1rem" }}>{number}</p>
+              ["Learn the workflow", "Get the structure to take an idea from brief to final cut without losing momentum in the tools."],
+              ["Finish real projects", "Use exercises, GenJams, and your own briefs to build a portfolio of work that demonstrates your taste and process."],
+              ["Get better in public", "Use feedback, community, certification, and opportunities to turn finished projects into professional visibility."],
+            ].map(([title, copy]) => (
+              <article key={title} style={{ borderTop: "2px solid #ef4444", padding: "1.5rem 0.5rem 0" }}>
                 <h3 style={{ color: "#fff", fontSize: "1.15rem", fontWeight: 800, marginBottom: "0.65rem" }}>{title}</h3>
-                <p style={{ color: "rgba(255,255,255,0.48)", lineHeight: 1.7, fontSize: "0.92rem" }}>{copy}</p>
+                <p style={{ color: "rgba(255,255,255,0.86)", lineHeight: 1.7, fontSize: "1rem" }}>{copy}</p>
               </article>
             ))}
           </div>
@@ -315,7 +300,6 @@ export default function Membership() {
 
       <section id="checkout" style={{ padding: "clamp(5rem, 10vw, 8rem) 1.5rem", maxWidth: "1060px", margin: "0 auto" }}>
         <div style={{ textAlign: "center", maxWidth: "710px", margin: "0 auto 3rem" }}>
-          <p style={{ color: "#ef4444", fontSize: "0.73rem", fontWeight: 800, letterSpacing: "0.16em", textTransform: "uppercase", marginBottom: "1rem" }}>Choose your access</p>
           <h2 style={{ color: "#F5F5F0", fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(3rem, 7vw, 5.5rem)", lineHeight: 0.95, letterSpacing: "0.02em", marginBottom: "1rem" }}>Make your next film <span style={{ color: "#ef4444" }}>the one you finish.</span></h2>
           <p style={{ color: "rgba(255,255,255,0.55)", fontSize: "1.03rem", lineHeight: 1.7 }}>Choose the membership plan that matches how you want to build. Both plans include the complete AIFA experience.</p>
         </div>
@@ -342,14 +326,14 @@ export default function Membership() {
                   boxShadow: isSelected ? "0 0 44px rgba(239,68,68,0.12)" : "none",
                 }}
               >
-                {isAnnual && <span style={{ position: "absolute", top: "-12px", right: "20px", padding: "5px 10px", borderRadius: "999px", background: "#ef4444", color: "#fff", fontSize: "0.66rem", fontWeight: 800, letterSpacing: "0.09em", textTransform: "uppercase" }}>Best Value</span>}
+                {isAnnual && <span style={{ position: "absolute", top: "-12px", right: "20px", padding: "6px 10px", borderRadius: "999px", background: "#ef4444", color: "#fff", fontSize: "1rem", fontWeight: 800 }}>Best value</span>}
                 <span style={{ display: "flex", alignItems: "center", gap: "0.65rem", marginBottom: "1.25rem" }}>
                   <span style={{ width: "20px", height: "20px", borderRadius: "50%", border: isSelected ? "6px solid #ef4444" : "2px solid rgba(255,255,255,0.35)", boxSizing: "border-box", display: "inline-block" }} />
-                  <span style={{ color: isAnnual ? "#ef4444" : "rgba(255,255,255,0.65)", fontSize: "0.76rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.12em" }}>{plan.name} Membership</span>
+                  <span style={{ color: isAnnual ? "#ef4444" : "rgba(255,255,255,0.86)", fontSize: "1rem", fontWeight: 800 }}>{plan.name} Membership</span>
                 </span>
                 <p style={{ fontFamily: "'Bebas Neue', sans-serif", color: "#fff", fontSize: "clamp(3.6rem, 8vw, 5rem)", lineHeight: 0.9, marginBottom: "0.25rem" }}>{plan.amount}<span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "1rem", color: "rgba(255,255,255,0.52)", fontWeight: 500 }}>{plan.cadence}</span></p>
-                <p style={{ color: "rgba(255,255,255,0.55)", fontSize: "0.9rem", lineHeight: 1.55, minHeight: "48px", marginBottom: "1.5rem" }}>{plan.billingLine}</p>
-                <span style={{ display: "block", color: "rgba(255,255,255,0.67)", fontSize: "0.88rem", lineHeight: 1.7 }}>✓ Full curriculum and workflow system<br />✓ GenJams, feedback, community, and certification<br />✓ Curated opportunities and ongoing training</span>
+                <p style={{ color: "rgba(255,255,255,0.86)", fontSize: "1rem", lineHeight: 1.55, minHeight: "48px", marginBottom: "1.5rem" }}>{plan.billingLine}</p>
+                <span style={{ display: "block", color: "rgba(255,255,255,0.9)", fontSize: "1rem", lineHeight: 1.7 }}>✓ Full curriculum and workflow system<br />✓ GenJams, feedback, community, and certification<br />✓ Curated opportunities and ongoing training</span>
               </button>
             );
           })}
@@ -361,7 +345,7 @@ export default function Membership() {
           </p>
           <PurchaseCta cycle={selectedPlan} className="w-full sm:w-auto px-8" onCheckout={startCheckout} isLoading={checkingOut} />
           {checkoutError && <p role="alert" style={{ color: "#fca5a5", fontSize: "0.82rem", lineHeight: 1.5, margin: "0.85rem auto 0", maxWidth: "580px" }}>{checkoutError}</p>}
-          <p style={{ color: "rgba(255,255,255,0.35)", fontSize: "0.77rem", lineHeight: 1.55, marginTop: "1rem" }}>
+          <p style={{ color: "rgba(255,255,255,0.86)", fontSize: "1rem", lineHeight: 1.55, marginTop: "1rem" }}>
             Secure checkout through Stripe. Membership renews automatically until cancelled. New members are protected by a 7-day, no-questions-asked refund policy.
           </p>
         </div>
@@ -370,8 +354,7 @@ export default function Membership() {
       <section style={{ background: "#0D0D0D", borderTop: "1px solid rgba(255,255,255,0.07)", padding: "clamp(5rem, 10vw, 7rem) 1.5rem" }}>
         <div style={{ maxWidth: "820px", margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: "2.5rem" }}>
-            <p style={{ color: "#ef4444", fontSize: "0.73rem", fontWeight: 800, letterSpacing: "0.16em", textTransform: "uppercase", marginBottom: "1rem" }}>Questions, answered</p>
-            <h2 style={{ color: "#F5F5F0", fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2.8rem, 7vw, 5rem)", lineHeight: 0.95, letterSpacing: "0.02em" }}>You bring the idea. <span style={{ color: "#ef4444" }}>We build the system.</span></h2>
+              <h2 style={{ color: "#F5F5F0", fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2.8rem, 7vw, 5rem)", lineHeight: 0.95, letterSpacing: "0.02em" }}>You bring the idea. <span style={{ color: "#ef4444" }}>We build the system.</span></h2>
           </div>
           <div style={{ borderTop: "1px solid rgba(255,255,255,0.1)" }}>
             {FAQS.map((faq, index) => {
@@ -381,7 +364,7 @@ export default function Membership() {
                   <button type="button" onClick={() => setOpenFaq(isOpen ? null : index)} style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center", gap: "1rem", textAlign: "left", padding: "1.25rem 0", background: "transparent", border: 0, color: "#fff", cursor: "pointer", fontFamily: "'DM Sans', sans-serif", fontWeight: 800, fontSize: "1rem" }}>
                     {faq.question}<span style={{ color: "#ef4444", fontSize: "1.45rem", fontWeight: 400 }}>{isOpen ? "−" : "+"}</span>
                   </button>
-                  {isOpen && <p style={{ margin: "0 0 1.35rem", color: "rgba(255,255,255,0.55)", fontSize: "0.94rem", lineHeight: 1.7, maxWidth: "720px" }}>{faq.answer}</p>}
+                  {isOpen && <p style={{ margin: "0 0 1.35rem", color: "rgba(255,255,255,0.86)", fontSize: "1rem", lineHeight: 1.7, maxWidth: "720px" }}>{faq.answer}</p>}
                 </div>
               );
             })}
@@ -390,7 +373,6 @@ export default function Membership() {
       </section>
 
       <section style={{ padding: "clamp(5rem, 12vw, 8rem) 1.5rem", textAlign: "center" }}>
-        <p style={{ color: "#ef4444", fontSize: "0.73rem", fontWeight: 800, letterSpacing: "0.16em", textTransform: "uppercase", marginBottom: "1rem" }}>Your next project starts here</p>
         <h2 style={{ maxWidth: "820px", margin: "0 auto 1.25rem", color: "#F5F5F0", fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(3rem, 8vw, 6.2rem)", lineHeight: 0.9, letterSpacing: "0.02em" }}>Finish work you are <span style={{ color: "#ef4444" }}>proud to show.</span></h2>
         <p style={{ color: "rgba(255,255,255,0.55)", fontSize: "1.05rem", lineHeight: 1.7, maxWidth: "620px", margin: "0 auto 2rem" }}>Join a serious creative practice built around making better work—and getting it seen.</p>
         <PurchaseCta cycle="annual" className="px-8" onCheckout={startCheckout} isLoading={checkingOut} />

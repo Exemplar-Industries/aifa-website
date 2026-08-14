@@ -146,6 +146,20 @@
     color: rgba(255, 255, 255, 0.84) !important;
   }
 
+  /* Public headings should break deliberately, never strand a final word on a third line. */
+  .aifa-readable :where(h1, h2, h3) {
+    max-inline-size: 100%;
+    hyphens: none;
+    overflow-wrap: normal;
+    text-wrap: balance;
+    word-break: normal;
+  }
+
+  /* Decorative eyebrow components are intentionally retired from public-page presentation. */
+  .aifa-readable :where(.label-tag, .section-label) {
+    display: none !important;
+  }
+
   .container {
     width: 100%;
     margin-left: auto;

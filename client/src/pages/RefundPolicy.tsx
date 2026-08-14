@@ -18,7 +18,7 @@ function Section({ title, children }: { title: string; children: React.ReactNode
       >
         {title}
       </h2>
-      <div style={{ color: "rgba(255,255,255,0.63)", fontSize: "0.98rem", lineHeight: 1.75 }}>{children}</div>
+      <div style={{ color: "rgba(255,255,255,0.86)", fontSize: "1rem", lineHeight: 1.75 }}>{children}</div>
     </section>
   );
 }
@@ -29,10 +29,9 @@ export default function RefundPolicy() {
       <section style={{ padding: "clamp(6rem, 12vw, 9rem) 1.5rem 4rem", borderBottom: "1px solid rgba(255,255,255,0.08)", background: "radial-gradient(ellipse at 15% 25%, rgba(190,24,24,0.20), transparent 42%), #080808" }}>
         <div style={{ maxWidth: "880px", margin: "0 auto" }}>
           <a href="/" style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.82rem", textDecoration: "none" }}>← AI Film Academy</a>
-          <p style={{ color: "#ef4444", fontSize: "0.72rem", fontWeight: 800, letterSpacing: "0.16em", textTransform: "uppercase", margin: "2.5rem 0 1rem" }}>Member support</p>
           <h1 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(3.3rem, 9vw, 7rem)", lineHeight: 0.9, letterSpacing: "0.02em", marginBottom: "1.3rem" }}>Refund & <span style={{ color: "#ef4444" }}>Cancellation Policy</span></h1>
-          <p style={{ maxWidth: "680px", color: "rgba(255,255,255,0.6)", fontSize: "1.05rem", lineHeight: 1.75 }}>We want you to join AI Film Academy with clarity. This policy explains how refunds, cancellation, and membership access work for AFA memberships purchased through Stripe.</p>
-          <p style={{ color: "rgba(255,255,255,0.35)", fontSize: "0.78rem", marginTop: "1.5rem" }}>Last updated: August 12, 2026</p>
+          <p style={{ maxWidth: "680px", color: "rgba(255,255,255,0.86)", fontSize: "1.05rem", lineHeight: 1.75 }}>We want you to join AI Film Academy with clarity. This policy explains how refunds, cancellation, and membership access work for AFA memberships purchased through Stripe.</p>
+          <p style={{ color: "rgba(255,255,255,0.86)", fontSize: "1rem", marginTop: "1.5rem" }}>Last updated: August 12, 2026</p>
         </div>
       </section>
 
@@ -63,7 +62,7 @@ export default function RefundPolicy() {
           <p>For membership billing, cancellation, or refund requests, contact <a href="mailto:hello@aifilmacademy.com" style={{ color: "#f87171" }}>hello@aifilmacademy.com</a>. We will respond as promptly as possible and help resolve the request using the purchase information you provide.</p>
         </Section>
 
-        <p style={{ color: "rgba(255,255,255,0.3)", fontSize: "0.76rem", lineHeight: 1.6, marginTop: "2rem" }}>This is a working policy page for AI Film Academy. It should be reviewed for legal and operational accuracy before the public payment flow is launched.</p>
+        <p style={{ color: "rgba(255,255,255,0.86)", fontSize: "1rem", lineHeight: 1.6, marginTop: "2rem" }}>This is a working policy page for AI Film Academy. It should be reviewed for legal and operational accuracy before the public payment flow is launched.</p>
       </section>
     </main>
   );
