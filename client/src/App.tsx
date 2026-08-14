@@ -3,6 +3,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
 import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { AffiliateLinkProvider } from "./contexts/AffiliateLinkContext";
 import Home from "./pages/Home";
@@ -73,7 +75,11 @@ function App() {
         <AffiliateLinkProvider>
           <TooltipProvider>
             <Toaster />
-            <Router />
+            <div className="aifa-readable">
+              <Navbar />
+              <Router />
+              <Footer />
+            </div>
           </TooltipProvider>
         </AffiliateLinkProvider>
       </ThemeProvider>

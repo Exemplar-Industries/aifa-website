@@ -1,7 +1,6 @@
 /*
- * AI Film Academy — Global Navigation
- * Design: "The Director's Cut" — transparent over cinematic heroes, solid on scroll.
- * IA: Membership, FAQ, and one clear Free Training conversion action. Service contact and events remain quieter footer or contextual destinations.
+ * AI Film Academy - Global Navigation
+ * Persistent public-site shell with the complete AFA sitemap.
  */
 
 import { useEffect, useState } from "react";
@@ -11,6 +10,11 @@ const LOGO_URL = "/assets/afa-logo-horizontal.png";
 
 const navLinks = [
   { label: "Membership", href: "/membership" },
+  { label: "Showcase", href: "/showcase" },
+  { label: "AI Film Events", href: "/events" },
+  { label: "Productions", href: "/productions" },
+  { label: "GenJams & Workshops", href: "/education-events" },
+  { label: "Contact Us", href: "/contact" },
   { label: "FAQ", href: "/faq" },
 ];
 
@@ -19,65 +23,78 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 40);
+    const handleScroll = () => setScrolled(window.scrollY > 8);
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
     <nav
-      className={`fixed inset-x-0 top-0 z-50 border-b transition-all duration-300 ${
-        scrolled || menuOpen ? "border-white/8 bg-[#080808]/95 backdrop-blur-xl" : "border-transparent bg-gradient-to-b from-black/55 to-transparent"
+      className={`sticky inset-x-0 top-0 z-[100] border-b transition-colors duration-200 ${
+        scrolled || menuOpen
+          ? "border-white/15 bg-[#080808]/98 backdrop-blur-xl"
+          : "border-white/12 bg-[#090909]"
       }`}
     >
-      <div className="container flex h-16 items-center justify-between md:h-[4.5rem]">
+      <div className="container flex min-h-[4.75rem] items-center justify-between gap-4">
         <a href="/" className="group flex shrink-0 items-center" aria-label="AI Film Academy home">
           <img
             src={LOGO_URL}
             alt="AI Film Academy"
-            className="h-10 w-auto object-contain transition-opacity duration-200 group-hover:opacity-80"
-            style={{ maxWidth: "180px" }}
+            className="h-10 w-auto object-contain transition-opacity duration-200 group-hover:opacity-85"
+            style={{ maxWidth: "190px" }}
           />
         </a>
 
-        <div className="hidden items-center gap-7 md:flex">
+        <div className="hidden min-w-0 items-center justify-center gap-x-5 gap-y-2 xl:flex">
           {navLinks.map((link) => (
-            <a key={link.href} href={link.href} className="text-sm font-medium text-white/58 transition-colors duration-150 hover:text-white">
+            <a
+              key={link.href}
+              href={link.href}
+              className="whitespace-nowrap text-[0.98rem] font-semibold text-white/85 transition-colors duration-150 hover:text-[#ff7068]"
+            >
               {link.label}
             </a>
           ))}
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex shrink-0 items-center gap-2 sm:gap-3">
           <a
             href="/free-video-training"
-            className="btn-primary hidden items-center gap-2 px-4 py-2 text-sm font-semibold sm:inline-flex"
+            className="btn-primary inline-flex min-h-11 items-center gap-2 px-3.5 py-2.5 text-[0.92rem] font-bold sm:px-4"
           >
-            Watch Free Training
+            <span className="hidden sm:inline">Watch Free Training</span>
+            <span className="sm:hidden">Free Training</span>
           </a>
           <button
             type="button"
-            className="inline-flex h-10 w-10 items-center justify-center text-white/72 transition-colors hover:text-white md:hidden"
+            className="inline-flex h-11 w-11 items-center justify-center border border-white/25 text-white transition-colors hover:border-[#ff7068] hover:text-[#ff7068] xl:hidden"
             onClick={() => setMenuOpen((open) => !open)}
             aria-expanded={menuOpen}
-            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            aria-controls="afa-mobile-menu"
+            aria-label={menuOpen ? "Close site menu" : "Open site menu"}
           >
-            {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            {menuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
         </div>
       </div>
 
       {menuOpen && (
-        <div className="border-t border-white/8 bg-[#080808] md:hidden">
-          <div className="container flex flex-col py-5">
+        <div id="afa-mobile-menu" className="border-t border-white/15 bg-[#080808] xl:hidden">
+          <div className="container grid gap-0 py-3">
             {navLinks.map((link) => (
-              <a key={link.href} href={link.href} className="border-b border-white/8 py-4 text-base font-medium text-white/72" onClick={() => setMenuOpen(false)}>
+              <a
+                key={link.href}
+                href={link.href}
+                className="border-b border-white/12 py-4 text-[1.08rem] font-semibold text-white/90 transition-colors hover:text-[#ff7068]"
+                onClick={() => setMenuOpen(false)}
+              >
                 {link.label}
               </a>
             ))}
             <a
               href="/free-video-training"
-              className="btn-primary mt-5 inline-flex items-center justify-center gap-2 px-5 py-3.5 text-base font-semibold"
+              className="btn-primary mt-4 inline-flex min-h-12 items-center justify-center px-5 py-3 text-[1rem] font-bold"
               onClick={() => setMenuOpen(false)}
             >
               Watch Free Training

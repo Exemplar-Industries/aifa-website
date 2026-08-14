@@ -4,8 +4,6 @@
  * Copy: adapted from the supplied FAQ interview Responses tab; pricing excluded.
  */
 
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { ArrowUpRight } from "lucide-react";
 
@@ -55,7 +53,6 @@ const faqGroups = [
 export default function FAQ() {
   return (
     <div className="min-h-screen bg-[#080808] text-white">
-      <Navbar />
       <main>
         <header className="relative overflow-hidden border-b border-white/10 pb-16 pt-32 md:pb-24 md:pt-40 grain-overlay">
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_12%_30%,oklch(0.36_0.2_25/0.2),transparent_32%)]" />
@@ -127,7 +124,6 @@ export default function FAQ() {
           </div>
         </section>
       </main>
-      <Footer />
     </div>
   );
 }

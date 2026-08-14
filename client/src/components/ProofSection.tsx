@@ -1,7 +1,6 @@
 /*
- * AI Film Academy — Proof of Practice
- * Homepage role: Demonstrate that AIFA is active in real creative rooms and valued by members.
- * Detailed event, testimonial, and portfolio material stays on dedicated pages.
+ * AI Film Academy - Homepage proof section
+ * Purpose: show the creative-practice environment, outcomes, and member reviews.
  */
 
 import { Quote } from "lucide-react";
@@ -31,13 +30,31 @@ const TESTIMONIALS = [
     role: "AIFA Member",
     initials: "MG",
   },
+  {
+    quote: "The AI Film Academy not only provides high-quality content, but it is also run by one of the best: Brandon Patino.",
+    name: "P Moren",
+    role: "AIFA Member",
+    initials: "PM",
+  },
+  {
+    quote: "This is a 5-star service. The communication, quality, and final product are awesome and always on time, with the value added of cooperation and insights.",
+    name: "Rodrigo J. Gonzalez",
+    role: "Video Creator",
+    initials: "RG",
+  },
+  {
+    quote: "Working with Brandon and his team was nothing less than amazing. Their attention to detail and commitment to providing top quality is unmatchable.",
+    name: "Noor Fiad",
+    role: "Client",
+    initials: "NF",
+  },
 ];
 
 function Stars() {
   return (
-    <div className="flex gap-0.5" aria-label="Five-star review">
+    <div className="flex gap-1" aria-label="Five-star review">
       {Array.from({ length: 5 }).map((_, index) => (
-        <svg key={index} className="h-3.5 w-3.5 text-amber-400" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+        <svg key={index} className="h-4 w-4 text-amber-400" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
           <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
         </svg>
       ))}
@@ -49,19 +66,16 @@ export default function ProofSection() {
   return (
     <section id="proof" className="relative overflow-hidden bg-[#0D0D0D] py-20 md:py-28 grain-overlay">
       <div className="container relative z-10">
-        <div className="grid gap-10 lg:grid-cols-[0.88fr_1.12fr] lg:items-end">
-          <div>
-            <p className="font-mono text-[0.62rem] uppercase tracking-[0.2em] text-[#E63329]">Proof in the work</p>
-            <h2 className="mt-5 max-w-3xl text-[clamp(3.4rem,7vw,6.25rem)] leading-[0.88] text-[#F5F5F0]">
-              Built in the room, not just <span className="text-[oklch(0.62_0.24_25)]">on a timeline.</span>
-            </h2>
-          </div>
-          <p className="max-w-2xl text-base leading-7 text-white/57 md:text-lg">
-            AIFA is built around live creative practice, shared feedback, and the kind of work that gains momentum when it is made alongside other people who care about the outcome.
+        <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
+          <h2 className="max-w-4xl text-[clamp(3.5rem,7vw,6.4rem)] leading-[0.88] text-[#F5F5F0]">
+            Build a portfolio through <span className="text-[oklch(0.62_0.24_25)]">creative practice.</span>
+          </h2>
+          <p className="max-w-2xl text-[1.12rem] leading-8 text-white/90 md:text-[1.28rem]">
+            Live events, GenJams, workshops, and creative practice help you build real work with other creators.
           </p>
         </div>
 
-        <div className="mt-12 grid gap-px overflow-hidden border border-white/10 bg-white/10 lg:grid-cols-[1.18fr_0.82fr]">
+        <div className="mt-12 grid gap-px overflow-hidden border border-white/15 bg-white/15 lg:grid-cols-[1.18fr_0.82fr]">
           <article className="group relative min-h-[430px] overflow-hidden bg-black md:min-h-[520px]">
             <img
               src="/assets/afa-featured-event-charart3.png"
@@ -72,50 +86,45 @@ export default function ProofSection() {
               alt="A collaborative AI filmmaking team reviewing creative work together"
               className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.018]"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-black via-black/68 to-black/10" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-black/20" />
+            <div className="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-black/10" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20" />
             <div className="relative z-10 flex min-h-[430px] max-w-2xl flex-col justify-end p-7 md:min-h-[520px] md:p-10">
-              <p className="font-mono text-[0.62rem] uppercase tracking-[0.18em] text-[#ff7068]">Live creative practice</p>
-              <h3 className="mt-4 text-4xl leading-[0.91] text-white md:text-6xl">Film gets better when it gets made with other people in the room.</h3>
-              <p className="mt-5 max-w-xl text-sm leading-6 text-white/67 md:text-base md:leading-7">
-                From collaborative GenJams to the Directors Cup with Machine Cinema, AIFA brings creators together to make under a real brief, a real deadline, and a real quality bar.
+              <h3 className="max-w-xl text-[clamp(3rem,5vw,5.8rem)] leading-[0.9] text-white">Build real work with other creators.</h3>
+              <p className="mt-5 max-w-xl text-[1.06rem] leading-7 text-white/90 md:text-[1.18rem] md:leading-8">
+                We host live events, GenJams, workshops, and creative practice to help you build portfolio-ready work with other people.
               </p>
             </div>
           </article>
 
           <aside className="flex flex-col bg-[#111111] p-7 md:p-10">
-            <p className="font-mono text-[0.62rem] uppercase tracking-[0.2em] text-white/36">AIFA by the numbers</p>
-            <div className="mt-7 divide-y divide-white/10 border-y border-white/10">
+            <h3 className="text-[clamp(2.7rem,4vw,4.6rem)] leading-[0.9] text-white">Results <span className="text-[#ff7068]">by the numbers.</span></h3>
+            <div className="mt-8 divide-y divide-white/15 border-y border-white/15">
               {STATS.map(([number, label]) => (
-                <div key={label} className="py-5 first:pt-5 last:pb-5">
-                  <p className="stat-number text-4xl text-white md:text-5xl">{number}</p>
-                  <p className="mt-1 font-mono text-[0.58rem] uppercase tracking-[0.14em] text-white/38">{label}</p>
+                <div key={label} className="py-6 first:pt-6 last:pb-6">
+                  <p className="stat-number text-[clamp(3.4rem,5vw,5.2rem)] text-[#ff7068]">{number}</p>
+                  <p className="mt-2 text-[1.06rem] font-semibold leading-7 text-white/90">{label}</p>
                 </div>
               ))}
             </div>
-            <p className="mt-auto pt-8 text-sm leading-6 text-white/49">A clear workflow is more useful when it is backed by an active creative environment.</p>
           </aside>
         </div>
 
-        <div className="mt-14 border-t border-white/10 pt-10">
+        <div className="mt-16 border-t border-white/15 pt-12">
           <div className="flex flex-wrap items-end justify-between gap-5">
-            <div>
-              <p className="font-mono text-[0.62rem] uppercase tracking-[0.2em] text-[#E63329]">What members say</p>
-              <h3 className="mt-4 text-[clamp(2.7rem,5vw,4.8rem)] leading-[0.9] text-white">The right support changes the work.</h3>
-            </div>
-            <div className="flex items-center gap-3 text-sm text-white/45"><Stars /><span>5.0 · 33 reviews</span></div>
+            <h3 className="max-w-4xl text-[clamp(3rem,5vw,5.2rem)] leading-[0.9] text-white">The right support changes <span className="text-[#ff7068]">the work.</span></h3>
+            <div className="flex items-center gap-3 text-[1rem] font-semibold text-white/90"><Stars /><span>5.0 from 33 reviews</span></div>
           </div>
-          <div className="mt-7 grid gap-px border border-white/10 bg-white/10 lg:grid-cols-3">
+          <div className="mt-8 grid gap-px border border-white/15 bg-white/15 lg:grid-cols-3">
             {TESTIMONIALS.map((review) => (
-              <article key={review.name} className="relative flex min-h-[255px] flex-col bg-[#0A0A0A] p-6 md:p-7">
-                <Quote className="absolute right-6 top-6 h-7 w-7 text-white/8" aria-hidden="true" />
+              <article key={review.name} className="relative flex min-h-[285px] flex-col bg-[#0A0A0A] p-7 md:p-8">
+                <Quote className="absolute right-7 top-7 h-8 w-8 text-[#ff7068]/45" aria-hidden="true" />
                 <Stars />
-                <blockquote className="mt-5 flex-1 text-sm leading-6 text-white/68">“{review.quote}”</blockquote>
-                <div className="mt-6 flex items-center gap-3 border-t border-white/8 pt-4">
-                  <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#E63329] text-[0.62rem] font-bold text-white">{review.initials}</span>
+                <blockquote className="mt-5 flex-1 pr-2 text-[1.02rem] leading-7 text-white/90">“{review.quote}”</blockquote>
+                <div className="mt-7 flex items-center gap-3 border-t border-white/15 pt-5">
+                  <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#E63329] text-[0.95rem] font-bold text-white">{review.initials}</span>
                   <div>
-                    <p className="text-sm font-semibold text-white">{review.name}</p>
-                    <p className="text-xs text-white/38">{review.role}</p>
+                    <p className="text-[1.04rem] font-bold text-white">{review.name}</p>
+                    <p className="text-[1rem] text-white/85">{review.role}</p>
                   </div>
                 </div>
               </article>

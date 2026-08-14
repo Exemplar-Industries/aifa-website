@@ -3,13 +3,10 @@
  * Design: "The Director's Cut" — cinematic editorial with one direct headline and supporting sentence.
  */
 
-import Footer from "@/components/Footer";
-import Navbar from "@/components/Navbar";
 
 export default function Showcase() {
   return (
     <div className="min-h-screen bg-[#080808] text-[#F5F5F0]">
-      <Navbar />
       <main className="grain-overlay relative overflow-hidden pt-16 md:pt-[4.5rem]">
         <section className="relative flex min-h-[72vh] items-end overflow-hidden border-b border-white/10">
           <div
@@ -32,7 +29,6 @@ export default function Showcase() {
           </div>
         </section>
       </main>
-      <Footer />
     </div>
   );
 }

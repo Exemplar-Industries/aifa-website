@@ -13,7 +13,6 @@
  * 9. Footer
  */
 
-import Navbar from "@/components/Navbar";
 import StatsBar from "@/components/StatsBar";
 import GallerySection from "@/components/GallerySection";
 import ProblemSection from "@/components/ProblemSection";
@@ -22,7 +21,6 @@ import PricingSection from "@/components/PricingSection";
 import TestimonialsSection from "@/components/TestimonialsSection";
 import FinalCTASection from "@/components/FinalCTASection";
 import FAQSection from "@/components/FAQSection";
-import Footer from "@/components/Footer";
 import { useSkoolUrl } from "@/contexts/AffiliateLinkContext";
 import { useRef, useEffect, useState } from "react";
 
@@ -236,7 +234,6 @@ function FullscreenHero() {
 export default function LPV3() {
   return (
     <div style={{ background: "#080808", minHeight: "100vh" }}>
-      <Navbar />
       {/* 1. Hero — Fullscreen video, headline, CTA */}
       <FullscreenHero />
       {/* 2. StatsBar — Quick credibility numbers */}
@@ -254,8 +251,6 @@ export default function LPV3() {
       {/* 8. FinalCTA — Risk reversal + FAQ + final high-contrast CTA for bottom-scrollers */}
       <FinalCTASection />
       <FAQSection />
-      {/* 9. Footer */}
-      <Footer />
     </div>
   );
 }

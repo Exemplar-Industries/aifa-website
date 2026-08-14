@@ -12,11 +12,9 @@
  * Footer is utility navigation and does not count as a content section.
  */
 
-import Navbar from "@/components/Navbar";
 import InsideAFASection from "@/components/InsideAFASection";
 import ProofSection from "@/components/ProofSection";
 import StartHereSection from "@/components/StartHereSection";
-import Footer from "@/components/Footer";
 import { useRef, useEffect, useState } from "react";
 
 const HERO_VIDEO_URL =
@@ -261,12 +259,10 @@ function FullscreenHero() {
 export default function Home() {
   return (
     <div style={{ background: "#080808", minHeight: "100vh" }}>
-      <Navbar />
       <FullscreenHero />
       <InsideAFASection />
       <ProofSection />
       <StartHereSection />
-      <Footer />
     </div>
   );
 }

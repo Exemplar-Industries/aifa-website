@@ -72,7 +72,7 @@
   --secondary: oklch(0.18 0 0);
   --secondary-foreground: oklch(0.97 0.003 90);
   --muted: oklch(0.18 0 0);
-  --muted-foreground: oklch(0.55 0 0);
+  --muted-foreground: oklch(0.72 0 0);
   --accent: oklch(0.18 0 0);
   --accent-foreground: oklch(0.97 0.003 90);
   --destructive: oklch(0.48 0.22 25);
@@ -105,6 +105,8 @@
   body {
     @apply bg-background text-foreground;
     font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
@@ -127,6 +129,23 @@
 }
 
 @layer components {
+  /* Readability standard: public AFA pages do not use microtype or low-contrast gray copy. */
+  .aifa-readable :where(p, a, button, label, input, textarea, select, li, summary) {
+    font-size: max(1rem, 1em) !important;
+  }
+
+  .aifa-readable :where(p, li, label, input, textarea, select) {
+    color: color-mix(in srgb, currentColor 88%, white 12%);
+  }
+
+  .aifa-readable :where([class*="text-white/20"], [class*="text-white/25"], [class*="text-white/30"], [class*="text-white/35"], [class*="text-white/36"], [class*="text-white/38"], [class*="text-white/40"], [class*="text-white/45"], [class*="text-white/49"], [class*="text-white/50"]) {
+    color: rgba(255, 255, 255, 0.82) !important;
+  }
+
+  .aifa-readable :where([style*="rgba(255"], [style*="rgba(245"]) {
+    color: rgba(255, 255, 255, 0.84) !important;
+  }
+
   .container {
     width: 100%;
     margin-left: auto;
@@ -187,11 +206,12 @@
   
   /* Label / Tag style */
   .label-tag {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.7rem;
-    letter-spacing: 0.12em;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: oklch(0.48 0.22 25);
+    color: oklch(0.62 0.24 25);
   }
   
   /* Film grain overlay */
@@ -217,11 +237,12 @@
   
   /* Section label */
   .section-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.65rem;
-    letter-spacing: 0.18em;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: oklch(0.48 0.22 25);
+    color: oklch(0.62 0.24 25);
     display: flex;
     align-items: center;
     gap: 0.5rem;

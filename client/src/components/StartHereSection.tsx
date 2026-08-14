@@ -1,7 +1,5 @@
 /*
- * AI Film Academy — Start Here
- * Design: "The Director's Cut" — one decisive close, two levels of intent.
- * Conversion: membership sales page is primary; the free training is the lower-commitment path.
+ * AI Film Academy - Homepage final pathways
  */
 
 import { ArrowUpRight, Play } from "lucide-react";
@@ -23,47 +21,49 @@ export default function StartHereSection() {
             <br />
             <span className="text-[oklch(0.55_0.22_25)]">Next Step</span>
           </h2>
-          <p className="mx-auto mt-7 max-w-2xl text-base leading-7 text-white/55 md:text-lg">
-            Choose a membership built around finished work, feedback, and creative momentum—or watch the free training to experience the production method first.
-          </p>
         </div>
 
-        <div className="mx-auto mt-12 grid max-w-5xl gap-px overflow-hidden border border-white/10 bg-white/10 md:grid-cols-2">
-          <article className="flex min-h-[310px] flex-col bg-[#0C0C0C] p-7 md:p-10">
-            <p className="font-mono text-[0.62rem] uppercase tracking-[0.2em] text-[#E63329]">Ready to build your portfolio?</p>
-            <h3 className="mt-5 text-4xl text-white md:text-5xl">Explore Membership.</h3>
-            <p className="mt-4 max-w-md text-sm leading-6 text-white/54 md:text-base">
-              See the complete AIFA experience, choose monthly or annual access, and get automatic community access after verified payment.
+        <div className="mx-auto mt-12 grid max-w-5xl gap-px overflow-hidden border border-white/15 bg-white/15 md:grid-cols-2">
+          <article className="flex min-h-[320px] flex-col bg-[#0C0C0C] p-8 md:p-10">
+            <h3 className="text-[clamp(2.8rem,4vw,4.6rem)] leading-[0.9] text-[#ff7068]">Ready to build your portfolio?</h3>
+            <p className="mt-6 max-w-md text-[1.08rem] leading-8 text-white/90 md:text-[1.18rem]">
+              Learn the workflow, build finished work, get feedback, and use the full AIFA curriculum, live practice, and community to grow a portfolio worth sharing.
             </p>
-            <a
-              href="/membership"
-              className="btn-primary mt-auto px-7 py-4 text-base font-bold"
-            >
-              Explore Membership <ArrowUpRight className="h-4 w-4" />
+            <a href="/membership" className="btn-primary mt-auto min-h-13 px-7 py-4 text-[1rem] font-bold">
+              Explore Membership <ArrowUpRight className="h-5 w-5" />
             </a>
           </article>
 
-          <article className="flex min-h-[310px] flex-col bg-[#101010] p-7 md:p-10">
-            <p className="font-mono text-[0.62rem] uppercase tracking-[0.2em] text-white/35">Want to see the method first?</p>
-            <h3 className="mt-5 text-4xl text-white md:text-5xl">Watch The Free Training.</h3>
-            <p className="mt-4 max-w-md text-sm leading-6 text-white/54 md:text-base">
-              Learn how the AIFA production system turns an idea into polished AI video without getting trapped in tool overwhelm.
+          <article className="flex min-h-[320px] flex-col bg-[#101010] p-8 md:p-10">
+            <h3 className="text-[clamp(2.8rem,4vw,4.6rem)] leading-[0.9] text-[#ff7068]">Try for free.</h3>
+            <p className="mt-6 max-w-md text-[1.08rem] leading-8 text-white/90 md:text-[1.18rem]">
+              Watch the free training to learn how the AIFA production system turns an idea into polished AI video without getting trapped in tool overwhelm.
             </p>
-            <a
-              href="/free-video-training"
-              className="btn-outline mt-auto px-7 py-4 text-base font-semibold"
-            >
-              <Play className="h-4 w-4 fill-current" /> Watch the Free Training
+            <a href="/free-video-training" className="btn-outline mt-auto min-h-13 px-7 py-4 text-[1rem] font-bold">
+              <Play className="h-5 w-5 fill-current" /> Watch the Free Training
             </a>
           </article>
         </div>
 
-        <p className="mx-auto mt-7 max-w-2xl text-center font-mono text-[0.58rem] uppercase tracking-[0.14em] text-white/25">
-          One clear workflow · ongoing feedback · portfolio-ready projects
-        </p>
-        <p className="mx-auto mt-5 max-w-2xl text-center text-sm leading-6 text-white/38">
-          Planning a production, GenJam, workshop, or thoughtful partnership? <a href="/contact" className="font-semibold text-white/72 underline decoration-white/25 underline-offset-4 transition-colors hover:text-white">Contact Us →</a>
-        </p>
+        <div className="mx-auto mt-8 flex max-w-5xl flex-wrap justify-center gap-x-7 gap-y-3 text-center text-[1.04rem] font-semibold text-white/90 md:text-[1.12rem]">
+          <span>One clear workflow</span>
+          <span className="text-[#ff7068]" aria-hidden="true">•</span>
+          <span>Ongoing feedback</span>
+          <span className="text-[#ff7068]" aria-hidden="true">•</span>
+          <span>Portfolio-ready projects</span>
+        </div>
+
+        <div className="mx-auto mt-12 grid max-w-5xl gap-3 md:grid-cols-3">
+          <a href="/productions" className="flex min-h-16 items-center justify-center border border-white/30 bg-white/[0.04] px-5 text-center text-[1rem] font-bold text-white transition-colors hover:border-[#ff7068] hover:text-[#ff7068]">
+            Need a custom production?
+          </a>
+          <a href="/education-events" className="flex min-h-16 items-center justify-center border border-white/30 bg-white/[0.04] px-5 text-center text-[1rem] font-bold text-white transition-colors hover:border-[#ff7068] hover:text-[#ff7068]">
+            Host a Gen AI workshop
+          </a>
+          <a href="/contact" className="flex min-h-16 items-center justify-center border border-white/30 bg-white/[0.04] px-5 text-center text-[1rem] font-bold text-white transition-colors hover:border-[#ff7068] hover:text-[#ff7068]">
+            Contact Us
+          </a>
+        </div>
       </div>
     </section>
   );

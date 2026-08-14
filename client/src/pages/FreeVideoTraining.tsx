@@ -718,33 +718,6 @@ function AboutAndForm() {
   );
 }
 
-// ─── Footer ───────────────────────────────────────────────────────────────────
-function Footer() {
-  return (
-    <footer
-      style={{
-        background: "#050505",
-        borderTop: "1px solid rgba(255,255,255,0.05)",
-        padding: "36px 24px",
-        textAlign: "center",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        gap: "12px",
-      }}
-    >
-      <img
-        src="/assets/afa-logo-horizontal.png"
-        alt="AI Film Academy"
-        style={{ height: "52px", display: "block" }}
-      />
-      <p style={{ color: "#444", fontSize: "0.78rem", margin: 0 }}>
-        © {new Date().getFullYear()} AI Film Academy · Exemplar Industries LLC
-      </p>
-    </footer>
-  );
-}
-
 // ─── Responsive + Animation CSS ───────────────────────────────────────────────
 const CSS = `
   @media (max-width: 720px) {
@@ -843,7 +816,6 @@ export default function FreeVideoTraining() {
         <WhoThisIsFor />
         <Secrets />
         <AboutAndForm />
-        <Footer />
       </div>
     </>
   );
