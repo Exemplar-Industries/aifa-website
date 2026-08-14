@@ -1,19 +1,19 @@
 /*
- * AI Film Academy - Homepage production-system section
+ * AI Film Academy - Homepage creative-process section
  */
 
-const PRINCIPLES = [
+const PROCESS_STEPS = [
   {
-    title: "Right tools",
-    description: "Use the tools that move the work forward instead of chasing every new release.",
+    title: "Learn the workflow",
+    description: "Build a repeatable process from the first idea to the final film instead of collecting disconnected tools.",
   },
   {
-    title: "Right order",
-    description: "Follow one clear production system from first idea to a finished piece of work.",
+    title: "Make real work",
+    description: "Practice through creative briefs, GenJams, and projects designed to become part of your portfolio.",
   },
   {
-    title: "No overwhelm",
-    description: "Build the confidence to direct, finish, and share work you are proud to put your name on.",
+    title: "Get better faster",
+    description: "Use feedback, community, and a clear quality bar to turn experiments into work you are proud to show.",
   },
 ];
 
@@ -30,26 +30,26 @@ export default function InsideAFASection() {
             More tools do not make <span style={{ color: "var(--afa-red)" }}>better films.</span>
           </h2>
           <div className="max-w-2xl">
-            <p className="text-[clamp(1.3rem,2.1vw,1.85rem)] font-semibold leading-[1.42] text-white">
-              Stop chasing every shiny tool. AIFA gives you the <strong className="font-extrabold text-white">right tools</strong>, in the <strong className="font-extrabold text-white">right order</strong>, with <strong className="font-extrabold" style={{ color: "var(--afa-red)" }}>no overwhelm</strong>.
+            <p className="text-[clamp(1.28rem,2.05vw,1.8rem)] font-semibold leading-[1.42] text-white">
+              For creators, filmmakers, and freelancers ready to grow their creative career and land more paid work.
             </p>
             <p className="mt-6 text-[clamp(1.12rem,1.7vw,1.35rem)] leading-8 text-white/90">
-              Build the confidence to direct your ideas, finish your work, and turn a premium portfolio into more paid creative opportunities.
+              The difference is a complete creative process: a way to develop an idea, direct the production, finish the work, and get it in front of people who can respond to it.
             </p>
           </div>
         </div>
 
         <div className="mt-14 grid gap-px border border-white/15 bg-white/15 md:grid-cols-3">
-          {PRINCIPLES.map((principle) => (
-            <article key={principle.title} className="bg-[#111111] p-8 md:p-10">
-              <h3 className="text-[clamp(2.65rem,4.5vw,4.45rem)] leading-[0.9] text-white">
-                {principle.title.split(" ").map((word, index) => (
-                  <span key={word} style={index === principle.title.split(" ").length - 1 ? { color: "var(--afa-red)" } : undefined}>
-                    {word}{index < principle.title.split(" ").length - 1 ? " " : ""}
+          {PROCESS_STEPS.map((step) => (
+            <article key={step.title} className="bg-[#111111] p-8 md:p-10">
+              <h3 className="text-[clamp(2.45rem,4.35vw,4.2rem)] leading-[0.9] text-white">
+                {step.title.split(" ").map((word, index) => (
+                  <span key={word} style={index === step.title.split(" ").length - 1 ? { color: "var(--afa-red)" } : undefined}>
+                    {word}{index < step.title.split(" ").length - 1 ? " " : ""}
                   </span>
                 ))}
               </h3>
-              <p className="mt-6 text-[1.1rem] leading-8 text-white/90 md:text-[1.2rem]">{principle.description}</p>
+              <p className="mt-6 text-[1.1rem] leading-8 text-white/90 md:text-[1.2rem]">{step.description}</p>
             </article>
           ))}
         </div>
