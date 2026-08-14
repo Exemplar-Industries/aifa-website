@@ -5,7 +5,6 @@
 
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
-import ThemeToggle from "./ThemeToggle";
 
 const LOGO_URL = "/assets/afa-logo-horizontal.png";
 
@@ -66,7 +65,6 @@ export default function Navbar() {
           >
             <span>Try Free</span>
           </a>
-          <ThemeToggle />
           <button
             type="button"
             className="menu-toggle inline-flex h-11 w-11 items-center justify-center border border-white/25 text-white transition-colors xl:hidden"

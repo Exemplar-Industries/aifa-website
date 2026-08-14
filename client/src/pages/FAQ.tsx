@@ -79,8 +79,8 @@ export default function FAQ() {
                   {group.questions.map(([question, answer], index) => (
                     <AccordionItem key={question} value={`${groupIndex}-${index}`} className="border-white/10">
                       <AccordionTrigger
-                        className="py-5 text-left text-[1.15rem] font-normal leading-[1.2] tracking-[0.04em] text-white/92 hover:text-[#E63329] hover:no-underline md:text-[1.35rem]"
-                        style={{ fontFamily: "'Bebas Neue', sans-serif" }}
+                        className="faq-question-trigger py-6 text-left font-bold leading-[1.32] tracking-normal text-white hover:text-white hover:no-underline"
+                        style={{ fontFamily: "'DM Sans', sans-serif" }}
                       >
                         {question}
                       </AccordionTrigger>
@@ -102,7 +102,7 @@ export default function FAQ() {
               <a href="https://www.skool.com/aifilmacademy/about" target="_blank" rel="noopener noreferrer" className="btn-primary px-7 py-4 font-bold">
                 Join AIFA <ArrowUpRight className="h-4 w-4" />
               </a>
-              <a href="https://www.aifilmacademy.com/free-video-training" target="_blank" rel="noopener noreferrer" className="btn-outline px-7 py-4 font-semibold">Watch the Free Training</a>
+              <a href="/free-video-training" className="btn-outline px-7 py-4 font-semibold">Try Free</a>
             </div>
           </div>
         </section>

@@ -5,7 +5,6 @@ import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-import { ThemeProvider } from "./contexts/ThemeContext";
 import { AffiliateLinkProvider } from "./contexts/AffiliateLinkContext";
 import Home from "./pages/Home";
 import Consulting from "./pages/Consulting";
@@ -71,18 +70,16 @@ function Router() {
 function App() {
   return (
     <ErrorBoundary>
-      <ThemeProvider defaultTheme="dark" switchable>
-        <AffiliateLinkProvider>
-          <TooltipProvider>
-            <Toaster />
-            <div className="aifa-readable">
-              <Navbar />
-              <Router />
-              <Footer />
-            </div>
-          </TooltipProvider>
-        </AffiliateLinkProvider>
-      </ThemeProvider>
+      <AffiliateLinkProvider>
+        <TooltipProvider>
+          <Toaster />
+          <div className="aifa-readable">
+            <Navbar />
+            <Router />
+            <Footer />
+          </div>
+        </TooltipProvider>
+      </AffiliateLinkProvider>
     </ErrorBoundary>
   );
 }

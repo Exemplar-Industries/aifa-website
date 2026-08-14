@@ -29,21 +29,30 @@ export default function InsideAFASection() {
           <h2 className="max-w-4xl text-[clamp(3.1rem,6.2vw,5.85rem)] leading-[0.9] text-[#F5F5F0]">
             Join the Future of <span style={{ color: "var(--afa-red)" }}>Creative Work.</span>
           </h2>
-          <p className="creative-system-statement max-w-3xl text-[clamp(1.55rem,2.35vw,2.08rem)] font-semibold leading-[1.42] text-white">
+          <p className="creative-system-statement max-w-3xl text-[clamp(1.42rem,2.15vw,1.88rem)] font-semibold leading-[1.42] text-white">
             Most AI resources leave creators and freelancers overwhelmed. AIFA gives you one production system to move from idea to final piece, build a premium portfolio, and land more paid work.
           </p>
         </div>
 
-        <div className="mt-14 grid gap-7 md:grid-cols-3 md:gap-8">
+        <div className="mt-14 grid gap-5 md:grid-cols-3 md:gap-6">
           {CREATIVE_SYSTEM_STEPS.map((step) => (
-            <article key={step.title} className="border-t-2 pt-7" style={{ borderColor: "var(--afa-red)" }}>
+            <article
+              key={step.title}
+              className="relative flex min-h-[320px] flex-col overflow-hidden rounded-[18px] border p-7 md:p-8"
+              style={{
+                borderColor: "rgba(255,255,255,0.18)",
+                borderTop: "3px solid var(--afa-red)",
+                background: "linear-gradient(145deg, rgba(255,255,255,0.075), rgba(255,255,255,0.025))",
+                boxShadow: "0 20px 46px rgba(0,0,0,0.2)",
+              }}
+            >
               <h3
-                className="flex min-h-[3.55rem] items-start text-[clamp(1.62rem,2.35vw,2.14rem)] font-extrabold leading-[1.08] tracking-[-0.015em] text-[#F5F5F0]"
-                style={{ fontFamily: "'DM Sans', sans-serif" }}
+                className="min-h-[4.8rem] text-[clamp(2.15rem,3.2vw,3rem)] uppercase leading-[0.92] text-[#F5F5F0]"
+                style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.035em" }}
               >
                 {step.title}
               </h3>
-              <p className="creative-system-card-copy mt-6 max-w-md text-[clamp(1.28rem,1.8vw,1.52rem)] font-medium leading-[1.5] text-white">
+              <p className="creative-system-card-copy mt-7 text-[clamp(1.16rem,1.55vw,1.34rem)] font-semibold leading-[1.48] text-white">
                 {step.description}
               </p>
             </article>
