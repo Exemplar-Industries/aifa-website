@@ -153,11 +153,11 @@ html.light {
 
 @layer components {
   /* Readability standard: public AFA pages do not use microtype or low-contrast gray copy. */
-  .aifa-readable :where(p, a, button, label, input, textarea, select, li, summary) {
+  .aifa-readable :where(p, a, button, label, input, textarea, select, li, summary):not(.stat-number) {
     font-size: max(1rem, 1em) !important;
   }
 
-  .aifa-readable :where(p, li, label, input, textarea, select) {
+  .aifa-readable :where(p, li, label, input, textarea, select):not(.stat-number) {
     color: color-mix(in srgb, currentColor 88%, white 12%);
   }
 
