@@ -199,36 +199,39 @@ function Hero() {
         }}
         className="hero-grid"
       >
-        <div>
+        <div style={{ textAlign: "center" }}>
           <h1
             style={{
               color: "#fff",
-              fontWeight: 900,
-              fontSize: "clamp(2.4rem, 5.5vw, 4rem)",
-              lineHeight: 1.08,
-              letterSpacing: "-0.02em",
-              marginBottom: "28px",
+              fontFamily: "'Bebas Neue', sans-serif",
+              fontWeight: 400,
+              fontSize: "clamp(2.25rem, 4.7vw, 3.65rem)",
+              lineHeight: 1.18,
+              letterSpacing: "0.018em",
+              margin: "0 auto 28px",
+              maxWidth: "640px",
             }}
           >
-            How To Build a Premium AI Film Portfolio and Start Charging High Ticket in 30 Days —{" "}
-            <span style={{ color: "#c8102e" }}>
-              Without a Film School Background or Dozens of Tools
-            </span>
+            <span style={{ display: "block" }}>How To Build a</span>
+            <span style={{ color: "#c8102e", display: "block" }}>Premium AI Film Portfolio</span>
+            <span style={{ display: "block" }}>And Start Charging</span>
+            <span style={{ color: "#c8102e", display: "block" }}>High Ticket in 30 Days</span>
           </h1>
           <p
             style={{
               color: "#ccc",
               fontSize: "clamp(1.05rem, 2.2vw, 1.25rem)",
               lineHeight: 1.75,
-              marginBottom: "40px",
-              maxWidth: "540px",
+              margin: "0 auto 40px",
+              maxWidth: "575px",
             }}
           >
             I'll show you the exact AI Film System™ my students use to master AI Filmmaking, build
-            premium portfolios, and start charging high ticket for paid creative work.
+            premium portfolios, and start charging high ticket for paid creative work without a film
+            school background or dozens of tools.
           </p>
           {/* Hero inline mini-form — button removed, form is the CTA */}
-          <div style={{ marginTop: "28px", maxWidth: "480px" }}>
+          <div style={{ margin: "28px auto 0", maxWidth: "480px" }}>
             <HeroForm />
           </div>
         </div>
