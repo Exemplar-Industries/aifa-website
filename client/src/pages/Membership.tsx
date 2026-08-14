@@ -102,14 +102,16 @@ const PLANS = {
     name: "Monthly",
     amount: "$125",
     cadence: "/ month",
-    billingLine: "Billed Monthly. Cancel Anytime.",
+    priceQualifier: "(billed monthly)",
+    billingLine: "Cancel Anytime.",
     cta: "Start Monthly Membership",
   },
   annual: {
     name: "Annual",
     amount: "$799",
     cadence: "/ year",
-    billingLine: "Billed annually. That is $66.58 per month—save $701 versus monthly billing.",
+    priceQualifier: "(billed annually)",
+    billingLine: "That is $66.58 per month. Save $701 versus monthly billing.",
     cta: "Start Annual Membership",
   },
 } as const;
@@ -288,7 +290,7 @@ export default function Membership() {
       <section id="checkout" style={{ padding: "clamp(5rem, 10vw, 8rem) 1.5rem", maxWidth: "1180px", margin: "0 auto" }}>
         <div style={{ textAlign: "center", maxWidth: "760px", margin: "0 auto 3.25rem" }}>
           <h2 style={{ color: "#F5F5F0", fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(3rem, 7vw, 5.5rem)", lineHeight: 0.95, letterSpacing: "0.02em", marginBottom: "1rem" }}>Membership <span style={{ color: "var(--afa-red)" }}>Pricing.</span></h2>
-          <p style={{ color: "rgba(255,255,255,0.94)", fontSize: "clamp(1.2rem, 1.8vw, 1.45rem)", fontWeight: 600, lineHeight: 1.5 }}>Get the complete AIFA membership for $125/month, including training, creative practice, feedback, and community. Save $701 and get instant certification access with annual membership.</p>
+          <p style={{ color: "rgba(255,255,255,0.94)", fontSize: "clamp(1.2rem, 1.8vw, 1.45rem)", fontWeight: 600, lineHeight: 1.5 }}>Access the full AIFA ecosystem for only $125/mo. Save $701 when you choose annual.</p>
         </div>
 
         <div className="membership-pricing-shell" style={{ maxWidth: "1060px", margin: "0 auto", border: "1px solid rgba(255,255,255,0.16)", borderRadius: "22px", overflow: "hidden", background: "linear-gradient(145deg, rgba(255,255,255,0.055), rgba(255,255,255,0.015))", display: "flex", flexDirection: "column" }}>
@@ -300,7 +302,8 @@ export default function Membership() {
                 <article key={cycle} className={isAnnual ? "membership-plan-annual" : "membership-plan-monthly"} style={{ position: "relative", padding: "clamp(2rem, 5vw, 3rem)", borderLeft: isAnnual ? "1px solid rgba(255,255,255,0.14)" : "none", background: isAnnual ? "linear-gradient(160deg, color-mix(in srgb, var(--afa-red) 20%, transparent), rgba(20,20,20,0.92) 42%)" : "rgba(14,14,14,0.88)" }}>
                   {isAnnual && <span style={{ position: "absolute", top: "1.25rem", right: "1.25rem", padding: "0.5rem 0.8rem", borderRadius: "999px", background: "var(--afa-red)", color: "#fff", fontSize: "1rem", fontWeight: 800 }}>Best value</span>}
                   <p style={{ color: isAnnual ? "var(--afa-red)" : "#F5F5F0", fontSize: "1.18rem", fontWeight: 800, marginBottom: "1.25rem" }}>{plan.name} Membership</p>
-                  <p style={{ fontFamily: "'DM Sans', sans-serif", color: "#fff", fontSize: "clamp(3.45rem, 6vw, 5rem)", lineHeight: 0.98, letterSpacing: "-0.045em", fontWeight: 800, marginBottom: "0.8rem" }}>{plan.amount}<span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "1.24rem", color: "rgba(255,255,255,0.86)", fontWeight: 700, letterSpacing: 0, marginLeft: "0.28rem" }}>{plan.cadence}</span></p>
+                  <p style={{ fontFamily: "'DM Sans', sans-serif", color: "#fff", fontSize: "clamp(3.45rem, 6vw, 5rem)", lineHeight: 0.98, letterSpacing: "-0.045em", fontWeight: 800, marginBottom: "0.45rem" }}>{plan.amount}<span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "1.24rem", color: "rgba(255,255,255,0.86)", fontWeight: 700, letterSpacing: 0, marginLeft: "0.28rem" }}>{plan.cadence}</span></p>
+                  <p style={{ color: "rgba(255,255,255,0.72)", fontSize: "1rem", fontWeight: 700, marginBottom: "0.85rem" }}>{plan.priceQualifier}</p>
                   <p style={{ color: "rgba(255,255,255,0.94)", fontSize: "1.14rem", lineHeight: 1.55, fontWeight: 600, minHeight: "80px", marginBottom: "2rem" }}>{plan.billingLine}</p>
                   <PurchaseCta cycle={cycle} className="w-full px-6" onCheckout={startCheckout} isLoading={checkingOut} />
                 </article>
