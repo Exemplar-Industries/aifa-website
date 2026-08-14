@@ -322,6 +322,31 @@ html.light {
     background: rgba(255, 255, 255, 0.08);
   }
 
+  .final-action-panel {
+    border: 1px solid color-mix(in srgb, var(--afa-red) 38%, white 12%);
+    border-radius: clamp(1rem, 2.5vw, 1.75rem);
+    background:
+      radial-gradient(circle at 92% 52%, color-mix(in srgb, var(--afa-red) 48%, transparent), transparent 36%),
+      radial-gradient(circle at 14% 8%, rgba(255, 255, 255, 0.08), transparent 30%),
+      linear-gradient(108deg, #090909 0%, #11100f 49%, #240907 100%);
+    box-shadow: 0 24px 90px rgba(0, 0, 0, 0.32);
+  }
+
+  .final-action-glow {
+    background:
+      linear-gradient(90deg, rgba(255, 255, 255, 0.035), transparent 38%),
+      radial-gradient(circle at 50% 100%, color-mix(in srgb, var(--afa-red) 18%, transparent), transparent 60%);
+  }
+
+  .final-action-outline {
+    border-color: rgba(255, 255, 255, 0.55);
+    background: rgba(0, 0, 0, 0.12);
+  }
+
+  .final-action-outline:hover {
+    border-color: var(--afa-red);
+  }
+
   /* Label / Tag style */
   .label-tag {
     font-family: 'DM Sans', sans-serif;
@@ -488,6 +513,27 @@ html.light .homepage-hero-outline {
   border-color: #4c443d !important;
   color: #171513 !important;
   background: rgba(255, 253, 249, 0.6) !important;
+}
+
+html.light .final-action-panel {
+  border-color: color-mix(in srgb, var(--afa-red) 45%, #d9d1c7) !important;
+  background:
+    radial-gradient(circle at 92% 52%, color-mix(in srgb, var(--afa-red) 32%, transparent), transparent 42%),
+    linear-gradient(108deg, #fffdf9 0%, #f8eee7 100%) !important;
+}
+
+html.light .final-action-panel :where(h2, p) {
+  color: #171513 !important;
+}
+
+html.light .final-action-panel h2 span {
+  color: var(--afa-red) !important;
+}
+
+html.light .final-action-outline {
+  border-color: #4c443d !important;
+  color: #171513 !important;
+  background: rgba(255, 253, 249, 0.62) !important;
 }
 
 html.light .aifa-readable :where([class*="border-white"], [class*="bg-white/"]) {
