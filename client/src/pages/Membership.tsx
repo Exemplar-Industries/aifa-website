@@ -302,8 +302,7 @@ export default function Membership() {
                 <article key={cycle} className={isAnnual ? "membership-plan-annual" : "membership-plan-monthly"} style={{ position: "relative", padding: "clamp(2rem, 5vw, 3rem)", borderLeft: isAnnual ? "1px solid rgba(255,255,255,0.14)" : "none", background: isAnnual ? "linear-gradient(160deg, color-mix(in srgb, var(--afa-red) 20%, transparent), rgba(20,20,20,0.92) 42%)" : "rgba(14,14,14,0.88)" }}>
                   {isAnnual && <span style={{ position: "absolute", top: "1.25rem", right: "1.25rem", padding: "0.5rem 0.8rem", borderRadius: "999px", background: "var(--afa-red)", color: "#fff", fontSize: "1rem", fontWeight: 800 }}>Best value</span>}
                   <p style={{ color: isAnnual ? "var(--afa-red)" : "#F5F5F0", fontSize: "1.18rem", fontWeight: 800, marginBottom: "1.25rem" }}>{plan.name} Membership</p>
-                  <p style={{ fontFamily: "'DM Sans', sans-serif", color: "#fff", fontSize: "clamp(3.45rem, 6vw, 5rem)", lineHeight: 0.98, letterSpacing: "-0.045em", fontWeight: 800, marginBottom: "0.45rem" }}>{plan.amount}<span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "1.24rem", color: "rgba(255,255,255,0.86)", fontWeight: 700, letterSpacing: 0, marginLeft: "0.28rem" }}>{plan.cadence}</span></p>
-                  <p style={{ color: "rgba(255,255,255,0.72)", fontSize: "1rem", fontWeight: 700, marginBottom: "0.85rem" }}>{plan.priceQualifier}</p>
+                  <p style={{ fontFamily: "'DM Sans', sans-serif", color: "#fff", fontSize: "clamp(3.45rem, 6vw, 5rem)", lineHeight: 0.98, letterSpacing: "-0.045em", fontWeight: 800, marginBottom: "0.85rem" }}>{plan.amount}<span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "1.24rem", color: "rgba(255,255,255,0.86)", fontWeight: 700, letterSpacing: 0, marginLeft: "0.28rem" }}>{plan.cadence}</span></p>
                   <p style={{ color: "rgba(255,255,255,0.94)", fontSize: "1.14rem", lineHeight: 1.55, fontWeight: 600, minHeight: "80px", marginBottom: "2rem" }}>{plan.billingLine}</p>
                   <PurchaseCta cycle={cycle} className="w-full px-6" onCheckout={startCheckout} isLoading={checkingOut} />
                 </article>
@@ -313,7 +312,17 @@ export default function Membership() {
 
           <div className="membership-comparison" style={{ order: 2, borderTop: "1px solid rgba(255,255,255,0.14)", background: "rgba(0,0,0,0.2)" }}>
           <div className="membership-comparison-header" style={{ display: "grid", gridTemplateColumns: "1.2fr 0.9fr 0.9fr", gap: "1rem", padding: "1.25rem clamp(1.25rem, 3vw, 2.5rem)", color: "rgba(255,255,255,0.7)", fontWeight: 800, fontSize: "1rem" }}>
-            <span>What’s included</span><span style={{ textAlign: "center" }}>Monthly</span><span style={{ textAlign: "center" }}>Annual</span>
+            <span>What’s included</span>
+            <span style={{ textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center", gap: "0.18rem" }}>
+              <span>Monthly</span>
+              <span style={{ color: "#F5F5F0", fontSize: "1.06rem" }}>$125/mo</span>
+              <span style={{ color: "rgba(255,255,255,0.66)", fontSize: "0.85rem" }}>{PLANS.monthly.priceQualifier}</span>
+            </span>
+            <span style={{ textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center", gap: "0.18rem" }}>
+              <span>Annual</span>
+              <span style={{ color: "#F5F5F0", fontSize: "1.06rem" }}>$799/yr</span>
+              <span style={{ color: "rgba(255,255,255,0.66)", fontSize: "0.85rem" }}>{PLANS.annual.priceQualifier}</span>
+            </span>
           </div>
           <div style={{ padding: "0 clamp(1.25rem, 3vw, 2.5rem) 1.25rem" }}>
             {MEMBERSHIP_COMPARISON_ROWS.map((feature, index) => (
