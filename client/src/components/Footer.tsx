@@ -22,7 +22,7 @@ const columns: FooterColumn[] = [
     links: [
       { label: "Explore Membership", href: "/membership" },
       { label: "Watch Free Training", href: "/free-video-training" },
-      { label: "Showcase", href: "/showcase" },
+      { label: "See What's Possible", href: "/showcase" },
       { label: "FAQ", href: "/faq" },
     ],
   },
@@ -30,8 +30,8 @@ const columns: FooterColumn[] = [
     heading: "Explore AIFA",
     links: [
       { label: "AI Film Events", href: "/events" },
-      { label: "Done-for-You Productions", href: "/productions" },
-      { label: "GenJams & Workshops", href: "/education-events" },
+      { label: "Done For You Production", href: "/productions" },
+      { label: "Workshops & Events", href: "/education-events" },
       { label: "Contact Us", href: "/contact" },
     ],
   },

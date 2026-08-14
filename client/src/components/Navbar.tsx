@@ -9,11 +9,10 @@ import { Menu, X } from "lucide-react";
 const LOGO_URL = "/assets/afa-logo-horizontal.png";
 
 const navLinks = [
-  { label: "Membership", href: "/membership" },
-  { label: "Showcase", href: "/showcase" },
-  { label: "AI Film Events", href: "/events" },
-  { label: "Productions", href: "/productions" },
-  { label: "GenJams & Workshops", href: "/education-events" },
+  { label: "Explore Membership", href: "/membership" },
+  { label: "See What's Possible", href: "/showcase" },
+  { label: "Done For You Production", href: "/productions" },
+  { label: "Workshops & Events", href: "/education-events" },
   { label: "Contact Us", href: "/contact" },
   { label: "FAQ", href: "/faq" },
 ];
@@ -63,8 +62,7 @@ export default function Navbar() {
             href="/free-video-training"
             className="btn-primary inline-flex min-h-11 items-center gap-2 px-3.5 py-2.5 text-[0.92rem] font-bold sm:px-4"
           >
-            <span className="hidden sm:inline">Watch Free Training</span>
-            <span className="sm:hidden">Free Training</span>
+            <span>Watch Free Training</span>
           </a>
           <button
             type="button"
