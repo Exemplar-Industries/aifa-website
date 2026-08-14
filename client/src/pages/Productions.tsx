@@ -46,14 +46,14 @@ export default function Productions() {
 
       <section style={{ position: "relative", padding: "clamp(6.5rem, 13vw, 10rem) 1.5rem 5rem", borderBottom: "1px solid rgba(255,255,255,.08)", background: "radial-gradient(ellipse at 85% 15%, rgba(193,27,27,.32), transparent 38%), radial-gradient(ellipse at 7% 85%, rgba(116,16,16,.20), transparent 36%), #080808" }}>
         <div style={{ maxWidth: "1160px", margin: "0 auto" }}>
-          <a href="/work-with-us" style={{ color: "rgba(255,255,255,.45)", fontSize: ".82rem", textDecoration: "none" }}>← Work with AIFA</a>
+          <a href="/contact" style={{ color: "rgba(255,255,255,.45)", fontSize: ".82rem", textDecoration: "none" }}>← Contact AI Film Academy</a>
           <p style={{ color: "#ef4444", fontSize: ".7rem", fontWeight: 800, letterSpacing: ".17em", textTransform: "uppercase", margin: "3rem 0 1.1rem" }}>Done-for-you production</p>
           <h1 style={{ maxWidth: "1000px", fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(4.2rem, 10vw, 9.5rem)", fontWeight: 400, letterSpacing: ".015em", lineHeight: ".82", margin: 0 }}>Make the work people <span style={{ color: "#ef4444" }}>stop for.</span></h1>
           <div style={{ display: "grid", gridTemplateColumns: "minmax(0, 620px) minmax(0, 1fr)", gap: "2rem", marginTop: "2rem", alignItems: "end" }}>
             <p style={{ color: "rgba(255,255,255,.64)", fontSize: "clamp(1rem, 2vw, 1.18rem)", lineHeight: 1.72, margin: 0 }}>AIFA creates cinematic AI films, campaign creative, and visual concepts for people who need more than a prompt experiment. We combine story, visual taste, and emerging production tools to make ambitious ideas feel real.</p>
             <p style={{ color: "rgba(255,255,255,.38)", fontSize: ".82rem", lineHeight: 1.65, margin: 0 }}>Best for brands, founders, agencies, and creative teams with a clear outcome, a real launch moment, and the appetite to make something distinct.</p>
           </div>
-          <a href="/work-with-us" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", minHeight: "54px", marginTop: "2rem", padding: "0 1.45rem", borderRadius: "9px", background: "linear-gradient(135deg, #ef4444, #b91c1c)", color: "#fff", fontWeight: 800, fontSize: ".92rem", textDecoration: "none", boxShadow: "0 0 36px rgba(239,68,68,.25)" }}>Start a production inquiry →</a>
+          <a href="/contact" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", minHeight: "54px", marginTop: "2rem", padding: "0 1.45rem", borderRadius: "9px", background: "linear-gradient(135deg, #ef4444, #b91c1c)", color: "#fff", fontWeight: 800, fontSize: ".92rem", textDecoration: "none", boxShadow: "0 0 36px rgba(239,68,68,.25)" }}>Start a production inquiry →</a>
           <p style={{ color: "rgba(255,255,255,.33)", fontSize: ".75rem", lineHeight: 1.55, marginTop: ".85rem" }}>Custom production engagements begin at $5,000.</p>
         </div>
       </section>
@@ -115,7 +115,7 @@ export default function Productions() {
         <p style={{ color: "#f87171", fontSize: ".7rem", fontWeight: 800, letterSpacing: ".15em", textTransform: "uppercase", marginBottom: ".95rem" }}>Start the conversation</p>
         <h2 style={{ maxWidth: "820px", margin: "0 auto 1.2rem", fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(3.3rem, 7vw, 6.5rem)", fontWeight: 400, letterSpacing: ".02em", lineHeight: ".86" }}>If the work matters, <span style={{ color: "#ef4444" }}>let’s make it matter.</span></h2>
         <p style={{ maxWidth: "560px", color: "rgba(255,255,255,.56)", fontSize: "1rem", lineHeight: 1.7, margin: "0 auto 1.8rem" }}>Tell us where you are headed, what you need to accomplish, and the production you have in mind. We will point you to the smartest next step.</p>
-        <a href="/work-with-us" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", minHeight: "54px", padding: "0 1.45rem", borderRadius: "9px", background: "linear-gradient(135deg, #ef4444, #b91c1c)", color: "#fff", fontWeight: 800, fontSize: ".92rem", textDecoration: "none", boxShadow: "0 0 36px rgba(239,68,68,.25)" }}>Start a production inquiry →</a>
+        <a href="/contact" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", minHeight: "54px", padding: "0 1.45rem", borderRadius: "9px", background: "linear-gradient(135deg, #ef4444, #b91c1c)", color: "#fff", fontWeight: 800, fontSize: ".92rem", textDecoration: "none", boxShadow: "0 0 36px rgba(239,68,68,.25)" }}>Start a production inquiry →</a>
       </section>
     </main>
   );

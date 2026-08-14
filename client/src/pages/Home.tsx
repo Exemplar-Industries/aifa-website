@@ -2,13 +2,13 @@
  * AI Film Academy — Home Page (Landing Page)
  * Design: "The Director's Cut" — Cinematic Dark
  * Hero: Fullscreen video background — video IS the hero, text overlaid
- * Goal: Route qualified visitors to the Skool About page or free training.
+ * Goal: Route visitors through one guided decision: evaluate membership or experience the free training.
  *
- * LOCKED FOUR-SECTION ORDER:
- * 1. Hero          — Existing fullscreen background video and composition preserved
- * 2. Inside AIFA    — Create, Improve, Build, Participate progression
- * 3. Results       — World Cup, B2B reach, metrics, reviews, testimonials
- * 4. Start Here    — Skool primary path, free training secondary path
+ * GUIDED FOUR-SECTION ORDER:
+ * 1. Hero          — Existing fullscreen background video and two decisive actions
+ * 2. Why AIFA      — The creative mechanism, not a full feature checklist
+ * 3. Proof         — Live practice, substantiated scale, and a concise member voice set
+ * 4. Start Here    — Membership primary, free training secondary, quiet Contact Us support path
  * Footer is utility navigation and does not count as a content section.
  */
 

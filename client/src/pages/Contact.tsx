@@ -33,7 +33,7 @@ const EVENT_SCOPES = ["A hands-on GenJam", "A team workshop", "A keynote or spea
 const PRODUCTION_BUDGETS = ["Under $5,000", "$5,000–$15,000", "$15,000–$50,000", "$50,000+"];
 const EVENT_BUDGETS = ["Under $5,000", "$5,000–$15,000", "$15,000–$35,000", "$35,000+"];
 
-export default function WorkWithUs() {
+export default function Contact() {
   const [intent, setIntent] = useState<Intent>("production");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -94,9 +94,9 @@ export default function WorkWithUs() {
   return (
     <main style={{ minHeight: "100vh", overflowX: "hidden", background: "#080808", color: "#F5F5F0", fontFamily: "'DM Sans', sans-serif" }}>
       <PageMeta
-        title="Work With AI Film Academy | AI Production, GenJams & Creative-AI Education"
+        title="Contact AI Film Academy | Production, GenJams & Creative-AI Education"
         description="Start a qualified inquiry for done-for-you AI film production, organizational GenJams, hands-on workshops, or creative-AI keynotes from AI Film Academy."
-        path="/work-with-us"
+        path="/contact"
       />
       <style>{`
         .work-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; background: rgba(255,255,255,0.12); }
@@ -114,17 +114,17 @@ export default function WorkWithUs() {
       <section style={{ position: "relative", padding: "clamp(6.5rem, 12vw, 10rem) 1.5rem 5rem", borderBottom: "1px solid rgba(255,255,255,0.08)", background: "radial-gradient(ellipse at 85% 15%, rgba(190,24,24,0.28), transparent 38%), radial-gradient(ellipse at 16% 80%, rgba(99,16,16,0.18), transparent 32%), #080808" }}>
         <div style={{ maxWidth: "1160px", margin: "0 auto" }}>
           <a href="/" style={{ color: "rgba(255,255,255,0.48)", fontSize: "0.82rem", textDecoration: "none" }}>← AI Film Academy</a>
-          <p style={{ color: "#ef4444", fontSize: "0.72rem", fontWeight: 800, letterSpacing: "0.18em", textTransform: "uppercase", margin: "3rem 0 1.15rem" }}>Work with AIFA</p>
+          <p style={{ color: "#ef4444", fontSize: "0.72rem", fontWeight: 800, letterSpacing: "0.18em", textTransform: "uppercase", margin: "3rem 0 1.15rem" }}>Contact AI Film Academy</p>
           <h1 style={{ maxWidth: "900px", fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(4rem, 10vw, 8.8rem)", fontWeight: 400, letterSpacing: "0.02em", lineHeight: 0.84, margin: 0 }}>
-            Build something <span style={{ color: "#ef4444" }}>worth watching.</span>
+            Start a conversation <span style={{ color: "#ef4444" }}>worth having.</span>
           </h1>
-          <p style={{ maxWidth: "640px", marginTop: "1.7rem", color: "rgba(255,255,255,0.64)", fontSize: "clamp(1rem, 2vw, 1.18rem)", lineHeight: 1.7 }}>Whether you want to develop your own AI filmmaking practice, commission an original production, or bring a transformational AI experience to your organization, this is the right place to start.</p>
+          <p style={{ maxWidth: "640px", marginTop: "1.7rem", color: "rgba(255,255,255,0.64)", fontSize: "clamp(1rem, 2vw, 1.18rem)", lineHeight: 1.7 }}>Questions about the Academy, a production brief, a GenJam, a workshop, or a thoughtful partnership? Choose the reason you are reaching out and we will point you to the right next step.</p>
         </div>
       </section>
 
       <section style={{ maxWidth: "1160px", margin: "0 auto", padding: "4.5rem 1.5rem" }}>
-        <p style={{ color: "rgba(255,255,255,0.38)", fontSize: "0.72rem", fontWeight: 800, letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: "0.85rem" }}>Choose your path</p>
-        <h2 style={{ maxWidth: "700px", fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2.8rem, 6vw, 5.1rem)", fontWeight: 400, letterSpacing: "0.02em", lineHeight: 0.92, margin: "0 0 2.4rem" }}>Different goals need different <span style={{ color: "#ef4444" }}>starting points.</span></h2>
+        <p style={{ color: "rgba(255,255,255,0.38)", fontSize: "0.72rem", fontWeight: 800, letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: "0.85rem" }}>How can we help?</p>
+        <h2 style={{ maxWidth: "700px", fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2.8rem, 6vw, 5.1rem)", fontWeight: 400, letterSpacing: "0.02em", lineHeight: 0.92, margin: "0 0 2.4rem" }}>A clear question deserves a clear <span style={{ color: "#ef4444" }}>next step.</span></h2>
         <div className="work-grid">
           {PATHS.map((path, index) => (
             <button key={path.id} type="button" className="work-path" onClick={() => choosePath(path.id)} style={{ boxShadow: intent === path.id ? "inset 0 0 0 1px #ef4444" : undefined }}>

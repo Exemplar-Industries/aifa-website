@@ -8,22 +8,20 @@ const LOGO_URL = "/assets/afa-logo-horizontal.png";
 
 const columns = [
   {
-    heading: "Explore",
+    heading: "Start Here",
     links: [
-      { label: "Home", href: "/" },
-      { label: "FAQ", href: "/faq" },
       { label: "Explore Membership", href: "/membership" },
-      { label: "Work With Us", href: "/work-with-us" },
-      { label: "AI Film Events", href: "/events" },
+      { label: "Watch Free Training", href: "/free-video-training" },
+      { label: "FAQ", href: "/faq" },
     ],
   },
   {
-    heading: "Learn & Follow",
+    heading: "Discover",
     links: [
-      { label: "Free Training", href: "/free-video-training" },
+      { label: "AI Film Events", href: "/events" },
+      { label: "Contact Us", href: "/contact" },
       { label: "YouTube", href: "https://www.youtube.com/channel/UC1zRjoLJcN4cuMLs_A7kIMg", external: true },
       { label: "Instagram", href: "https://www.instagram.com/theaifilmacademy/", external: true },
-      { label: "Email Us", href: "mailto:hello@aifilmacademy.com" },
     ],
   },
   {

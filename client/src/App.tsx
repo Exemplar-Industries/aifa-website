@@ -26,7 +26,7 @@ import MembershipSuccess from "./pages/MembershipSuccess";
 import RefundPolicy from "./pages/RefundPolicy";
 import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
-import WorkWithUs from "./pages/WorkWithUs";
+import Contact from "./pages/Contact";
 import Productions from "./pages/Productions";
 import EducationEvents from "./pages/EducationEvents";
 import Events from "./pages/Events";
@@ -53,7 +53,8 @@ function Router() {
       <Route path={"/refund-policy"} component={RefundPolicy} />
       <Route path={"/terms"} component={Terms} />
       <Route path={"/privacy"} component={Privacy} />
-      <Route path={"/work-with-us"} component={WorkWithUs} />
+      <Route path={"/contact"} component={Contact} />
+      <Route path={"/work-with-us"} component={Contact} />
       <Route path={"/productions"} component={Productions} />
       <Route path={"/education-events"} component={EducationEvents} />
       <Route path={"/events"} component={Events} />

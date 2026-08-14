@@ -1,12 +1,18 @@
 /*
- * AI Film Academy — Results Section
- * Design: "The Director's Cut" — a compact festival dossier of events, scale, reviews, and outcomes.
- * Integrity: every review below already exists in the production testimonial inventory; World Cup ownership is explicitly attributed.
+ * AI Film Academy — Proof of Practice
+ * Homepage role: Demonstrate that AIFA is active in real creative rooms and valued by members.
+ * Detailed event, testimonial, and portfolio material stays on dedicated pages.
  */
 
-import { ArrowUpRight, Quote } from "lucide-react";
+import { Quote } from "lucide-react";
 
-const googleReviews = [
+const STATS = [
+  ["30,000+", "Global learners reached"],
+  ["5+", "Educational partnerships"],
+  ["1,100+", "Creators in community"],
+];
+
+const TESTIMONIALS = [
   {
     quote: "The members are knowledgeable, supportive, and always ready to share insights, resources, and feedback. The courses are clear, practical, and packed with real value.",
     name: "Karim Essafri",
@@ -14,7 +20,7 @@ const googleReviews = [
     initials: "KE",
   },
   {
-    quote: "I'm an old dog trying to learn a few new tricks, so the AI Film Academy's start-from-zero approach has been incredibly helpful. Brandon and his team are responsive, helpful and supportive, no matter where you are in the film making journey.",
+    quote: "The start-from-zero approach has been incredibly helpful. Brandon and his team are responsive, helpful and supportive, no matter where you are in the filmmaking journey.",
     name: "Todd Alan",
     role: "AIFA Member",
     initials: "TA",
@@ -25,30 +31,6 @@ const googleReviews = [
     role: "AIFA Member",
     initials: "MG",
   },
-  {
-    quote: "The AI Film Academy not only provides high quality content, but it's also run by one of the best: Brandon Patino.",
-    name: "P Moren",
-    role: "AIFA Member",
-    initials: "PM",
-  },
-  {
-    quote: "This is a 5 star service. The communication, quality, and final product are just awesome — and more importantly always on time with the value added of the cooperation and insights.",
-    name: "Rodrigo J. Gonzalez",
-    role: "Video Creator",
-    initials: "RG",
-  },
-  {
-    quote: "Working with Brandon & his team was nothing less than amazing. Their attention to detail & commitment to providing top-quality is unmatchable by anyone I've met so far.",
-    name: "Noor Fiad",
-    role: "Client",
-    initials: "NF",
-  },
-];
-
-const stats = [
-  ["30,000+", "Global learners reached"],
-  ["5+", "B2B Educational Partnerships"],
-  ["1,100+", "Private Community Members"],
 ];
 
 function Stars() {
@@ -67,77 +49,69 @@ export default function ProofSection() {
   return (
     <section id="proof" className="relative overflow-hidden bg-[#0D0D0D] py-20 md:py-28 grain-overlay">
       <div className="container relative z-10">
-        <div className="border-b border-white/10 pb-10">
-          <h2 className="max-w-5xl text-[clamp(3rem,7vw,6.25rem)] leading-[0.9] text-[oklch(0.62_0.24_25)]">
-            LIVE CREATION EVENTS
-          </h2>
+        <div className="grid gap-10 lg:grid-cols-[0.88fr_1.12fr] lg:items-end">
+          <div>
+            <p className="font-mono text-[0.62rem] uppercase tracking-[0.2em] text-[#E63329]">Proof in the work</p>
+            <h2 className="mt-5 max-w-3xl text-[clamp(3.4rem,7vw,6.25rem)] leading-[0.88] text-[#F5F5F0]">
+              Built in the room, not just <span className="text-[oklch(0.62_0.24_25)]">on a timeline.</span>
+            </h2>
+          </div>
+          <p className="max-w-2xl text-base leading-7 text-white/57 md:text-lg">
+            AIFA is built around live creative practice, shared feedback, and the kind of work that gains momentum when it is made alongside other people who care about the outcome.
+          </p>
         </div>
 
-        <article className="group relative mt-10 min-h-[540px] overflow-hidden border border-white/10 bg-black md:min-h-[620px]">
-          <img
-            src="/assets/afa-featured-event-charart3.png"
-            onError={(event) => {
-              event.currentTarget.onerror = null;
-              event.currentTarget.src = "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1800&q=85";
-            }}
-            alt="A collaborative AI filmmaking team reviewing creative work together"
-            className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.018]"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-black via-black/72 to-black/15" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-black/20" />
-          <div className="relative z-10 flex min-h-[540px] max-w-3xl flex-col justify-end p-7 md:min-h-[620px] md:p-12 lg:p-16">
-            <h3 className="text-5xl leading-[0.9] text-white md:text-7xl lg:text-8xl">
-              <span className="block">FEATURED EVENT:</span>
-              <span className="block">AI FILM WORLD CUP</span>
-            </h3>
-            <p className="mt-5 max-w-2xl text-sm leading-6 text-white/67 md:text-base md:leading-7">
-              AI Film Academy helped run the Directors Cup with Machine Cinema, bringing creators and films together inside a broader global filmmaking event. Creators showed up live and put their skills to the test with a four-hour time limit.
-            </p>
-            <a
-              href="https://hub.machinecinema.ai/directors-cup/replay"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-primary mt-7 w-fit px-6 py-4 text-sm font-bold md:px-7 md:py-4"
-              aria-label="Watch the full Directors Cup replay on Machine Cinema"
-            >
-              Watch the Full Replay on Machine Cinema <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
-            </a>
-          </div>
-        </article>
+        <div className="mt-12 grid gap-px overflow-hidden border border-white/10 bg-white/10 lg:grid-cols-[1.18fr_0.82fr]">
+          <article className="group relative min-h-[430px] overflow-hidden bg-black md:min-h-[520px]">
+            <img
+              src="/assets/afa-featured-event-charart3.png"
+              onError={(event) => {
+                event.currentTarget.onerror = null;
+                event.currentTarget.src = "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1800&q=85";
+              }}
+              alt="A collaborative AI filmmaking team reviewing creative work together"
+              className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.018]"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-black via-black/68 to-black/10" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-black/20" />
+            <div className="relative z-10 flex min-h-[430px] max-w-2xl flex-col justify-end p-7 md:min-h-[520px] md:p-10">
+              <p className="font-mono text-[0.62rem] uppercase tracking-[0.18em] text-[#ff7068]">Live creative practice</p>
+              <h3 className="mt-4 text-4xl leading-[0.91] text-white md:text-6xl">Film gets better when it gets made with other people in the room.</h3>
+              <p className="mt-5 max-w-xl text-sm leading-6 text-white/67 md:text-base md:leading-7">
+                From collaborative GenJams to the Directors Cup with Machine Cinema, AIFA brings creators together to make under a real brief, a real deadline, and a real quality bar.
+              </p>
+            </div>
+          </article>
 
-        <div className="mt-12">
-          <div className="border-b border-white/10 pb-10">
-            <h3 className="max-w-5xl text-[clamp(3rem,7vw,6.25rem)] leading-[0.9] text-[oklch(0.62_0.24_25)]">
-              RESULTS BY THE NUMBERS
-            </h3>
-            <p className="mt-6 max-w-3xl text-sm leading-6 text-white/58 md:text-base md:leading-7">
-              AI Film Academy has supported workshops, curriculum, mentorship, and AI media events across more than five Southern California organizations—reaching over 30,000 learners through live education in addition to the global Academy community.
-            </p>
-          </div>
-          <div className="mt-8 grid gap-px border border-white/10 bg-white/10 sm:grid-cols-3">
-            {stats.map(([number, label]) => (
-              <div key={label} className="bg-[#0A0A0A] p-6 md:p-8">
-                <p className="stat-number text-4xl text-white md:text-5xl">{number}</p>
-                <p className="mt-2 font-mono text-[0.6rem] uppercase tracking-[0.15em] text-white/35">{label}</p>
-              </div>
-            ))}
-          </div>
+          <aside className="flex flex-col bg-[#111111] p-7 md:p-10">
+            <p className="font-mono text-[0.62rem] uppercase tracking-[0.2em] text-white/36">AIFA by the numbers</p>
+            <div className="mt-7 divide-y divide-white/10 border-y border-white/10">
+              {STATS.map(([number, label]) => (
+                <div key={label} className="py-5 first:pt-5 last:pb-5">
+                  <p className="stat-number text-4xl text-white md:text-5xl">{number}</p>
+                  <p className="mt-1 font-mono text-[0.58rem] uppercase tracking-[0.14em] text-white/38">{label}</p>
+                </div>
+              ))}
+            </div>
+            <p className="mt-auto pt-8 text-sm leading-6 text-white/49">A clear workflow is more useful when it is backed by an active creative environment.</p>
+          </aside>
         </div>
 
         <div className="mt-14 border-t border-white/10 pt-10">
-          <div>
-            <h3 className="max-w-5xl text-[clamp(3rem,7vw,6.25rem)] leading-[0.9] text-[oklch(0.62_0.24_25)]">
-              WHAT MEMBERS SAY
-            </h3>
-            <div className="mt-5 flex items-center gap-3 text-sm text-white/45"><Stars /><span>5.0 · 33 reviews</span></div>
+          <div className="flex flex-wrap items-end justify-between gap-5">
+            <div>
+              <p className="font-mono text-[0.62rem] uppercase tracking-[0.2em] text-[#E63329]">What members say</p>
+              <h3 className="mt-4 text-[clamp(2.7rem,5vw,4.8rem)] leading-[0.9] text-white">The right support changes the work.</h3>
+            </div>
+            <div className="flex items-center gap-3 text-sm text-white/45"><Stars /><span>5.0 · 33 reviews</span></div>
           </div>
           <div className="mt-7 grid gap-px border border-white/10 bg-white/10 lg:grid-cols-3">
-            {googleReviews.map((review) => (
-              <article key={review.name} className="relative flex flex-col bg-[#0A0A0A] p-6 md:p-8">
+            {TESTIMONIALS.map((review) => (
+              <article key={review.name} className="relative flex min-h-[255px] flex-col bg-[#0A0A0A] p-6 md:p-7">
                 <Quote className="absolute right-6 top-6 h-7 w-7 text-white/8" aria-hidden="true" />
                 <Stars />
-                <blockquote className="mt-5 flex-1 text-sm leading-6 text-white/68 md:text-base md:leading-7">“{review.quote}”</blockquote>
-                <div className="mt-7 flex items-center gap-3 border-t border-white/8 pt-5">
+                <blockquote className="mt-5 flex-1 text-sm leading-6 text-white/68">“{review.quote}”</blockquote>
+                <div className="mt-6 flex items-center gap-3 border-t border-white/8 pt-4">
                   <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#E63329] text-[0.62rem] font-bold text-white">{review.initials}</span>
                   <div>
                     <p className="text-sm font-semibold text-white">{review.name}</p>
@@ -147,9 +121,7 @@ export default function ProofSection() {
               </article>
             ))}
           </div>
-
         </div>
-
       </div>
     </section>
   );

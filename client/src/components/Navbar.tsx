@@ -1,7 +1,7 @@
 /*
  * AI Film Academy — Global Navigation
  * Design: "The Director's Cut" — transparent over cinematic heroes, solid on scroll.
- * IA: Home, Membership, FAQ, and one clear Free Training conversion action. Showcase remains intentionally unlisted until the curated video launch.
+ * IA: Membership, FAQ, and one clear Free Training conversion action. Service contact and events remain quieter footer or contextual destinations.
  */
 
 import { useEffect, useState } from "react";
@@ -10,10 +10,7 @@ import { Menu, X } from "lucide-react";
 const LOGO_URL = "/assets/afa-logo-horizontal.png";
 
 const navLinks = [
-  { label: "Home", href: "/" },
   { label: "Membership", href: "/membership" },
-  { label: "Work With Us", href: "/work-with-us" },
-  { label: "Events", href: "/events" },
   { label: "FAQ", href: "/faq" },
 ];
 

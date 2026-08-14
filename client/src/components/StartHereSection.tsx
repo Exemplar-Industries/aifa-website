@@ -61,6 +61,9 @@ export default function StartHereSection() {
         <p className="mx-auto mt-7 max-w-2xl text-center font-mono text-[0.58rem] uppercase tracking-[0.14em] text-white/25">
           One clear workflow · ongoing feedback · portfolio-ready projects
         </p>
+        <p className="mx-auto mt-5 max-w-2xl text-center text-sm leading-6 text-white/38">
+          Planning a production, GenJam, workshop, or thoughtful partnership? <a href="/contact" className="font-semibold text-white/72 underline decoration-white/25 underline-offset-4 transition-colors hover:text-white">Contact Us →</a>
+        </p>
       </div>
     </section>
   );
