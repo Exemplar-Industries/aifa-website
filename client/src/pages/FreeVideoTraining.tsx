@@ -141,7 +141,6 @@ function HeroForm() {
         {formState === "error" && (
           <p style={{ color: "#f87171", fontSize: "0.8rem", textAlign: "center", margin: 0 }}>Something went wrong. Try again.</p>
         )}
-        <p style={{ color: "rgba(255,255,255,0.35)", fontSize: "0.75rem", textAlign: "center", margin: 0 }}>No spam. Unsubscribe anytime.</p>
       </div>
     </form>
   );
@@ -698,17 +697,6 @@ function AboutAndForm() {
                     Something went wrong. Please try again.
                   </p>
                 )}
-                <p
-                  style={{
-                    color: "#bbb",
-                    fontSize: "0.8rem",
-                    textAlign: "center",
-                    lineHeight: 1.5,
-                    margin: 0,
-                  }}
-                >
-                  No spam. Unsubscribe anytime.
-                </p>
               </div>
             </form>
           )}
