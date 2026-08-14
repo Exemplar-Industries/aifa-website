@@ -57,7 +57,7 @@ function FullscreenHero() {
         </h1>
 
         <p className="homepage-hero-copy mt-6 max-w-2xl">
-          Beginner-friendly training and creative practice to build a premium AI video portfolio for higher-ticket creative work.
+          Beginner friendly training to build a premium AI portfolio for high ticket creative work.
         </p>
 
         <div className="mt-9 flex flex-col justify-center gap-4 sm:flex-row">
