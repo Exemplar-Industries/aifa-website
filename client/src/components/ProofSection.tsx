@@ -40,13 +40,13 @@ const TESTIMONIALS = [
   {
     quote: "This is a 5-star service. The communication, quality, and final product are awesome and always on time, with the value added of cooperation and insights.",
     name: "Rodrigo J. Gonzalez",
-    role: "Video Creator",
+    role: "Production Client",
     initials: "RG",
   },
   {
     quote: "Working with Brandon and his team was nothing less than amazing. Their attention to detail and commitment to providing top quality is unmatchable.",
     name: "Noor Fiad",
-    role: "Client",
+    role: "Production Client",
     initials: "NF",
   },
 ];

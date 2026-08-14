@@ -51,12 +51,22 @@ function FullscreenHero() {
       <div className="homepage-hero-grain absolute inset-0" />
 
       <div className="relative z-10 flex h-full flex-col items-center justify-center px-6 text-center">
-        <h1 className="homepage-hero-title max-w-6xl text-[#F5F5F0]">
-          Turn Impossible Ideas Into
+        <h1
+          className="homepage-hero-title max-w-none text-[#F5F5F0]"
+          style={{ fontSize: "clamp(3.15rem, 6.1vw, 6.7rem)" }}
+        >
+          <span className="sm:whitespace-nowrap">Turn Impossible Ideas Into</span>
           <span className="block text-afa-red">Premium Video.</span>
         </h1>
 
-        <p className="homepage-hero-copy mt-6 max-w-2xl">
+        <p
+          className="homepage-hero-copy mt-7 max-w-3xl text-center font-semibold text-white"
+          style={{
+            fontSize: "clamp(1.32rem, 2vw, 1.72rem)",
+            lineHeight: 1.42,
+            textShadow: "0 2px 18px rgba(0,0,0,0.78)",
+          }}
+        >
           Beginner friendly training to build a premium AI portfolio for high ticket creative work.
         </p>
 
