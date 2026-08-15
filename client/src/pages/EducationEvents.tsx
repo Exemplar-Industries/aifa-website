@@ -10,8 +10,8 @@ const SERVICES = [
 
 const OUTCOMES = [
   ["Shared language", "A human-centered way to talk about creative AI beyond hype or fear, including the policy, safety, and ethical questions that matter to your organization."],
-  ["Real participation", "Guided exercises that move people from watching to making, so creative AI becomes a lived experience instead of a distant presentation."],
-  ["Useful momentum", "A responsible next step that empowers creativity, keeps people in the process, and fits the work your team is actually here to do."],
+  ["Real participation", "Guided exercises that move people from watching to making, so creative AI becomes a human experience instead of a presentation."],
+  ["Useful momentum", "A stronger creative point of view and a next step that fits the work your organization actually does."],
 ];
 
 export default function EducationEvents() {
@@ -26,10 +26,8 @@ export default function EducationEvents() {
       `Email: ${form.get("email") || ""}`,
       `Organization: ${form.get("organization") || ""}`,
       `Service interest: ${form.get("service") || ""}`,
-      `Delivery format: ${form.get("format") || ""}`,
-      `Audience size: ${form.get("audience") || ""}`,
-      `Location: ${form.get("location") || ""}`,
-      `Event date: ${form.get("date") || ""}`,
+      `Location format: ${form.get("format") || ""}`,
+      `City / state: ${form.get("location") || ""}`,
       `Budget range: ${form.get("budget") || ""}`,
       "",
       "Team and event brief:",
@@ -78,10 +76,11 @@ export default function EducationEvents() {
         .events-outcome h3 { margin: 0 0 .8rem; font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.3rem, 3.5vw, 3.35rem); line-height: .9; letter-spacing: .018em; text-transform: uppercase; }
         .events-outcome p { margin: 0; color: rgba(255,255,255,.9); font-size: 1.08rem; font-weight: 600; line-height: 1.58; }
         .events-inquiry { max-width: 860px; margin: clamp(4rem, 8vw, 6.25rem) auto 0; padding-top: clamp(4rem, 7vw, 5.8rem); border-top: 1px solid rgba(255,255,255,.15); }
+        .events-inquiry-heading { margin-bottom: 2rem; }
         .events-form { display: grid; gap: 1rem; padding: clamp(1.5rem, 3vw, 2.4rem); border: 1px solid rgba(255,255,255,.22); border-radius: 12px; background: rgba(255,255,255,.04); }
         .events-form h3 { margin: 0 0 .35rem; font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.6rem, 4.2vw, 4rem); font-weight: 400; letter-spacing: .018em; line-height: .9; text-transform: uppercase; }
         .events-form-intro { margin: 0 0 .55rem; color: rgba(255,255,255,.88); font-size: 1.08rem; line-height: 1.55; font-weight: 600; }
-        .events-form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+        .events-form-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; }
         .events-field { display: grid; gap: .5rem; }
         .events-field--full { grid-column: 1 / -1; }
         .events-field label { color: #F5F5F0; font-size: 1rem; font-weight: 800; }
@@ -123,7 +122,6 @@ export default function EducationEvents() {
           <div className="events-services">
             {SERVICES.map(([title, copy], index) => <article className="events-service" key={title}><span className="events-service-index">0{index + 1}</span><h3>{title}</h3><p>{copy}</p></article>)}
           </div>
-          <a className="events-primary" href="#event-inquiry">Tell us about your team <ArrowRight size={20} /></a>
         </div>
       </section>
 
@@ -135,20 +133,19 @@ export default function EducationEvents() {
           </div>
 
           <div id="event-inquiry" className="events-inquiry">
+            <div className="events-inquiry-heading">
+              <h2 className="events-display events-heading">Contact <span>Us.</span></h2>
+            </div>
             <form className="events-form" onSubmit={sendInquiry}>
-              <h3>Contact us.</h3>
-              <p className="events-form-intro">Tell us what your team needs to explore. We will review the format, delivery, audience, and event goals, then come back with the right next step.</p>
               <div className="events-form-grid">
                 <div className="events-field"><label htmlFor="event-name">Name</label><input id="event-name" name="name" required /></div>
                 <div className="events-field"><label htmlFor="event-email">Email</label><input id="event-email" name="email" type="email" required /></div>
                 <div className="events-field events-field--full"><label htmlFor="event-organization">Organization</label><input id="event-organization" name="organization" /></div>
-                <div className="events-field"><label htmlFor="event-service">What are you interested in?</label><select id="event-service" name="service" required defaultValue=""><option value="" disabled>Select one</option><option>GenJam</option><option>Workshop</option><option>Keynote</option><option>Conference session</option><option>Custom event</option></select></div>
-                <div className="events-field"><label htmlFor="event-format">How would you host it?</label><select id="event-format" name="format" required defaultValue=""><option value="" disabled>Select one</option><option>Virtual</option><option>In person</option><option>Hybrid</option></select></div>
-                <div className="events-field"><label htmlFor="event-audience">Audience size</label><select id="event-audience" name="audience" defaultValue=""><option value="" disabled>Select one</option><option>Under 25 people</option><option>25 to 75 people</option><option>75 to 200 people</option><option>200+ people</option></select></div>
-                <div className="events-field"><label htmlFor="event-date">Desired event date</label><input id="event-date" name="date" placeholder="Example: October 2026" /></div>
-                <div className="events-field events-field--full"><label htmlFor="event-location">Location, if in person</label><input id="event-location" name="location" placeholder="City and venue, if known" /></div>
-                <div className="events-field"><label htmlFor="event-budget">Budget</label><select id="event-budget" name="budget" defaultValue=""><option value="" disabled>Select one</option><option>Under $5,000</option><option>$5,000 to $15,000</option><option>$15,000 to $30,000</option><option>$30,000+</option><option>Not sure yet</option></select></div>
-                <div className="events-field events-field--full"><label htmlFor="event-brief">Tell us about your team and event</label><textarea id="event-brief" name="brief" required placeholder="What should people learn, make, discuss, or leave with?" /></div>
+                <div className="events-field"><label htmlFor="event-service">What would you like to host?</label><select id="event-service" name="service" required defaultValue=""><option value="" disabled>Select one</option><option>GenJam</option><option>Workshop</option><option>Keynote</option></select></div>
+                <div className="events-field"><label htmlFor="event-format">Location format</label><select id="event-format" name="format" required defaultValue=""><option value="" disabled>Select one</option><option>In person</option><option>Online</option><option>Hybrid</option></select></div>
+                <div className="events-field"><label htmlFor="event-budget">Budget</label><select id="event-budget" name="budget" defaultValue=""><option value="" disabled>Select one</option><option>$5,000 to $15,000</option><option>$15,000 to $30,000</option><option>$30,000+</option></select></div>
+                <div className="events-field"><label htmlFor="event-location">City / state</label><input id="event-location" name="location" placeholder="Example: Austin, Texas" /></div>
+                <div className="events-field"><label htmlFor="event-brief">Message</label><textarea id="event-brief" name="brief" required placeholder="Tell us what you are planning." /></div>
               </div>
               <button className="events-primary" type="submit">Send Your Event Brief <Send size={19} /></button>
               <p className="events-note">Event briefs go directly to hello@aifilmacademy.com.</p>
