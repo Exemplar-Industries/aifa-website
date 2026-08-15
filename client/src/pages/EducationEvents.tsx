@@ -1,72 +1,165 @@
+import { FormEvent, useState } from "react";
+import { ArrowRight, Send } from "lucide-react";
 import PageMeta from "@/components/PageMeta";
 
-const FORMATS = [
-  ["GenJam", "A live creative challenge where people make, share, and learn together."],
-  ["Workshop", "A practical session that brings AI into your team’s real creative workflow."],
-  ["Keynote", "A focused talk that gives your room a useful point of view and a clear next step."],
+const SERVICES = [
+  ["GenJam", "A live six-hour creative challenge where teams make, share, learn, and build together."],
+  ["Workshop", "A practical one-to-two-hour collaborative session that makes creative AI useful in the work your team already does."],
+  ["Keynote", "A focused talk for teams that need a better creative-AI conversation than a tool list."],
 ];
 
 const OUTCOMES = [
-  ["Shared language", "A practical way to talk about creative AI beyond hype, fear, or disconnected tool demos."],
-  ["Real participation", "Exercises that move people from watching to making and reveal what the process feels like."],
-  ["Useful momentum", "A stronger creative point of view and a next step that fits the work your organization actually does."],
+  ["Shared language", "A human-centered way to talk about creative AI beyond hype or fear, including the policy, safety, and ethical questions that matter to your organization."],
+  ["Real participation", "Guided exercises that move people from watching to making, so creative AI becomes a lived experience instead of a distant presentation."],
+  ["Useful momentum", "A responsible next step that empowers creativity, keeps people in the process, and fits the work your team is actually here to do."],
 ];
 
 export default function EducationEvents() {
+  const [submitted, setSubmitted] = useState(false);
+
+  const sendInquiry = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const form = new FormData(event.currentTarget);
+    const subject = `Events inquiry: ${form.get("service") || "AIFA event"}`;
+    const body = [
+      `Name: ${form.get("name") || ""}`,
+      `Email: ${form.get("email") || ""}`,
+      `Organization: ${form.get("organization") || ""}`,
+      `Service interest: ${form.get("service") || ""}`,
+      `Delivery format: ${form.get("format") || ""}`,
+      `Audience size: ${form.get("audience") || ""}`,
+      `Location: ${form.get("location") || ""}`,
+      `Event date: ${form.get("date") || ""}`,
+      `Budget range: ${form.get("budget") || ""}`,
+      "",
+      "Team and event brief:",
+      `${form.get("brief") || ""}`,
+    ].join("\n");
+
+    setSubmitted(true);
+    window.location.href = `mailto:hello@aifilmacademy.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  };
+
   return (
-    <main className="education-page" style={{ minHeight: "100vh", overflowX: "hidden", background: "#080808", color: "#F5F5F0", fontFamily: "'DM Sans', sans-serif" }}>
+    <main className="events-page">
       <PageMeta
-        title="AI GenJams, Workshops & Keynotes | AI Film Academy"
-        description="Bring practical creative-AI education to your organization through hands-on GenJams, workshops, and keynotes from AI Film Academy."
+        title="GenJams, Workshops & Keynotes | AI Film Academy"
+        description="Human-centered creative AI experiences that help people create together, safely and responsibly, through GenJams, workshops, and keynotes from AI Film Academy."
         path="/education-events"
       />
       <style>{`
-        .education-page * { min-width: 0; }
-        .education-title, .education-heading { font-family: 'Bebas Neue', sans-serif; font-weight: 400; letter-spacing: .015em; line-height: .86; text-transform: uppercase; }
-        .education-title { font-size: clamp(3.75rem, 8vw, 8.25rem); }
-        .education-title span, .education-heading span { display: block; }
-        .education-title span { white-space: nowrap; }
-        .education-title span:last-child, .education-heading span { color: #ef4444; }
-        .education-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .75rem; }
-        .education-card { border: 1px solid rgba(255,255,255,.18); border-radius: 8px; background: #111; padding: 1.35rem; }
-        .education-card h3 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.1rem, 3.2vw, 3rem); font-weight: 400; letter-spacing: .015em; line-height: .9; margin: 0 0 .8rem; text-transform: uppercase; }
-        .education-card p { color: rgba(255,255,255,.86); font-size: 1rem; line-height: 1.6; margin: 0; }
-        .education-outcomes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.25rem; margin-top: 2rem; }
-        .education-outcomes article { border-top: 2px solid #ef4444; padding-top: 1rem; }
-        .education-outcomes h3 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2rem, 3vw, 2.75rem); font-weight: 400; letter-spacing: .015em; line-height: .9; margin: 0 0 .75rem; text-transform: uppercase; }
-        .education-outcomes p { color: rgba(255,255,255,.86); font-size: 1rem; line-height: 1.6; margin: 0; }
-        @media (max-width: 760px) {
-          .education-page section { padding-left: 1.25rem !important; padding-right: 1.25rem !important; }
-          .education-title { font-size: clamp(2.9rem, 10.6vw, 4.2rem); }
-          .education-grid, .education-outcomes { grid-template-columns: 1fr; }
-          .education-card { padding: 1.15rem; }
+        .events-page { min-height: 100vh; overflow-x: hidden; background: #080808; color: #F5F5F0; font-family: 'DM Sans', sans-serif; }
+        .events-page * { min-width: 0; box-sizing: border-box; }
+        .events-display { font-family: 'Bebas Neue', sans-serif; font-weight: 400; letter-spacing: .018em; line-height: .88; text-transform: uppercase; }
+        .events-shell { width: min(1120px, 100%); margin: 0 auto; }
+        .events-hero { padding: clamp(7rem, 13vw, 11rem) 1.5rem clamp(5rem, 9vw, 7rem); background: radial-gradient(ellipse at 10% 15%, color-mix(in srgb, var(--afa-red) 31%, transparent), transparent 40%), linear-gradient(145deg, #090909, #090909 67%, #180606); border-bottom: 1px solid rgba(255,255,255,.1); }
+        .events-kicker { display: inline-flex; align-items: center; gap: .65rem; color: rgba(255,255,255,.9); font-size: 1.08rem; font-weight: 800; margin-bottom: 1.8rem; }
+        .events-kicker::before { content: ''; width: 34px; height: 2px; background: var(--afa-red); }
+        .events-title { margin: 0; font-size: clamp(4.15rem, 9vw, 9.6rem); max-width: 970px; }
+        .events-title span { display: block; white-space: nowrap; }
+        .events-title span:last-child { color: var(--afa-red); }
+        .events-hero-copy { max-width: 760px; margin: 1.7rem 0 0; color: rgba(255,255,255,.94); font-size: clamp(1.25rem, 2vw, 1.55rem); font-weight: 650; line-height: 1.52; }
+        .events-primary { display: inline-flex; align-items: center; justify-content: center; gap: .7rem; min-height: 60px; margin-top: 2rem; padding: 0 1.5rem; border: 0; border-radius: 8px; background: var(--afa-red); color: #fff; font: inherit; font-size: 1.08rem; font-weight: 800; text-decoration: none; cursor: pointer; }
+        .events-primary:hover { background: #df0000; }
+        .events-section { padding: clamp(4.75rem, 9vw, 7.5rem) 1.5rem; }
+        .events-section--services { background: #0B0B0B; border-bottom: 1px solid rgba(255,255,255,.1); }
+        .events-section--outcomes { background: radial-gradient(ellipse at 88% 12%, color-mix(in srgb, var(--afa-red) 20%, transparent), transparent 38%), #080808; }
+        .events-heading { max-width: 900px; margin: 0; font-size: clamp(3.4rem, 7vw, 6.8rem); }
+        .events-heading span { color: var(--afa-red); }
+        .events-intro { max-width: 760px; margin: 1.25rem 0 0; color: rgba(255,255,255,.92); font-size: clamp(1.2rem, 1.85vw, 1.45rem); font-weight: 650; line-height: 1.55; }
+        .events-services { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; margin-top: 3rem; }
+        .events-service { display: flex; flex-direction: column; min-height: 310px; padding: clamp(1.4rem, 3vw, 2.2rem); border: 1px solid rgba(255,255,255,.2); border-radius: 12px; background: linear-gradient(145deg, rgba(255,255,255,.07), rgba(255,255,255,.025)); }
+        .events-service:nth-child(2) { background: linear-gradient(145deg, color-mix(in srgb, var(--afa-red) 18%, transparent), rgba(255,255,255,.03)); }
+        .events-service-index { color: var(--afa-red); font-size: 1rem; font-weight: 900; letter-spacing: .09em; }
+        .events-service h3 { margin: auto 0 .9rem; font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.8rem, 4.2vw, 4rem); font-weight: 400; letter-spacing: .018em; line-height: .9; text-transform: uppercase; }
+        .events-service p { margin: 0; color: rgba(255,255,255,.9); font-size: 1.08rem; line-height: 1.58; font-weight: 600; }
+        .events-outcomes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.2rem; margin-top: 2.6rem; }
+        .events-outcome { border-top: 2px solid var(--afa-red); padding-top: 1rem; }
+        .events-outcome h3 { margin: 0 0 .8rem; font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.3rem, 3.5vw, 3.35rem); line-height: .9; letter-spacing: .018em; text-transform: uppercase; }
+        .events-outcome p { margin: 0; color: rgba(255,255,255,.9); font-size: 1.08rem; font-weight: 600; line-height: 1.58; }
+        .events-inquiry { display: grid; grid-template-columns: .86fr 1.14fr; gap: clamp(2rem, 6vw, 5rem); align-items: start; margin-top: clamp(4rem, 8vw, 6.25rem); padding-top: clamp(4rem, 7vw, 5.8rem); border-top: 1px solid rgba(255,255,255,.15); }
+        .events-form { display: grid; gap: 1rem; padding: clamp(1.5rem, 3vw, 2.4rem); border: 1px solid rgba(255,255,255,.22); border-radius: 12px; background: rgba(255,255,255,.04); }
+        .events-form h3 { margin: 0 0 .35rem; font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.6rem, 4.2vw, 4rem); font-weight: 400; letter-spacing: .018em; line-height: .9; text-transform: uppercase; }
+        .events-form-intro { margin: 0 0 .55rem; color: rgba(255,255,255,.88); font-size: 1.08rem; line-height: 1.55; font-weight: 600; }
+        .events-form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+        .events-field { display: grid; gap: .5rem; }
+        .events-field--full { grid-column: 1 / -1; }
+        .events-field label { color: #F5F5F0; font-size: 1rem; font-weight: 800; }
+        .events-field input, .events-field textarea, .events-field select { width: 100%; border: 1px solid rgba(255,255,255,.26); border-radius: 7px; background: #101010; color: #F5F5F0; padding: .85rem .95rem; font: inherit; font-size: 1rem; font-weight: 600; outline: none; }
+        .events-field textarea { min-height: 128px; resize: vertical; }
+        .events-field input:focus, .events-field textarea:focus, .events-field select:focus { border-color: var(--afa-red); box-shadow: 0 0 0 3px color-mix(in srgb, var(--afa-red) 22%, transparent); }
+        .events-note { margin: 0; color: rgba(255,255,255,.72); font-size: .98rem; font-weight: 600; line-height: 1.5; }
+        .events-success { margin: 0; color: #F5F5F0; font-size: 1rem; font-weight: 750; }
+        @media (max-width: 820px) {
+          .events-page section { padding-left: 1.25rem; padding-right: 1.25rem; }
+          .events-title { font-size: clamp(3.55rem, 14.5vw, 5.6rem); }
+          .events-title span { white-space: normal; }
+          .events-services, .events-outcomes, .events-inquiry { grid-template-columns: 1fr; }
+          .events-service { min-height: 0; }
+          .events-service h3 { margin-top: 2rem; }
+        }
+        @media (max-width: 540px) {
+          .events-hero { padding-top: 6rem; }
+          .events-title { font-size: clamp(3.35rem, 15vw, 4.8rem); }
+          .events-hero-copy, .events-intro { font-size: 1.17rem; }
+          .events-primary { width: 100%; }
+          .events-form-grid { grid-template-columns: 1fr; }
+          .events-field--full { grid-column: auto; }
         }
       `}</style>
 
-      <section style={{ padding: "clamp(6.5rem, 12vw, 10rem) 1.5rem clamp(4rem, 8vw, 6.5rem)", background: "radial-gradient(ellipse at 10% 15%, rgba(182,28,28,.32), transparent 38%), #080808", borderBottom: "1px solid rgba(255,255,255,.1)" }}>
-        <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
-          <a href="/contact" style={{ color: "#F5F5F0", fontSize: "1rem", fontWeight: 700, textDecoration: "none" }}>← Contact Us</a>
-          <h1 className="education-title" style={{ margin: "2.4rem 0 1.45rem" }}><span>Make AI feel</span><span>useful in the room.</span></h1>
-          <p style={{ maxWidth: "700px", color: "rgba(255,255,255,.88)", fontSize: "clamp(1.05rem, 2vw, 1.2rem)", lineHeight: 1.65, margin: 0 }}>GenJams, workshops, and keynotes that help people make with creative AI instead of simply hearing about it.</p>
-          <a href="/contact" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", minHeight: "56px", marginTop: "1.7rem", padding: "0 1.35rem", borderRadius: "8px", background: "linear-gradient(135deg, #ef4444, #b91c1c)", color: "#fff", fontSize: "1rem", fontWeight: 800, textDecoration: "none" }}>Plan a Gen AI workshop →</a>
-          <p style={{ color: "rgba(255,255,255,.84)", fontSize: "1rem", lineHeight: 1.55, margin: "1rem 0 0" }}>Organizational education engagements typically begin at $5,000.</p>
+      <section className="events-hero">
+        <div className="events-shell">
+          <p className="events-kicker">AIFA GenJams, Workshops & Keynotes</p>
+          <h1 className="events-display events-title"><span>Make creative AI</span><span>feel human.</span></h1>
+          <p className="events-hero-copy">Human-centered creative AI experiences that help people create together with AI, safely, responsibly, and without losing the human part.</p>
+          <a className="events-primary" href="#event-inquiry">Plan an event with AIFA <ArrowRight size={20} /></a>
         </div>
       </section>
 
-      <section style={{ maxWidth: "1100px", margin: "0 auto", padding: "clamp(3.5rem, 7vw, 5.5rem) 1.5rem" }}>
-        <h2 className="education-heading" style={{ fontSize: "clamp(3rem, 6vw, 5.8rem)", margin: "0 0 1.5rem" }}>Choose the right <span>way to make.</span></h2>
-        <div className="education-grid">
-          {FORMATS.map(([title, copy]) => <article key={title} className="education-card"><h3>{title}</h3><p>{copy}</p></article>)}
-        </div>
-      </section>
-
-      <section style={{ borderTop: "1px solid rgba(255,255,255,.1)", background: "linear-gradient(145deg, rgba(119,17,17,.25), #0b0b0b 65%)", padding: "clamp(3.5rem, 7vw, 5.5rem) 1.5rem" }}>
-        <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
-          <h2 className="education-heading" style={{ fontSize: "clamp(3rem, 6vw, 5.8rem)", margin: 0 }}>Leave with more <span>than a tool list.</span></h2>
-          <div className="education-outcomes">
-            {OUTCOMES.map(([title, copy]) => <article key={title}><h3>{title}</h3><p>{copy}</p></article>)}
+      <section className="events-section events-section--services">
+        <div className="events-shell">
+          <h2 className="events-display events-heading">Our <span>Services.</span></h2>
+          <p className="events-intro">Bring your people together for a practical, creative-AI experience built around participation, conversation, and work they can carry forward.</p>
+          <div className="events-services">
+            {SERVICES.map(([title, copy], index) => <article className="events-service" key={title}><span className="events-service-index">0{index + 1}</span><h3>{title}</h3><p>{copy}</p></article>)}
           </div>
-          <a href="/contact" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", minHeight: "56px", marginTop: "2rem", padding: "0 1.35rem", borderRadius: "8px", background: "linear-gradient(135deg, #ef4444, #b91c1c)", color: "#fff", fontSize: "1rem", fontWeight: 800, textDecoration: "none" }}>Tell us about your team →</a>
+          <a className="events-primary" href="#event-inquiry">Tell us about your team <ArrowRight size={20} /></a>
+        </div>
+      </section>
+
+      <section className="events-section events-section--outcomes">
+        <div className="events-shell">
+          <h2 className="events-display events-heading">Shared language. Real participation. <span>Useful momentum.</span></h2>
+          <div className="events-outcomes">
+            {OUTCOMES.map(([title, copy]) => <article className="events-outcome" key={title}><h3>{title}</h3><p>{copy}</p></article>)}
+          </div>
+
+          <div id="event-inquiry" className="events-inquiry">
+            <div>
+              <h2 className="events-display events-heading">Bring AIFA to <span>your room.</span></h2>
+              <p className="events-intro">Tell us what your team needs to explore. We will review the format, delivery, audience, and event goals, then come back with the right next step.</p>
+            </div>
+            <form className="events-form" onSubmit={sendInquiry}>
+              <h3>Start the conversation.</h3>
+              <p className="events-form-intro">Host a GenJam, workshop, keynote, conference session, or custom event.</p>
+              <div className="events-form-grid">
+                <div className="events-field"><label htmlFor="event-name">Name</label><input id="event-name" name="name" required /></div>
+                <div className="events-field"><label htmlFor="event-email">Email</label><input id="event-email" name="email" type="email" required /></div>
+                <div className="events-field events-field--full"><label htmlFor="event-organization">Organization</label><input id="event-organization" name="organization" /></div>
+                <div className="events-field"><label htmlFor="event-service">What are you interested in?</label><select id="event-service" name="service" required defaultValue=""><option value="" disabled>Select one</option><option>GenJam</option><option>Workshop</option><option>Keynote</option><option>Conference session</option><option>Custom event</option></select></div>
+                <div className="events-field"><label htmlFor="event-format">How would you host it?</label><select id="event-format" name="format" required defaultValue=""><option value="" disabled>Select one</option><option>Virtual</option><option>In person</option><option>Hybrid</option></select></div>
+                <div className="events-field"><label htmlFor="event-audience">Audience size</label><select id="event-audience" name="audience" defaultValue=""><option value="" disabled>Select one</option><option>Under 25 people</option><option>25 to 75 people</option><option>75 to 200 people</option><option>200+ people</option></select></div>
+                <div className="events-field"><label htmlFor="event-date">Desired event date</label><input id="event-date" name="date" placeholder="Example: October 2026" /></div>
+                <div className="events-field events-field--full"><label htmlFor="event-location">Location, if in person</label><input id="event-location" name="location" placeholder="City and venue, if known" /></div>
+                <div className="events-field"><label htmlFor="event-budget">Budget</label><select id="event-budget" name="budget" defaultValue=""><option value="" disabled>Select one</option><option>Under $5,000</option><option>$5,000 to $15,000</option><option>$15,000 to $30,000</option><option>$30,000+</option><option>Not sure yet</option></select></div>
+                <div className="events-field events-field--full"><label htmlFor="event-brief">Tell us about your team and event</label><textarea id="event-brief" name="brief" required placeholder="What should people learn, make, discuss, or leave with?" /></div>
+              </div>
+              <button className="events-primary" type="submit">Send Your Event Brief <Send size={19} /></button>
+              <p className="events-note">Event briefs go directly to hello@aifilmacademy.com. Prefer email? Reach us there anytime.</p>
+              {submitted && <p className="events-success">Your email draft is ready. If it did not open, email hello@aifilmacademy.com directly.</p>}
+            </form>
+          </div>
         </div>
       </section>
     </main>
