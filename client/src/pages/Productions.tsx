@@ -2,7 +2,7 @@ import { FormEvent, useState } from "react";
 import { ArrowRight, Send } from "lucide-react";
 import PageMeta from "@/components/PageMeta";
 
-const PROCESS = [
+const WHAT_WE_DO = [
   {
     number: "01",
     title: "You bring the idea.",
@@ -22,6 +22,33 @@ const PROCESS = [
     title: "We bring it to life.",
     copy: "Our AI-native production studio builds the characters, worlds, motion, footage, and final edit around your idea.",
     mediaLabel: "Final frame",
+    video: "/assets/aifa-world-cup-short.mp4",
+  },
+];
+
+const HOW_WE_DO_IT = [
+  {
+    number: "01",
+    title: "We design characters and art styles.",
+    copy: "We define the visual language, character identity, and creative standard that make the world feel intentional.",
+    image: "/assets/afa-outcome-charart1.png",
+  },
+  {
+    number: "02",
+    title: "We design worlds and storyboards.",
+    copy: "We shape environments, key moments, pacing, and the visual route before production starts moving.",
+    image: "/assets/afa-featured-event-charart3.png",
+  },
+  {
+    number: "03",
+    title: "We animate images into real footage.",
+    copy: "We turn the visual system into motion, performance, and footage that carries the story forward.",
+    video: "/assets/aifa-world-cup-short.mp4",
+  },
+  {
+    number: "04",
+    title: "We splice it together in post production.",
+    copy: "We refine the edit, sound, pacing, and delivery so the final work lands as one complete piece.",
     video: "/assets/aifa-world-cup-short.mp4",
   },
 ];
@@ -75,9 +102,10 @@ export default function Productions() {
         .productions-primary { display: inline-flex; align-items: center; justify-content: center; gap: .7rem; min-height: 60px; padding: 0 1.5rem; border: 0; border-radius: 8px; background: var(--afa-red); color: #fff; font: inherit; font-size: 1.08rem; font-weight: 800; text-decoration: none; cursor: pointer; }
         .productions-primary:hover { background: #df0000; }
         .productions-section { padding: clamp(4.75rem, 9vw, 7.5rem) 1.5rem; }
-        .productions-section--process { background: #0B0B0B; border-bottom: 1px solid rgba(255,255,255,.1); }
+        .productions-section--what { background: #0B0B0B; border-bottom: 1px solid rgba(255,255,255,.1); }
+        .productions-section--method { background: radial-gradient(ellipse at 86% 10%, color-mix(in srgb, var(--afa-red) 18%, transparent), transparent 38%), #080808; border-bottom: 1px solid rgba(255,255,255,.1); }
         .productions-section--inquiry { background: radial-gradient(ellipse at 22% 14%, color-mix(in srgb, var(--afa-red) 22%, transparent), transparent 42%), #080808; }
-        .productions-section-heading { max-width: 870px; margin: 0; font-size: clamp(3.4rem, 7vw, 6.8rem); }
+        .productions-section-heading { max-width: 900px; margin: 0; font-size: clamp(3.4rem, 7vw, 6.8rem); }
         .productions-section-heading span { color: var(--afa-red); }
         .productions-section-copy { max-width: 760px; margin: 1.25rem 0 0; color: rgba(255,255,255,.92); font-size: clamp(1.22rem, 1.85vw, 1.45rem); line-height: 1.55; font-weight: 650; }
         .productions-process { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; margin-top: 3rem; }
@@ -89,9 +117,19 @@ export default function Productions() {
         .productions-media video { filter: saturate(.78) contrast(1.12); }
         .productions-media-label { position: absolute; z-index: 1; left: 1.15rem; bottom: 1.05rem; color: #fff; font-size: 1rem; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; }
         .productions-step-content { display: flex; flex: 1; flex-direction: column; padding: clamp(1.35rem, 3vw, 2.1rem); }
-        .productions-step-number { color: var(--afa-red); font-size: 1rem; font-weight: 900; letter-spacing: .08em; }
+        .productions-step-number, .productions-method-number { color: var(--afa-red); font-size: 1rem; font-weight: 900; letter-spacing: .08em; }
         .productions-step h3 { margin: 1rem 0 .9rem; font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.5rem, 4vw, 3.7rem); line-height: .9; letter-spacing: .02em; text-transform: uppercase; }
         .productions-step p { margin: 0; color: rgba(255,255,255,.9); font-size: 1.08rem; line-height: 1.58; font-weight: 600; }
+        .productions-method-list { display: grid; gap: 1rem; margin-top: 3rem; }
+        .productions-method { display: grid; grid-template-columns: minmax(250px, .82fr) minmax(0, 1.18fr); overflow: hidden; min-height: 290px; border: 1px solid rgba(255,255,255,.2); border-radius: 14px; background: linear-gradient(110deg, color-mix(in srgb, var(--afa-red) 12%, transparent), rgba(255,255,255,.025)); }
+        .productions-method:nth-child(even) { grid-template-columns: minmax(0, 1.18fr) minmax(250px, .82fr); }
+        .productions-method:nth-child(even) .productions-method-media { order: 2; }
+        .productions-method-media { position: relative; overflow: hidden; min-height: 290px; background: #151515; }
+        .productions-method-media::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(0,0,0,.08), rgba(0,0,0,.45)); pointer-events: none; }
+        .productions-method-media img, .productions-method-media video { display: block; width: 100%; height: 100%; min-height: 290px; object-fit: cover; filter: saturate(.82) contrast(1.1); }
+        .productions-method-copy { display: flex; flex-direction: column; justify-content: center; padding: clamp(1.7rem, 4vw, 4rem); }
+        .productions-method h3 { max-width: 650px; margin: 1rem 0; font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.9rem, 5vw, 5.8rem); line-height: .88; letter-spacing: .02em; text-transform: uppercase; }
+        .productions-method p { max-width: 620px; margin: 0; color: rgba(255,255,255,.9); font-size: clamp(1.1rem, 1.6vw, 1.3rem); line-height: 1.58; font-weight: 650; }
         .productions-inquiry { display: block; max-width: 850px; margin: 0 auto; }
         .productions-inquiry-heading { margin-bottom: 2rem; }
         .productions-form { display: grid; gap: 1rem; padding: clamp(1.5rem, 3vw, 2.4rem); border: 1px solid rgba(255,255,255,.22); border-radius: 12px; background: rgba(255,255,255,.04); }
@@ -113,6 +151,9 @@ export default function Productions() {
           .productions-title span { white-space: normal; }
           .productions-process { grid-template-columns: 1fr; }
           .productions-media { min-height: 235px; }
+          .productions-method, .productions-method:nth-child(even) { grid-template-columns: 1fr; }
+          .productions-method:nth-child(even) .productions-method-media { order: 0; }
+          .productions-method-media, .productions-method-media img, .productions-method-media video { min-height: 230px; }
         }
         @media (max-width: 540px) {
           .productions-hero { padding-top: 6rem; }
@@ -122,6 +163,7 @@ export default function Productions() {
           .productions-form-grid { grid-template-columns: 1fr; }
           .productions-field--full { grid-column: auto; }
           .productions-media { min-height: 220px; }
+          .productions-method-media, .productions-method-media img, .productions-method-media video { min-height: 200px; }
         }
       `}</style>
 
@@ -134,12 +176,12 @@ export default function Productions() {
         </div>
       </section>
 
-      <section className="productions-section productions-section--process">
+      <section className="productions-section productions-section--what">
         <div className="productions-shell">
-          <h2 className="productions-display productions-section-heading">From idea to <span>final frame.</span></h2>
-          <p className="productions-section-copy">We are always excited to work on animation, commercials, and trailers that push the boundaries of creativity.</p>
+          <h2 className="productions-display productions-section-heading">What <span>we do.</span></h2>
+          <p className="productions-section-copy">Animations, commercials, and trailers that carry a clear point of view.</p>
           <div className="productions-process">
-            {PROCESS.map(({ number, title, copy, mediaLabel, image, video }) => (
+            {WHAT_WE_DO.map(({ number, title, copy, mediaLabel, image, video }) => (
               <article key={number} className="productions-step">
                 <div className="productions-media" aria-label={`${mediaLabel} visual frame`}>
                   {image && <img src={image} alt="" />}
@@ -148,6 +190,28 @@ export default function Productions() {
                 </div>
                 <div className="productions-step-content">
                   <span className="productions-step-number">{number}</span>
+                  <h3>{title}</h3>
+                  <p>{copy}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="productions-section productions-section--method">
+        <div className="productions-shell">
+          <h2 className="productions-display productions-section-heading">How <span>we do it.</span></h2>
+          <p className="productions-section-copy">A visual production system built to carry an idea from first frame to final delivery.</p>
+          <div className="productions-method-list">
+            {HOW_WE_DO_IT.map(({ number, title, copy, image, video }) => (
+              <article key={number} className="productions-method">
+                <div className="productions-method-media">
+                  {image && <img src={image} alt="" />}
+                  {video && <video src={video} autoPlay muted loop playsInline />}
+                </div>
+                <div className="productions-method-copy">
+                  <span className="productions-method-number">{number}</span>
                   <h3>{title}</h3>
                   <p>{copy}</p>
                 </div>

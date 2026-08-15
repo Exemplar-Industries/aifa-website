@@ -77,7 +77,7 @@ export default function EducationEvents() {
         .events-outcome { border-top: 2px solid var(--afa-red); padding-top: 1rem; }
         .events-outcome h3 { margin: 0 0 .8rem; font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.3rem, 3.5vw, 3.35rem); line-height: .9; letter-spacing: .018em; text-transform: uppercase; }
         .events-outcome p { margin: 0; color: rgba(255,255,255,.9); font-size: 1.08rem; font-weight: 600; line-height: 1.58; }
-        .events-inquiry { display: grid; grid-template-columns: .86fr 1.14fr; gap: clamp(2rem, 6vw, 5rem); align-items: start; margin-top: clamp(4rem, 8vw, 6.25rem); padding-top: clamp(4rem, 7vw, 5.8rem); border-top: 1px solid rgba(255,255,255,.15); }
+        .events-inquiry { max-width: 860px; margin: clamp(4rem, 8vw, 6.25rem) auto 0; padding-top: clamp(4rem, 7vw, 5.8rem); border-top: 1px solid rgba(255,255,255,.15); }
         .events-form { display: grid; gap: 1rem; padding: clamp(1.5rem, 3vw, 2.4rem); border: 1px solid rgba(255,255,255,.22); border-radius: 12px; background: rgba(255,255,255,.04); }
         .events-form h3 { margin: 0 0 .35rem; font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.6rem, 4.2vw, 4rem); font-weight: 400; letter-spacing: .018em; line-height: .9; text-transform: uppercase; }
         .events-form-intro { margin: 0 0 .55rem; color: rgba(255,255,255,.88); font-size: 1.08rem; line-height: 1.55; font-weight: 600; }
@@ -94,7 +94,7 @@ export default function EducationEvents() {
           .events-page section { padding-left: 1.25rem; padding-right: 1.25rem; }
           .events-title { font-size: clamp(3.55rem, 14.5vw, 5.6rem); }
           .events-title span { white-space: normal; }
-          .events-services, .events-outcomes, .events-inquiry { grid-template-columns: 1fr; }
+          .events-services, .events-outcomes { grid-template-columns: 1fr; }
           .events-service { min-height: 0; }
           .events-service h3 { margin-top: 2rem; }
         }
@@ -110,9 +110,8 @@ export default function EducationEvents() {
 
       <section className="events-hero">
         <div className="events-shell">
-          <p className="events-kicker">AIFA GenJams, Workshops & Keynotes</p>
           <h1 className="events-display events-title"><span>Make creative AI</span><span>feel human.</span></h1>
-          <p className="events-hero-copy">Human-centered creative AI experiences that help people create together with AI, safely, responsibly, and without losing the human part.</p>
+          <p className="events-hero-copy">GenJams, Workshops, and Keynotes that help people create together with AI, safely, responsibly, and without losing the human part.</p>
           <a className="events-primary" href="#event-inquiry">Plan an event with AIFA <ArrowRight size={20} /></a>
         </div>
       </section>
@@ -130,19 +129,15 @@ export default function EducationEvents() {
 
       <section className="events-section events-section--outcomes">
         <div className="events-shell">
-          <h2 className="events-display events-heading">Shared language. Real participation. <span>Useful momentum.</span></h2>
+          <h2 className="events-display events-heading">Leave with more than <span>a tool list.</span></h2>
           <div className="events-outcomes">
             {OUTCOMES.map(([title, copy]) => <article className="events-outcome" key={title}><h3>{title}</h3><p>{copy}</p></article>)}
           </div>
 
           <div id="event-inquiry" className="events-inquiry">
-            <div>
-              <h2 className="events-display events-heading">Bring AIFA to <span>your room.</span></h2>
-              <p className="events-intro">Tell us what your team needs to explore. We will review the format, delivery, audience, and event goals, then come back with the right next step.</p>
-            </div>
             <form className="events-form" onSubmit={sendInquiry}>
-              <h3>Start the conversation.</h3>
-              <p className="events-form-intro">Host a GenJam, workshop, keynote, conference session, or custom event.</p>
+              <h3>Contact us.</h3>
+              <p className="events-form-intro">Tell us what your team needs to explore. We will review the format, delivery, audience, and event goals, then come back with the right next step.</p>
               <div className="events-form-grid">
                 <div className="events-field"><label htmlFor="event-name">Name</label><input id="event-name" name="name" required /></div>
                 <div className="events-field"><label htmlFor="event-email">Email</label><input id="event-email" name="email" type="email" required /></div>
@@ -156,7 +151,7 @@ export default function EducationEvents() {
                 <div className="events-field events-field--full"><label htmlFor="event-brief">Tell us about your team and event</label><textarea id="event-brief" name="brief" required placeholder="What should people learn, make, discuss, or leave with?" /></div>
               </div>
               <button className="events-primary" type="submit">Send Your Event Brief <Send size={19} /></button>
-              <p className="events-note">Event briefs go directly to hello@aifilmacademy.com. Prefer email? Reach us there anytime.</p>
+              <p className="events-note">Event briefs go directly to hello@aifilmacademy.com.</p>
               {submitted && <p className="events-success">Your email draft is ready. If it did not open, email hello@aifilmacademy.com directly.</p>}
             </form>
           </div>
