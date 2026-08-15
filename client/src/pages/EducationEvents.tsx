@@ -11,7 +11,7 @@ const SERVICES = [
 const OUTCOMES = [
   ["Shared language", "A human-centered way to talk about creative AI beyond hype or fear, including the policy, safety, and ethical questions that matter to your organization."],
   ["Real participation", "Guided exercises that move people from watching to making, so creative AI becomes a human experience instead of a presentation."],
-  ["Useful momentum", "A stronger creative point of view and a next step that fits the work your organization actually does."],
+  ["Expert Support", "A stronger creative point of view and a next step that fits the work your organization actually does."],
 ];
 
 export default function EducationEvents() {
@@ -66,10 +66,9 @@ export default function EducationEvents() {
         .events-heading span { color: var(--afa-red); }
         .events-intro { max-width: 760px; margin: 1.25rem 0 0; color: rgba(255,255,255,.92); font-size: clamp(1.2rem, 1.85vw, 1.45rem); font-weight: 650; line-height: 1.55; }
         .events-services { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; margin-top: 3rem; }
-        .events-service { display: flex; flex-direction: column; min-height: 310px; padding: clamp(1.4rem, 3vw, 2.2rem); border: 1px solid rgba(255,255,255,.2); border-radius: 12px; background: linear-gradient(145deg, rgba(255,255,255,.07), rgba(255,255,255,.025)); }
-        .events-service:nth-child(2) { background: linear-gradient(145deg, color-mix(in srgb, var(--afa-red) 18%, transparent), rgba(255,255,255,.03)); }
+        .events-service { display: flex; flex-direction: column; min-height: 310px; padding: clamp(1.4rem, 3vw, 2.2rem); border: 1px solid rgba(255,255,255,.2); border-radius: 12px; background: linear-gradient(145deg, color-mix(in srgb, var(--afa-red) 18%, transparent), rgba(255,255,255,.03)); }
         .events-service-index { color: var(--afa-red); font-size: 1rem; font-weight: 900; letter-spacing: .09em; }
-        .events-service h3 { margin: auto 0 .9rem; font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.8rem, 4.2vw, 4rem); font-weight: 400; letter-spacing: .018em; line-height: .9; text-transform: uppercase; }
+        .events-service h3 { margin: 2.6rem 0 .9rem; font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.8rem, 4.2vw, 4rem); font-weight: 400; letter-spacing: .018em; line-height: .9; text-transform: uppercase; }
         .events-service p { margin: 0; color: rgba(255,255,255,.9); font-size: 1.08rem; line-height: 1.58; font-weight: 600; }
         .events-outcomes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.2rem; margin-top: 2.6rem; }
         .events-outcome { border-top: 2px solid var(--afa-red); padding-top: 1rem; }
