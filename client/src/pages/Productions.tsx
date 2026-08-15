@@ -1,34 +1,25 @@
 import { FormEvent, useState } from "react";
-import { ArrowRight, Check, Clapperboard, Film, Send, Sparkles } from "lucide-react";
+import { ArrowRight, Send } from "lucide-react";
 import PageMeta from "@/components/PageMeta";
-
-const WORK_TYPES = [
-  "Animation",
-  "Commercials",
-  "Product Films",
-  "Book Trailers",
-  "Visual Effects",
-  "Campaign Creative",
-];
 
 const PROCESS = [
   {
     number: "01",
     title: "You bring the idea.",
-    copy: "A story, product, campaign, or visual world you already want to make. You do not need every answer. You need a real starting point.",
-    icon: Clapperboard,
+    copy: "Bring us the story, product, or campaign you want to see on screen. A real starting point is all we need.",
+    mediaLabel: "Concept",
   },
   {
     number: "02",
     title: "We align on the vision.",
     copy: "We talk through the style, audience, runtime, intended use, references, and the creative standard the work needs to meet.",
-    icon: Sparkles,
+    mediaLabel: "Vision",
   },
   {
     number: "03",
     title: "We bring it to life.",
     copy: "Our AI-native production studio builds the characters, worlds, motion, footage, and final edit around your idea.",
-    icon: Film,
+    mediaLabel: "Final frame",
   },
 ];
 
@@ -38,18 +29,18 @@ export default function Productions() {
   const sendInquiry = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
-    const subject = `Production inquiry: ${form.get("project") || "New AIFA production"}`;
+    const subject = `Production inquiry: ${form.get("whatToMake") || "New AIFA production"}`;
     const body = [
       `Name: ${form.get("name") || ""}`,
       `Email: ${form.get("email") || ""}`,
       `Company / brand: ${form.get("company") || ""}`,
-      `Project: ${form.get("project") || ""}`,
-      `What do you want made: ${form.get("deliverable") || ""}`,
-      `Budget range: ${form.get("budget") || ""}`,
+      `What they want to make: ${form.get("whatToMake") || ""}`,
+      `Budget: ${form.get("budget") || ""}`,
+      `Estimated runtime: ${form.get("runtime") || ""}`,
       `Target timeline: ${form.get("timeline") || ""}`,
-      `Reference links: ${form.get("references") || ""}`,
+      `References: ${form.get("references") || ""}`,
       "",
-      "Brief:",
+      "Idea brief:",
       `${form.get("brief") || ""}`,
     ].join("\n");
 
@@ -61,7 +52,7 @@ export default function Productions() {
     <main className="productions-page">
       <PageMeta
         title="AI Production Studio | Animation, Commercials & Trailers | AI Film Academy"
-        description="AIFA is an AI-native production studio for story-driven animation, commercials, trailers, product films, and visual-effects-forward work."
+        description="AIFA is an AI-native production studio for ambitious animation, commercials, and trailers. Bring us the idea. We bring it to life."
         path="/productions"
       />
 
@@ -76,34 +67,29 @@ export default function Productions() {
         .productions-title { margin: 0; max-width: 1000px; font-size: clamp(4.15rem, 9vw, 9.8rem); }
         .productions-title span { display: block; white-space: nowrap; }
         .productions-title span:last-child { color: var(--afa-red); }
-        .productions-hero-copy { max-width: 750px; margin: 1.7rem 0 0; color: rgba(255,255,255,.94); font-size: clamp(1.25rem, 2vw, 1.55rem); line-height: 1.52; font-weight: 650; }
+        .productions-hero-copy { max-width: 700px; margin: 1.7rem 0 0; color: rgba(255,255,255,.94); font-size: clamp(1.25rem, 2vw, 1.55rem); line-height: 1.52; font-weight: 650; }
         .productions-actions { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; margin-top: 2rem; }
         .productions-primary { display: inline-flex; align-items: center; justify-content: center; gap: .7rem; min-height: 60px; padding: 0 1.5rem; border: 0; border-radius: 8px; background: var(--afa-red); color: #fff; font: inherit; font-size: 1.08rem; font-weight: 800; text-decoration: none; cursor: pointer; }
         .productions-primary:hover { background: #df0000; }
-        .productions-secondary { display: inline-flex; align-items: center; gap: .55rem; min-height: 60px; color: #F5F5F0; font-size: 1.05rem; font-weight: 800; text-decoration: none; }
-        .productions-qualifier { max-width: 660px; margin: 1.25rem 0 0; color: rgba(255,255,255,.8); font-size: 1.08rem; line-height: 1.55; font-weight: 650; }
-        .productions-qualifier strong { color: #F5F5F0; }
         .productions-section { padding: clamp(4.75rem, 9vw, 7.5rem) 1.5rem; }
-        .productions-section--work { background: #0B0B0B; border-bottom: 1px solid rgba(255,255,255,.1); }
+        .productions-section--process { background: #0B0B0B; border-bottom: 1px solid rgba(255,255,255,.1); }
         .productions-section--inquiry { background: radial-gradient(ellipse at 22% 14%, color-mix(in srgb, var(--afa-red) 22%, transparent), transparent 42%), #080808; }
         .productions-section-heading { max-width: 870px; margin: 0; font-size: clamp(3.4rem, 7vw, 6.8rem); }
         .productions-section-heading span { color: var(--afa-red); }
-        .productions-section-copy { max-width: 780px; margin: 1.25rem 0 0; color: rgba(255,255,255,.92); font-size: clamp(1.22rem, 1.85vw, 1.45rem); line-height: 1.55; font-weight: 650; }
-        .productions-work-types { display: flex; flex-wrap: wrap; gap: .75rem; margin: 2rem 0 0; }
-        .productions-work-types span { border: 1px solid rgba(255,255,255,.22); border-radius: 999px; padding: .7rem 1rem; background: rgba(255,255,255,.04); color: #F5F5F0; font-size: 1rem; font-weight: 750; }
+        .productions-section-copy { max-width: 760px; margin: 1.25rem 0 0; color: rgba(255,255,255,.92); font-size: clamp(1.22rem, 1.85vw, 1.45rem); line-height: 1.55; font-weight: 650; }
         .productions-process { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; margin-top: 3rem; }
-        .productions-step { min-height: 360px; display: flex; flex-direction: column; padding: clamp(1.5rem, 3vw, 2.35rem); border: 1px solid rgba(255,255,255,.2); border-radius: 12px; background: linear-gradient(145deg, rgba(255,255,255,.07), rgba(255,255,255,.025)); }
-        .productions-step:nth-child(2) { background: linear-gradient(145deg, color-mix(in srgb, var(--afa-red) 18%, transparent), rgba(255,255,255,.03)); }
+        .productions-step { overflow: hidden; display: flex; flex-direction: column; border: 1px solid rgba(255,255,255,.2); border-radius: 12px; background: #101010; }
+        .productions-media { position: relative; min-height: 215px; overflow: hidden; background: radial-gradient(circle at 22% 21%, rgba(255,255,255,.72) 0 5%, transparent 6%), radial-gradient(circle at 72% 66%, color-mix(in srgb, var(--afa-red) 85%, transparent) 0 16%, transparent 17%), linear-gradient(135deg, #161616 0%, #250707 50%, #080808 100%); }
+        .productions-media::before { content: ''; position: absolute; inset: 0; background: linear-gradient(125deg, transparent 16%, rgba(255,255,255,.13) 17% 20%, transparent 21% 58%, rgba(255,255,255,.08) 59% 61%, transparent 62%); transform: scale(1.35); }
+        .productions-media::after { content: ''; position: absolute; width: 145px; height: 145px; border: 1px solid rgba(255,255,255,.3); border-radius: 50%; top: 30px; right: -34px; box-shadow: -74px 108px 0 -27px color-mix(in srgb, var(--afa-red) 65%, transparent); }
+        .productions-step:nth-child(2) .productions-media { background: radial-gradient(circle at 70% 22%, rgba(255,255,255,.62) 0 5%, transparent 6%), radial-gradient(circle at 27% 72%, color-mix(in srgb, var(--afa-red) 88%, transparent) 0 19%, transparent 20%), linear-gradient(135deg, #240808, #111 57%, #080808); }
+        .productions-step:nth-child(3) .productions-media { background: radial-gradient(circle at 25% 72%, rgba(255,255,255,.62) 0 5%, transparent 6%), radial-gradient(circle at 74% 25%, color-mix(in srgb, var(--afa-red) 88%, transparent) 0 17%, transparent 18%), linear-gradient(135deg, #090909, #2c0808 54%, #151515); }
+        .productions-media-label { position: absolute; z-index: 1; left: 1rem; bottom: 1rem; color: #fff; font-size: .9rem; font-weight: 900; letter-spacing: .1em; text-transform: uppercase; }
+        .productions-step-content { display: flex; flex: 1; flex-direction: column; padding: clamp(1.35rem, 3vw, 2.1rem); }
         .productions-step-number { color: var(--afa-red); font-size: 1rem; font-weight: 900; letter-spacing: .08em; }
-        .productions-step-icon { width: 48px; height: 48px; display: grid; place-items: center; margin: 1.35rem 0 auto; border: 1px solid rgba(255,255,255,.28); border-radius: 9px; color: #F5F5F0; }
-        .productions-step h3 { margin: 2rem 0 .9rem; font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.5rem, 4vw, 3.7rem); line-height: .9; letter-spacing: .02em; text-transform: uppercase; }
+        .productions-step h3 { margin: 1rem 0 .9rem; font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.5rem, 4vw, 3.7rem); line-height: .9; letter-spacing: .02em; text-transform: uppercase; }
         .productions-step p { margin: 0; color: rgba(255,255,255,.9); font-size: 1.08rem; line-height: 1.58; font-weight: 600; }
-        .productions-showcase-link { display: inline-flex; align-items: center; gap: .55rem; margin-top: 1.75rem; color: #F5F5F0; font-size: 1.05rem; font-weight: 800; text-decoration: none; }
-        .productions-showcase-link:hover { color: var(--afa-red); }
         .productions-inquiry-grid { display: grid; grid-template-columns: .86fr 1.14fr; gap: clamp(2rem, 6vw, 5rem); align-items: start; }
-        .productions-range { margin: 2rem 0 0; border-top: 1px solid rgba(255,255,255,.18); }
-        .productions-range p { margin: 0; padding: 1rem 0; border-bottom: 1px solid rgba(255,255,255,.12); color: rgba(255,255,255,.9); font-size: 1.08rem; line-height: 1.5; font-weight: 650; }
-        .productions-range strong { color: var(--afa-red); }
         .productions-form { display: grid; gap: 1rem; padding: clamp(1.5rem, 3vw, 2.4rem); border: 1px solid rgba(255,255,255,.22); border-radius: 12px; background: rgba(255,255,255,.04); }
         .productions-form h3 { margin: 0 0 .3rem; font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.6rem, 4.2vw, 4rem); line-height: .9; letter-spacing: .02em; text-transform: uppercase; }
         .productions-form-intro { margin: 0 0 .55rem; color: rgba(255,255,255,.88); font-size: 1.08rem; line-height: 1.55; font-weight: 600; }
@@ -121,19 +107,15 @@ export default function Productions() {
           .productions-title { font-size: clamp(3.55rem, 14.5vw, 5.6rem); }
           .productions-title span { white-space: normal; }
           .productions-process, .productions-inquiry-grid { grid-template-columns: 1fr; }
-          .productions-step { min-height: 0; }
-          .productions-step-icon { margin-bottom: 1rem; }
-          .productions-step h3 { margin-top: 1rem; }
         }
         @media (max-width: 540px) {
           .productions-hero { padding-top: 6rem; }
           .productions-title { font-size: clamp(3.35rem, 15vw, 4.8rem); }
           .productions-hero-copy, .productions-section-copy { font-size: 1.17rem; }
-          .productions-actions { align-items: stretch; }
           .productions-primary { width: 100%; }
-          .productions-secondary { min-height: auto; padding: .55rem 0; }
           .productions-form-grid { grid-template-columns: 1fr; }
           .productions-field--full { grid-column: auto; }
+          .productions-media { min-height: 195px; }
         }
       `}</style>
 
@@ -141,43 +123,35 @@ export default function Productions() {
         <div className="productions-shell">
           <p className="productions-kicker">AIFA Production Studio</p>
           <h1 className="productions-display productions-title"><span>No more gatekeepers.</span><span>Any idea brought to life.</span></h1>
-          <p className="productions-hero-copy">AIFA is an AI-native production studio for ambitious animation, commercials, trailers, and visual-effects-forward work. Bring us the story, product, or campaign. We build the visual world around it.</p>
-          <div className="productions-actions">
-            <a className="productions-primary" href="#production-inquiry">Start a Production Conversation <ArrowRight size={20} /></a>
-            <a className="productions-secondary" href="/showcase">See what’s possible <ArrowRight size={18} /></a>
-          </div>
-          <p className="productions-qualifier"><strong>Production engagements typically range from $5,000 to $15,000 for work up to roughly three minutes.</strong> Longer or more complex productions are scoped through a custom quote.</p>
+          <p className="productions-hero-copy">AIFA is an AI-native production studio for ambitious animations, commercials, and trailers. Bring us the idea. We bring it to life.</p>
+          <div className="productions-actions"><a className="productions-primary" href="#production-inquiry">Start a Production Conversation <ArrowRight size={20} /></a></div>
         </div>
       </section>
 
-      <section className="productions-section productions-section--work">
+      <section className="productions-section productions-section--process">
         <div className="productions-shell">
-          <h2 className="productions-display productions-section-heading">Bring the story. <span>We build the world.</span></h2>
-          <p className="productions-section-copy">We are always excited to work on animation and commercials that push the boundaries of creativity. We work best with filmmakers, producers, authors, brands, and creators who already have a story, idea, product, or audience in mind.</p>
-          <div className="productions-work-types">{WORK_TYPES.map((type) => <span key={type}>{type}</span>)}</div>
+          <h2 className="productions-display productions-section-heading">From idea to <span>final frame.</span></h2>
+          <p className="productions-section-copy">We are always excited to work on animation, commercials, and trailers that push the boundaries of creativity.</p>
           <div className="productions-process">
-            {PROCESS.map(({ number, title, copy, icon: Icon }) => (
+            {PROCESS.map(({ number, title, copy, mediaLabel }) => (
               <article key={number} className="productions-step">
-                <span className="productions-step-number">{number}</span>
-                <div className="productions-step-icon"><Icon size={25} strokeWidth={2} /></div>
-                <h3>{title}</h3>
-                <p>{copy}</p>
+                <div className="productions-media" aria-label={`${mediaLabel} visual placeholder for future production media`}><span className="productions-media-label">{mediaLabel}</span></div>
+                <div className="productions-step-content">
+                  <span className="productions-step-number">{number}</span>
+                  <h3>{title}</h3>
+                  <p>{copy}</p>
+                </div>
               </article>
             ))}
           </div>
-          <a className="productions-showcase-link" href="/showcase">See selected work in the Showcase <ArrowRight size={18} /></a>
         </div>
       </section>
 
       <section id="production-inquiry" className="productions-section productions-section--inquiry">
         <div className="productions-shell productions-inquiry-grid">
           <div>
-            <h2 className="productions-display productions-section-heading">Have a story worth <span>bringing to life?</span></h2>
-            <p className="productions-section-copy">Tell us what you want to make, where it will live, and the creative standard it needs to meet. We will review the brief for fit, scope, and next steps.</p>
-            <div className="productions-range">
-              <p><strong>$5,000 to $15,000</strong><br />Most productions up to roughly three minutes.</p>
-              <p><strong>Custom quote</strong><br />Longer, multi-asset, or higher-complexity productions.</p>
-            </div>
+            <h2 className="productions-display productions-section-heading">Have an idea <span>in mind?</span></h2>
+            <p className="productions-section-copy">Send us the idea, intended use, and any references you have. We will review the scope and get back to you with the right next step.</p>
           </div>
 
           <form className="productions-form" onSubmit={sendInquiry}>
@@ -186,16 +160,16 @@ export default function Productions() {
             <div className="productions-form-grid">
               <div className="productions-field"><label htmlFor="production-name">Name</label><input id="production-name" name="name" required /></div>
               <div className="productions-field"><label htmlFor="production-email">Email</label><input id="production-email" name="email" type="email" required /></div>
-              <div className="productions-field"><label htmlFor="production-company">Company or brand</label><input id="production-company" name="company" /></div>
-              <div className="productions-field"><label htmlFor="production-project">Project name</label><input id="production-project" name="project" required /></div>
-              <div className="productions-field"><label htmlFor="production-deliverable">What do you want made?</label><select id="production-deliverable" name="deliverable" defaultValue=""><option value="" disabled>Select one</option><option>Animation</option><option>Commercial or product film</option><option>Trailer or visual story</option><option>Visual effects or campaign creative</option><option>Other custom production</option></select></div>
-              <div className="productions-field"><label htmlFor="production-budget">Budget range</label><select id="production-budget" name="budget" defaultValue=""><option value="" disabled>Select one</option><option>$5,000 to $15,000</option><option>$15,000 to $30,000</option><option>$30,000+</option></select></div>
+              <div className="productions-field productions-field--full"><label htmlFor="production-company">Company or brand</label><input id="production-company" name="company" /></div>
+              <div className="productions-field"><label htmlFor="production-what">What do you want to make?</label><select id="production-what" name="whatToMake" required defaultValue=""><option value="" disabled>Select one</option><option>Animation</option><option>Commercial</option><option>Book trailer</option><option>Story trailer</option><option>Other custom production</option></select></div>
+              <div className="productions-field"><label htmlFor="production-budget">Budget</label><select id="production-budget" name="budget" required defaultValue=""><option value="" disabled>Select one</option><option>$5,000 to $15,000</option><option>$15,000 to $30,000</option><option>$30,000+</option></select></div>
+              <div className="productions-field"><label htmlFor="production-runtime">Estimated runtime</label><select id="production-runtime" name="runtime" defaultValue=""><option value="" disabled>Select one</option><option>Under 60 seconds</option><option>1 to 3 minutes</option><option>3 to 5 minutes</option><option>Over 5 minutes</option><option>Not sure yet</option></select></div>
               <div className="productions-field"><label htmlFor="production-timeline">Target timeline</label><input id="production-timeline" name="timeline" placeholder="Example: October launch" /></div>
-              <div className="productions-field"><label htmlFor="production-references">Reference links</label><input id="production-references" name="references" placeholder="Optional" /></div>
+              <div className="productions-field productions-field--full"><label htmlFor="production-references">Any references?</label><input id="production-references" name="references" placeholder="Paste any links, images, or references you have" /></div>
               <div className="productions-field productions-field--full"><label htmlFor="production-brief">Tell us about the idea</label><textarea id="production-brief" name="brief" required placeholder="What is the story, product, or campaign? Who is it for, and what should the final work accomplish?" /></div>
             </div>
             <button className="productions-primary" type="submit">Send Your Production Brief <Send size={19} /></button>
-            <p className="productions-note">Submitting opens a pre-filled email to hello@aifilmacademy.com with your brief.</p>
+            <p className="productions-note">Production briefs go directly to hello@aifilmacademy.com. Prefer email? Reach us there anytime.</p>
             {submitted && <p className="productions-success">Your email draft is ready. If it did not open, email hello@aifilmacademy.com directly.</p>}
           </form>
         </div>
