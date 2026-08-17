@@ -153,7 +153,7 @@ export default function Productions() {
               <article key={number} className="productions-method">
                 <div className="productions-method-media">
                   {image && <img src={image} alt="" />}
-                  {video && <video src={video} poster={poster} preload="auto" autoPlay loop muted playsInline />}
+                  {video && <video src={video} poster={poster} preload="auto" autoPlay loop muted playsInline onCanPlay={(event) => { void event.currentTarget.play().catch(() => undefined); }} />}
                   {(number === "01" || number === "02") && <span className="productions-method-watermark" aria-hidden="true">AIFA<br />{number === "01" ? "CHARACTER SHEET" : "STORYBOARD"}</span>}
                 </div>
                 <div className="productions-method-copy">
