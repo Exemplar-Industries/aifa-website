@@ -1,4 +1,4 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import { Send } from "lucide-react";
 import PageMeta from "@/components/PageMeta";
 import { deliverAifaForm } from "@/lib/formDelivery";
@@ -34,6 +34,26 @@ const HOW_WE_DO_IT = [
 export default function Productions() {
   const [submitted, setSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState(false);
+  const methodVideoRef = useRef<HTMLVideoElement | null>(null);
+
+  useEffect(() => {
+    const video = methodVideoRef.current;
+    if (!video) return;
+
+    const startPlayback = () => { void video.play().catch(() => undefined); };
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) startPlayback();
+    }, { threshold: 0.2 });
+
+    video.addEventListener("loadeddata", startPlayback);
+    video.addEventListener("canplay", startPlayback);
+    observer.observe(video);
+    return () => {
+      video.removeEventListener("loadeddata", startPlayback);
+      video.removeEventListener("canplay", startPlayback);
+      observer.disconnect();
+    };
+  }, []);
 
   const sendInquiry = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -124,6 +144,7 @@ export default function Productions() {
           .productions-method .productions-method-copy { order: 1; padding: clamp(1.65rem, 6vw, 2.4rem); }
           .productions-method .productions-method-media { order: 2 !important; min-height: 0; aspect-ratio: 16 / 9; }
           .productions-method-media img, .productions-method-media video { min-height: 0; height: 100%; }
+          .productions-inquiry-heading .productions-section-heading { font-size: clamp(3.55rem, 14.5vw, 5.6rem); line-height: .88; }
         }
         @media (max-width: 540px) {
           .productions-hero { padding-top: 6rem; }
@@ -133,6 +154,7 @@ export default function Productions() {
           .productions-form-grid { grid-template-columns: 1fr; }
           .productions-field--full { grid-column: auto; }
           .productions-method .productions-method-media { aspect-ratio: 4 / 3; }
+          .productions-inquiry-heading .productions-section-heading { font-size: clamp(3.35rem, 15vw, 4.8rem); }
         }
       `}</style>
 
@@ -153,7 +175,7 @@ export default function Productions() {
               <article key={number} className="productions-method">
                 <div className="productions-method-media">
                   {image && <img src={image} alt="" />}
-                  {video && <video src={video} poster={poster} preload="auto" autoPlay loop muted playsInline onCanPlay={(event) => { void event.currentTarget.play().catch(() => undefined); }} />}
+                  {video && <video ref={number === "03" ? methodVideoRef : undefined} src={video} poster={poster} preload="auto" autoPlay loop muted playsInline onCanPlay={(event) => { void event.currentTarget.play().catch(() => undefined); }} />}
                   {(number === "01" || number === "02") && <span className="productions-method-watermark" aria-hidden="true">AIFA<br />{number === "01" ? "CHARACTER SHEET" : "STORYBOARD"}</span>}
                 </div>
                 <div className="productions-method-copy">

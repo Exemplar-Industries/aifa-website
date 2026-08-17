@@ -99,7 +99,7 @@ export default function FAQ() {
               <h2 className="mt-3 text-4xl text-white md:text-6xl">Turn The Answers Into Finished Work.</h2>
             </div>
             <div className="flex flex-col gap-3 sm:flex-row">
-              <a href="https://www.skool.com/aifilmacademy/about" target="_blank" rel="noopener noreferrer" className="btn-primary px-7 py-4 font-bold">
+              <a href="/membership" className="btn-primary px-7 py-4 font-bold">
                 Join AIFA <ArrowUpRight className="h-4 w-4" />
               </a>
               <a href="/free-video-training" className="btn-outline px-7 py-4 font-semibold">Try Free</a>
