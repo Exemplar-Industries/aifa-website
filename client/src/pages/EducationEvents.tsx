@@ -1,6 +1,7 @@
 import { FormEvent, useState } from "react";
 import { ArrowRight, Send } from "lucide-react";
 import PageMeta from "@/components/PageMeta";
+import { deliverAifaForm } from "@/lib/formDelivery";
 
 const SERVICES = [
   ["GenJam", "A live six-hour creative challenge where teams make, share, learn, and build together."],
@@ -16,26 +17,29 @@ const OUTCOMES = [
 
 export default function EducationEvents() {
   const [submitted, setSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState(false);
 
-  const sendInquiry = (event: FormEvent<HTMLFormElement>) => {
+  const sendInquiry = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
-    const subject = `Events inquiry: ${form.get("service") || "AIFA event"}`;
-    const body = [
-      `Name: ${form.get("name") || ""}`,
-      `Email: ${form.get("email") || ""}`,
-      `Organization: ${form.get("organization") || ""}`,
-      `Service interest: ${form.get("service") || ""}`,
-      `Location format: ${form.get("format") || ""}`,
-      `City / state: ${form.get("location") || ""}`,
-      `Budget range: ${form.get("budget") || ""}`,
-      "",
-      "Team and event brief:",
-      `${form.get("brief") || ""}`,
-    ].join("\n");
 
-    setSubmitted(true);
-    window.location.href = `mailto:brandon@aifilmacademy.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    try {
+      await deliverAifaForm("Events inquiry", {
+        name: String(form.get("name") || ""),
+        email: String(form.get("email") || ""),
+        company: String(form.get("organization") || ""),
+        projectType: String(form.get("service") || ""),
+        delivery: String(form.get("format") || ""),
+        location: String(form.get("location") || ""),
+        budget: String(form.get("budget") || ""),
+        message: String(form.get("brief") || ""),
+      });
+      setSubmitted(true);
+      setSubmitError(false);
+    } catch {
+      setSubmitError(true);
+      setSubmitted(false);
+    }
   };
 
   return (
@@ -148,7 +152,8 @@ export default function EducationEvents() {
               </div>
               <button className="events-primary" type="submit">Send Your Event Brief <Send size={19} /></button>
               <p className="events-note">Event briefs go directly to brandon@aifilmacademy.com.</p>
-              {submitted && <p className="events-success">Your email draft is ready. If it did not open, email brandon@aifilmacademy.com directly.</p>}
+              {submitted && <p className="events-success">Your event inquiry has been sent. We will be in touch soon.</p>}
+              {submitError && <p className="events-success">We could not send your inquiry. Please email brandon@aifilmacademy.com directly.</p>}
             </form>
           </div>
         </div>

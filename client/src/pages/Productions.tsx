@@ -1,6 +1,7 @@
 import { FormEvent, useState } from "react";
 import { Send } from "lucide-react";
 import PageMeta from "@/components/PageMeta";
+import { deliverAifaForm } from "@/lib/formDelivery";
 
 const HOW_WE_DO_IT = [
   {
@@ -31,27 +32,30 @@ const HOW_WE_DO_IT = [
 
 export default function Productions() {
   const [submitted, setSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState(false);
 
-  const sendInquiry = (event: FormEvent<HTMLFormElement>) => {
+  const sendInquiry = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
-    const subject = `Production inquiry: ${form.get("whatToMake") || "New AIFA production"}`;
-    const body = [
-      `Name: ${form.get("name") || ""}`,
-      `Email: ${form.get("email") || ""}`,
-      `Company / brand: ${form.get("company") || ""}`,
-      `What they want to make: ${form.get("whatToMake") || ""}`,
-      `Estimated runtime: ${form.get("runtime") || ""}`,
-      `Budget: ${form.get("budget") || ""}`,
-      `Target timeline: ${form.get("timeline") || ""}`,
-      `References: ${form.get("references") || ""}`,
-      "",
-      "Idea brief:",
-      `${form.get("brief") || ""}`,
-    ].join("\n");
 
-    setSubmitted(true);
-    window.location.href = `mailto:brandon@aifilmacademy.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    try {
+      await deliverAifaForm("Production inquiry", {
+        name: String(form.get("name") || ""),
+        email: String(form.get("email") || ""),
+        company: String(form.get("company") || ""),
+        projectType: String(form.get("whatToMake") || ""),
+        runtime: String(form.get("runtime") || ""),
+        budget: String(form.get("budget") || ""),
+        timeline: String(form.get("timeline") || ""),
+        references: String(form.get("references") || ""),
+        message: String(form.get("brief") || ""),
+      });
+      setSubmitted(true);
+      setSubmitError(false);
+    } catch {
+      setSubmitError(true);
+      setSubmitted(false);
+    }
   };
 
   return (
@@ -179,7 +183,8 @@ export default function Productions() {
             </div>
             <button className="productions-primary" type="submit">Send Your Production Brief <Send size={19} /></button>
             <p className="productions-note">Production briefs go directly to brandon@aifilmacademy.com.</p>
-            {submitted && <p className="productions-success">Your email draft is ready. If it did not open, email brandon@aifilmacademy.com directly.</p>}
+            {submitted && <p className="productions-success">Your production brief has been sent. We will be in touch soon.</p>}
+            {submitError && <p className="productions-success">We could not send your brief. Please email brandon@aifilmacademy.com directly.</p>}
           </form>
         </div>
       </section>

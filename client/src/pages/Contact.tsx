@@ -1,6 +1,7 @@
 import { FormEvent, useState } from "react";
 import { Send } from "lucide-react";
 import PageMeta from "@/components/PageMeta";
+import { deliverAifaForm } from "@/lib/formDelivery";
 
 type InquiryTopic = "production" | "event" | "membership" | "other";
 
@@ -30,29 +31,31 @@ const TOPIC_DETAILS: Record<InquiryTopic, { label: string; messageLabel: string;
 export default function Contact() {
   const [topic, setTopic] = useState<InquiryTopic>("production");
   const [submitted, setSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState(false);
 
-  const sendInquiry = (event: FormEvent<HTMLFormElement>) => {
+  const sendInquiry = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
     const topicDetails = TOPIC_DETAILS[topic];
-    const subject = `AIFA contact: ${topicDetails.label}`;
-    const body = [
-      `Name: ${form.get("name") || ""}`,
-      `Email: ${form.get("email") || ""}`,
-      `Topic: ${topicDetails.label}`,
-      topic === "production" ? `Company or brand: ${form.get("company") || ""}` : "",
-      topic === "production" ? `What they want to make: ${form.get("projectType") || ""}` : "",
-      topic === "production" ? `Budget: ${form.get("budget") || ""}` : "",
-      topic === "event" ? `Delivery: ${form.get("delivery") || ""}` : "",
-      topic === "event" ? `Location: ${form.get("location") || ""}` : "",
-      topic === "event" ? `Budget: ${form.get("budget") || ""}` : "",
-      "",
-      `${topicDetails.messageLabel}:`,
-      `${form.get("message") || ""}`,
-    ].filter(Boolean).join("\n");
 
-    setSubmitted(true);
-    window.location.href = `mailto:brandon@aifilmacademy.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    try {
+      await deliverAifaForm("Contact inquiry", {
+        name: String(form.get("name") || ""),
+        email: String(form.get("email") || ""),
+        topic: topicDetails.label,
+        company: topic === "production" ? String(form.get("company") || "") : "",
+        projectType: topic === "production" ? String(form.get("projectType") || "") : "",
+        delivery: topic === "event" ? String(form.get("delivery") || "") : "",
+        location: topic === "event" ? String(form.get("location") || "") : "",
+        budget: topic === "production" || topic === "event" ? String(form.get("budget") || "") : "",
+        message: String(form.get("message") || ""),
+      });
+      setSubmitted(true);
+      setSubmitError(false);
+    } catch {
+      setSubmitError(true);
+      setSubmitted(false);
+    }
   };
 
   return (
@@ -128,7 +131,8 @@ export default function Contact() {
 
             <button className="contact-submit" type="submit">Send Inquiry <Send size={19} /></button>
             <p className="contact-note">Inquiries go directly to brandon@aifilmacademy.com.</p>
-            {submitted && <p className="contact-success">Your email draft is ready. If it did not open, email brandon@aifilmacademy.com directly.</p>}
+            {submitted && <p className="contact-success">Your inquiry has been sent. We will be in touch soon.</p>}
+            {submitError && <p className="contact-success">We could not send your inquiry. Please email brandon@aifilmacademy.com directly.</p>}
           </form>
         </div>
       </section>

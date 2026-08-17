@@ -14,9 +14,7 @@
  */
 
 import { useState, useEffect, useRef, useCallback } from "react";
-
-// ─── Contact routing ──────────────────────────────────────────────────────────
-const INQUIRY_RECIPIENT = "brandon@aifilmacademy.com";
+import { deliverAifaForm } from "@/lib/formDelivery";
 
 // Webinar date: next Thursday at 5pm PST — update this to the actual date
 // Set to next Thursday from now
@@ -89,10 +87,16 @@ function HeroSection() {
       const emailVal = email.trim().toLowerCase();
       if (!name || !emailVal) return;
       setFormState("loading");
-      const subject = encodeURIComponent("AIFA masterclass registration");
-      const body = encodeURIComponent([`Name: ${name}`, `Email: ${emailVal}`, "Source: masterclass_page"].join("\n"));
-      setFormState("success");
-      window.location.href = `mailto:${INQUIRY_RECIPIENT}?subject=${subject}&body=${body}`;
+      try {
+        await deliverAifaForm("Masterclass registration", {
+          name,
+          email: emailVal,
+          source: "Masterclass page",
+        });
+        setFormState("success");
+      } catch {
+        setFormState("error");
+      }
     },
     [formState, fullName, email]
   );
