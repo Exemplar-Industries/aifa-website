@@ -84,9 +84,10 @@ export default function Productions() {
         .productions-section-copy { max-width: 760px; margin: 1.25rem 0 0; color: rgba(255,255,255,.92); font-size: clamp(1.22rem, 1.85vw, 1.45rem); line-height: 1.55; font-weight: 650; }
         .productions-method-number { color: var(--afa-red); font-size: 1rem; font-weight: 900; letter-spacing: .08em; }
         .productions-method-list { display: grid; gap: 1rem; margin-top: 3rem; }
-        .productions-method { display: grid; grid-template-columns: minmax(250px, .82fr) minmax(0, 1.18fr); overflow: hidden; min-height: 290px; border: 1px solid rgba(255,255,255,.2); border-radius: 14px; background: linear-gradient(110deg, color-mix(in srgb, var(--afa-red) 12%, transparent), rgba(255,255,255,.025)); }
-        .productions-method:nth-child(even), .productions-method:first-child { grid-template-columns: minmax(0, 1.18fr) minmax(250px, .82fr); }
-        .productions-method:nth-child(even) .productions-method-media, .productions-method:first-child .productions-method-media { order: 2; }
+        .productions-method { display: grid; grid-template-columns: minmax(0, 1.18fr) minmax(250px, .82fr); overflow: hidden; min-height: 290px; border: 1px solid rgba(255,255,255,.2); border-radius: 14px; background: linear-gradient(110deg, color-mix(in srgb, var(--afa-red) 12%, transparent), rgba(255,255,255,.025)); }
+        .productions-method .productions-method-media { order: 2; }
+        .productions-method:nth-child(even) { grid-template-columns: minmax(250px, .82fr) minmax(0, 1.18fr); }
+        .productions-method:nth-child(even) .productions-method-media { order: 0; }
         .productions-method-media { position: relative; overflow: hidden; min-height: 290px; background: #151515; }
         .productions-method:first-child .productions-method-media img { object-position: 0% center; }
         .productions-method:nth-child(2) .productions-method-media img { object-fit: contain; object-position: center; }
@@ -115,9 +116,8 @@ export default function Productions() {
           .productions-page section { padding-left: 1.25rem; padding-right: 1.25rem; }
           .productions-title { font-size: clamp(3.55rem, 14.5vw, 5.6rem); }
           .productions-title span { white-space: normal; }
-          .productions-method, .productions-method:nth-child(even), .productions-method:first-child { grid-template-columns: 1fr; }
-          .productions-method:nth-child(even) .productions-method-media { order: 0; }
-          .productions-method:first-child .productions-method-media { order: 2; }
+          .productions-method, .productions-method:nth-child(even) { grid-template-columns: 1fr; }
+          .productions-method .productions-method-media { order: 2; }
           .productions-method-media, .productions-method-media img, .productions-method-media video { min-height: 230px; }
         }
         @media (max-width: 540px) {
@@ -133,7 +133,8 @@ export default function Productions() {
 
       <section className="productions-hero">
         <div className="productions-shell">
-          <h1 className="productions-display productions-title"><span>Work with our in house production studio</span><span>for ambitious animations, commercials, and trailers.</span></h1>
+          <h1 className="productions-display productions-title">Done For You Productions.</h1>
+          <p className="productions-hero-copy">Work with our in house production studio for ambitious animations, commercials, and trailers.</p>
         </div>
       </section>
 
