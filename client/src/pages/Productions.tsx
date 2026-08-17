@@ -25,7 +25,7 @@ const HOW_WE_DO_IT = [
     number: "04",
     title: "We splice it together in post production.",
     copy: "We refine the edit, sound, pacing, and delivery so the final work lands as one complete piece.",
-    video: "/assets/aifa-world-cup-short.mp4",
+    image: "/assets/production-post-timeline.png",
   },
 ];
 
@@ -86,9 +86,11 @@ export default function Productions() {
         .productions-method-number { color: var(--afa-red); font-size: 1rem; font-weight: 900; letter-spacing: .08em; }
         .productions-method-list { display: grid; gap: 1rem; margin-top: 3rem; }
         .productions-method { display: grid; grid-template-columns: minmax(250px, .82fr) minmax(0, 1.18fr); overflow: hidden; min-height: 290px; border: 1px solid rgba(255,255,255,.2); border-radius: 14px; background: linear-gradient(110deg, color-mix(in srgb, var(--afa-red) 12%, transparent), rgba(255,255,255,.025)); }
-        .productions-method:nth-child(even) { grid-template-columns: minmax(0, 1.18fr) minmax(250px, .82fr); }
-        .productions-method:nth-child(even) .productions-method-media { order: 2; }
+        .productions-method:nth-child(even), .productions-method:first-child { grid-template-columns: minmax(0, 1.18fr) minmax(250px, .82fr); }
+        .productions-method:nth-child(even) .productions-method-media, .productions-method:first-child .productions-method-media { order: 2; }
         .productions-method-media { position: relative; overflow: hidden; min-height: 290px; background: #151515; }
+        .productions-method:first-child .productions-method-media img { object-position: 18% center; }
+        .productions-method:nth-child(2) .productions-method-media img { object-fit: contain; object-position: center; }
         .productions-method-media::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(0,0,0,.08), rgba(0,0,0,.45)); pointer-events: none; }
         .productions-method-media img, .productions-method-media video { display: block; width: 100%; height: 100%; min-height: 290px; object-fit: cover; filter: saturate(.82) contrast(1.1); }
         .productions-method-watermark { position: absolute; z-index: 2; inset: 0; display: flex; align-items: center; justify-content: center; overflow: hidden; color: color-mix(in srgb, var(--afa-red) 78%, #111); font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.2rem, 5vw, 5.2rem); font-weight: 400; letter-spacing: .12em; line-height: .86; opacity: .34; pointer-events: none; text-align: center; text-shadow: 0 1px 0 rgba(255,255,255,.28), 0 0 14px rgba(255,255,255,.36); transform: rotate(-24deg) scale(1.12); }
@@ -114,8 +116,9 @@ export default function Productions() {
           .productions-page section { padding-left: 1.25rem; padding-right: 1.25rem; }
           .productions-title { font-size: clamp(3.55rem, 14.5vw, 5.6rem); }
           .productions-title span { white-space: normal; }
-          .productions-method, .productions-method:nth-child(even) { grid-template-columns: 1fr; }
+          .productions-method, .productions-method:nth-child(even), .productions-method:first-child { grid-template-columns: 1fr; }
           .productions-method:nth-child(even) .productions-method-media { order: 0; }
+          .productions-method:first-child .productions-method-media { order: 2; }
           .productions-method-media, .productions-method-media img, .productions-method-media video { min-height: 230px; }
         }
         @media (max-width: 540px) {
@@ -132,8 +135,8 @@ export default function Productions() {
       <section className="productions-hero">
         <div className="productions-shell">
           <p className="productions-kicker">AIFA Production Studio</p>
-          <h1 className="productions-display productions-title"><span>No more gatekeepers.</span><span>Any idea brought to life.</span></h1>
-          <p className="productions-hero-copy">AIFA is an AI-native production studio for ambitious animations, commercials, and trailers. Bring us the idea. We bring it to life.</p>
+          <h1 className="productions-display productions-title"><span>No more gatekeepers.</span><span>Bring Any idea to life.</span></h1>
+          <p className="productions-hero-copy">Work with our in house production studio for ambitious animations, commercials, and trailers.</p>
           <div className="productions-actions"><a className="productions-primary" href="#production-inquiry">Start a Production Conversation <ArrowRight size={20} /></a></div>
         </div>
       </section>
@@ -147,7 +150,7 @@ export default function Productions() {
               <article key={number} className="productions-method">
                 <div className="productions-method-media">
                   {image && <img src={image} alt="" />}
-                  {video && <video src={video} autoPlay muted loop playsInline />}
+                  {video && <video src={number === "03" ? `${video}#t=6` : video} autoPlay muted playsInline onLoadedMetadata={(event) => { if (number === "03") event.currentTarget.currentTime = 6; }} onEnded={(event) => { if (number === "03") { event.currentTarget.currentTime = 6; void event.currentTarget.play(); } }} />}
                   {(number === "01" || number === "02") && <span className="productions-method-watermark" aria-hidden="true">AIFA<br />{number === "01" ? "CHARACTER SHEET" : "STORYBOARD"}</span>}
                 </div>
                 <div className="productions-method-copy">
