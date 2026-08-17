@@ -35,7 +35,7 @@ export default function EducationEvents() {
     ].join("\n");
 
     setSubmitted(true);
-    window.location.href = `mailto:hello@aifilmacademy.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.location.href = `mailto:brandon@aifilmacademy.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   };
 
   return (
@@ -147,8 +147,8 @@ export default function EducationEvents() {
                 <div className="events-field"><label htmlFor="event-brief">Message</label><textarea id="event-brief" name="brief" required placeholder="Tell us what you are planning." /></div>
               </div>
               <button className="events-primary" type="submit">Send Your Event Brief <Send size={19} /></button>
-              <p className="events-note">Event briefs go directly to hello@aifilmacademy.com.</p>
-              {submitted && <p className="events-success">Your email draft is ready. If it did not open, email hello@aifilmacademy.com directly.</p>}
+              <p className="events-note">Event briefs go directly to brandon@aifilmacademy.com.</p>
+              {submitted && <p className="events-success">Your email draft is ready. If it did not open, email brandon@aifilmacademy.com directly.</p>}
             </form>
           </div>
         </div>

@@ -128,7 +128,7 @@ export default function Events() {
         <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
           <h2 className="events-heading" style={{ fontSize: "clamp(3rem, 6vw, 5.8rem)", margin: 0 }}>Know a room we <span>should add?</span></h2>
           <p style={{ maxWidth: "650px", color: "rgba(255,255,255,.88)", fontSize: "1.05rem", lineHeight: 1.65, margin: "1.25rem 0 1.5rem" }}>Send the official event page, date, and location. We review every listing before it appears in the directory.</p>
-          <a href="mailto:hello@aifilmacademy.com?subject=AI%20Film%20Event%20Submission" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", minHeight: "56px", padding: "0 1.35rem", borderRadius: "8px", background: "var(--afa-red)", color: "#fff", fontSize: "1rem", fontWeight: 800, textDecoration: "none" }}>Submit an event →</a>
+          <a href="mailto:brandon@aifilmacademy.com?subject=AI%20Film%20Event%20Submission" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", minHeight: "56px", padding: "0 1.35rem", borderRadius: "8px", background: "var(--afa-red)", color: "#fff", fontSize: "1rem", fontWeight: 800, textDecoration: "none" }}>Submit an event →</a>
         </div>
       </section>
     </main>

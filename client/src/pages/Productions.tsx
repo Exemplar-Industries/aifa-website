@@ -51,7 +51,7 @@ export default function Productions() {
     ].join("\n");
 
     setSubmitted(true);
-    window.location.href = `mailto:hello@aifilmacademy.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.location.href = `mailto:brandon@aifilmacademy.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   };
 
   return (
@@ -179,8 +179,8 @@ export default function Productions() {
               <div className="productions-field productions-field--full"><label htmlFor="production-brief">Tell us about the idea</label><textarea id="production-brief" name="brief" required placeholder="Tell us about the idea." /></div>
             </div>
             <button className="productions-primary" type="submit">Send Your Production Brief <Send size={19} /></button>
-            <p className="productions-note">Production briefs go directly to hello@aifilmacademy.com.</p>
-            {submitted && <p className="productions-success">Your email draft is ready. If it did not open, email hello@aifilmacademy.com directly.</p>}
+            <p className="productions-note">Production briefs go directly to brandon@aifilmacademy.com.</p>
+            {submitted && <p className="productions-success">Your email draft is ready. If it did not open, email brandon@aifilmacademy.com directly.</p>}
           </form>
         </div>
       </section>

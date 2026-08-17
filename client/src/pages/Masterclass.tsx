@@ -15,8 +15,8 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 
-// ─── Config ───────────────────────────────────────────────────────────────────
-const FORM_WEBHOOK_URL = "";
+// ─── Contact routing ──────────────────────────────────────────────────────────
+const INQUIRY_RECIPIENT = "brandon@aifilmacademy.com";
 
 // Webinar date: next Thursday at 5pm PST — update this to the actual date
 // Set to next Thursday from now
@@ -89,20 +89,10 @@ function HeroSection() {
       const emailVal = email.trim().toLowerCase();
       if (!name || !emailVal) return;
       setFormState("loading");
-      if (!FORM_WEBHOOK_URL) {
-        setTimeout(() => setFormState("success"), 600);
-        return;
-      }
-      try {
-        await fetch(FORM_WEBHOOK_URL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ fullName: name, email: emailVal, source: "masterclass_page" }),
-        });
-        setFormState("success");
-      } catch {
-        setFormState("error");
-      }
+      const subject = encodeURIComponent("AIFA masterclass registration");
+      const body = encodeURIComponent([`Name: ${name}`, `Email: ${emailVal}`, "Source: masterclass_page"].join("\n"));
+      setFormState("success");
+      window.location.href = `mailto:${INQUIRY_RECIPIENT}?subject=${subject}&body=${body}`;
     },
     [formState, fullName, email]
   );
