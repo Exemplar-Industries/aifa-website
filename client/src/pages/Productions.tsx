@@ -79,11 +79,10 @@ export default function Productions() {
         .productions-section { padding: clamp(4.75rem, 9vw, 7.5rem) 1.5rem; }
         .productions-section--what { background: #0B0B0B; border-bottom: 1px solid rgba(255,255,255,.1); }
         .productions-section--inquiry { background: radial-gradient(ellipse at 22% 14%, color-mix(in srgb, var(--afa-red) 22%, transparent), transparent 42%), #080808; }
-        .productions-section-heading { max-width: 900px; margin: 0; font-size: clamp(3.4rem, 7vw, 6.8rem); }
         .productions-section-heading span { color: var(--afa-red); }
         .productions-section-copy { max-width: 760px; margin: 1.25rem 0 0; color: rgba(255,255,255,.92); font-size: clamp(1.22rem, 1.85vw, 1.45rem); line-height: 1.55; font-weight: 650; }
         .productions-method-number { color: var(--afa-red); font-size: 1rem; font-weight: 900; letter-spacing: .08em; }
-        .productions-method-list { display: grid; gap: 1rem; margin-top: 3rem; }
+        .productions-method-list { display: grid; gap: 1rem; margin-top: 0; }
         .productions-method { display: grid; grid-template-columns: minmax(0, 1.18fr) minmax(250px, .82fr); overflow: hidden; min-height: 290px; border: 1px solid rgba(255,255,255,.2); border-radius: 14px; background: linear-gradient(110deg, color-mix(in srgb, var(--afa-red) 12%, transparent), rgba(255,255,255,.025)); }
         .productions-method .productions-method-media { order: 2; }
         .productions-method:nth-child(even) { grid-template-columns: minmax(250px, .82fr) minmax(0, 1.18fr); }
@@ -140,7 +139,6 @@ export default function Productions() {
 
       <section className="productions-section productions-section--what">
         <div className="productions-shell">
-          <h2 className="productions-display productions-section-heading">What We Do.</h2>
           <div className="productions-method-list">
             {HOW_WE_DO_IT.map(({ number, title, copy, image, video }) => (
               <article key={number} className="productions-method">

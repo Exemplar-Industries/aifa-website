@@ -67,12 +67,8 @@ export default function Contact() {
         .contact-page { min-height: 100vh; overflow-x: hidden; background: #080808; color: #F5F5F0; font-family: 'DM Sans', sans-serif; }
         .contact-page * { min-width: 0; box-sizing: border-box; }
         .contact-display { font-family: 'Bebas Neue', sans-serif; font-weight: 400; letter-spacing: .018em; line-height: .9; text-transform: uppercase; }
-        .contact-hero { padding: clamp(6.5rem, 12vw, 10rem) 1.5rem clamp(3.5rem, 7vw, 5.5rem); background: radial-gradient(ellipse at 84% 10%, color-mix(in srgb, var(--afa-red) 28%, transparent), transparent 43%), linear-gradient(145deg, #090909, #080808 68%, #160606); border-bottom: 1px solid rgba(255,255,255,.1); }
         .contact-shell { width: min(930px, 100%); margin: 0 auto; }
-        .contact-title { max-width: 900px; margin: 0; color: #F5F5F0; font-size: clamp(3.4rem, 7.2vw, 6.8rem); }
-        .contact-title span { color: var(--afa-red); }
-        .contact-hero-copy { max-width: 630px; margin: 1.45rem 0 0; color: rgba(255,255,255,.93); font-size: clamp(1.16rem, 1.85vw, 1.42rem); font-weight: 650; line-height: 1.55; }
-        .contact-section { padding: clamp(3.5rem, 7vw, 6rem) 1.5rem clamp(5rem, 9vw, 7rem); background: #0B0B0B; }
+        .contact-section { min-height: 100vh; display: flex; align-items: center; padding: clamp(7.5rem, 13vw, 11rem) 1.5rem clamp(5rem, 9vw, 7rem); background: radial-gradient(ellipse at 84% 10%, color-mix(in srgb, var(--afa-red) 28%, transparent), transparent 43%), linear-gradient(145deg, #090909, #080808 68%, #160606); }
         .contact-form { display: grid; gap: 1rem; padding: clamp(1.35rem, 3.3vw, 2.5rem); border: 1px solid rgba(255,255,255,.2); border-radius: 14px; background: linear-gradient(135deg, color-mix(in srgb, var(--afa-red) 9%, transparent), rgba(255,255,255,.035)); }
         .contact-form h2 { margin: 0 0 .1rem; font-size: clamp(2.55rem, 5vw, 4.25rem); color: #F5F5F0; }
         .contact-form-intro { max-width: 660px; margin: 0 0 .7rem; color: rgba(255,255,255,.9); font-size: 1.12rem; font-weight: 600; line-height: 1.55; }
@@ -89,23 +85,15 @@ export default function Contact() {
         .contact-success { color: #F5F5F0; }
         @media (max-width: 680px) {
           .contact-page section { padding-left: 1.25rem; padding-right: 1.25rem; }
-          .contact-title { font-size: clamp(3.2rem, 14vw, 4.7rem); }
           .contact-field-grid { grid-template-columns: 1fr; }
         }
       `}</style>
 
-      <section className="contact-hero">
-        <div className="contact-shell">
-          <h1 className="contact-display contact-title">Contact <span>Us.</span></h1>
-          <p className="contact-hero-copy">Tell us what you are looking to create, learn, or bring to your team. We will make sure the right conversation starts.</p>
-        </div>
-      </section>
-
       <section className="contact-section">
         <div className="contact-shell">
           <form className="contact-form" onSubmit={sendInquiry}>
-            <h2 className="contact-display">What are you reaching out about?</h2>
-            <p className="contact-form-intro">Choose the topic, then share only the details that help us respond well.</p>
+            <h2 className="contact-display">Contact Us.</h2>
+            <p className="contact-form-intro">Tell us what you are looking to create, learn, or bring to your team. We will make sure the right conversation starts.</p>
 
             <div className="contact-field">
               <label htmlFor="contact-topic">What are you reaching out about?</label>
