@@ -13,7 +13,7 @@ const HOW_WE_DO_IT = [
     number: "02",
     title: "We design worlds and storyboards.",
     copy: "We shape environments, key moments, pacing, and the visual route before production starts moving.",
-    image: "/assets/afa-featured-event-charart3.png",
+    image: "/assets/storyboard-act-1-comic.png",
   },
   {
     number: "03",
@@ -148,7 +148,7 @@ export default function Productions() {
                 <div className="productions-method-media">
                   {image && <img src={image} alt="" />}
                   {video && <video src={video} autoPlay muted loop playsInline />}
-                  {number === "01" && <span className="productions-method-watermark" aria-hidden="true">AIFA<br />CHARACTER SHEET</span>}
+                  {(number === "01" || number === "02") && <span className="productions-method-watermark" aria-hidden="true">AIFA<br />{number === "01" ? "CHARACTER SHEET" : "STORYBOARD"}</span>}
                 </div>
                 <div className="productions-method-copy">
                   <span className="productions-method-number">{number}</span>
