@@ -20,7 +20,8 @@ const HOW_WE_DO_IT = [
     number: "03",
     title: "We animate images into real footage.",
     copy: "We turn the visual system into motion, performance, and footage that carries the story forward.",
-    video: "/assets/aifa-world-cup-short.mp4",
+    video: "/assets/aifa-world-cup-method.mp4",
+    poster: "/assets/aifa-world-cup-method-poster.jpg",
   },
   {
     number: "04",
@@ -120,8 +121,9 @@ export default function Productions() {
           .productions-title { font-size: clamp(3.55rem, 14.5vw, 5.6rem); }
           .productions-title span { white-space: normal; }
           .productions-method, .productions-method:nth-child(even) { grid-template-columns: 1fr; }
-          .productions-method .productions-method-media { order: 2; }
-          .productions-method-media, .productions-method-media img, .productions-method-media video { min-height: 230px; }
+          .productions-method .productions-method-copy { order: 1; padding: clamp(1.65rem, 6vw, 2.4rem); }
+          .productions-method .productions-method-media { order: 2 !important; min-height: 0; aspect-ratio: 16 / 9; }
+          .productions-method-media img, .productions-method-media video { min-height: 0; height: 100%; }
         }
         @media (max-width: 540px) {
           .productions-hero { padding-top: 6rem; }
@@ -130,7 +132,7 @@ export default function Productions() {
           .productions-primary { width: 100%; }
           .productions-form-grid { grid-template-columns: 1fr; }
           .productions-field--full { grid-column: auto; }
-          .productions-method-media, .productions-method-media img, .productions-method-media video { min-height: 200px; }
+          .productions-method .productions-method-media { aspect-ratio: 4 / 3; }
         }
       `}</style>
 
@@ -138,17 +140,20 @@ export default function Productions() {
         <div className="productions-shell">
           <h1 className="productions-display productions-title"><span>Done For You</span> Productions.</h1>
           <p className="productions-hero-copy">Work with our in house production studio for ambitious animations, commercials, and trailers.</p>
+          <div className="productions-actions">
+            <a className="productions-primary" href="#production-inquiry">Start a Custom Production <Send size={19} /></a>
+          </div>
         </div>
       </section>
 
       <section className="productions-section productions-section--what">
         <div className="productions-shell">
           <div className="productions-method-list">
-            {HOW_WE_DO_IT.map(({ number, title, copy, image, video }) => (
+            {HOW_WE_DO_IT.map(({ number, title, copy, image, video, poster }) => (
               <article key={number} className="productions-method">
                 <div className="productions-method-media">
                   {image && <img src={image} alt="" />}
-                  {video && <video src={number === "03" ? `${video}#t=6` : video} autoPlay muted playsInline onLoadedMetadata={(event) => { if (number === "03") event.currentTarget.currentTime = 6; }} onEnded={(event) => { if (number === "03") { event.currentTarget.currentTime = 6; void event.currentTarget.play(); } }} />}
+                  {video && <video src={video} poster={poster} preload="auto" autoPlay loop muted playsInline />}
                   {(number === "01" || number === "02") && <span className="productions-method-watermark" aria-hidden="true">AIFA<br />{number === "01" ? "CHARACTER SHEET" : "STORYBOARD"}</span>}
                 </div>
                 <div className="productions-method-copy">
