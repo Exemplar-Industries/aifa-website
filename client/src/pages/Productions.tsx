@@ -25,7 +25,7 @@ const HOW_WE_DO_IT = [
     number: "04",
     title: "We splice it together in post production.",
     copy: "We refine the edit, sound, pacing, and delivery so the final work lands as one complete piece.",
-    image: "/assets/production-post-timeline.png",
+    image: "/assets/production-post-timeline-real.png",
   },
 ];
 
