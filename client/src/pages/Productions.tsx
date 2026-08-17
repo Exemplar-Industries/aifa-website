@@ -1,5 +1,5 @@
 import { FormEvent, useState } from "react";
-import { ArrowRight, Send } from "lucide-react";
+import { Send } from "lucide-react";
 import PageMeta from "@/components/PageMeta";
 
 const HOW_WE_DO_IT = [
@@ -70,9 +70,8 @@ export default function Productions() {
         .productions-shell { width: min(1120px, 100%); margin: 0 auto; }
         .productions-kicker { display: inline-flex; align-items: center; gap: .65rem; color: rgba(255,255,255,.9); font-size: 1.08rem; font-weight: 800; margin-bottom: 1.8rem; }
         .productions-kicker::before { content: ''; width: 34px; height: 2px; background: var(--afa-red); }
-        .productions-title { margin: 0; max-width: 1000px; font-size: clamp(4.15rem, 9vw, 9.8rem); }
-        .productions-title span { display: block; white-space: nowrap; }
-        .productions-title span:last-child { color: var(--afa-red); }
+        .productions-title { margin: 0; max-width: 1180px; font-size: clamp(2.5rem, 4.6vw, 4.1rem); line-height: .92; }
+        .productions-title span { display: block; color: #F5F5F0; white-space: nowrap; }
         .productions-hero-copy { max-width: 700px; margin: 1.7rem 0 0; color: rgba(255,255,255,.94); font-size: clamp(1.25rem, 2vw, 1.55rem); line-height: 1.52; font-weight: 650; }
         .productions-actions { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; margin-top: 2rem; }
         .productions-primary { display: inline-flex; align-items: center; justify-content: center; gap: .7rem; min-height: 60px; padding: 0 1.5rem; border: 0; border-radius: 8px; background: var(--afa-red); color: #fff; font: inherit; font-size: 1.08rem; font-weight: 800; text-decoration: none; cursor: pointer; }
@@ -89,7 +88,7 @@ export default function Productions() {
         .productions-method:nth-child(even), .productions-method:first-child { grid-template-columns: minmax(0, 1.18fr) minmax(250px, .82fr); }
         .productions-method:nth-child(even) .productions-method-media, .productions-method:first-child .productions-method-media { order: 2; }
         .productions-method-media { position: relative; overflow: hidden; min-height: 290px; background: #151515; }
-        .productions-method:first-child .productions-method-media img { object-position: 18% center; }
+        .productions-method:first-child .productions-method-media img { object-position: 0% center; }
         .productions-method:nth-child(2) .productions-method-media img { object-fit: contain; object-position: center; }
         .productions-method-media::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(0,0,0,.08), rgba(0,0,0,.45)); pointer-events: none; }
         .productions-method-media img, .productions-method-media video { display: block; width: 100%; height: 100%; min-height: 290px; object-fit: cover; filter: saturate(.82) contrast(1.1); }
@@ -134,17 +133,13 @@ export default function Productions() {
 
       <section className="productions-hero">
         <div className="productions-shell">
-          <p className="productions-kicker">AIFA Production Studio</p>
-          <h1 className="productions-display productions-title"><span>No more gatekeepers.</span><span>Bring Any idea to life.</span></h1>
-          <p className="productions-hero-copy">Work with our in house production studio for ambitious animations, commercials, and trailers.</p>
-          <div className="productions-actions"><a className="productions-primary" href="#production-inquiry">Start a Production Conversation <ArrowRight size={20} /></a></div>
+          <h1 className="productions-display productions-title"><span>Work with our in house production studio</span><span>for ambitious animations, commercials, and trailers.</span></h1>
         </div>
       </section>
 
       <section className="productions-section productions-section--what">
         <div className="productions-shell">
-          <h2 className="productions-display productions-section-heading">What <span>we do.</span></h2>
-          <p className="productions-section-copy">Animations, commercials, and trailers that carry a clear point of view.</p>
+          <h2 className="productions-display productions-section-heading">What We Do.</h2>
           <div className="productions-method-list">
             {HOW_WE_DO_IT.map(({ number, title, copy, image, video }) => (
               <article key={number} className="productions-method">

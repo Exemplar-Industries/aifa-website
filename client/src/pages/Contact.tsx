@@ -1,98 +1,148 @@
-import { useState } from "react";
+import { FormEvent, useState } from "react";
+import { Send } from "lucide-react";
 import PageMeta from "@/components/PageMeta";
 
-type InquiryType = "Production" | "Gen AI workshop" | "Something else";
+type InquiryTopic = "production" | "event" | "membership" | "other";
 
-const INQUIRY_TYPES: Array<{ title: InquiryType; description: string }> = [
-  { title: "Production", description: "Commission an AI film, campaign, or visual story." },
-  { title: "Gen AI workshop", description: "Bring a GenJam, workshop, or keynote to your team." },
-  { title: "Something else", description: "Ask a question about AIFA, a partnership, or an idea." },
-];
+const TOPIC_DETAILS: Record<InquiryTopic, { label: string; messageLabel: string; messagePlaceholder: string }> = {
+  production: {
+    label: "Production project",
+    messageLabel: "Tell us about the idea",
+    messagePlaceholder: "Tell us about the idea, where it will live, and what a strong final result looks like.",
+  },
+  event: {
+    label: "Workshop, GenJam, or keynote",
+    messageLabel: "Tell us about the event",
+    messagePlaceholder: "Share the audience, goals, and what you want people to leave with.",
+  },
+  membership: {
+    label: "AIFA membership",
+    messageLabel: "How can we help?",
+    messagePlaceholder: "Tell us what you would like to know about the membership, training, or community.",
+  },
+  other: {
+    label: "Something else",
+    messageLabel: "Message",
+    messagePlaceholder: "Tell us what you are reaching out about.",
+  },
+};
 
 export default function Contact() {
-  const [type, setType] = useState<InquiryType>("Production");
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
+  const [topic, setTopic] = useState<InquiryTopic>("production");
+  const [submitted, setSubmitted] = useState(false);
 
-  const submitInquiry = (event: React.FormEvent<HTMLFormElement>) => {
+  const sendInquiry = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const subject = encodeURIComponent(`${type} inquiry for AI Film Academy`);
-    const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nInterest: ${type}\n\n${message}`);
-    window.location.href = `mailto:hello@aifilmacademy.com?subject=${subject}&body=${body}`;
-  };
+    const form = new FormData(event.currentTarget);
+    const topicDetails = TOPIC_DETAILS[topic];
+    const subject = `AIFA contact: ${topicDetails.label}`;
+    const body = [
+      `Name: ${form.get("name") || ""}`,
+      `Email: ${form.get("email") || ""}`,
+      `Topic: ${topicDetails.label}`,
+      topic === "production" ? `Company or brand: ${form.get("company") || ""}` : "",
+      topic === "production" ? `What they want to make: ${form.get("projectType") || ""}` : "",
+      topic === "production" ? `Budget: ${form.get("budget") || ""}` : "",
+      topic === "event" ? `Delivery: ${form.get("delivery") || ""}` : "",
+      topic === "event" ? `Location: ${form.get("location") || ""}` : "",
+      topic === "event" ? `Budget: ${form.get("budget") || ""}` : "",
+      "",
+      `${topicDetails.messageLabel}:`,
+      `${form.get("message") || ""}`,
+    ].filter(Boolean).join("\n");
 
-  const fieldStyle: React.CSSProperties = {
-    width: "100%",
-    boxSizing: "border-box",
-    border: "1px solid rgba(255,255,255,0.24)",
-    borderRadius: "8px",
-    background: "#141414",
-    color: "#F5F5F0",
-    fontFamily: "'DM Sans', sans-serif",
-    fontSize: "1rem",
-    lineHeight: 1.4,
-    padding: "0.95rem 1rem",
+    setSubmitted(true);
+    window.location.href = `mailto:brandon@aifilmacademy.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   };
 
   return (
-    <main className="contact-page" style={{ minHeight: "100vh", overflowX: "hidden", background: "#080808", color: "#F5F5F0", fontFamily: "'DM Sans', sans-serif" }}>
+    <main className="contact-page">
       <PageMeta
-        title="Contact AI Film Academy | Productions & Gen AI Workshops"
-        description="Contact AI Film Academy about done-for-you AI film production, Gen AI workshops, GenJams, keynotes, and partnerships."
+        title="Contact AI Film Academy | Productions, Events & Membership"
+        description="Contact AI Film Academy about a production project, a workshop or keynote, AIFA membership, or another creative inquiry."
         path="/contact"
       />
+
       <style>{`
-        .contact-page * { min-width: 0; }
-        .contact-hero-title, .contact-form-title { font-family: 'Bebas Neue', sans-serif; font-weight: 400; letter-spacing: .015em; line-height: .86; text-transform: uppercase; }
-        .contact-hero-title { max-width: 100%; font-size: clamp(3.75rem, 8vw, 8rem); }
-        .contact-hero-title span, .contact-form-title span { display: block; }
-        .contact-hero-title span { white-space: nowrap; }
-        .contact-hero-title span:last-child, .contact-form-title span { color: #ef4444; }
-        .contact-option-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .75rem; }
-        .contact-option { min-height: 150px; border: 1px solid rgba(255,255,255,.18); border-radius: 8px; background: #111; color: #F5F5F0; padding: 1.3rem; text-align: left; transition: border-color 160ms ease, background 160ms ease; }
-        .contact-option:hover, .contact-option[data-active='true'] { border-color: #ef4444; background: rgba(239,68,68,.09); }
-        .contact-option strong { display: block; font-size: 1.2rem; line-height: 1.25; }
-        .contact-option span { display: block; color: rgba(255,255,255,.84); font-size: 1rem; line-height: 1.5; margin-top: .55rem; }
-        .contact-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-        .contact-form label { display: block; color: #F5F5F0; font-size: 1rem; font-weight: 700; line-height: 1.35; }
-        .contact-form label span { display: block; margin-bottom: .5rem; }
-        .contact-form textarea { min-height: 132px; resize: vertical; }
-        @media (max-width: 760px) {
-          .contact-page section { padding-left: 1.25rem !important; padding-right: 1.25rem !important; }
-          .contact-hero-title { max-width: 100%; font-size: clamp(3rem, 12vw, 4.5rem); }
-          .contact-option-grid, .contact-form-grid { grid-template-columns: 1fr; }
-          .contact-option { min-height: 0; padding: 1.15rem; }
+        .contact-page { min-height: 100vh; overflow-x: hidden; background: #080808; color: #F5F5F0; font-family: 'DM Sans', sans-serif; }
+        .contact-page * { min-width: 0; box-sizing: border-box; }
+        .contact-display { font-family: 'Bebas Neue', sans-serif; font-weight: 400; letter-spacing: .018em; line-height: .9; text-transform: uppercase; }
+        .contact-hero { padding: clamp(6.5rem, 12vw, 10rem) 1.5rem clamp(3.5rem, 7vw, 5.5rem); background: radial-gradient(ellipse at 84% 10%, color-mix(in srgb, var(--afa-red) 28%, transparent), transparent 43%), linear-gradient(145deg, #090909, #080808 68%, #160606); border-bottom: 1px solid rgba(255,255,255,.1); }
+        .contact-shell { width: min(930px, 100%); margin: 0 auto; }
+        .contact-title { max-width: 900px; margin: 0; color: #F5F5F0; font-size: clamp(3.4rem, 7.2vw, 6.8rem); }
+        .contact-title span { color: var(--afa-red); }
+        .contact-hero-copy { max-width: 630px; margin: 1.45rem 0 0; color: rgba(255,255,255,.93); font-size: clamp(1.16rem, 1.85vw, 1.42rem); font-weight: 650; line-height: 1.55; }
+        .contact-section { padding: clamp(3.5rem, 7vw, 6rem) 1.5rem clamp(5rem, 9vw, 7rem); background: #0B0B0B; }
+        .contact-form { display: grid; gap: 1rem; padding: clamp(1.35rem, 3.3vw, 2.5rem); border: 1px solid rgba(255,255,255,.2); border-radius: 14px; background: linear-gradient(135deg, color-mix(in srgb, var(--afa-red) 9%, transparent), rgba(255,255,255,.035)); }
+        .contact-form h2 { margin: 0 0 .1rem; font-size: clamp(2.55rem, 5vw, 4.25rem); color: #F5F5F0; }
+        .contact-form-intro { max-width: 660px; margin: 0 0 .7rem; color: rgba(255,255,255,.9); font-size: 1.12rem; font-weight: 600; line-height: 1.55; }
+        .contact-field { display: grid; gap: .5rem; }
+        .contact-field-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+        .contact-field label { color: #F5F5F0; font-size: 1rem; font-weight: 800; }
+        .contact-field small { color: rgba(255,255,255,.74); font-size: .93rem; font-weight: 600; line-height: 1.45; }
+        .contact-field input, .contact-field select, .contact-field textarea { width: 100%; border: 1px solid rgba(255,255,255,.28); border-radius: 7px; outline: none; background: #101010; color: #F5F5F0; padding: .9rem .95rem; font: inherit; font-size: 1rem; font-weight: 600; }
+        .contact-field textarea { min-height: 138px; resize: vertical; }
+        .contact-field input:focus, .contact-field select:focus, .contact-field textarea:focus { border-color: var(--afa-red); box-shadow: 0 0 0 3px color-mix(in srgb, var(--afa-red) 22%, transparent); }
+        .contact-submit { display: inline-flex; min-height: 60px; align-items: center; justify-content: center; gap: .7rem; border: 0; border-radius: 8px; background: var(--afa-red); color: #fff; font: inherit; font-size: 1.08rem; font-weight: 800; cursor: pointer; }
+        .contact-submit:hover { background: #df0000; }
+        .contact-note, .contact-success { margin: 0; color: rgba(255,255,255,.76); font-size: .98rem; font-weight: 600; line-height: 1.5; }
+        .contact-success { color: #F5F5F0; }
+        @media (max-width: 680px) {
+          .contact-page section { padding-left: 1.25rem; padding-right: 1.25rem; }
+          .contact-title { font-size: clamp(3.2rem, 14vw, 4.7rem); }
+          .contact-field-grid { grid-template-columns: 1fr; }
         }
       `}</style>
 
-      <section style={{ padding: "clamp(6.5rem, 12vw, 10rem) 1.5rem clamp(4rem, 8vw, 6.5rem)", background: "radial-gradient(ellipse at 88% 14%, rgba(190,24,24,.32), transparent 40%), #080808", borderBottom: "1px solid rgba(255,255,255,.1)" }}>
-        <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
-          <a href="/" style={{ color: "#F5F5F0", fontSize: "1rem", fontWeight: 700, textDecoration: "none" }}>← AI Film Academy</a>
-          <h1 className="contact-hero-title" style={{ margin: "2.4rem 0 1.45rem" }}><span>Talk to us</span><span>about the work.</span></h1>
-          <p style={{ maxWidth: "650px", color: "rgba(255,255,255,.88)", fontSize: "clamp(1.05rem, 2vw, 1.2rem)", lineHeight: 1.65, margin: 0 }}>Whether you need a finished AI film, a Gen AI workshop, or the right next conversation, tell us what you are building and we will point you in the right direction.</p>
+      <section className="contact-hero">
+        <div className="contact-shell">
+          <h1 className="contact-display contact-title">Contact <span>Us.</span></h1>
+          <p className="contact-hero-copy">Tell us what you are looking to create, learn, or bring to your team. We will make sure the right conversation starts.</p>
         </div>
       </section>
 
-      <section style={{ maxWidth: "1100px", margin: "0 auto", padding: "clamp(3.5rem, 7vw, 5.5rem) 1.5rem" }}>
-        <h2 className="contact-form-title" style={{ fontSize: "clamp(3rem, 6vw, 5.8rem)", margin: "0 0 1.5rem" }}>Tell us what you <span>need.</span></h2>
-        <div className="contact-option-grid" style={{ marginBottom: "2rem" }}>
-          {INQUIRY_TYPES.map((option) => (
-            <button key={option.title} type="button" className="contact-option" data-active={type === option.title} onClick={() => setType(option.title)}>
-              <strong>{option.title}</strong>
-              <span>{option.description}</span>
-            </button>
-          ))}
+      <section className="contact-section">
+        <div className="contact-shell">
+          <form className="contact-form" onSubmit={sendInquiry}>
+            <h2 className="contact-display">What are you reaching out about?</h2>
+            <p className="contact-form-intro">Choose the topic, then share only the details that help us respond well.</p>
+
+            <div className="contact-field">
+              <label htmlFor="contact-topic">What are you reaching out about?</label>
+              <select id="contact-topic" value={topic} onChange={(event) => setTopic(event.target.value as InquiryTopic)}>
+                {(Object.keys(TOPIC_DETAILS) as InquiryTopic[]).map((key) => <option key={key} value={key}>{TOPIC_DETAILS[key].label}</option>)}
+              </select>
+            </div>
+
+            <div className="contact-field-grid">
+              <div className="contact-field"><label htmlFor="contact-name">Name</label><input id="contact-name" name="name" required /></div>
+              <div className="contact-field"><label htmlFor="contact-email">Email</label><input id="contact-email" name="email" type="email" required /></div>
+            </div>
+
+            {topic === "production" && <>
+              <div className="contact-field"><label htmlFor="contact-company">Company or brand</label><input id="contact-company" name="company" /></div>
+              <div className="contact-field-grid">
+                <div className="contact-field"><label htmlFor="contact-project-type">What do you want to make?</label><select id="contact-project-type" name="projectType" required defaultValue=""><option value="" disabled>Select one</option><option>Animation</option><option>Commercial</option><option>Story trailer</option><option>Other custom production</option></select></div>
+                <div className="contact-field"><label htmlFor="contact-production-budget">Budget</label><select id="contact-production-budget" name="budget" required defaultValue=""><option value="" disabled>Select one</option><option>$5,000 to $15,000</option><option>$15,000 to $30,000</option><option>$30,000+</option></select></div>
+              </div>
+            </>}
+
+            {topic === "event" && <div className="contact-field-grid">
+              <div className="contact-field"><label htmlFor="contact-delivery">How should it happen?</label><select id="contact-delivery" name="delivery" required defaultValue=""><option value="" disabled>Select one</option><option>In person</option><option>Online</option><option>Hybrid</option></select></div>
+              <div className="contact-field"><label htmlFor="contact-location">City and state</label><input id="contact-location" name="location" placeholder="Example: Austin, TX" required /></div>
+              <div className="contact-field"><label htmlFor="contact-event-budget">Budget</label><select id="contact-event-budget" name="budget" required defaultValue=""><option value="" disabled>Select one</option><option>Under $5,000</option><option>$5,000 to $15,000</option><option>$15,000+</option></select></div>
+            </div>}
+
+            <div className="contact-field">
+              <label htmlFor="contact-message">{TOPIC_DETAILS[topic].messageLabel}</label>
+              <textarea id="contact-message" name="message" required placeholder={TOPIC_DETAILS[topic].messagePlaceholder} />
+            </div>
+
+            <button className="contact-submit" type="submit">Send Inquiry <Send size={19} /></button>
+            <p className="contact-note">Inquiries go directly to brandon@aifilmacademy.com.</p>
+            {submitted && <p className="contact-success">Your email draft is ready. If it did not open, email brandon@aifilmacademy.com directly.</p>}
+          </form>
         </div>
-        <form className="contact-form" onSubmit={submitInquiry} style={{ maxWidth: "760px" }}>
-          <div className="contact-form-grid" style={{ marginBottom: "1rem" }}>
-            <label><span>Name</span><input required value={name} onChange={(event) => setName(event.target.value)} placeholder="Your name" style={fieldStyle} /></label>
-            <label><span>Email</span><input required type="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="you@company.com" style={fieldStyle} /></label>
-          </div>
-          <label><span>What are you trying to make happen?</span><textarea required value={message} onChange={(event) => setMessage(event.target.value)} placeholder="Share a little context, timing, and what a good outcome looks like." style={{ ...fieldStyle, marginBottom: "1.1rem" }} /></label>
-          <button type="submit" style={{ minHeight: "56px", width: "100%", border: 0, borderRadius: "8px", background: "linear-gradient(135deg, #ef4444, #b91c1c)", color: "#fff", fontFamily: "'DM Sans', sans-serif", fontSize: "1rem", fontWeight: 800 }}>Send your inquiry →</button>
-          <p style={{ color: "rgba(255,255,255,.84)", fontSize: "1rem", lineHeight: 1.55, margin: "1rem 0 0" }}>Production and organizational education engagements typically begin at $5,000.</p>
-        </form>
       </section>
     </main>
   );
