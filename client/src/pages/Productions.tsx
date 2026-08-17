@@ -70,8 +70,8 @@ export default function Productions() {
         .productions-shell { width: min(1120px, 100%); margin: 0 auto; }
         .productions-kicker { display: inline-flex; align-items: center; gap: .65rem; color: rgba(255,255,255,.9); font-size: 1.08rem; font-weight: 800; margin-bottom: 1.8rem; }
         .productions-kicker::before { content: ''; width: 34px; height: 2px; background: var(--afa-red); }
-        .productions-title { margin: 0; max-width: 1180px; font-size: clamp(2.5rem, 4.6vw, 4.1rem); line-height: .92; }
-        .productions-title span { display: block; color: #F5F5F0; white-space: nowrap; }
+        .productions-title { margin: 0; max-width: 1000px; font-size: clamp(3.4rem, 7vw, 6.8rem); line-height: .88; }
+        .productions-title span { color: var(--afa-red); }
         .productions-hero-copy { max-width: 700px; margin: 1.7rem 0 0; color: rgba(255,255,255,.94); font-size: clamp(1.25rem, 2vw, 1.55rem); line-height: 1.52; font-weight: 650; }
         .productions-actions { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; margin-top: 2rem; }
         .productions-primary { display: inline-flex; align-items: center; justify-content: center; gap: .7rem; min-height: 60px; padding: 0 1.5rem; border: 0; border-radius: 8px; background: var(--afa-red); color: #fff; font: inherit; font-size: 1.08rem; font-weight: 800; text-decoration: none; cursor: pointer; }
@@ -133,7 +133,7 @@ export default function Productions() {
 
       <section className="productions-hero">
         <div className="productions-shell">
-          <h1 className="productions-display productions-title">Done For You Productions.</h1>
+          <h1 className="productions-display productions-title"><span>Done For You</span> Productions.</h1>
           <p className="productions-hero-copy">Work with our in house production studio for ambitious animations, commercials, and trailers.</p>
         </div>
       </section>
