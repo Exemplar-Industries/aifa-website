@@ -133,7 +133,7 @@ export default function EducationEvents() {
 
           <div id="event-inquiry" className="events-inquiry">
             <div className="events-inquiry-heading">
-              <h2 className="events-display events-heading">Contact <span>Us.</span></h2>
+              <h2 className="events-display events-heading">Contact Us.</h2>
             </div>
             <form className="events-form" onSubmit={sendInquiry}>
               <div className="events-form-grid">
