@@ -67,7 +67,7 @@ function FullscreenHero() {
             textShadow: "0 2px 18px rgba(0,0,0,0.78)",
           }}
         >
-          Beginner friendly training to build a premium AI portfolio for high ticket creative work.
+          Beginner friendly training to help you create a premium AI portfolio for high ticket creative work.
         </p>
 
         <div className="mt-9 flex flex-col justify-center gap-4 sm:flex-row">
