@@ -35,6 +35,12 @@ const SHOWCASE_PIECES: ShowcasePiece[] = [
     src: "/assets/showcase-story.mp4",
     poster: "/assets/showcase-story-poster.jpg",
   },
+  {
+    title: "Movie Trailer",
+    kind: "video",
+    src: "/assets/showcase-movie-trailer.mp4",
+    poster: "/assets/showcase-movie-trailer-poster.jpg",
+  },
 ];
 
 function ShowcaseMedia({ piece }: { piece: ShowcasePiece }) {
