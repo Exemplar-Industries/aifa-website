@@ -3,7 +3,7 @@
  */
 
 type CardVisual =
-  | { type: "image"; src: string; alt: string }
+  | { type: "image"; src: string; alt: string; fit?: "cover" | "contain" }
   | { type: "video"; src: string; poster: string; alt: string };
 
 const CREATIVE_SYSTEM_STEPS: Array<{
@@ -37,6 +37,7 @@ const CREATIVE_SYSTEM_STEPS: Array<{
       type: "image",
       src: "/assets/aifa-creative-opportunities-card.webp",
       alt: "Creative opportunities shared inside AI Film Academy",
+      fit: "contain",
     },
   },
 ];
@@ -99,7 +100,7 @@ export default function InsideAFASection() {
                     alt={step.visual.alt}
                     loading="lazy"
                     decoding="async"
-                    className="h-full w-full object-cover"
+                    className={step.visual.fit === "contain" ? "h-full w-full object-contain p-2" : "h-full w-full object-cover"}
                   />
                 )}
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
