@@ -63,12 +63,9 @@ export default function Productions() {
       await deliverAifaForm("Production inquiry", {
         name: String(form.get("name") || ""),
         email: String(form.get("email") || ""),
-        company: String(form.get("company") || ""),
         projectType: String(form.get("whatToMake") || ""),
         runtime: String(form.get("runtime") || ""),
         budget: String(form.get("budget") || ""),
-        timeline: String(form.get("timeline") || ""),
-        references: String(form.get("references") || ""),
         message: String(form.get("brief") || ""),
       });
       setSubmitted(true);
@@ -200,13 +197,10 @@ export default function Productions() {
             <div className="productions-form-grid">
               <div className="productions-field"><label htmlFor="production-name">Name</label><input id="production-name" name="name" required /></div>
               <div className="productions-field"><label htmlFor="production-email">Email</label><input id="production-email" name="email" type="email" required /></div>
-              <div className="productions-field productions-field--full"><label htmlFor="production-company">Company or brand</label><input id="production-company" name="company" /></div>
               <div className="productions-field productions-field--full"><label htmlFor="production-what">What do you want to make?</label><select id="production-what" name="whatToMake" required defaultValue=""><option value="" disabled>Select one</option><option>Animation</option><option>Commercial</option><option>Story trailer</option><option>Other custom production</option></select></div>
               <div className="productions-field productions-field--full"><label htmlFor="production-runtime">Estimated runtime</label><select id="production-runtime" name="runtime" defaultValue=""><option value="" disabled>Select one</option><option>Under 60 seconds</option><option>1 to 3 minutes</option><option>3 to 5 minutes</option><option>Over 5 minutes</option><option>Not sure yet</option></select></div>
               <div className="productions-field productions-field--full"><label htmlFor="production-budget">Budget</label><select id="production-budget" name="budget" required defaultValue=""><option value="" disabled>Select one</option><option>$5,000 to $15,000</option><option>$15,000 to $30,000</option><option>$30,000+</option></select></div>
-              <div className="productions-field productions-field--full"><label htmlFor="production-timeline">Target timeline</label><input id="production-timeline" name="timeline" placeholder="Example: October launch" /></div>
-              <div className="productions-field productions-field--full"><label htmlFor="production-references">Reference links</label><small>Links only. For Google Drive, set sharing to anyone with the link can view.</small><input id="production-references" name="references" placeholder="Paste links here" /></div>
-              <div className="productions-field productions-field--full"><label htmlFor="production-brief">Tell us about the idea</label><textarea id="production-brief" name="brief" required placeholder="Tell us about the idea." /></div>
+              <div className="productions-field productions-field--full"><label htmlFor="production-brief">Your message</label><textarea id="production-brief" name="brief" required placeholder="Your message" /></div>
             </div>
             <button className="productions-primary" type="submit">Send Your Production Brief <Send size={19} /></button>
             <p className="productions-note">Production briefs go directly to brandon@aifilmacademy.com.</p>
