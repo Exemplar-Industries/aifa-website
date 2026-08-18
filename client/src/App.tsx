@@ -1,7 +1,7 @@
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
-import { Route, Switch } from "wouter";
+import { Redirect, Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
@@ -14,7 +14,6 @@ import LPV3 from "./pages/LPV3";
 import Invite from "./pages/Invite";
 import LiveExclusive from "./pages/LiveExclusive";
 import FAQ from "./pages/FAQ";
-import Showcase from "./pages/Showcase";
 import Connect from "./pages/Connect";
 import InternalLessons from "./pages/InternalLessons";
 import SlideViewer from "./pages/SlideViewer";
@@ -37,7 +36,7 @@ function Router() {
     <Switch>
       <Route path={"/"} component={Home} />
       <Route path={"/faq"} component={FAQ} />
-      <Route path={"/showcase"} component={Showcase} />
+      <Route path={"/showcase"}><Redirect to="/" /></Route>
       <Route path={"/connect"} component={Connect} />
       <Route path={"/consulting"} component={Consulting} />
       <Route path={"/certification"} component={Certification} />

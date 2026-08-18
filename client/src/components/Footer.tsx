@@ -22,7 +22,6 @@ const columns: FooterColumn[] = [
     links: [
       { label: "Membership", href: "/membership" },
       { label: "Try Free", href: "/free-video-training" },
-      { label: "Showcase", href: "/showcase" },
       { label: "FAQ", href: "/faq" },
     ],
   },
