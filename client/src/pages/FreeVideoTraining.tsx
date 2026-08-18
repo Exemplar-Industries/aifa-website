@@ -44,6 +44,9 @@ function HeroForm() {
   const [formState, setFormState] = useState<FormState>("idle");
   const [firstName, setFirstName] = useState("");
   const [email, setEmail] = useState("");
+  const [marketingConsent, setMarketingConsent] = useState(false);
+  const [companyWebsite, setCompanyWebsite] = useState("");
+  const [formStartedAt] = useState(() => Date.now());
 
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {
@@ -51,31 +54,37 @@ function HeroForm() {
       if (formState === "loading") return;
       const name = firstName.trim();
       const emailVal = email.trim().toLowerCase();
-      if (!name || !emailVal) return;
+      if (!name || !emailVal || !marketingConsent) return;
       setFormState("loading");
-      if (!FORM_WEBHOOK_URL) {
-        setTimeout(() => setFormState("success"), 700);
-        return;
-      }
       try {
-        await fetch(FORM_WEBHOOK_URL, {
+        const response = await fetch(FORM_WEBHOOK_URL, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ firstName: name, email: emailVal, source: "free_video_training", group: "Free Video Training" }),
+          body: JSON.stringify({
+            firstName: name,
+            email: emailVal,
+            source: "free_video_training",
+            group: "Free Video Training",
+            marketingConsent: true,
+            companyWebsite,
+            submittedAt: new Date().toISOString(),
+            elapsedMs: Date.now() - formStartedAt,
+          }),
         });
+        if (!response.ok) throw new Error(`Submission failed with status ${response.status}`);
         setFormState("success");
       } catch {
         setFormState("error");
       }
     },
-    [formState, firstName, email]
+    [formState, firstName, email, marketingConsent, companyWebsite, formStartedAt]
   );
 
   if (formState === "success") {
     return (
       <div style={{ background: "rgba(255,255,255,0.08)", borderRadius: "8px", padding: "20px", textAlign: "center" }}>
         <p style={{ color: "#fff", fontWeight: 800, fontSize: "1rem", margin: 0 }}>
-          You're in. Check your inbox.
+          Check your inbox to confirm your email and unlock the free training.
         </p>
       </div>
     );
@@ -120,6 +129,18 @@ function HeroForm() {
             boxSizing: "border-box" as const,
           }}
         />
+        <input
+          tabIndex={-1}
+          autoComplete="off"
+          aria-hidden="true"
+          value={companyWebsite}
+          onChange={(e) => setCompanyWebsite(e.target.value)}
+          style={{ position: "absolute", left: "-10000px", width: "1px", height: "1px", opacity: 0 }}
+        />
+        <label style={{ display: "flex", gap: "8px", alignItems: "flex-start", color: "#ddd", fontSize: "0.78rem", lineHeight: 1.4 }}>
+          <input type="checkbox" checked={marketingConsent} onChange={(e) => setMarketingConsent(e.target.checked)} required />
+          <span>I agree to receive the free training and occasional AI Film Academy emails. I can unsubscribe anytime.</span>
+        </label>
         <button
           type="submit"
           disabled={formState === "loading"}
@@ -461,6 +482,9 @@ function AboutAndForm() {
   const [formState, setFormState] = useState<FormState>("idle");
   const [firstName, setFirstName] = useState("");
   const [email, setEmail] = useState("");
+  const [marketingConsent, setMarketingConsent] = useState(false);
+  const [companyWebsite, setCompanyWebsite] = useState("");
+  const [formStartedAt] = useState(() => Date.now());
 
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {
@@ -468,14 +492,10 @@ function AboutAndForm() {
       if (formState === "loading") return;
       const name = firstName.trim();
       const emailVal = email.trim().toLowerCase();
-      if (!name || !emailVal) return;
+      if (!name || !emailVal || !marketingConsent) return;
       setFormState("loading");
-      if (!FORM_WEBHOOK_URL) {
-        setTimeout(() => setFormState("success"), 700);
-        return;
-      }
       try {
-        await fetch(FORM_WEBHOOK_URL, {
+        const response = await fetch(FORM_WEBHOOK_URL, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -483,14 +503,19 @@ function AboutAndForm() {
             email: emailVal,
             source: "free_video_training",
             group: "Free Video Training",
+            marketingConsent: true,
+            companyWebsite,
+            submittedAt: new Date().toISOString(),
+            elapsedMs: Date.now() - formStartedAt,
           }),
         });
+        if (!response.ok) throw new Error(`Submission failed with status ${response.status}`);
         setFormState("success");
       } catch {
         setFormState("error");
       }
     },
-    [formState, firstName, email]
+    [formState, firstName, email, marketingConsent, companyWebsite, formStartedAt]
   );
 
   return (
@@ -627,7 +652,7 @@ function AboutAndForm() {
               <p
                 style={{ color: "#166534", fontWeight: 800, fontSize: "1.15rem", margin: 0 }}
               >
-                You're in. Check your inbox for the free training.
+                Check your inbox to confirm your email and unlock the free training.
               </p>
             </div>
           ) : (
@@ -669,6 +694,18 @@ function AboutAndForm() {
                     background: "#fafafa",
                   }}
                 />
+                <input
+                  tabIndex={-1}
+                  autoComplete="off"
+                  aria-hidden="true"
+                  value={companyWebsite}
+                  onChange={(e) => setCompanyWebsite(e.target.value)}
+                  style={{ position: "absolute", left: "-10000px", width: "1px", height: "1px", opacity: 0 }}
+                />
+                <label style={{ display: "flex", gap: "9px", alignItems: "flex-start", color: "#555", fontSize: "0.82rem", lineHeight: 1.45 }}>
+                  <input type="checkbox" checked={marketingConsent} onChange={(e) => setMarketingConsent(e.target.checked)} required />
+                  <span>I agree to receive the free training and occasional AI Film Academy emails. I can unsubscribe anytime.</span>
+                </label>
                 <button
                   type="submit"
                   disabled={formState === "loading"}
