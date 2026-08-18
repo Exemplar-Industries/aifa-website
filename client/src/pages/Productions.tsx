@@ -8,7 +8,7 @@ const HOW_WE_DO_IT = [
     number: "01",
     title: "We design characters and art styles.",
     copy: "We define the visual language, character identity, and creative standard that make the world feel intentional.",
-    image: "/assets/santiago-character-sheet-comic.png",
+    image: "/assets/santiago-character-sheet.webp",
   },
   {
     number: "02",
@@ -151,6 +151,8 @@ export default function Productions() {
           .productions-form-grid { grid-template-columns: 1fr; }
           .productions-field--full { grid-column: auto; }
           .productions-method .productions-method-media { aspect-ratio: 4 / 3; }
+          .productions-method:first-child .productions-method-media { aspect-ratio: 3 / 2; background: #d9d6d2; }
+          .productions-method:first-child .productions-method-media img { object-fit: cover; object-position: left center; }
           .productions-inquiry-heading .productions-section-heading { font-size: clamp(3.35rem, 15vw, 4.8rem); }
         }
       `}</style>
@@ -171,7 +173,7 @@ export default function Productions() {
             {HOW_WE_DO_IT.map(({ number, title, copy, image, video, poster }) => (
               <article key={number} className="productions-method">
                 <div className="productions-method-media">
-                  {image && <img src={image} alt="" />}
+                  {image && <img src={image} alt="" loading={number === "01" ? "eager" : "lazy"} fetchPriority={number === "01" ? "high" : "auto"} decoding="async" />}
                   {video && <video ref={number === "03" ? methodVideoRef : undefined} src={video} poster={poster} preload="auto" autoPlay loop muted playsInline onCanPlay={(event) => { void event.currentTarget.play().catch(() => undefined); }} />}
                   {(number === "01" || number === "02") && <span className="productions-method-watermark" aria-hidden="true">AIFA<br />{number === "01" ? "CHARACTER SHEET" : "STORYBOARD"}</span>}
                 </div>
