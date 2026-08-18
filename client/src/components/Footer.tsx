@@ -29,6 +29,7 @@ const columns: FooterColumn[] = [
     heading: "Explore AIFA",
     links: [
       { label: "AI Film Events", href: "/events" },
+      { label: "Showcase", href: "/showcase" },
       { label: "Production", href: "/productions" },
       { label: "Events", href: "/education-events" },
       { label: "Contact", href: "/contact" },

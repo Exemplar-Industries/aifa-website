@@ -30,13 +30,14 @@ import Contact from "./pages/Contact";
 import Productions from "./pages/Productions";
 import EducationEvents from "./pages/EducationEvents";
 import Events from "./pages/Events";
+import Showcase from "./pages/Showcase";
 
 function Router() {
   return (
     <Switch>
       <Route path={"/"} component={Home} />
       <Route path={"/faq"} component={FAQ} />
-      <Route path={"/showcase"}><Redirect to="/" /></Route>
+      <Route path={"/showcase"} component={Showcase} />
       <Route path={"/connect"} component={Connect} />
       <Route path={"/consulting"} component={Consulting} />
       <Route path={"/certification"} component={Certification} />
