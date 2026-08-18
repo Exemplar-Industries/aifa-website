@@ -38,7 +38,7 @@ export const INQUIRY_FORM_DEFINITIONS = {
       budget: {
         name: "budget",
         label: "Budget",
-        options: ["$5,000 to $15,000", "$15,000 to $30,000", "$30,000+"],
+        options: ["Less than $5,000", "$5,000 to $15,000", "$15,000 to $30,000", "$30,000+"],
         required: true,
       },
     },
@@ -78,7 +78,7 @@ export const INQUIRY_FORM_DEFINITIONS = {
       budget: {
         name: "budget",
         label: "Budget",
-        options: ["$5,000 to $15,000", "$15,000 to $30,000", "$30,000+"],
+        options: ["Less than $5,000", "$5,000 to $15,000", "$15,000 to $30,000", "$30,000+"],
         required: false,
       },
     },

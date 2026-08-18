@@ -70,8 +70,8 @@ export default function Contact() {
         .contact-shell { width: min(930px, 100%); margin: 0 auto; }
         .contact-section { min-height: 100vh; display: flex; align-items: center; padding: clamp(7.5rem, 13vw, 11rem) 1.5rem clamp(5rem, 9vw, 7rem); background: radial-gradient(ellipse at 84% 10%, color-mix(in srgb, var(--afa-red) 28%, transparent), transparent 43%), linear-gradient(145deg, #090909, #080808 68%, #160606); }
         .contact-form { display: grid; gap: 1rem; padding: clamp(1.35rem, 3.3vw, 2.5rem); border: 1px solid rgba(255,255,255,.2); border-radius: 14px; background: linear-gradient(135deg, color-mix(in srgb, var(--afa-red) 9%, transparent), rgba(255,255,255,.035)); }
-        .contact-form h2 { margin: 0 0 .1rem; font-size: clamp(2.55rem, 5vw, 4.25rem); color: #F5F5F0; }
-        .contact-form-intro { max-width: 660px; margin: 0 0 .7rem; color: rgba(255,255,255,.9); font-size: 1.12rem; font-weight: 600; line-height: 1.55; }
+        .contact-form h2 { margin: 0 0 .1rem; font-size: clamp(2.55rem, 5vw, 4.25rem); color: #F5F5F0; text-align: center; }
+        .contact-form-intro { max-width: 660px; margin: 0 auto .7rem; color: rgba(255,255,255,.9); font-size: 1.12rem; font-weight: 600; line-height: 1.55; text-align: center; }
         .contact-field { display: grid; gap: .5rem; }
         .contact-field-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
         .contact-field label { color: #F5F5F0; font-size: 1rem; font-weight: 800; }

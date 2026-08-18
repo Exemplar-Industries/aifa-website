@@ -11,11 +11,6 @@ const SERVICES = [
   ["Keynote", "A focused talk for teams that need a better creative-AI conversation than a tool list."],
 ];
 
-const OUTCOMES = [
-  ["Shared language", "A human-centered way to talk about creative AI beyond hype or fear, including the policy, safety, and ethical questions that matter to your organization."],
-  ["Real participation", "Guided exercises that move people from watching to making, so creative AI becomes a human experience instead of a presentation."],
-  ["Expert Support", "A stronger creative point of view and a next step that fits the work your organization actually does."],
-];
 
 export default function EducationEvents() {
   const [eventDelivery, setEventDelivery] = useState("");
@@ -51,29 +46,25 @@ export default function EducationEvents() {
         .events-hero { padding: clamp(7rem, 13vw, 11rem) 1.5rem clamp(5rem, 9vw, 7rem); background: radial-gradient(ellipse at 10% 15%, color-mix(in srgb, var(--afa-red) 31%, transparent), transparent 40%), linear-gradient(145deg, #090909, #090909 67%, #180606); border-bottom: 1px solid rgba(255,255,255,.1); }
         .events-kicker { display: inline-flex; align-items: center; gap: .65rem; color: rgba(255,255,255,.9); font-size: 1.08rem; font-weight: 800; margin-bottom: 1.8rem; }
         .events-kicker::before { content: ''; width: 34px; height: 2px; background: var(--afa-red); }
-        .events-title { margin: 0; font-size: clamp(4.15rem, 9vw, 9.6rem); max-width: 970px; }
+        .events-title { margin: 0 auto; font-size: clamp(4.15rem, 9vw, 9.6rem); max-width: 970px; text-align: center; }
         .events-title span { display: block; white-space: nowrap; }
         .events-title span:last-child { color: var(--afa-red); }
-        .events-hero-copy { max-width: 760px; margin: 1.7rem 0 0; color: rgba(255,255,255,.94); font-size: clamp(1.25rem, 2vw, 1.55rem); font-weight: 650; line-height: 1.52; }
-        .events-primary { display: inline-flex; align-items: center; justify-content: center; gap: .7rem; min-height: 60px; margin-top: 2rem; padding: 0 1.5rem; border: 0; border-radius: 8px; background: var(--afa-red); color: #fff; font: inherit; font-size: 1.08rem; font-weight: 800; text-decoration: none; cursor: pointer; }
+        .events-hero-copy { max-width: 760px; margin: 1.7rem auto 0; color: rgba(255,255,255,.94); font-size: clamp(1.25rem, 2vw, 1.55rem); font-weight: 650; line-height: 1.52; text-align: center; }
+        .events-primary { display: flex; width: fit-content; align-items: center; justify-content: center; gap: .7rem; min-height: 60px; margin: 2rem auto 0; padding: 0 1.5rem; border: 0; border-radius: 8px; background: var(--afa-red); color: #fff; font: inherit; font-size: 1.08rem; font-weight: 800; text-decoration: none; cursor: pointer; }
         .events-primary:hover { background: #df0000; }
         .events-section { padding: clamp(4.75rem, 9vw, 7.5rem) 1.5rem; }
         .events-section--services { background: #0B0B0B; border-bottom: 1px solid rgba(255,255,255,.1); }
-        .events-section--outcomes { background: radial-gradient(ellipse at 88% 12%, color-mix(in srgb, var(--afa-red) 20%, transparent), transparent 38%), #080808; }
-        .events-heading { max-width: 900px; margin: 0; font-size: clamp(3.4rem, 7vw, 6.8rem); }
+        .events-section--inquiry { background: radial-gradient(ellipse at 88% 12%, color-mix(in srgb, var(--afa-red) 16%, transparent), transparent 38%), #080808; }
+        .events-heading { max-width: 900px; margin: 0 auto; font-size: clamp(3.4rem, 7vw, 6.8rem); text-align: center; }
         .events-heading span { color: var(--afa-red); }
-        .events-intro { max-width: 760px; margin: 1.25rem 0 0; color: rgba(255,255,255,.92); font-size: clamp(1.2rem, 1.85vw, 1.45rem); font-weight: 650; line-height: 1.55; }
+        .events-intro { max-width: 760px; margin: 1.25rem auto 0; color: rgba(255,255,255,.92); font-size: clamp(1.2rem, 1.85vw, 1.45rem); font-weight: 650; line-height: 1.55; text-align: center; }
         .events-services { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; margin-top: 3rem; }
         .events-service { display: flex; flex-direction: column; min-height: 310px; padding: clamp(1.4rem, 3vw, 2.2rem); border: 1px solid rgba(255,255,255,.2); border-radius: 12px; background: linear-gradient(145deg, color-mix(in srgb, var(--afa-red) 18%, transparent), rgba(255,255,255,.03)); }
         .events-service-index { color: var(--afa-red); font-size: 1rem; font-weight: 900; letter-spacing: .09em; }
         .events-service h3 { margin: 2.6rem 0 .9rem; font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.8rem, 4.2vw, 4rem); font-weight: 400; letter-spacing: .018em; line-height: .9; text-transform: uppercase; }
         .events-service p { margin: 0; color: rgba(255,255,255,.9); font-size: 1.08rem; line-height: 1.58; font-weight: 600; }
-        .events-outcomes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.2rem; margin-top: 2.6rem; }
-        .events-outcome { border-top: 2px solid var(--afa-red); padding-top: 1rem; }
-        .events-outcome h3 { margin: 0 0 .8rem; font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.3rem, 3.5vw, 3.35rem); line-height: .9; letter-spacing: .018em; text-transform: uppercase; }
-        .events-outcome p { margin: 0; color: rgba(255,255,255,.9); font-size: 1.08rem; font-weight: 600; line-height: 1.58; }
         .events-inquiry { max-width: 860px; margin: clamp(4rem, 8vw, 6.25rem) auto 0; padding-top: clamp(4rem, 7vw, 5.8rem); border-top: 1px solid rgba(255,255,255,.15); }
-        .events-inquiry-heading { margin-bottom: 2rem; }
+        .events-inquiry-heading { margin-bottom: 2rem; text-align: center; }
         .events-form { display: grid; gap: 1rem; padding: clamp(1.5rem, 3vw, 2.4rem); border: 1px solid rgba(255,255,255,.22); border-radius: 12px; background: rgba(255,255,255,.04); }
         .events-form h3 { margin: 0 0 .35rem; font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.6rem, 4.2vw, 4rem); font-weight: 400; letter-spacing: .018em; line-height: .9; text-transform: uppercase; }
         .events-form-intro { margin: 0 0 .55rem; color: rgba(255,255,255,.88); font-size: 1.08rem; line-height: 1.55; font-weight: 600; }
@@ -90,7 +81,7 @@ export default function EducationEvents() {
           .events-page section { padding-left: 1.25rem; padding-right: 1.25rem; }
           .events-title { font-size: clamp(3.55rem, 14.5vw, 5.6rem); }
           .events-title span { white-space: normal; }
-          .events-services, .events-outcomes { grid-template-columns: 1fr; }
+          .events-services { grid-template-columns: 1fr; }
           .events-service { min-height: 0; }
           .events-service h3 { margin-top: 2rem; }
         }
@@ -122,13 +113,8 @@ export default function EducationEvents() {
         </div>
       </section>
 
-      <section className="events-section events-section--outcomes">
+      <section className="events-section events-section--inquiry">
         <div className="events-shell">
-          <h2 className="events-display events-heading">Leave with more than <span>a tool list.</span></h2>
-          <div className="events-outcomes">
-            {OUTCOMES.map(([title, copy]) => <article className="events-outcome" key={title}><h3>{title}</h3><p>{copy}</p></article>)}
-          </div>
-
           <div id="event-inquiry" className="events-inquiry">
             <div className="events-inquiry-heading">
               <h2 className="events-display events-heading">Contact Us.</h2>

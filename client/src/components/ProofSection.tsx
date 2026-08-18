@@ -67,7 +67,7 @@ export default function ProofSection() {
   return (
     <section id="member-reviews" className="relative overflow-hidden bg-[#0D0D0D] py-20 md:py-28 grain-overlay">
       <div className="container relative z-10">
-        <div className="flex flex-wrap items-end justify-between gap-8">
+        <div className="flex flex-col items-center gap-6 text-center">
           <h2 className="max-w-4xl text-[clamp(3.4rem,7vw,6.4rem)] leading-[0.88] text-white">
             What members are <span style={{ color: "var(--afa-red)" }}>saying.</span>
           </h2>

@@ -56,11 +56,11 @@ export default function FAQ() {
       <main>
         <header className="relative overflow-hidden border-b border-white/10 pb-16 pt-32 md:pb-24 md:pt-40 grain-overlay">
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_12%_30%,oklch(0.36_0.2_25/0.2),transparent_32%)]" />
-          <div className="container relative z-10">
-            <h1 className="max-w-7xl text-[clamp(3.3rem,7vw,6.8rem)] leading-[0.9] text-[#E63329] lg:whitespace-nowrap">
+          <div className="container relative z-10 text-center">
+            <h1 className="mx-auto max-w-7xl text-[clamp(3.3rem,7vw,6.8rem)] leading-[0.9] text-[#E63329] lg:whitespace-nowrap">
               FREQUENTLY ASKED QUESTIONS
             </h1>
-            <p className="mt-7 max-w-2xl text-base leading-7 text-white/85 md:text-lg md:leading-8">
+            <p className="mx-auto mt-7 max-w-2xl text-base leading-7 text-white/85 md:text-lg md:leading-8">
               Twenty practical answers to the most common questions about AI filmmaking, including workflow, portfolio development, feedback, certification, and creative opportunities.
             </p>
           </div>
@@ -72,8 +72,8 @@ export default function FAQ() {
             {faqGroups.map((group, groupIndex) => (
               <section key={group.title} className="grid gap-7 lg:grid-cols-[0.34fr_0.66fr] lg:gap-14">
                 <div className="lg:sticky lg:top-28 lg:self-start">
-                  <div className="mb-5 h-px w-16 bg-gradient-to-r from-[#E63329] to-transparent" />
-                  <h2 className="mt-3 text-4xl leading-none text-white md:text-5xl">{group.title}</h2>
+                  <div className="mx-auto mb-5 h-px w-16 bg-gradient-to-r from-[#E63329] to-transparent" />
+                  <h2 className="mt-3 text-center text-4xl leading-none text-white md:text-5xl">{group.title}</h2>
                 </div>
                 <Accordion type="single" collapsible className="border-t border-white/10">
                   {group.questions.map(([question, answer], index) => (
@@ -94,11 +94,11 @@ export default function FAQ() {
         </div>
 
         <section className="border-t border-white/10 bg-[#0D0D0D] py-16 md:py-20">
-          <div className="container flex flex-col justify-between gap-8 md:flex-row md:items-center">
+          <div className="container flex flex-col items-center gap-8 text-center">
             <div>
               <h2 className="mt-3 text-4xl text-white md:text-6xl">Turn The Answers Into Finished Work.</h2>
             </div>
-            <div className="flex flex-col gap-3 sm:flex-row">
+            <div className="flex flex-col justify-center gap-3 sm:flex-row">
               <a href="/membership" className="btn-primary px-7 py-4 font-bold">
                 Join AIFA <ArrowUpRight className="h-4 w-4" />
               </a>

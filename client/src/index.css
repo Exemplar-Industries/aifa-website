@@ -304,9 +304,9 @@
 
   .aifa-readable .homepage-hero-copy {
     color: rgba(245, 245, 240, 0.98);
-    font-size: clamp(1.62rem, 2.45vw, 2.25rem) !important;
+    font-size: clamp(1.15rem, 4.8vw, 2.25rem) !important;
     font-weight: 700;
-    line-height: 1.34 !important;
+    line-height: 1.36 !important;
     max-width: 72rem !important;
     text-shadow: 0 3px 22px rgba(0, 0, 0, 0.88);
   }

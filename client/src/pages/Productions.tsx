@@ -87,10 +87,10 @@ export default function Productions() {
         .productions-shell { width: min(1120px, 100%); margin: 0 auto; }
         .productions-kicker { display: inline-flex; align-items: center; gap: .65rem; color: rgba(255,255,255,.9); font-size: 1.08rem; font-weight: 800; margin-bottom: 1.8rem; }
         .productions-kicker::before { content: ''; width: 34px; height: 2px; background: var(--afa-red); }
-        .productions-title { margin: 0; max-width: 1000px; font-size: clamp(3.4rem, 7vw, 6.8rem); line-height: .88; }
+        .productions-title { margin: 0 auto; max-width: 1000px; font-size: clamp(3.4rem, 7vw, 6.8rem); line-height: .88; text-align: center; }
         .productions-title span { color: var(--afa-red); }
-        .productions-hero-copy { max-width: 700px; margin: 1.7rem 0 0; color: rgba(255,255,255,.94); font-size: clamp(1.25rem, 2vw, 1.55rem); line-height: 1.52; font-weight: 650; }
-        .productions-actions { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; margin-top: 2rem; }
+        .productions-hero-copy { max-width: 700px; margin: 1.7rem auto 0; color: rgba(255,255,255,.94); font-size: clamp(1.25rem, 2vw, 1.55rem); line-height: 1.52; font-weight: 650; text-align: center; }
+        .productions-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; align-items: center; margin-top: 2rem; }
         .productions-primary { display: inline-flex; align-items: center; justify-content: center; gap: .7rem; min-height: 60px; padding: 0 1.5rem; border: 0; border-radius: 8px; background: var(--afa-red); color: #fff; font: inherit; font-size: 1.08rem; font-weight: 800; text-decoration: none; cursor: pointer; }
         .productions-primary:hover { background: #df0000; }
         .productions-section { padding: clamp(4.75rem, 9vw, 7.5rem) 1.5rem; }
@@ -114,7 +114,7 @@ export default function Productions() {
         .productions-method h3 { max-width: 650px; margin: 1rem 0; font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.9rem, 5vw, 5.8rem); line-height: .88; letter-spacing: .02em; text-transform: uppercase; }
         .productions-method p { max-width: 620px; margin: 0; color: rgba(255,255,255,.9); font-size: clamp(1.1rem, 1.6vw, 1.3rem); line-height: 1.58; font-weight: 650; }
         .productions-inquiry { display: block; max-width: 850px; margin: 0 auto; }
-        .productions-inquiry-heading { margin-bottom: 2rem; }
+        .productions-inquiry-heading { margin-bottom: 2rem; text-align: center; }
         .productions-form { display: grid; gap: 1rem; padding: clamp(1.5rem, 3vw, 2.4rem); border: 1px solid rgba(255,255,255,.22); border-radius: 12px; background: rgba(255,255,255,.04); }
         .productions-form h3 { margin: 0 0 .35rem; font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.6rem, 4.2vw, 4rem); line-height: .9; letter-spacing: .02em; text-transform: uppercase; }
         .productions-form-intro { margin: 0 0 .55rem; color: rgba(255,255,255,.88); font-size: 1.14rem; line-height: 1.55; font-weight: 650; }

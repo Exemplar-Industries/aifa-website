@@ -62,8 +62,8 @@ function FullscreenHero() {
         <p
           className="homepage-hero-copy mt-7 max-w-3xl text-center font-semibold text-white"
           style={{
-            fontSize: "clamp(1.32rem, 2vw, 1.72rem)",
-            lineHeight: 1.42,
+            fontSize: "clamp(1.15rem, 4.8vw, 1.72rem)",
+            lineHeight: 1.36,
             textShadow: "0 2px 18px rgba(0,0,0,0.78)",
           }}
         >
