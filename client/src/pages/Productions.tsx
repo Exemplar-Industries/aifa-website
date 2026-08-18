@@ -2,6 +2,8 @@ import { FormEvent, useEffect, useRef, useState } from "react";
 import { Send } from "lucide-react";
 import PageMeta from "@/components/PageMeta";
 import { deliverAifaForm } from "@/lib/formDelivery";
+import { buildInquiryPayload } from "@/lib/inquiryForms";
+import { InquiryIdentityFields, MasterInquiryFields } from "@/components/SharedInquiryFields";
 
 const HOW_WE_DO_IT = [
   {
@@ -60,14 +62,7 @@ export default function Productions() {
     const form = new FormData(event.currentTarget);
 
     try {
-      await deliverAifaForm("Production inquiry", {
-        name: String(form.get("name") || ""),
-        email: String(form.get("email") || ""),
-        projectType: String(form.get("whatToMake") || ""),
-        runtime: String(form.get("runtime") || ""),
-        budget: String(form.get("budget") || ""),
-        message: String(form.get("brief") || ""),
-      });
+      await deliverAifaForm("Production inquiry", buildInquiryPayload("production", form));
       setSubmitted(true);
       setSubmitError(false);
     } catch {
@@ -196,14 +191,8 @@ export default function Productions() {
           <form className="productions-form" onSubmit={sendInquiry}>
             <h3>Contact us.</h3>
             <p className="productions-form-intro">Bring the idea. We will take it from here.</p>
-            <div className="productions-form-grid">
-              <div className="productions-field"><label htmlFor="production-name">Name</label><input id="production-name" name="name" required /></div>
-              <div className="productions-field"><label htmlFor="production-email">Email</label><input id="production-email" name="email" type="email" required /></div>
-              <div className="productions-field productions-field--full"><label htmlFor="production-what">What do you want to make?</label><select id="production-what" name="whatToMake" required defaultValue=""><option value="" disabled>Select one</option><option>Animation</option><option>Commercial</option><option>Story trailer</option><option>Other custom production</option></select></div>
-              <div className="productions-field productions-field--full"><label htmlFor="production-runtime">Estimated runtime</label><select id="production-runtime" name="runtime" defaultValue=""><option value="" disabled>Select one</option><option>Under 60 seconds</option><option>1 to 3 minutes</option><option>3 to 5 minutes</option><option>Over 5 minutes</option><option>Not sure yet</option></select></div>
-              <div className="productions-field productions-field--full"><label htmlFor="production-budget">Budget</label><select id="production-budget" name="budget" required defaultValue=""><option value="" disabled>Select one</option><option>$5,000 to $15,000</option><option>$15,000 to $30,000</option><option>$30,000+</option></select></div>
-              <div className="productions-field productions-field--full"><label htmlFor="production-brief">Your message</label><textarea id="production-brief" name="brief" required placeholder="Your message" /></div>
-            </div>
+            <InquiryIdentityFields fieldClassName="productions-field" gridClassName="productions-form-grid" nameId="production-name" emailId="production-email" />
+            <MasterInquiryFields kind="production" fieldClassName="productions-field" gridClassName="productions-form-grid" fullFieldClassName="productions-field--full" idPrefix="production" />
             <button className="productions-primary" type="submit">Send Your Production Brief <Send size={19} /></button>
             <p className="productions-note">Production briefs go directly to brandon@aifilmacademy.com.</p>
             {submitted && <p className="productions-success">Your production brief has been sent. We will be in touch soon.</p>}

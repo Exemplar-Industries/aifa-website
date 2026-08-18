@@ -2,6 +2,8 @@ import { FormEvent, useState } from "react";
 import { ArrowRight, Send } from "lucide-react";
 import PageMeta from "@/components/PageMeta";
 import { deliverAifaForm } from "@/lib/formDelivery";
+import { buildInquiryPayload } from "@/lib/inquiryForms";
+import { InquiryIdentityFields, MasterInquiryFields } from "@/components/SharedInquiryFields";
 
 const SERVICES = [
   ["GenJam", "A live six-hour creative challenge where teams make, share, learn, and build together."],
@@ -16,6 +18,7 @@ const OUTCOMES = [
 ];
 
 export default function EducationEvents() {
+  const [eventDelivery, setEventDelivery] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState(false);
 
@@ -24,16 +27,7 @@ export default function EducationEvents() {
     const form = new FormData(event.currentTarget);
 
     try {
-      await deliverAifaForm("Events inquiry", {
-        name: String(form.get("name") || ""),
-        email: String(form.get("email") || ""),
-        company: String(form.get("organization") || ""),
-        projectType: String(form.get("service") || ""),
-        delivery: String(form.get("format") || ""),
-        location: String(form.get("location") || ""),
-        budget: String(form.get("budget") || ""),
-        message: String(form.get("brief") || ""),
-      });
+      await deliverAifaForm("Events inquiry", buildInquiryPayload("event", form));
       setSubmitted(true);
       setSubmitError(false);
     } catch {
@@ -140,16 +134,8 @@ export default function EducationEvents() {
               <h2 className="events-display events-heading">Contact Us.</h2>
             </div>
             <form className="events-form" onSubmit={sendInquiry}>
-              <div className="events-form-grid">
-                <div className="events-field"><label htmlFor="event-name">Name</label><input id="event-name" name="name" required /></div>
-                <div className="events-field"><label htmlFor="event-email">Email</label><input id="event-email" name="email" type="email" required /></div>
-                <div className="events-field events-field--full"><label htmlFor="event-organization">Organization</label><input id="event-organization" name="organization" /></div>
-                <div className="events-field"><label htmlFor="event-service">What would you like to host?</label><select id="event-service" name="service" required defaultValue=""><option value="" disabled>Select one</option><option>GenJam</option><option>Workshop</option><option>Keynote</option></select></div>
-                <div className="events-field"><label htmlFor="event-format">Location format</label><select id="event-format" name="format" required defaultValue=""><option value="" disabled>Select one</option><option>In person</option><option>Online</option><option>Hybrid</option></select></div>
-                <div className="events-field"><label htmlFor="event-budget">Budget</label><select id="event-budget" name="budget" defaultValue=""><option value="" disabled>Select one</option><option>$5,000 to $15,000</option><option>$15,000 to $30,000</option><option>$30,000+</option></select></div>
-                <div className="events-field"><label htmlFor="event-location">City / state</label><input id="event-location" name="location" placeholder="Example: Austin, Texas" /></div>
-                <div className="events-field"><label htmlFor="event-brief">Message</label><textarea id="event-brief" name="brief" required placeholder="Tell us what you are planning." /></div>
-              </div>
+              <InquiryIdentityFields fieldClassName="events-field" gridClassName="events-form-grid" nameId="event-name" emailId="event-email" />
+              <MasterInquiryFields kind="event" fieldClassName="events-field" gridClassName="events-form-grid" fullFieldClassName="events-field--full" idPrefix="event" eventDelivery={eventDelivery} onEventDeliveryChange={setEventDelivery} />
               <button className="events-primary" type="submit">Send Your Event Brief <Send size={19} /></button>
               <p className="events-note">Event briefs go directly to brandon@aifilmacademy.com.</p>
               {submitted && <p className="events-success">Your event inquiry has been sent. We will be in touch soon.</p>}
