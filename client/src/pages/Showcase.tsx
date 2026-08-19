@@ -7,18 +7,6 @@ type ShowcasePiece = {
 
 const SHOWCASE_PIECES: ShowcasePiece[] = [
   {
-    title: "Comedy",
-    kind: "video",
-    src: "/assets/showcase-comedy.mp4",
-    poster: "/assets/showcase-comedy-poster.jpg",
-  },
-  {
-    title: "Horror",
-    kind: "video",
-    src: "/assets/showcase-horror.mp4",
-    poster: "/assets/showcase-horror-poster.jpg",
-  },
-  {
     title: "Animation",
     kind: "video",
     src: "/assets/showcase-animation.mp4",
@@ -40,6 +28,24 @@ const SHOWCASE_PIECES: ShowcasePiece[] = [
     kind: "video",
     src: "/assets/showcase-movie-trailer.mp4",
     poster: "/assets/showcase-movie-trailer-poster.jpg",
+  },
+  {
+    title: "Commercial",
+    kind: "video",
+    src: "/assets/showcase-commercial.mp4",
+    poster: "/assets/showcase-commercial-poster.jpg",
+  },
+  {
+    title: "Comedy",
+    kind: "video",
+    src: "/assets/showcase-comedy.mp4",
+    poster: "/assets/showcase-comedy-poster.jpg",
+  },
+  {
+    title: "Horror",
+    kind: "video",
+    src: "/assets/showcase-horror.mp4",
+    poster: "/assets/showcase-horror-poster.jpg",
   },
 ];
 
