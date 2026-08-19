@@ -7,26 +7,26 @@ import { InquiryIdentityFields, MasterInquiryFields } from "@/components/SharedI
 
 const HOW_WE_DO_IT = [
   {
-    number: "01",
+    number: "02",
     title: "We design characters and art styles.",
     copy: "We define the visual language, character identity, and creative standard that make the world feel intentional.",
     image: "/assets/santiago-character-sheet.webp",
   },
   {
-    number: "02",
+    number: "03",
     title: "We design worlds and storyboards.",
     copy: "We shape environments, key moments, pacing, and the visual route before production starts moving.",
     image: "/assets/storyboard-act-1-comic.png",
   },
   {
-    number: "03",
+    number: "04",
     title: "We animate images into real footage.",
     copy: "We turn the visual system into motion, performance, and footage that carries the story forward.",
     video: "/assets/aifa-world-cup-method.mp4",
     poster: "/assets/aifa-world-cup-method-poster.jpg",
   },
   {
-    number: "04",
+    number: "05",
     title: "We splice it together in post production.",
     copy: "We refine the edit, sound, pacing, and delivery so the final work lands as one complete piece.",
     image: "/assets/production-post-timeline-real.png",
@@ -96,8 +96,19 @@ export default function Productions() {
         .productions-section { padding: clamp(4.75rem, 9vw, 7.5rem) 1.5rem; }
         .productions-section--what { background: #0B0B0B; border-bottom: 1px solid rgba(255,255,255,.1); }
         .productions-section--inquiry { background: radial-gradient(ellipse at 22% 14%, color-mix(in srgb, var(--afa-red) 22%, transparent), transparent 42%), #080808; }
+        .productions-section-heading { margin: 0; text-align: center; font-size: clamp(3.3rem, 6.5vw, 6rem); }
         .productions-section-heading span { color: var(--afa-red); }
-        .productions-section-copy { max-width: 760px; margin: 1.25rem 0 0; color: rgba(255,255,255,.92); font-size: clamp(1.22rem, 1.85vw, 1.45rem); line-height: 1.55; font-weight: 650; }
+        .productions-section-copy { max-width: 760px; margin: 1.25rem auto 0; color: rgba(255,255,255,.92); font-size: clamp(1.22rem, 1.85vw, 1.45rem); line-height: 1.55; font-weight: 650; text-align: center; }
+        .productions-brief-step { display: grid; grid-template-columns: minmax(0, 1.18fr) minmax(250px, .82fr); overflow: hidden; min-height: 260px; margin: 2.2rem 0 1rem; border: 1px solid color-mix(in srgb, var(--afa-red) 66%, rgba(255,255,255,.28)); border-radius: 14px; background: linear-gradient(110deg, color-mix(in srgb, var(--afa-red) 20%, transparent), rgba(255,255,255,.025)); }
+        .productions-brief-copy { display: flex; flex-direction: column; justify-content: center; padding: clamp(1.7rem, 4vw, 4rem); }
+        .productions-brief-copy h3 { max-width: 650px; margin: 1rem 0; font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.9rem, 5vw, 5.8rem); line-height: .88; letter-spacing: .02em; text-transform: uppercase; }
+        .productions-brief-copy p { max-width: 620px; margin: 0; color: rgba(255,255,255,.9); font-size: clamp(1.1rem, 1.6vw, 1.3rem); line-height: 1.58; font-weight: 650; }
+        .productions-brief-visual { display: grid; align-content: center; gap: .75rem; padding: clamp(1.7rem, 4vw, 3.5rem); background: linear-gradient(145deg, color-mix(in srgb, var(--afa-red) 18%, #121212), #0d0d0d); }
+        .productions-brief-visual span { display: block; height: 16px; border-radius: 999px; background: rgba(255,255,255,.2); }
+        .productions-brief-visual span:nth-child(1) { width: 38%; background: var(--afa-red); }
+        .productions-brief-visual span:nth-child(2) { width: 76%; }
+        .productions-brief-visual span:nth-child(3) { width: 62%; }
+        .productions-brief-visual strong { margin-top: .8rem; color: #fff; font-family: 'Bebas Neue', sans-serif; font-size: clamp(2rem, 4vw, 3.4rem); font-weight: 400; letter-spacing: .07em; line-height: .92; }
         .productions-method-number { color: var(--afa-red); font-size: 1rem; font-weight: 900; letter-spacing: .08em; }
         .productions-method-list { display: grid; gap: 1rem; margin-top: 0; }
         .productions-method { display: grid; grid-template-columns: minmax(0, 1.18fr) minmax(250px, .82fr); overflow: hidden; min-height: 290px; border: 1px solid rgba(255,255,255,.2); border-radius: 14px; background: linear-gradient(110deg, color-mix(in srgb, var(--afa-red) 12%, transparent), rgba(255,255,255,.025)); }
@@ -132,7 +143,9 @@ export default function Productions() {
           .productions-page section { padding-left: 1.25rem; padding-right: 1.25rem; }
           .productions-title { font-size: clamp(3.55rem, 14.5vw, 5.6rem); }
           .productions-title span { white-space: normal; }
-          .productions-method, .productions-method:nth-child(even) { grid-template-columns: 1fr; }
+          .productions-method, .productions-method:nth-child(even), .productions-brief-step { grid-template-columns: 1fr; }
+          .productions-brief-copy { padding: clamp(1.65rem, 6vw, 2.4rem); }
+          .productions-brief-visual { min-height: 180px; }
           .productions-method .productions-method-copy { order: 1; padding: clamp(1.65rem, 6vw, 2.4rem); }
           .productions-method .productions-method-media { order: 2 !important; min-height: 0; aspect-ratio: 16 / 9; }
           .productions-method-media img, .productions-method-media video { min-height: 0; height: 100%; }
@@ -164,13 +177,30 @@ export default function Productions() {
 
       <section className="productions-section productions-section--what">
         <div className="productions-shell">
+          <div className="productions-method-intro">
+            <h2 className="productions-display productions-section-heading">How It <span>Works.</span></h2>
+            <p className="productions-section-copy">You send us the brief. We align on the vision, then take the work through design, production, and post.</p>
+          </div>
+          <article className="productions-brief-step">
+            <div className="productions-brief-copy">
+              <span className="productions-method-number">01</span>
+              <h3>You send us your brief.</h3>
+              <p>Use the form below to tell us what you want to make, your runtime, budget, timeline, and any references. We review the fit and come back with the right next step.</p>
+            </div>
+            <div className="productions-brief-visual" aria-hidden="true">
+              <span />
+              <span />
+              <span />
+              <strong>YOUR BRIEF<br />STARTS HERE</strong>
+            </div>
+          </article>
           <div className="productions-method-list">
             {HOW_WE_DO_IT.map(({ number, title, copy, image, video, poster }) => (
               <article key={number} className="productions-method">
                 <div className="productions-method-media">
-                  {image && <img src={image} alt="" loading={number === "01" ? "eager" : "lazy"} fetchPriority={number === "01" ? "high" : "auto"} decoding="async" />}
-                  {video && <video ref={number === "03" ? methodVideoRef : undefined} src={video} poster={poster} preload="auto" autoPlay loop muted playsInline onCanPlay={(event) => { void event.currentTarget.play().catch(() => undefined); }} />}
-                  {(number === "01" || number === "02") && <span className="productions-method-watermark" aria-hidden="true">AIFA<br />{number === "01" ? "CHARACTER SHEET" : "STORYBOARD"}</span>}
+                  {image && <img src={image} alt="" loading={number === "02" ? "eager" : "lazy"} fetchPriority={number === "02" ? "high" : "auto"} decoding="async" />}
+                  {video && <video ref={number === "04" ? methodVideoRef : undefined} src={video} poster={poster} preload="auto" autoPlay loop muted playsInline onCanPlay={(event) => { void event.currentTarget.play().catch(() => undefined); }} />}
+                  {(number === "02" || number === "03") && <span className="productions-method-watermark" aria-hidden="true">AIFA<br />{number === "02" ? "CHARACTER SHEET" : "STORYBOARD"}</span>}
                 </div>
                 <div className="productions-method-copy">
                   <span className="productions-method-number">{number}</span>

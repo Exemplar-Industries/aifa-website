@@ -29,7 +29,6 @@ import Privacy from "./pages/Privacy";
 import Contact from "./pages/Contact";
 import Productions from "./pages/Productions";
 import EducationEvents from "./pages/EducationEvents";
-import Events from "./pages/Events";
 import Showcase from "./pages/Showcase";
 
 function Router() {
@@ -58,7 +57,7 @@ function Router() {
       <Route path={"/work-with-us"} component={Contact} />
       <Route path={"/productions"} component={Productions} />
       <Route path={"/education-events"} component={EducationEvents} />
-      <Route path={"/events"} component={Events} />
+      <Route path={"/events"}><Redirect to="/" /></Route>
       <Route path={"/genjam-freebie"} component={GenJamFreebie} />
       <Route path={"/genjam-offer"} component={GenJamOffer} />
       <Route path={"/404"} component={NotFound} />
