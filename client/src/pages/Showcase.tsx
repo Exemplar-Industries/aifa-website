@@ -13,15 +13,15 @@ const SHOWCASE_PIECES: ShowcasePiece[] = [
     poster: "/assets/showcase-animation-poster.jpg",
   },
   {
+    title: "Commercial",
+    kind: "video",
+    src: "/assets/showcase-commercial.mp4",
+    poster: "/assets/showcase-commercial-poster.jpg",
+  },
+  {
     title: "Music Video",
     kind: "youtube",
     src: "https://www.youtube-nocookie.com/embed/QK0XY9aCcSM?rel=0&modestbranding=1",
-  },
-  {
-    title: "Story",
-    kind: "video",
-    src: "/assets/showcase-story.mp4",
-    poster: "/assets/showcase-story-poster.jpg",
   },
   {
     title: "Movie Trailer",
@@ -30,22 +30,22 @@ const SHOWCASE_PIECES: ShowcasePiece[] = [
     poster: "/assets/showcase-movie-trailer-poster.jpg",
   },
   {
-    title: "Commercial",
+    title: "Story Video",
     kind: "video",
-    src: "/assets/showcase-commercial.mp4",
-    poster: "/assets/showcase-commercial-poster.jpg",
-  },
-  {
-    title: "Comedy",
-    kind: "video",
-    src: "/assets/showcase-comedy.mp4",
-    poster: "/assets/showcase-comedy-poster.jpg",
+    src: "/assets/showcase-story.mp4",
+    poster: "/assets/showcase-story-poster.jpg",
   },
   {
     title: "Horror",
     kind: "video",
     src: "/assets/showcase-horror.mp4",
     poster: "/assets/showcase-horror-poster.jpg",
+  },
+  {
+    title: "Comedy",
+    kind: "video",
+    src: "/assets/showcase-comedy.mp4",
+    poster: "/assets/showcase-comedy-poster.jpg",
   },
 ];
 

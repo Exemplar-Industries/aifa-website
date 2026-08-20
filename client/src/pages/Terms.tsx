@@ -29,7 +29,7 @@ const TERMS = [
   },
   {
     title: "Outcomes and Opportunities",
-    body: "AI Film Academy provides education, creative feedback, and access to opportunities. We do not guarantee employment, client work, festival selection, revenue, audience growth, tool performance, certification outcomes, or any particular creative or business result. You remain responsible for your own projects, creative decisions, legal clearances, and professional choices.",
+    body: "AI Film Academy provides education, creative practice, feedback, community, and access to opportunities designed to strengthen work readiness, improve portfolio quality, and help members develop a more effective creative process. Where appropriate, we may choose to provide priority visibility for member work or members in connection with relevant briefs or opportunities. That visibility is discretionary, context-specific, and is not a placement promise. Membership does not guarantee employment, client work, paid opportunities, income, festival selection, revenue, audience growth, tool performance, certification outcomes, or any particular creative or business result. You remain responsible for your own projects, creative decisions, legal clearances, and professional choices.",
   },
   {
     title: "Custom Productions and Corporate Services",
