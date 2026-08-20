@@ -15,11 +15,31 @@ import { useEffect, useState } from "react";
 
 const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/fZu8wO3Ji2pyeoTe2c7Vm03";
 const SKOOL_COMMUNITY_URL = "https://www.skool.com/aifilmacademy/about";
-const PUBLIC_MONTHLY = 79;
-const PUBLIC_ANNUAL = PUBLIC_MONTHLY * 12; // $948
+
+// One source of truth for the alumni page’s public-rate comparison. At 12:00 AM
+// Pacific on August 31, 2026 the public comparison automatically moves from $79
+// to the approved $125/month rate without a manual page edit or scheduled job.
+const PUBLIC_RATE_CHANGE_AT = Date.UTC(2026, 7, 31, 7, 0, 0); // 2026-08-31 12:00 AM PDT
+const PRE_CHANGE_PUBLIC_MONTHLY = 79;
+const UPDATED_PUBLIC_MONTHLY = 125;
 const PARTNER_ANNUAL = 399;
 const PARTNER_MONTHLY_EQUIV = Math.round(PARTNER_ANNUAL / 12); // $33
-const SAVINGS = PUBLIC_ANNUAL - PARTNER_ANNUAL; // $549
+
+const GENJAM_OFFER_CSS = `
+  .genjam-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; }
+  .genjam-stat { min-width: 0; }
+  .genjam-pricing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .genjam-public-card, .genjam-partner-card { min-width: 0; }
+  @media (max-width: 640px) {
+    .genjam-stats { border-radius: 18px; }
+    .genjam-stat { padding: 1.5rem 0.5rem !important; }
+    .genjam-stat-number { font-size: 2.35rem !important; }
+    .genjam-stat-label { font-size: 0.82rem !important; letter-spacing: 0.055em !important; line-height: 1.3 !important; }
+    .genjam-pricing-grid { grid-template-columns: 1fr; gap: 1rem; }
+    .genjam-partner-card { order: -1; }
+    .genjam-public-card { opacity: 0.75 !important; }
+  }
+`;
 
 const INCLUDED = [
   { icon: "🎬", label: "Master AI Filmmaking in 30 Days", desc: "The complete AI filmmaking course — concept to final cut, updated August 2026" },
@@ -79,6 +99,10 @@ function PaymentSuccess() {
 // ─── Main Page ────────────────────────────────────────────────────────────────
 export default function GenJamOffer() {
   const [isSuccess, setIsSuccess] = useState(false);
+  const publicMonthly = Date.now() >= PUBLIC_RATE_CHANGE_AT ? UPDATED_PUBLIC_MONTHLY : PRE_CHANGE_PUBLIC_MONTHLY;
+  const publicAnnual = publicMonthly * 12;
+  const savings = publicAnnual - PARTNER_ANNUAL;
+
   useEffect(() => {
     if (new URLSearchParams(window.location.search).get("payment") === "success") setIsSuccess(true);
   }, []);
@@ -86,6 +110,7 @@ export default function GenJamOffer() {
 
   return (
     <div style={{ background: "#0A0A0A", color: "#F5F5F0", fontFamily: "'DM Sans', sans-serif", minHeight: "100vh" }}>
+      <style>{GENJAM_OFFER_CSS}</style>
 
       {/* ── SECTION 1: HERO ── */}
       <section style={{ maxWidth: "1000px", margin: "0 auto", padding: "clamp(4rem,9vw,7rem) clamp(1.5rem,5vw,3rem) clamp(2rem,5vw,3rem)", textAlign: "center" }}>
@@ -114,15 +139,16 @@ export default function GenJamOffer() {
           </h2>
 
           {/* Big stats row */}
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "1px", background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: "16px", overflow: "hidden", marginBottom: "3rem" }}>
+          <div className="genjam-stats" style={{ background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: "16px", overflow: "hidden", marginBottom: "3rem" }}>
             {[
               { num: "1,100+", label: "Active Members" },
-              { num: "5.0★", label: "Google Rating (33 Reviews)" },
-              { num: "30k+", label: "Global Students Trained" },
+              { num: "5.0★", label: "Google Rating", detail: "33 reviews" },
+              { num: "30k+", label: "Global Students", detail: "trained" },
             ].map((s, i) => (
-              <div key={i} style={{ background: "rgba(255,255,255,0.03)", padding: "clamp(1.5rem,4vw,2.5rem) 1rem", textAlign: "center" }}>
-                <p style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2.5rem,7vw,4rem)", color: "#ef4444", lineHeight: 1, marginBottom: "0.5rem", textShadow: "0 0 40px rgba(239,68,68,0.3)" }}>{s.num}</p>
-                <p style={{ fontSize: "clamp(0.75rem,1.8vw,0.9rem)", color: "rgba(255,255,255,0.4)", textTransform: "uppercase", letterSpacing: "0.1em", fontWeight: 600 }}>{s.label}</p>
+              <div key={i} className="genjam-stat" style={{ background: "rgba(255,255,255,0.03)", padding: "clamp(1.5rem,4vw,2.5rem) 1rem", textAlign: "center" }}>
+                <p className="genjam-stat-number" style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2.5rem,7vw,4rem)", color: "#ef4444", lineHeight: 1, marginBottom: "0.55rem", textShadow: "0 0 40px rgba(239,68,68,0.3)" }}>{s.num}</p>
+                <p className="genjam-stat-label" style={{ fontSize: "clamp(0.82rem,1.8vw,0.95rem)", color: "rgba(255,255,255,0.72)", textTransform: "uppercase", letterSpacing: "0.08em", fontWeight: 700, margin: 0 }}>{s.label}</p>
+                {s.detail && <p className="genjam-stat-label" style={{ fontSize: "clamp(0.72rem,1.5vw,0.82rem)", color: "rgba(255,255,255,0.52)", textTransform: "uppercase", letterSpacing: "0.08em", fontWeight: 700, margin: "0.22rem 0 0" }}>{s.detail}</p>}
               </div>
             ))}
           </div>
@@ -164,19 +190,19 @@ export default function GenJamOffer() {
             Your Exclusive Rate
           </h2>
 
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+          <div className="genjam-pricing-grid">
             {/* Public rate */}
-            <div style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: "16px", padding: "clamp(1.5rem,4vw,2.25rem)", opacity: 0.5 }}>
+            <div className="genjam-public-card" style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: "16px", padding: "clamp(1.5rem,4vw,2.25rem)", opacity: 0.5 }}>
               <p style={{ fontSize: "0.72rem", color: "rgba(255,255,255,0.4)", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: "0.75rem" }}>Public Rate</p>
               <p style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2.5rem,7vw,4rem)", color: "rgba(255,255,255,0.5)", lineHeight: 1, marginBottom: "0.25rem", textDecoration: "line-through" }}>
-                ${PUBLIC_MONTHLY}<span style={{ fontSize: "1.2rem", fontFamily: "'DM Sans', sans-serif", fontWeight: 400 }}>/mo</span>
+                ${publicMonthly}<span style={{ fontSize: "1.2rem", fontFamily: "'DM Sans', sans-serif", fontWeight: 400 }}>/mo</span>
               </p>
-              <p style={{ fontSize: "0.9rem", color: "rgba(255,255,255,0.3)", marginBottom: "1rem" }}>${PUBLIC_ANNUAL}/yr — and raising</p>
+              <p style={{ fontSize: "0.9rem", color: "rgba(255,255,255,0.48)", marginBottom: "1rem" }}>Public annual value: ${publicAnnual}/yr</p>
               <p style={{ fontSize: "0.85rem", color: "rgba(255,255,255,0.3)", lineHeight: 1.5 }}>Available to anyone who finds the community</p>
             </div>
 
             {/* Partner rate */}
-            <div style={{ background: "linear-gradient(135deg, rgba(239,68,68,0.1) 0%, rgba(185,28,28,0.05) 100%)", border: "2px solid rgba(239,68,68,0.35)", borderRadius: "16px", padding: "clamp(1.5rem,4vw,2.25rem)", position: "relative", overflow: "hidden" }}>
+            <div className="genjam-partner-card" style={{ background: "linear-gradient(135deg, rgba(239,68,68,0.1) 0%, rgba(185,28,28,0.05) 100%)", border: "2px solid rgba(239,68,68,0.35)", borderRadius: "16px", padding: "clamp(1.5rem,4vw,2.25rem)", position: "relative", overflow: "hidden" }}>
               <div style={{ position: "absolute", top: "-40px", right: "-40px", width: "120px", height: "120px", borderRadius: "50%", background: "rgba(239,68,68,0.12)", filter: "blur(40px)", pointerEvents: "none" }} />
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.75rem" }}>
                 <p style={{ fontSize: "0.72rem", color: "#ef4444", textTransform: "uppercase", letterSpacing: "0.12em", fontWeight: 700 }}>Machine Cinema Partner Rate</p>
@@ -185,16 +211,14 @@ export default function GenJamOffer() {
               <p style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(3rem,8vw,5rem)", color: "#fff", lineHeight: 1, marginBottom: "0.25rem" }}>
                 ${PARTNER_ANNUAL}<span style={{ fontSize: "1.4rem", fontFamily: "'DM Sans', sans-serif", fontWeight: 400, color: "rgba(255,255,255,0.6)" }}>/yr</span>
               </p>
-              <p style={{ fontSize: "0.95rem", color: "rgba(255,255,255,0.55)", marginBottom: "1.25rem" }}>
-                Just <strong style={{ color: "#fff" }}>${PARTNER_MONTHLY_EQUIV}/month</strong> — save <strong style={{ color: "#ef4444" }}>${SAVINGS}/year</strong>
+              <p style={{ fontSize: "0.98rem", color: "rgba(255,255,255,0.72)", marginBottom: "1rem", lineHeight: 1.55 }}>
+                Just <strong style={{ color: "#fff" }}>${PARTNER_MONTHLY_EQUIV}/month</strong>. Save <strong style={{ color: "#ef4444" }}>${savings}/year</strong> versus the public rate.
               </p>
-              <ul style={{ listStyle: "none", padding: 0, margin: "0 0 1.5rem", display: "flex", flexDirection: "column", gap: "0.6rem" }}>
-                {["Full access — no upsells, no paywalls", "Monthly GenJams included", "Renews annually at this rate", "Cancel anytime — no contracts"].map(item => (
-                  <li key={item} style={{ display: "flex", alignItems: "center", gap: "0.6rem", fontSize: "0.9rem", color: "rgba(255,255,255,0.65)" }}>
-                    <span style={{ color: "#ef4444", fontWeight: 700, flexShrink: 0 }}>✓</span>{item}
-                  </li>
-                ))}
-              </ul>
+              <div style={{ margin: "0 0 1.5rem", padding: "1rem", borderRadius: "12px", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.09)" }}>
+                <p style={{ margin: 0, fontSize: "0.95rem", color: "rgba(255,255,255,0.88)", fontWeight: 700, lineHeight: 1.45 }}>Full annual AIFA access.</p>
+                <p style={{ margin: "0.35rem 0 0", fontSize: "0.88rem", color: "rgba(255,255,255,0.64)", lineHeight: 1.55 }}>Training, feedback, certification, community, curated opportunities, and monthly GenJams.</p>
+                <p style={{ margin: "0.65rem 0 0", fontSize: "0.82rem", color: "rgba(255,255,255,0.52)", lineHeight: 1.45 }}>Renews annually at this partner rate. Manage billing through Stripe.</p>
+              </div>
               <a href={STRIPE_PAYMENT_LINK}
                 style={{ display: "block", width: "100%", textAlign: "center", background: "linear-gradient(135deg,#ef4444,#b91c1c)", borderRadius: "12px", padding: "18px 16px", color: "#fff", fontWeight: 800, fontSize: "clamp(1rem,3vw,1.1rem)", textTransform: "uppercase", letterSpacing: "0.06em", textDecoration: "none", boxShadow: "0 0 40px rgba(239,68,68,0.4)", boxSizing: "border-box" }}>
                 Join at the Partner Rate — ${PARTNER_ANNUAL}/yr →
@@ -205,9 +229,9 @@ export default function GenJamOffer() {
           {/* Savings callout */}
           <div style={{ marginTop: "1.5rem", textAlign: "center", padding: "1.25rem", background: "rgba(239,68,68,0.06)", border: "1px solid rgba(239,68,68,0.15)", borderRadius: "12px" }}>
             <p style={{ fontSize: "clamp(0.95rem,2.5vw,1.1rem)", color: "rgba(255,255,255,0.6)", lineHeight: 1.6 }}>
-              At the public rate of <strong style={{ color: "rgba(255,255,255,0.8)" }}>${PUBLIC_MONTHLY}/month</strong>, you'd pay{" "}
-              <strong style={{ color: "rgba(255,255,255,0.8)" }}>${PUBLIC_ANNUAL}/year</strong>. The Machine Cinema Partner Rate saves you{" "}
-              <strong style={{ color: "#ef4444" }}>${SAVINGS} every year</strong>.
+              At the public rate of <strong style={{ color: "rgba(255,255,255,0.8)" }}>${publicMonthly}/month</strong>, you'd pay{" "}
+              <strong style={{ color: "rgba(255,255,255,0.8)" }}>${publicAnnual}/year</strong>. The Machine Cinema Partner Rate saves you{" "}
+              <strong style={{ color: "#ef4444" }}>${savings} every year</strong>.
             </p>
           </div>
         </div>
@@ -220,7 +244,7 @@ export default function GenJamOffer() {
           <span style={{ color: "#ef4444" }}>to GenJam alumni.</span>
         </h2>
         <p style={{ fontSize: "clamp(1rem,2.5vw,1.2rem)", color: "rgba(255,255,255,0.5)", lineHeight: 1.7, maxWidth: "580px", margin: "0 auto 2.5rem" }}>
-          It will not be offered again at this price after this window closes. The next time someone joins AFA, they pay <strong style={{ color: "rgba(255,255,255,0.75)" }}>${PUBLIC_MONTHLY}/month</strong>.
+          It will not be offered again at this price after this window closes. The public rate is <strong style={{ color: "rgba(255,255,255,0.75)" }}>${publicMonthly}/month</strong>.
         </p>
         <CTAButton size="xl" />
         <p style={{ marginTop: "1.25rem", fontSize: "0.8rem", color: "rgba(255,255,255,0.25)" }}>
