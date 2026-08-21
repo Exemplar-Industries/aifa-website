@@ -4,6 +4,7 @@ import PageMeta from "@/components/PageMeta";
 import { deliverAifaForm } from "@/lib/formDelivery";
 import { buildInquiryPayload } from "@/lib/inquiryForms";
 import { InquiryIdentityFields, MasterInquiryFields } from "@/components/SharedInquiryFields";
+import Turnstile from "@/components/Turnstile";
 
 const SERVICES = [
   ["GenJam", "A live six-hour creative challenge where teams make, share, learn, and build together."],
@@ -16,9 +17,11 @@ export default function EducationEvents() {
   const [eventDelivery, setEventDelivery] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState(false);
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
 
   const sendInquiry = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (!turnstileToken) return;
     const form = new FormData(event.currentTarget);
 
     try {
@@ -122,7 +125,8 @@ export default function EducationEvents() {
             <form className="events-form" onSubmit={sendInquiry}>
               <InquiryIdentityFields fieldClassName="events-field" gridClassName="events-form-grid" nameId="event-name" emailId="event-email" />
               <MasterInquiryFields kind="event" fieldClassName="events-field" gridClassName="events-form-grid" fullFieldClassName="events-field--full" idPrefix="event" eventDelivery={eventDelivery} onEventDeliveryChange={setEventDelivery} />
-              <button className="events-primary" type="submit">Send Your Event Brief <Send size={19} /></button>
+              <Turnstile action="event-inquiry" theme="dark" onTokenChange={setTurnstileToken} />
+              <button className="events-primary" type="submit" disabled={!turnstileToken}>Send Your Event Brief <Send size={19} /></button>
               <p className="events-note">Event briefs go directly to brandon@aifilmacademy.com.</p>
               {submitted && <p className="events-success">Your event inquiry has been sent. We will be in touch soon.</p>}
               {submitError && <p className="events-success">We could not send your inquiry. Please email brandon@aifilmacademy.com directly.</p>}

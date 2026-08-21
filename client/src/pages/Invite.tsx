@@ -8,6 +8,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { supabase, SUPABASE_URL, TOTAL_INVITE_SLOTS } from "@/lib/supabase";
+import Turnstile from "@/components/Turnstile";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 type FormState = "idle" | "loading" | "success" | "error" | "duplicate" | "full";
@@ -81,6 +82,7 @@ function WaitlistForm() {
   const [email, setEmail] = useState("");
   const [discord, setDiscord] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
 
   const inputStyle = {
     background: "rgba(255,255,255,0.05)",
@@ -101,7 +103,7 @@ function WaitlistForm() {
     const trimLast = lastName.trim();
     const trimEmail = email.trim().toLowerCase();
     const trimDiscord = discord.trim();
-    if (!trimFirst || !trimLast || !trimEmail) return;
+    if (!trimFirst || !trimLast || !trimEmail || !turnstileToken) return;
 
     setWState("loading");
     setErrorMsg("");
@@ -251,9 +253,10 @@ function WaitlistForm() {
           <p className="text-red-400 text-sm text-center">{errorMsg}</p>
         )}
 
+        <Turnstile action="anthum-waitlist" theme="dark" onTokenChange={setTurnstileToken} />
         <button
           type="submit"
-          disabled={wState === "loading" || !firstName.trim() || !lastName.trim() || !email.trim()}
+          disabled={wState === "loading" || !firstName.trim() || !lastName.trim() || !email.trim() || !turnstileToken}
           className="w-full rounded-xl py-4 font-bold text-white text-base uppercase tracking-wider transition-all duration-200"
           style={{
             background:
@@ -300,6 +303,7 @@ export default function Invite() {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [discord, setDiscord] = useState("");
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
 
   // ── Fetch live slot count ──────────────────────────────────────────────────
   const fetchSlots = useCallback(async () => {
@@ -345,7 +349,7 @@ export default function Invite() {
     const trimmedDiscord = discord.trim();
     const fullName = `${trimmedFirst} ${trimmedLast}`.trim();
 
-    if (!trimmedFirst || !trimmedLast || !trimmedEmail) return;
+    if (!trimmedFirst || !trimmedLast || !trimmedEmail || !turnstileToken) return;
 
     setFormState("loading");
     setErrorMsg("");
@@ -591,9 +595,10 @@ export default function Invite() {
               <p className="text-red-400 text-sm text-center">{errorMsg}</p>
             )}
 
+            <Turnstile action="anthum-membership-claim" theme="dark" onTokenChange={setTurnstileToken} />
             <button
               type="submit"
-              disabled={formState === "loading" || !firstName.trim() || !lastName.trim() || !email.trim()}
+              disabled={formState === "loading" || !firstName.trim() || !lastName.trim() || !email.trim() || !turnstileToken}
               className="w-full rounded-xl py-4 font-bold text-white text-base uppercase tracking-wider transition-all duration-200"
               style={{
                 background:

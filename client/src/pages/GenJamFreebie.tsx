@@ -6,6 +6,7 @@
  */
 import { useState, useEffect, useCallback, useRef } from "react";
 import { supabase, SUPABASE_URL } from "@/lib/supabase";
+import Turnstile from "@/components/Turnstile";
 
 const TOTAL_SLOTS = 150;
 const SKOOL_COMMUNITY_URL = "https://www.skool.com/aifilmacademy/about";
@@ -210,12 +211,13 @@ function WaitlistForm() {
   const [wError, setWError] = useState("");
   const [wFirst, setWFirst] = useState("");
   const [wEmail, setWEmail] = useState("");
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const inp: React.CSSProperties = { background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: "10px", fontSize: "1.05rem", padding: "14px 18px", color: "#fff", width: "100%", outline: "none", boxSizing: "border-box" };
   const handleWaitlist = async (e: React.FormEvent) => {
     e.preventDefault();
     if (wState === "loading") return;
     const tf = wFirst.trim(), te = wEmail.trim().toLowerCase();
-    if (!tf || !te) return;
+    if (!tf || !te || !turnstileToken) return;
     setWState("loading"); setWError("");
     try {
       const { error } = await supabase.from("anthum_waitlist").insert({ name: tf, email: te, source: "genjam_freebie_waitlist" });
@@ -231,7 +233,8 @@ function WaitlistForm() {
       <input type="text" required placeholder="First Name" value={wFirst} onChange={e => setWFirst(e.target.value)} disabled={wState === "loading"} style={inp} />
       <input type="email" required placeholder="Email Address" value={wEmail} onChange={e => setWEmail(e.target.value)} disabled={wState === "loading"} style={inp} />
       {wState === "error" && <p style={{ color: "#f87171", textAlign: "center", fontSize: "0.85rem" }}>{wError}</p>}
-      <button type="submit" disabled={wState === "loading" || !wFirst.trim() || !wEmail.trim()} style={{ background: "rgba(239,68,68,0.2)", border: "1px solid rgba(239,68,68,0.35)", borderRadius: "10px", padding: "14px", color: "#fff", fontWeight: 700, fontSize: "0.95rem", textTransform: "uppercase", letterSpacing: "0.08em", cursor: "pointer" }}>
+      <Turnstile action="genjam-waitlist" theme="dark" onTokenChange={setTurnstileToken} />
+      <button type="submit" disabled={wState === "loading" || !wFirst.trim() || !wEmail.trim() || !turnstileToken} style={{ background: "rgba(239,68,68,0.2)", border: "1px solid rgba(239,68,68,0.35)", borderRadius: "10px", padding: "14px", color: "#fff", fontWeight: 700, fontSize: "0.95rem", textTransform: "uppercase", letterSpacing: "0.08em", cursor: "pointer" }}>
         {wState === "loading" ? "Joining..." : "Join Waitlist →"}
       </button>
     </form>
@@ -256,6 +259,7 @@ export default function GenJamFreebie() {
   const [email, setEmail] = useState("");
   const [slotsRemaining, setSlotsRemaining] = useState<number>(TOTAL_SLOTS);
   const [slotsLoaded, setSlotsLoaded] = useState(false);
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const showWaitlist = slotsLoaded && slotsRemaining <= 0;
 
   const fetchSlots = useCallback(async () => {
@@ -275,7 +279,7 @@ export default function GenJamFreebie() {
     e.preventDefault();
     if (formState === "loading") return;
     const tf = firstName.trim(), te = email.trim().toLowerCase();
-    if (!tf || !te) return;
+    if (!tf || !te || !turnstileToken) return;
     setFormState("loading"); setErrorMsg("");
     try {
       const { count } = await supabase.from("invite_claims").select("*", { count: "exact", head: true }).eq("source", "genjam_freebie");
@@ -289,7 +293,7 @@ export default function GenJamFreebie() {
       await fetchSlots();
       setFormState("success");
     } catch (err: unknown) { setErrorMsg(err instanceof Error ? err.message : "Something went wrong."); setFormState("error"); }
-  }, [formState, firstName, email, fetchSlots]);
+  }, [formState, firstName, email, fetchSlots, turnstileToken]);
 
   const inp: React.CSSProperties = { background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.14)", borderRadius: "12px", fontSize: "1.1rem", padding: "16px 20px", color: "#fff", width: "100%", outline: "none", boxSizing: "border-box" };
 
@@ -363,7 +367,8 @@ export default function GenJamFreebie() {
                 onBlur={e => { e.target.style.border = "1px solid rgba(255,255,255,0.14)"; e.target.style.background = "rgba(255,255,255,0.07)"; }} />
             </div>
             {formState === "error" && <p style={{ color: "#f87171", textAlign: "center", fontSize: "0.88rem" }}>{errorMsg}</p>}
-            <button type="submit" disabled={formState === "loading" || !firstName.trim() || !email.trim()}
+            <Turnstile action="genjam-membership-claim" theme="dark" onTokenChange={setTurnstileToken} />
+            <button type="submit" disabled={formState === "loading" || !firstName.trim() || !email.trim() || !turnstileToken}
               style={{
                 background: formState === "loading" || !firstName.trim() || !email.trim() ? "rgba(239,68,68,0.3)" : "linear-gradient(135deg,#ef4444,#b91c1c)",
                 border: "none", borderRadius: "12px", padding: "18px", color: "#fff", fontWeight: 800,

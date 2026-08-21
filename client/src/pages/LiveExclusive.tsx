@@ -8,6 +8,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { supabase, SUPABASE_URL } from "@/lib/supabase";
+import Turnstile from "@/components/Turnstile";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 type FormState = "idle" | "loading" | "success" | "error" | "duplicate";
@@ -20,6 +21,7 @@ export default function LiveExclusive() {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [discord, setDiscord] = useState("");
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
 
   // Pulse the "LIVE" badge
   const [pulse, setPulse] = useState(true);
@@ -39,7 +41,7 @@ export default function LiveExclusive() {
     const trimmedDiscord = discord.trim();
     const fullName = `${trimmedFirst} ${trimmedLast}`.trim();
 
-    if (!trimmedFirst || !trimmedLast || !trimmedEmail) return;
+    if (!trimmedFirst || !trimmedLast || !trimmedEmail || !turnstileToken) return;
 
     setFormState("loading");
     setErrorMsg("");
@@ -84,7 +86,7 @@ export default function LiveExclusive() {
       setErrorMsg(msg);
       setFormState("error");
     }
-  }, [formState, firstName, lastName, email, discord]);
+  }, [formState, firstName, lastName, email, discord, turnstileToken]);
 
   const inputStyle = {
     background: "rgba(255,255,255,0.05)",
@@ -399,9 +401,10 @@ export default function LiveExclusive() {
                 <p className="text-red-400 text-sm text-center">{errorMsg}</p>
               )}
 
+              <Turnstile action="live-membership-claim" theme="dark" onTokenChange={setTurnstileToken} />
               <button
                 type="submit"
-                disabled={formState === "loading" || !firstName.trim() || !lastName.trim() || !email.trim()}
+                disabled={formState === "loading" || !firstName.trim() || !lastName.trim() || !email.trim() || !turnstileToken}
                 className="w-full rounded-xl py-4 font-black text-white text-base uppercase tracking-wider transition-all duration-200"
                 style={{
                   background:

@@ -15,6 +15,7 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import { deliverAifaForm } from "@/lib/formDelivery";
+import Turnstile from "@/components/Turnstile";
 
 // Webinar date: next Thursday at 5pm PST — update this to the actual date
 // Set to next Thursday from now
@@ -78,6 +79,7 @@ function HeroSection() {
   const [formState, setFormState] = useState<FormState>("idle");
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
 
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {
@@ -85,7 +87,7 @@ function HeroSection() {
       if (formState === "loading") return;
       const name = fullName.trim();
       const emailVal = email.trim().toLowerCase();
-      if (!name || !emailVal) return;
+      if (!name || !emailVal || !turnstileToken) return;
       setFormState("loading");
       try {
         await deliverAifaForm("Masterclass registration", {
@@ -98,7 +100,7 @@ function HeroSection() {
         setFormState("error");
       }
     },
-    [formState, fullName, email]
+    [formState, fullName, email, turnstileToken]
   );
 
   return (
@@ -265,9 +267,10 @@ function HeroSection() {
                   color: "#333",
                 }}
               />
+              <Turnstile action="masterclass-registration" theme="dark" onTokenChange={setTurnstileToken} />
               <button
                 type="submit"
-                disabled={formState === "loading"}
+                disabled={formState === "loading" || !turnstileToken}
                 style={{
                   display: "block",
                   width: "100%",

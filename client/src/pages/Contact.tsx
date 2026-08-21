@@ -4,6 +4,7 @@ import PageMeta from "@/components/PageMeta";
 import { deliverAifaForm } from "@/lib/formDelivery";
 import { buildInquiryPayload } from "@/lib/inquiryForms";
 import { InquiryIdentityFields, MasterInquiryFields } from "@/components/SharedInquiryFields";
+import Turnstile from "@/components/Turnstile";
 
 type InquiryTopic = "production" | "event" | "membership" | "other";
 
@@ -36,9 +37,11 @@ export default function Contact() {
   const [identity, setIdentity] = useState({ name: "", email: "" });
   const [submitted, setSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState(false);
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
 
   const sendInquiry = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (!turnstileToken) return;
     const form = new FormData(event.currentTarget);
     const topicDetails = TOPIC_DETAILS[topic];
 
@@ -111,7 +114,8 @@ export default function Contact() {
               <textarea id="contact-message" name="message" required placeholder={TOPIC_DETAILS[topic].messagePlaceholder} />
             </div>}
 
-            <button className="contact-submit" type="submit">Send Inquiry <Send size={19} /></button>
+            <Turnstile action="contact-inquiry" theme="dark" onTokenChange={setTurnstileToken} />
+            <button className="contact-submit" type="submit" disabled={!turnstileToken}>Send Inquiry <Send size={19} /></button>
             <p className="contact-note">Inquiries go directly to brandon@aifilmacademy.com.</p>
             {submitted && <p className="contact-success">Your inquiry has been sent. We will be in touch soon.</p>}
             {submitError && <p className="contact-success">We could not send your inquiry. Please email brandon@aifilmacademy.com directly.</p>}
