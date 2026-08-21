@@ -86,7 +86,7 @@ function HeroForm() {
     return (
       <div style={{ background: "rgba(255,255,255,0.08)", borderRadius: "8px", padding: "20px", textAlign: "center" }}>
         <p style={{ color: "#fff", fontWeight: 800, fontSize: "1rem", margin: 0 }}>
-          Check your inbox to confirm your email and unlock the free training.
+          You're on the Free Training list. We'll email your access shortly.
         </p>
       </div>
     );
@@ -656,7 +656,7 @@ function AboutAndForm() {
               <p
                 style={{ color: "#166534", fontWeight: 800, fontSize: "1.15rem", margin: 0 }}
               >
-                Check your inbox to confirm your email and unlock the free training.
+                You're on the Free Training list. We'll email your access shortly.
               </p>
             </div>
           ) : (
