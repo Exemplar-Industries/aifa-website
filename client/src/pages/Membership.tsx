@@ -97,6 +97,8 @@ const FAQS = [
   },
 ];
 
+const MEMBERSHIP_PORTAL_URL = "https://billing.stripe.com/p/login/7sY3cu1Baggo3Kf3ny7Vm00";
+
 const PLANS = {
   monthly: {
     name: "Monthly",
@@ -356,6 +358,9 @@ export default function Membership() {
               );
             })}
           </div>
+          <p style={{ margin: "1.5rem 0 0", textAlign: "center", color: "rgba(255,255,255,0.78)", fontSize: "0.98rem", lineHeight: 1.6 }}>
+            Already a member? <a href={MEMBERSHIP_PORTAL_URL} target="_blank" rel="noreferrer" style={{ color: "#fff", fontWeight: 800, textDecoration: "underline", textUnderlineOffset: "3px" }}>Manage billing in Stripe</a>.
+          </p>
         </div>
       </section>
 
