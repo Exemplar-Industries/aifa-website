@@ -244,7 +244,6 @@ async function upsertPaidMembership(
 async function createPaidMemberInviteClaim(input: {
   email: string;
   customerName: string;
-  source: string;
 }): Promise<void> {
   if (!AIFA_SUPABASE_URL || !AIFA_SUPABASE_ANON_KEY) {
     throw new Error("AIFA Supabase invite-claim configuration is incomplete");
@@ -256,7 +255,6 @@ async function createPaidMemberInviteClaim(input: {
       {
         name: input.customerName.trim() || input.email,
         email: input.email.toLowerCase().trim(),
-        source: input.source,
       },
       {
         headers: {
@@ -499,7 +497,6 @@ async function startServer() {
           await createPaidMemberInviteClaim({
             email,
             customerName,
-            source: "stripe_website_membership",
           });
           await sendPaidMemberSkoolInvite(email);
           await sendPaidPurchasePostProcessing({
