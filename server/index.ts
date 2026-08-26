@@ -15,14 +15,12 @@ const STRIPE_WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET || "";
 const FAST_PASS_PRODUCT_ID = "prod_UZGwA0tsMGTOR2";
 
 // ─── RAILWAY SYNC TRIGGER CONFIG ────────────────────────────────────────────
-const RAILWAY_TOKEN = process.env.RAILWAY_TOKEN || "9a2f81cf-8c46-44e0-85ae-9baeb78e7183";
-const RAILWAY_SYNC_SERVICE_ID = process.env.RAILWAY_SYNC_SERVICE_ID || "fcf6db96-29b5-4019-b016-829b850a4eb4";
-const RAILWAY_SYNC_ENVIRONMENT_ID = process.env.RAILWAY_SYNC_ENVIRONMENT_ID || "8d58f4c4-64a4-40cb-9180-2bf5df9beff0";
+const RAILWAY_TOKEN = process.env.RAILWAY_TOKEN || "";
+const RAILWAY_SYNC_SERVICE_ID = process.env.RAILWAY_SYNC_SERVICE_ID || "";
+const RAILWAY_SYNC_ENVIRONMENT_ID = process.env.RAILWAY_SYNC_ENVIRONMENT_ID || "";
 
 // ─── TWENTY CRM CONFIG ────────────────────────────────────────────────────────
-const TWENTY_API_KEY =
-  process.env.TWENTY_API_KEY ||
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhOTk2ZDE5Ni05YzI4LTRhODUtOTE3Yi1mNzE1Y2U2YWQ4NzciLCJ0eXBlIjoiQVBJX0tFWSIsIndvcmtzcGFjZUlkIjoiYTk5NmQxOTYtOWMyOC00YTg1LTkxN2ItZjcxNWNlNmFkODc3IiwiaWF0IjoxNzc3NDM5MTQ4LCJleHAiOjQ5MzEwMzkxNDcsImp0aSI6ImU3YWFiZDFhLTYzZjctNDcwNy05M2U2LTFlOTUxMmVjNDhhZiJ9.ImbLg6H5WvD79YIHe1w8-0B2dvFQ7L5PEfP-0AFz9gs";
+const TWENTY_API_KEY = process.env.TWENTY_API_KEY || "";
 const TWENTY_GRAPHQL_URL =
   "https://twenty-server-production-5cd9.up.railway.app/graphql";
 
@@ -180,9 +178,9 @@ async function grantFastPass(email: string): Promise<boolean> {
 // ─── PAID MEMBERSHIP CONFIGURATION ───────────────────────────────────────────
 type MembershipBillingCycle = "monthly" | "annual";
 
-const AIFA_MEMBERSHIP_MONTHLY_PRICE_ID = process.env.AIFA_MEMBERSHIP_MONTHLY_PRICE_ID ?? "price_1U3n1qAtNs5zyUU7yqfNuVrg";
-const AIFA_MEMBERSHIP_ANNUAL_PRICE_ID = process.env.AIFA_MEMBERSHIP_ANNUAL_PRICE_ID ?? "price_1U3n22AtNs5zyUU7RW9EP9V2";
-const AIFA_SKOOL_INVITE_FUNCTION_URL = process.env.AIFA_SKOOL_INVITE_FUNCTION_URL ?? "https://mdjjmanqnlfgttwtlufx.supabase.co/functions/v1/send-skool-invite";
+const AIFA_MEMBERSHIP_MONTHLY_PRICE_ID = process.env.AIFA_MEMBERSHIP_MONTHLY_PRICE_ID || "";
+const AIFA_MEMBERSHIP_ANNUAL_PRICE_ID = process.env.AIFA_MEMBERSHIP_ANNUAL_PRICE_ID || "";
+const AIFA_SKOOL_INVITE_FUNCTION_URL = process.env.AIFA_SKOOL_INVITE_FUNCTION_URL || "";
 
 function getMembershipPlanFromPrice(priceId: string): MembershipBillingCycle | null {
   if (priceId === AIFA_MEMBERSHIP_MONTHLY_PRICE_ID) return "monthly";
@@ -346,30 +344,37 @@ async function startServer() {
     const sig = req.headers["stripe-signature"] as string;
     const rawBody = req.body as Buffer;
 
-    // Verify webhook signature if secret is configured
-    if (STRIPE_WEBHOOK_SECRET) {
-      try {
-        const timestamp = sig.split(",").find((p) => p.startsWith("t="))?.slice(2);
-        const v1 = sig.split(",").find((p) => p.startsWith("v1="))?.slice(3);
-        if (!timestamp || !v1) {
-          res.status(400).json({ error: "Invalid signature format" });
-          return;
-        }
-        const payload = `${timestamp}.${rawBody.toString("utf8")}`;
-        const expected = crypto
-          .createHmac("sha256", STRIPE_WEBHOOK_SECRET)
-          .update(payload)
-          .digest("hex");
-        if (expected !== v1) {
-          console.error("[stripe-webhook] Signature mismatch");
-          res.status(400).json({ error: "Signature verification failed" });
-          return;
-        }
-      } catch (err) {
-        console.error("[stripe-webhook] Signature error:", err);
-        res.status(400).json({ error: "Signature error" });
+    // Signature verification is mandatory for all live Stripe webhooks.
+    if (!STRIPE_WEBHOOK_SECRET) {
+      console.error("[stripe-webhook] STRIPE_WEBHOOK_SECRET is not configured");
+      res.status(500).json({ error: "Webhook verification is not configured" });
+      return;
+    }
+    if (!sig) {
+      res.status(400).json({ error: "Missing Stripe signature" });
+      return;
+    }
+    try {
+      const timestamp = sig.split(",").find((p) => p.startsWith("t="))?.slice(2);
+      const v1 = sig.split(",").find((p) => p.startsWith("v1="))?.slice(3);
+      if (!timestamp || !v1) {
+        res.status(400).json({ error: "Invalid signature format" });
         return;
       }
+      const payload = `${timestamp}.${rawBody.toString("utf8")}`;
+      const expected = crypto
+        .createHmac("sha256", STRIPE_WEBHOOK_SECRET)
+        .update(payload)
+        .digest("hex");
+      if (!crypto.timingSafeEqual(Buffer.from(expected, "hex"), Buffer.from(v1, "hex"))) {
+        console.error("[stripe-webhook] Signature mismatch");
+        res.status(400).json({ error: "Signature verification failed" });
+        return;
+      }
+    } catch (err) {
+      console.error("[stripe-webhook] Signature error:", err);
+      res.status(400).json({ error: "Signature error" });
+      return;
     }
 
     let event: { id?: string; type: string; data: { object: Record<string, unknown> } };
@@ -413,13 +418,13 @@ async function startServer() {
             }
           }
         } else {
-          // Existing Fast-Pass legacy behavior. Paid memberships never fail open.
-          isFastPass = true;
+          res.status(500).json({ error: "Stripe API configuration is incomplete; Stripe will retry this event." });
+          return;
         }
       } catch (err) {
         console.error("[stripe-webhook] Line item check failed:", err);
-        // Existing Fast-Pass legacy behavior. Paid memberships never fail open.
-        isFastPass = true;
+        res.status(500).json({ error: "Could not verify purchased items; Stripe will retry this event." });
+        return;
       }
 
       if (paidMembershipCycle && email) {
