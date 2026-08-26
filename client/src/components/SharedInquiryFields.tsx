@@ -4,6 +4,7 @@ import { INQUIRY_FORM_DEFINITIONS, InquiryKind } from "@/lib/inquiryForms";
 type IdentityValues = {
   name: string;
   email: string;
+  phone: string;
 };
 
 type IdentityProps = {
@@ -13,6 +14,8 @@ type IdentityProps = {
   gridClassName: string;
   nameId: string;
   emailId: string;
+  showPhone?: boolean;
+  phoneId?: string;
 };
 
 type MasterFieldsProps = {
@@ -27,7 +30,7 @@ type MasterFieldsProps = {
 
 const fieldClasses = (base: string, full?: string) => `${base}${full ? ` ${full}` : ""}`;
 
-export function InquiryIdentityFields({ values, setValues, fieldClassName, gridClassName, nameId, emailId }: IdentityProps) {
+export function InquiryIdentityFields({ values, setValues, fieldClassName, gridClassName, nameId, emailId, showPhone = false, phoneId = "phone" }: IdentityProps) {
   const update = (key: keyof IdentityValues) => (event: ChangeEvent<HTMLInputElement>) => {
     setValues?.((current) => ({ ...current, [key]: event.target.value }));
   };
@@ -42,6 +45,11 @@ export function InquiryIdentityFields({ values, setValues, fieldClassName, gridC
         <label htmlFor={emailId}>Email</label>
         <input id={emailId} name="email" type="email" value={values?.email} onChange={update("email")} required />
       </div>
+      {showPhone && <div className={fieldClassName}>
+        <label htmlFor={phoneId}>Phone <span aria-hidden="true">(optional)</span></label>
+        <input id={phoneId} name="phone" type="tel" inputMode="tel" autoComplete="tel" value={values?.phone} onChange={update("phone")} />
+        <small>Share only if you would like a call or text about this inquiry.</small>
+      </div>}
     </div>
   );
 }

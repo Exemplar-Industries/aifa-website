@@ -36,7 +36,7 @@ const HOW_WE_DO_IT = [
 
 export default function Productions() {
   const [submitted, setSubmitted] = useState(false);
-  const [submitError, setSubmitError] = useState(false);
+  const [submitError, setSubmitError] = useState("");
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const methodVideoRef = useRef<HTMLVideoElement | null>(null);
 
@@ -67,9 +67,9 @@ export default function Productions() {
     try {
       await deliverAifaForm("Production inquiry", buildInquiryPayload("production", form));
       setSubmitted(true);
-      setSubmitError(false);
-    } catch {
-      setSubmitError(true);
+      setSubmitError("");
+    } catch (error) {
+      setSubmitError(error instanceof Error ? error.message : "We could not send your brief. Please email brandon@aifilmacademy.com directly.");
       setSubmitted(false);
     }
   };
@@ -224,13 +224,13 @@ export default function Productions() {
           <form className="productions-form" onSubmit={sendInquiry}>
             <h3>Contact us.</h3>
             <p className="productions-form-intro">Bring the idea. We will take it from here.</p>
-            <InquiryIdentityFields fieldClassName="productions-field" gridClassName="productions-form-grid" nameId="production-name" emailId="production-email" />
+            <InquiryIdentityFields fieldClassName="productions-field" gridClassName="productions-form-grid" nameId="production-name" emailId="production-email" showPhone phoneId="production-phone" />
             <MasterInquiryFields kind="production" fieldClassName="productions-field" gridClassName="productions-form-grid" fullFieldClassName="productions-field--full" idPrefix="production" />
             <Turnstile action="production-inquiry" theme="dark" onTokenChange={setTurnstileToken} />
             <button className="productions-primary" type="submit" disabled={!turnstileToken}>Send Your Production Brief <Send size={19} /></button>
             <p className="productions-note">Production briefs go directly to brandon@aifilmacademy.com.</p>
-            {submitted && <p className="productions-success">Your production brief has been sent. We will be in touch soon.</p>}
-            {submitError && <p className="productions-success">We could not send your brief. Please email brandon@aifilmacademy.com directly.</p>}
+            {submitted && <p className="productions-success">Your production brief has been received. Check your inbox for a confirmation. We will get back to you within 24 hours.</p>}
+            {submitError && <p className="productions-success">{submitError}</p>}
           </form>
         </div>
       </section>

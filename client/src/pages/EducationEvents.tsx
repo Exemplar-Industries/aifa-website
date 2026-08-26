@@ -16,7 +16,7 @@ const SERVICES = [
 export default function EducationEvents() {
   const [eventDelivery, setEventDelivery] = useState("");
   const [submitted, setSubmitted] = useState(false);
-  const [submitError, setSubmitError] = useState(false);
+  const [submitError, setSubmitError] = useState("");
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
 
   const sendInquiry = async (event: FormEvent<HTMLFormElement>) => {
@@ -27,9 +27,9 @@ export default function EducationEvents() {
     try {
       await deliverAifaForm("Events inquiry", buildInquiryPayload("event", form));
       setSubmitted(true);
-      setSubmitError(false);
-    } catch {
-      setSubmitError(true);
+      setSubmitError("");
+    } catch (error) {
+      setSubmitError(error instanceof Error ? error.message : "We could not send your event inquiry. Please email brandon@aifilmacademy.com directly.");
       setSubmitted(false);
     }
   };
@@ -123,13 +123,13 @@ export default function EducationEvents() {
               <h2 className="events-display events-heading">Contact Us.</h2>
             </div>
             <form className="events-form" onSubmit={sendInquiry}>
-              <InquiryIdentityFields fieldClassName="events-field" gridClassName="events-form-grid" nameId="event-name" emailId="event-email" />
+              <InquiryIdentityFields fieldClassName="events-field" gridClassName="events-form-grid" nameId="event-name" emailId="event-email" showPhone phoneId="event-phone" />
               <MasterInquiryFields kind="event" fieldClassName="events-field" gridClassName="events-form-grid" fullFieldClassName="events-field--full" idPrefix="event" eventDelivery={eventDelivery} onEventDeliveryChange={setEventDelivery} />
               <Turnstile action="event-inquiry" theme="dark" onTokenChange={setTurnstileToken} />
               <button className="events-primary" type="submit" disabled={!turnstileToken}>Send Your Event Brief <Send size={19} /></button>
               <p className="events-note">Event briefs go directly to brandon@aifilmacademy.com.</p>
-              {submitted && <p className="events-success">Your event inquiry has been sent. We will be in touch soon.</p>}
-              {submitError && <p className="events-success">We could not send your inquiry. Please email brandon@aifilmacademy.com directly.</p>}
+              {submitted && <p className="events-success">Your event inquiry has been received. Check your inbox for a confirmation. We will get back to you within 24 hours.</p>}
+              {submitError && <p className="events-success">{submitError}</p>}
             </form>
           </div>
         </div>

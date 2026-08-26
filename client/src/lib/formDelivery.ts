@@ -1,5 +1,10 @@
 const AIFA_FORM_DELIVERY_URL = "https://exemplar.app.n8n.cloud/webhook/aifa-website-form-inquiry";
 
+type FormDeliveryResponse = {
+  success?: boolean;
+  error?: string;
+};
+
 export async function deliverAifaForm(formType: string, fields: Record<string, string>) {
   const response = await fetch(AIFA_FORM_DELIVERY_URL, {
     method: "POST",
@@ -7,9 +12,10 @@ export async function deliverAifaForm(formType: string, fields: Record<string, s
     body: JSON.stringify({ formType, fields }),
   });
 
-  if (!response.ok) {
-    throw new Error(`Form delivery failed with status ${response.status}`);
+  const payload = await response.json().catch(() => ({})) as FormDeliveryResponse;
+  if (!response.ok || !payload.success) {
+    throw new Error(payload.error || "We could not send your inquiry. Please try again shortly.");
   }
 
-  return response.json() as Promise<{ success: boolean }>;
+  return payload as FormDeliveryResponse;
 }

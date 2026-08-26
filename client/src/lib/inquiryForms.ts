@@ -3,6 +3,7 @@ export type InquiryKind = "production" | "event";
 export type InquiryPayload = {
   name: string;
   email: string;
+  phone?: string;
   company?: string;
   projectType?: string;
   runtime?: string;
@@ -93,6 +94,7 @@ export function buildInquiryPayload(kind: InquiryKind, form: FormEntrySource): I
     return {
       name: read(form, "name"),
       email: read(form, "email"),
+      phone: read(form, "phone"),
       projectType: read(form, fields.projectType.name),
       runtime: read(form, fields.runtime.name),
       budget: read(form, fields.budget.name),
@@ -105,6 +107,7 @@ export function buildInquiryPayload(kind: InquiryKind, form: FormEntrySource): I
   return {
     name: read(form, "name"),
     email: read(form, "email"),
+    phone: read(form, "phone"),
     company: read(form, fields.organization.name),
     projectType: read(form, fields.service.name),
     delivery,

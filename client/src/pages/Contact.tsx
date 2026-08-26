@@ -34,9 +34,9 @@ const TOPIC_DETAILS: Record<InquiryTopic, { label: string; messageLabel: string;
 export default function Contact() {
   const [topic, setTopic] = useState<InquiryTopic>("production");
   const [eventDelivery, setEventDelivery] = useState("");
-  const [identity, setIdentity] = useState({ name: "", email: "" });
+  const [identity, setIdentity] = useState({ name: "", email: "", phone: "" });
   const [submitted, setSubmitted] = useState(false);
-  const [submitError, setSubmitError] = useState(false);
+  const [submitError, setSubmitError] = useState("");
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
 
   const sendInquiry = async (event: FormEvent<HTMLFormElement>) => {
@@ -51,9 +51,9 @@ export default function Contact() {
         : { name: identity.name, email: identity.email, topic: topicDetails.label, message: String(form.get("message") || "") };
       await deliverAifaForm("Contact inquiry", fields);
       setSubmitted(true);
-      setSubmitError(false);
-    } catch {
-      setSubmitError(true);
+      setSubmitError("");
+    } catch (error) {
+      setSubmitError(error instanceof Error ? error.message : "We could not send your inquiry. Please email brandon@aifilmacademy.com directly.");
       setSubmitted(false);
     }
   };
@@ -98,7 +98,7 @@ export default function Contact() {
             <h2 className="contact-display">Contact Us.</h2>
             <p className="contact-form-intro">Tell us what you are looking to create, learn, or bring to your team. We will make sure the right conversation starts.</p>
 
-            <InquiryIdentityFields values={identity} setValues={setIdentity} fieldClassName="contact-field" gridClassName="contact-field-grid" nameId="contact-name" emailId="contact-email" />
+            <InquiryIdentityFields values={identity} setValues={setIdentity} fieldClassName="contact-field" gridClassName="contact-field-grid" nameId="contact-name" emailId="contact-email" showPhone={topic === "production" || topic === "event"} phoneId="contact-phone" />
 
             <div className="contact-field">
               <label htmlFor="contact-topic">What are you reaching out about?</label>
@@ -117,8 +117,8 @@ export default function Contact() {
             <Turnstile action="contact-inquiry" theme="dark" onTokenChange={setTurnstileToken} />
             <button className="contact-submit" type="submit" disabled={!turnstileToken}>Send Inquiry <Send size={19} /></button>
             <p className="contact-note">Inquiries go directly to brandon@aifilmacademy.com.</p>
-            {submitted && <p className="contact-success">Your inquiry has been sent. We will be in touch soon.</p>}
-            {submitError && <p className="contact-success">We could not send your inquiry. Please email brandon@aifilmacademy.com directly.</p>}
+            {submitted && <p className="contact-success">Your inquiry has been received. Check your inbox for a confirmation.</p>}
+            {submitError && <p className="contact-success">{submitError}</p>}
           </form>
         </div>
       </section>
