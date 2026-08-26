@@ -14,8 +14,7 @@ export async function deliverAifaForm(formType: string, fields: Record<string, s
 
   const payload = await response.json().catch(() => ({})) as FormDeliveryResponse;
   if (!response.ok || !payload.success) {
-    const rateLimitMessage = "To protect our inbox, please wait 24 hours before submitting another inquiry.";
-    throw new Error(payload.error || (response.status === 429 ? rateLimitMessage : "We could not send your inquiry. Please try again shortly."));
+    throw new Error(payload.error || "We could not send your inquiry right now. Please try again shortly.");
   }
 
   return payload as FormDeliveryResponse;
