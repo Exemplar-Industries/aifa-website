@@ -14,6 +14,12 @@ const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY || "";
 const STRIPE_WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET || "";
 const FAST_PASS_PRODUCT_ID = "prod_UZGwA0tsMGTOR2";
 
+// ─── PAID-SUBSCRIBER INVITE CLAIM CONFIG ──────────────────────────────────────
+// The Skool invite edge function authorizes an email only after an invite_claims
+// record exists. These values are provided through Railway, never source fallbacks.
+const AIFA_SUPABASE_URL = process.env.AIFA_SUPABASE_URL || "";
+const AIFA_SUPABASE_ANON_KEY = process.env.AIFA_SUPABASE_ANON_KEY || "";
+
 // ─── RAILWAY SYNC TRIGGER CONFIG ────────────────────────────────────────────
 const RAILWAY_TOKEN = process.env.RAILWAY_TOKEN || "9a2f81cf-8c46-44e0-85ae-9baeb78e7183";
 const RAILWAY_SYNC_SERVICE_ID = process.env.RAILWAY_SYNC_SERVICE_ID || "fcf6db96-29b5-4019-b016-829b850a4eb4";
@@ -233,6 +239,41 @@ async function upsertPaidMembership(
     payload,
     { headers: { Authorization: `Bearer ${TWENTY_API_KEY}`, "Content-Type": "application/json" }, timeout: 10000 }
   );
+}
+
+async function createPaidMemberInviteClaim(input: {
+  email: string;
+  customerName: string;
+  source: string;
+}): Promise<void> {
+  if (!AIFA_SUPABASE_URL || !AIFA_SUPABASE_ANON_KEY) {
+    throw new Error("AIFA Supabase invite-claim configuration is incomplete");
+  }
+
+  try {
+    await axios.post(
+      `${AIFA_SUPABASE_URL}/rest/v1/invite_claims`,
+      {
+        name: input.customerName.trim() || input.email,
+        email: input.email.toLowerCase().trim(),
+        source: input.source,
+      },
+      {
+        headers: {
+          apikey: AIFA_SUPABASE_ANON_KEY,
+          Authorization: `Bearer ${AIFA_SUPABASE_ANON_KEY}`,
+          "Content-Type": "application/json",
+          Prefer: "return=minimal",
+        },
+        timeout: 10000,
+      }
+    );
+  } catch (err: unknown) {
+    // A paid member can legitimately re-enter the webhook path after a Stripe retry.
+    // The existing claim authorizes the invite, so duplicate claims are safe to ignore.
+    if (axios.isAxiosError(err) && err.response?.status === 409) return;
+    throw err;
+  }
 }
 
 async function sendPaidMemberSkoolInvite(email: string): Promise<void> {
@@ -455,6 +496,11 @@ async function startServer() {
       if (paidMembershipCycle && email) {
         try {
           await upsertPaidMembership(email, paidMembershipCycle);
+          await createPaidMemberInviteClaim({
+            email,
+            customerName,
+            source: "stripe_website_membership",
+          });
           await sendPaidMemberSkoolInvite(email);
           await sendPaidPurchasePostProcessing({
             email,
