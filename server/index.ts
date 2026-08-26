@@ -183,6 +183,7 @@ type MembershipBillingCycle = "monthly" | "annual";
 const AIFA_MEMBERSHIP_MONTHLY_PRICE_ID = process.env.AIFA_MEMBERSHIP_MONTHLY_PRICE_ID ?? "price_1U3n1qAtNs5zyUU7yqfNuVrg";
 const AIFA_MEMBERSHIP_ANNUAL_PRICE_ID = process.env.AIFA_MEMBERSHIP_ANNUAL_PRICE_ID ?? "price_1U3n22AtNs5zyUU7RW9EP9V2";
 const AIFA_SKOOL_INVITE_FUNCTION_URL = process.env.AIFA_SKOOL_INVITE_FUNCTION_URL ?? "https://mdjjmanqnlfgttwtlufx.supabase.co/functions/v1/send-skool-invite";
+const AIFA_PAID_PURCHASE_FULFILLMENT_URL = process.env.AIFA_PAID_PURCHASE_FULFILLMENT_URL ?? "";
 
 function getMembershipPlanFromPrice(priceId: string): MembershipBillingCycle | null {
   if (priceId === AIFA_MEMBERSHIP_MONTHLY_PRICE_ID) return "monthly";
@@ -241,6 +242,32 @@ async function sendPaidMemberSkoolInvite(email: string): Promise<void> {
   await axios.post(
     AIFA_SKOOL_INVITE_FUNCTION_URL,
     { email: email.toLowerCase().trim(), source: "stripe_paid_membership" },
+    { headers: { "Content-Type": "application/json" }, timeout: 15000 }
+  );
+}
+
+async function sendPaidPurchasePostProcessing(input: {
+  email: string;
+  customerName: string;
+  billingCycle: MembershipBillingCycle;
+  sessionId: string;
+}): Promise<void> {
+  if (!AIFA_PAID_PURCHASE_FULFILLMENT_URL) {
+    throw new Error("AIFA_PAID_PURCHASE_FULFILLMENT_URL is not configured");
+  }
+
+  const amountCents = input.billingCycle === "annual" ? 79900 : 12500;
+  await axios.post(
+    AIFA_PAID_PURCHASE_FULFILLMENT_URL,
+    {
+      customerEmail: input.email.toLowerCase().trim(),
+      customerName: input.customerName,
+      billingCycle: input.billingCycle,
+      amountCents,
+      offer: "AI Film Academy Membership",
+      sessionId: input.sessionId,
+      source: "stripe_website_membership",
+    },
     { headers: { "Content-Type": "application/json" }, timeout: 15000 }
   );
 }
@@ -386,6 +413,9 @@ async function startServer() {
         (session.customer_email as string) ??
         ((session.customer_details as Record<string, unknown>)?.email as string) ??
         "";
+      const customerName =
+        ((session.customer_details as Record<string, unknown>)?.name as string) ??
+        "";
 
       // Confirm the exact purchased product through Stripe line items. Payment
       // fulfillment must never rely on browser-provided price or product details.
@@ -426,6 +456,12 @@ async function startServer() {
         try {
           await upsertPaidMembership(email, paidMembershipCycle);
           await sendPaidMemberSkoolInvite(email);
+          await sendPaidPurchasePostProcessing({
+            email,
+            customerName,
+            billingCycle: paidMembershipCycle,
+            sessionId: String(session.id ?? ""),
+          });
           console.log(`[stripe-webhook] ${paidMembershipCycle} membership fulfilled for ${email}`);
         } catch (err) {
           console.error(`[stripe-webhook] Paid membership fulfillment failed for ${email}:`, err);
