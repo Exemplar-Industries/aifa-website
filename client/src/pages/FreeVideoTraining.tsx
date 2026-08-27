@@ -5,6 +5,7 @@
  */
 
 import { useState, useCallback } from "react";
+import Turnstile from "@/components/Turnstile";
 
 const FORM_WEBHOOK_URL = "https://exemplar.app.n8n.cloud/webhook/free-video-training-signup";
 const HEADSHOT_URL = "https://files.manuscdn.com/user_upload_by_module/session_file/310419663032668673/WKJclrZibZNeINxP.jpeg";
@@ -46,6 +47,7 @@ function HeroForm() {
   const [email, setEmail] = useState("");
   const [marketingConsent, setMarketingConsent] = useState(false);
   const [companyWebsite, setCompanyWebsite] = useState("");
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const [formStartedAt] = useState(() => Date.now());
 
   const handleSubmit = useCallback(
@@ -55,6 +57,10 @@ function HeroForm() {
       const name = firstName.trim();
       const emailVal = email.trim().toLowerCase();
       if (!name || !emailVal || !marketingConsent) return;
+      if (!turnstileToken) {
+        setFormState("error");
+        return;
+      }
       setFormState("loading");
       try {
         const response = await fetch(FORM_WEBHOOK_URL, {
@@ -66,6 +72,7 @@ function HeroForm() {
             source: "free_video_training",
             group: "Free Video Training",
             marketingConsent: true,
+            turnstileToken,
             companyWebsite,
             submittedAt: new Date().toISOString(),
             elapsedMs: Date.now() - formStartedAt,
@@ -77,7 +84,7 @@ function HeroForm() {
         setFormState("error");
       }
     },
-    [formState, firstName, email, marketingConsent, companyWebsite, formStartedAt]
+    [formState, firstName, email, marketingConsent, turnstileToken, companyWebsite, formStartedAt]
   );
 
   if (formState === "success") {
@@ -141,6 +148,7 @@ function HeroForm() {
           <input type="checkbox" checked={marketingConsent} onChange={(e) => setMarketingConsent(e.target.checked)} required />
           <span>I agree to receive the free training and occasional AI Film Academy emails. I can unsubscribe anytime.</span>
         </label>
+        <Turnstile action="free-training-signup" theme="dark" onTokenChange={setTurnstileToken} />
         <button
           type="submit"
           disabled={formState === "loading"}
@@ -160,7 +168,7 @@ function HeroForm() {
           {formState === "loading" ? "Sending..." : "Send Me the Free Training ✅"}
         </button>
         {formState === "error" && (
-          <p style={{ color: "#f87171", fontSize: "0.8rem", textAlign: "center", margin: 0 }}>Something went wrong. Try again.</p>
+          <p style={{ color: "#f87171", fontSize: "0.8rem", textAlign: "center", margin: 0 }}>Please complete the security check and try again.</p>
         )}
       </div>
     </form>
@@ -484,6 +492,7 @@ function AboutAndForm() {
   const [email, setEmail] = useState("");
   const [marketingConsent, setMarketingConsent] = useState(false);
   const [companyWebsite, setCompanyWebsite] = useState("");
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const [formStartedAt] = useState(() => Date.now());
 
   const handleSubmit = useCallback(
@@ -493,6 +502,10 @@ function AboutAndForm() {
       const name = firstName.trim();
       const emailVal = email.trim().toLowerCase();
       if (!name || !emailVal || !marketingConsent) return;
+      if (!turnstileToken) {
+        setFormState("error");
+        return;
+      }
       setFormState("loading");
       try {
         const response = await fetch(FORM_WEBHOOK_URL, {
@@ -504,6 +517,7 @@ function AboutAndForm() {
             source: "free_video_training",
             group: "Free Video Training",
             marketingConsent: true,
+            turnstileToken,
             companyWebsite,
             submittedAt: new Date().toISOString(),
             elapsedMs: Date.now() - formStartedAt,
@@ -515,7 +529,7 @@ function AboutAndForm() {
         setFormState("error");
       }
     },
-    [formState, firstName, email, marketingConsent, companyWebsite, formStartedAt]
+    [formState, firstName, email, marketingConsent, turnstileToken, companyWebsite, formStartedAt]
   );
 
   return (
@@ -706,6 +720,7 @@ function AboutAndForm() {
                   <input type="checkbox" checked={marketingConsent} onChange={(e) => setMarketingConsent(e.target.checked)} required />
                   <span>I agree to receive the free training and occasional AI Film Academy emails. I can unsubscribe anytime.</span>
                 </label>
+                <Turnstile action="free-training-signup" theme="light" onTokenChange={setTurnstileToken} />
                 <button
                   type="submit"
                   disabled={formState === "loading"}
@@ -734,7 +749,7 @@ function AboutAndForm() {
                       margin: 0,
                     }}
                   >
-                    Something went wrong. Please try again.
+                    Please complete the security check and try again.
                   </p>
                 )}
               </div>
