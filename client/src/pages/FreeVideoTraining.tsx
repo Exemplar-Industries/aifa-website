@@ -533,7 +533,7 @@ function AboutAndForm() {
   );
 
   return (
-    <section style={{ background: "#f9f9f9", padding: "88px 32px" }}>
+    <section className="fvt-signup-section" style={{ background: "#f9f9f9", padding: "88px 32px" }}>
       <div
         style={{
           maxWidth: "1060px",
@@ -620,6 +620,7 @@ function AboutAndForm() {
         {/* Right: Form card — bigger */}
         <div
           id="fvt-form"
+          className="fvt-signup-card"
           style={{
             background: "#fff",
             borderRadius: "12px",
@@ -768,7 +769,9 @@ const CSS = `
     /* On mobile: photo first, copy second (matches ClickFunnels layout) */
     .hero-grid > div:first-child { order: 2; }
     .hero-grid > div:last-child { order: 1; max-width: 280px; margin: 0 auto; }
-    .about-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
+    .about-grid { grid-template-columns: minmax(0, 1fr) !important; gap: 40px !important; }
+    .fvt-signup-section { padding-left: 16px !important; padding-right: 16px !important; }
+    .fvt-signup-card { padding: 40px 16px !important; min-width: 0 !important; }
     .about-grid > div:first-child { text-align: center; }
     .about-grid > div:first-child img { margin: 0 auto 24px; }
     .about-grid > div:first-child > div { justify-content: center; }
