@@ -7,6 +7,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { QRCodeSVG } from "qrcode.react";
 import "../genjam.css";
+import "../genjam-overrides.css";
 
 type Background = "cream" | "ink" | "yellow" | "pink" | "lime";
 type Variant = "cover" | "welcome" | "agenda" | "goal" | "bio" | "media" | "reel" | "resource" | "upload" | "reflection" | "statement" | "cards" | "quote" | "definition" | "ethics" | "console" | "timer";

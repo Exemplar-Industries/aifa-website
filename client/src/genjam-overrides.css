@@ -1,0 +1,5 @@
+/* Machine Cinema live-deck refinement: preserve wide QR/action composition while enforcing two-line workshop action titles. */
+.slide--upload .qr-action__copy .h-xxl{
+  font-size:clamp(3rem,5vw,5.6rem);
+  max-width:11ch;
+}
