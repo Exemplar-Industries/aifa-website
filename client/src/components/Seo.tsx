@@ -1,6 +1,12 @@
 import { useEffect } from "react";
 import { useLocation } from "wouter";
 
+declare global {
+  interface Window {
+    gtag?: (...args: unknown[]) => void;
+  }
+}
+
 type SeoPage = {
   title: string;
   description: string;
@@ -236,7 +242,48 @@ export default function Seo() {
       document.head.appendChild(structuredData);
     }
     structuredData.text = JSON.stringify(getStructuredData(canonicalUrl, page));
+
+    window.gtag?.("event", "page_view", {
+      page_title: document.title,
+      page_location: window.location.href,
+      page_path: `${pathname}${window.location.search}`,
+    });
   }, [location]);
+
+  useEffect(() => {
+    function trackCta(event: MouseEvent) {
+      const target = event.target as Element | null;
+      const element = target?.closest("a, button") as HTMLAnchorElement | HTMLButtonElement | null;
+      if (!element || element.hasAttribute("data-aifa-tracked")) return;
+
+      const label = (element.textContent || "").replace(/\s+/g, " ").trim();
+      const href = element instanceof HTMLAnchorElement ? element.href : "";
+      const path = href ? new URL(href, window.location.origin).pathname : "";
+      let eventName = "";
+      const params: Record<string, string> = { cta_text: label };
+
+      if (path === "/membership") eventName = "aifa_membership_cta_click";
+      else if (path === "/free-video-training") eventName = "aifa_free_training_click";
+      else if (path === "/contact" || path === "/work-with-us") eventName = "aifa_contact_cta_click";
+      else if (path === "/productions") eventName = "aifa_production_cta_click";
+      else if (path === "/certification") eventName = "aifa_certification_cta_click";
+      else if (label === "Start Monthly Membership") {
+        eventName = "aifa_checkout_start";
+        params.billing_cycle = "monthly";
+      } else if (label === "Start Annual Membership") {
+        eventName = "aifa_checkout_start";
+        params.billing_cycle = "annual";
+      }
+
+      if (!eventName) return;
+      element.setAttribute("data-aifa-tracked", "true");
+      window.gtag?.("event", eventName, params);
+      window.setTimeout(() => element.removeAttribute("data-aifa-tracked"), 1000);
+    }
+
+    document.addEventListener("click", trackCta, true);
+    return () => document.removeEventListener("click", trackCta, true);
+  }, []);
 
   return null;
 }
