@@ -44,6 +44,9 @@ function ShowcaseUploadRedirect() {
 }
 
 function CharacterReferenceDownload() {
+  useEffect(() => {
+    document.title = "Character reference sheet · Better Youth GenJam";
+  }, []);
   return <main style={{ minHeight: "100vh", padding: "7rem 1.5rem 4rem", background: "#FAF3E3", color: "#141B34" }}>
     <div style={{ width: "min(100%, 920px)", margin: "0 auto" }}>
       <p style={{ fontSize: ".78rem", fontWeight: 800, letterSpacing: ".16em", marginBottom: ".75rem" }}>BETTER YOUTH · GENJAM RESOURCE</p>
