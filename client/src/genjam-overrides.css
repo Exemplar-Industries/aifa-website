@@ -6,3 +6,107 @@
 .slide--upload [data-edit-key="upload.title"]{
   white-space:nowrap;
 }
+
+/* Opening: use the presentation frame for concise, human-centered program copy and a five-stage agenda. */
+.slide--welcome .h-xxl{
+  font-size:clamp(3.9rem,7.35vw,8.5rem);
+  max-width:20ch;
+}
+.slide--welcome .lede{
+  max-width:57ch;
+  font-size:clamp(1.05rem,1.62vw,1.6rem);
+}
+.slide--agenda .agenda-grid{
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  width:min(100%,1500px);
+  gap:clamp(.8rem,1.3vw,1.35rem);
+}
+.slide--agenda .agenda-card{
+  min-height:clamp(255px,36vh,330px);
+  padding:clamp(.9rem,1.4vw,1.3rem);
+}
+.slide--agenda .agenda-card:nth-child(5){
+  box-shadow:10px 10px 0 var(--pink);
+}
+.slide--agenda .agenda-card__time{
+  font-size:clamp(.68rem,.85vw,.85rem);
+}
+.slide--agenda .agenda-card__title{
+  font-size:clamp(1rem,1.38vw,1.42rem);
+  letter-spacing:-.025em;
+}
+.slide--agenda .agenda-card__copy{
+  font-size:clamp(.7rem,.87vw,.9rem);
+  line-height:1.28;
+}
+
+/* Footer: real approved horizontal AIFA asset, rendered white and balanced against Machine Cinema. */
+.brand-rail{
+  height:58px;
+  left:clamp(30px,3vw,52px);
+  bottom:clamp(14px,1.8vh,20px);
+}
+.brand-lockup{
+  height:47px;
+  gap:11px;
+  padding:5px 10px;
+  border-width:2px;
+  box-shadow:4px 4px 0 var(--pink);
+}
+.brand-lockup img{
+  max-height:26px;
+}
+.brand-lockup__sep{
+  height:28px;
+  width:2px;
+}
+.afa-lockup__official{
+  width:auto;
+  height:25px!important;
+  max-height:25px!important;
+  max-width:150px!important;
+  filter:brightness(0) invert(1);
+  object-fit:contain;
+}
+
+/* Client work: remove unnecessary whitespace; keep a single-line heading and make the stacked reels presentation-sized. */
+.slide--client-work{
+  padding-top:clamp(62px,7.5vh,78px);
+  padding-bottom:clamp(76px,9.5vh,96px);
+}
+.slide--client-work .media-layout{
+  grid-template-columns:minmax(600px,.78fr) minmax(700px,1.22fr);
+  gap:clamp(1.5rem,2.5vw,3rem);
+  width:min(100%,1540px);
+}
+.slide--client-work .h-xxl{
+  font-size:clamp(3rem,4.1vw,4.65rem);
+  max-width:none;
+  white-space:nowrap;
+}
+.slide--client-work .lede{
+  max-width:32ch;
+  font-size:clamp(1rem,1.42vw,1.4rem);
+}
+.slide--client-work .reel-grid{
+  width:clamp(480px,27vw,540px);
+  max-width:100%;
+  justify-self:end;
+  gap:clamp(12px,1.7vh,18px);
+}
+.slide--client-work .reel-panel{
+  height:auto;
+  min-height:0;
+  aspect-ratio:16/9;
+}
+
+@media (max-width:900px){
+  .slide--agenda .agenda-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .slide--client-work .h-xxl{white-space:normal;}
+}
+
+@media (min-width:901px) and (max-width:1499px){
+  .slide--client-work .media-layout{grid-template-columns:minmax(475px,.9fr) minmax(480px,1.1fr);}
+  .slide--client-work .h-xxl{font-size:clamp(2.8rem,3.95vw,4.1rem);}
+  .slide--client-work .reel-grid{width:min(43vw,500px);}
+}
