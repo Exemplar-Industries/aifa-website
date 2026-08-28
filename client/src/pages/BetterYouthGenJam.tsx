@@ -55,7 +55,7 @@ const ASSETS = {
   futureDronePoster: "/assets/genjam/future-drone-poster.jpg",
   survival3d: "/assets/genjam/AStoryOfSurvival-3DTeaser(1).mp4",
   empanadas: "/assets/genjam/Colombia-WhoWantsEmpanadas.mp4",
-  actionScene: "/assets/genjam/Actionscene5-FINAL.mp4",
+  actionScene: "/assets/genjam/Actionscene5-FINAL-web.mp4",
   actionScenePoster: "/assets/genjam/actionscene-poster-12s.jpg",
   guinness: "/assets/genjam/GuinnessRecordVideo.mov",
   guinnessPoster: "/assets/genjam/guinness-poster.jpg",
