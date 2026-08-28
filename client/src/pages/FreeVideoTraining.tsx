@@ -622,6 +622,7 @@ function AboutAndForm() {
           id="fvt-form"
           className="fvt-signup-card"
           style={{
+            scrollMarginTop: "88px",
             background: "#fff",
             borderRadius: "12px",
             padding: "56px 52px",
