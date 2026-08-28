@@ -61,6 +61,7 @@ function Router() {
       <Route path={"/events"}><Redirect to="/" /></Route>
       <Route path={"/genjam-freebie"} component={GenJamFreebie} />
       <Route path={"/genjam-offer"} component={GenJamOffer} />
+      <Route path={"/sheet"}><Redirect to="/assets/genjam/malecref.jpg" /></Route>
       <Route path={"/genjam/character-sheet"}><Redirect to="/assets/genjam/malecref.jpg" /></Route>
       <Route path={"/genjam/better-youth-0829"} component={BetterYouthGenJam} />
       <Route path={"/404"} component={NotFound} />
