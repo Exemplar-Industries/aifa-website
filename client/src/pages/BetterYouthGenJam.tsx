@@ -1,36 +1,237 @@
-import { useEffect } from "react";
-
 /**
- * Better Youth GenJam — production AIFA presentation route.
- * This unlisted route removes public-site chrome and presents the independently audited live deck at full viewport size.
+ * Machine Cinema Live Workshop System — Better Youth GenJam.
+ * This page preserves the reference deck's horizontal navigation, kinetic entrance rhythm,
+ * control rail, hard-shadow surfaces, and event utility components while keeping Brandon's
+ * story (not the technology) as the opening subject.
  */
-export default function BetterYouthGenJam() {
-  const editMode = new URLSearchParams(window.location.search).get("edit") === "1";
-  useEffect(() => {
-    const previousTitle = document.title;
-    document.title = "Better Youth GenJam · AI Film Academy";
-    let robots = document.querySelector('meta[name="robots"]');
-    const created = !robots;
-    if (!robots) {
-      robots = document.createElement("meta");
-      robots.setAttribute("name", "robots");
-      document.head.appendChild(robots);
-    }
-    const previousRobots = robots.getAttribute("content");
-    robots.setAttribute("content", "noindex, nofollow, noarchive, nosnippet, noimageindex");
-    return () => {
-      document.title = previousTitle;
-      if (created) robots?.remove();
-      else robots?.setAttribute("content", previousRobots ?? "");
-    };
-  }, []);
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { QRCodeSVG } from "qrcode.react";
+import "../genjam.css";
 
-  return <main style={{ position: "fixed", inset: 0, overflow: "hidden", background: "#141b34" }}>
-    <iframe
-      src={`https://3000-ip87un9g7h5on4x739x25-87e4e321.us2.manus.computer/studio/genjam-0829${editMode ? "?edit=1" : ""}`}
-      title="Better Youth GenJam"
-      allow="autoplay; fullscreen"
-      style={{ display: "block", width: "100%", height: "100%", border: 0, background: "#141b34" }}
-    />
+type Background = "cream" | "ink" | "yellow" | "pink" | "lime";
+type Variant = "cover" | "welcome" | "agenda" | "goal" | "bio" | "media" | "reel" | "resource" | "statement" | "cards" | "quote" | "definition" | "ethics" | "console";
+
+type SlideSpec = {
+  id: string;
+  section: string;
+  bg: Background;
+  variant: Variant;
+  kicker?: string;
+  title?: string;
+  accent?: string;
+  after?: string;
+  lede?: string;
+  tags?: { label: string; tone?: "pink" | "lime" | "yellow" }[];
+  cards?: { label: string; title: string; copy: string }[];
+  image?: string;
+  video?: string;
+  insetVideo?: string;
+  insetPoster?: string;
+  poster?: string;
+  videoPair?: string[];
+  posterPair?: string[];
+  videoAutoplay?: boolean;
+  videoControls?: boolean;
+  mediaLabel?: string;
+  console?: { key: string; value: string }[];
+};
+
+const ASSETS = {
+  mcInk: "/assets/genjam/5.png",
+  mcCream: "/assets/genjam/5-cream.png",
+  afaOfficial: "/assets/genjam/aifa-logo-white-transparent.svg",
+  collage: "/assets/genjam/story-worlds-collage.png",
+  hands: "/assets/genjam/filmmaker-hands.png",
+  motion: "/assets/genjam/motion-study.png",
+  closing: "/assets/genjam/closing-light.png",
+  headshot: "/assets/genjam/BrandonHeadshotSilver(1).png",
+  trail: "/assets/genjam/7ded84b3-f747-42c0-a8f4-773dc0f8681f.jpg",
+  characterRef: "/assets/genjam/malecref.jpg",
+  storyboardRef: "/assets/genjam/pasted_file_qsi0Af_image.png",
+  futureLogo: "/assets/genjam/FutureioIntro.mp4",
+  futureDrone: "/assets/genjam/Exemplar_-_Future.io_-_Intro.mp4",
+  futureLogoPoster: "/assets/genjam/future-logo-poster.jpg",
+  futureDronePoster: "/assets/genjam/future-drone-poster.jpg",
+  survival3d: "/assets/genjam/AStoryOfSurvival-3DTeaser(1).mp4",
+  empanadas: "/assets/genjam/Colombia-WhoWantsEmpanadas.mp4",
+  guinness: "/assets/genjam/GuinnessRecordVideo.mov",
+  guinnessPoster: "/assets/genjam/guinness-poster.jpg",
+  survivalPoster: "/assets/genjam/survival-3d-poster.jpg",
+  empanadasPoster: "/assets/genjam/empanadas-poster.jpg",
+};
+
+const slides: SlideSpec[] = [
+  { id: "welcome", section: "01 · Welcome", bg: "ink", variant: "cover", kicker: "BETTER YOUTH · GENJAM", title: "Make the", accent: "story", after: ".", lede: "Turn an idea in your head into original images and video — then shape it into footage you can see, direct, and share." },
+  { id: "room", section: "01 · Welcome", bg: "cream", variant: "welcome", kicker: "A PRIVATE PILOT", title: "This is a room for", accent: "questions", after: ".", lede: "Today is for seeing the process with your own eyes, trying it with your own hands, and deciding what feels useful." },
+  { id: "agenda", section: "01 · Welcome", bg: "cream", variant: "agenda", kicker: "TODAY'S AGENDA", title: "Agenda", after: "", lede: "First, meet the storyteller and look at the work. Then we name the questions and make a short visual story together." },
+  { id: "goal", section: "01 · Welcome", bg: "ink", variant: "goal", kicker: "TODAY'S OUTCOME", title: "Make a short", accent: "visual story", after: ".", lede: "By the end, you will have an original concept, a small image sequence, selected video moments, and a first cut you can keep building." },
+  { id: "brandon", section: "02 · The Storyteller", bg: "cream", variant: "bio", kicker: "YOUR HOST", title: "Meet", accent: "Brandon", after: ".", lede: "Storyteller first. Filmmaker first. Here to make a good story feel possible in the time we have." },
+  { id: "humanizer", section: "02 · The Storyteller", bg: "yellow", variant: "media", kicker: "OUTSIDE THE TIMELINE", title: "I do hard", accent: "things", after: ".", lede: "A good story takes curiosity, effort, and the decision to keep going.", image: ASSETS.trail, insetVideo: ASSETS.guinness, insetPoster: ASSETS.guinnessPoster, mediaLabel: "BRANDON · SOCAL TRAIL · FINISH LINE" },
+  { id: "story-first", section: "02 · The Storyteller", bg: "yellow", variant: "statement", kicker: "THE STARTING POINT", title: "Story comes", accent: "first", after: ".", lede: "A tool can help you explore a visual. It cannot decide what you want an audience to feel." },
+  { id: "traditional", section: "02 · The Storyteller", bg: "ink", variant: "reel", kicker: "FILMMAKER PROOF", title: "Moving images take", accent: "craft", after: ".", lede: "These two short motion-design pieces are part of the same example. Watch the visual decisions: timing, material, camera, and movement.", videoPair: [ASSETS.futureLogo, ASSETS.futureDrone], posterPair: [ASSETS.futureLogoPoster, ASSETS.futureDronePoster], mediaLabel: "FUTURE.IO · MUTED AUTOPLAY · MOTION DESIGN / 3D WORK" },
+  { id: "long-path", section: "02 · The Storyteller", bg: "cream", variant: "media", kicker: "TRADITIONAL 3D STORY", title: "A scene can take", accent: "weeks", after: ".", lede: "This is a traditional 3D trailer. It is here to show the depth of the craft—not to autoplay or compete for the room’s attention.", video: ASSETS.survival3d, poster: ASSETS.survivalPoster, videoControls: true, mediaLabel: "OPTIONAL MANUAL PLAY · 3D STORY TRAILER" },
+  { id: "shift", section: "02 · The Storyteller", bg: "cream", variant: "media", kicker: "THE SHIFT", title: "One day. New", accent: "possibility", after: ".", lede: "A well-directed story can now become visible in a day—so you can watch it, feel it, and choose what to refine.", video: ASSETS.empanadas, poster: ASSETS.empanadasPoster, videoControls: true, mediaLabel: "WHO WANTS EMPANADAS? · ONE-DAY 2.5D AI FILM · MANUAL PLAY" },
+  { id: "taste", section: "02 · The Storyteller", bg: "pink", variant: "statement", kicker: "THE IMPORTANT PART", title: "The shift is not", accent: "taste", after: ".", lede: "The faster the tools move, the more your choices matter: what to make, what to keep, and what to change." },
+  { id: "access", section: "02 · The Storyteller", bg: "cream", variant: "cards", kicker: "THE UPSIDE", title: "More access. Same", accent: "authorship", after: ".", lede: "You can reach images and video ideas that used to demand far more time, budget, and technical setup." , cards:[{label:"VISUAL ACCESS",title:"See a world sooner.",copy:"Test a location, mood, or character direction before it has to be expensive."},{label:"CREATIVE DIRECTION",title:"Choose on purpose.",copy:"The human still decides what the story means and which images belong."},{label:"ITERATION",title:"Revise without fear.",copy:"The first output is a starting point; the next choice is still yours."}]},
+  { id: "alive", section: "02 · The Storyteller", bg: "ink", variant: "quote", kicker: "THE THESIS", title: "It is a good time to be", accent: "alive", after: ".", lede: "For storytellers, a strong idea can now become visible before life, money, or time tells you that it cannot." },
+  { id: "genjam", section: "03 · The Human Element", bg: "lime", variant: "definition", kicker: "THE FORMAT", title: "What is a", accent: "GenJam", after: "?", lede: "A live, guided storytelling workshop: pick a story seed, build a visual plan, make images and video, then reflect on the choices you made." },
+  { id: "human-led", section: "03 · The Human Element", bg: "ink", variant: "statement", kicker: "THE PRINCIPLE", title: "Human-led. AI-", accent: "assisted", after: ".", lede: "The tools are in service of a human story. They do not replace the storyteller, the filmmaker, or the final decision." },
+  { id: "listen", section: "03 · The Human Element", bg: "cream", variant: "quote", kicker: "A HUMAN ON THE OTHER SIDE", title: "I am here to", accent: "listen", after: ".", lede: "Bring the concern, the question, or the line you do not want to cross. We can work through it together. If it is not a fit, it is not a fit." },
+  { id: "experience", section: "03 · The Human Element", bg: "yellow", variant: "statement", kicker: "THE INVITATION", title: "See it for", accent: "yourself", after: ".", lede: "Before you decide what this means for anyone else, experience what it actually means to use an AI tool while making a visual story." },
+  { id: "human-owns", section: "03 · The Human Element", bg: "cream", variant: "ethics", kicker: "WHAT STAYS HUMAN", title: "You still own the", accent: "choices", after: ".", lede: "The tool can offer possibilities. You direct the story, inspect the output, and decide what happens next." },
+  { id: "safe-work", section: "03 · The Human Element", bg: "ink", variant: "cards", kicker: "WORK WITH CARE", title: "Keep the process", accent: "visible", after: ".", lede: "We will use a guided Google Flow workflow and speak plainly about what the tools do, where the inputs come from, and what you decide to share." , cards:[{label:"ORIGINAL START",title:"Begin with your idea.",copy:"Make the character, context, and story choice yours before the tool enters the process."},{label:"HUMAN REVIEW",title:"Look at every result.",copy:"Choose, revise, or reject outputs. There is no obligation to use the first thing generated."},{label:"FINAL SAY",title:"Share by choice.",copy:"The work stays with the team. Public sharing is never required in this pilot."}]},
+  { id: "start-jam", section: "04 · The GenJam", bg: "ink", variant: "cover", kicker: "SECTION 04 · THE GENJAM", title: "Let’s get", accent: "started", after: ".", lede: "You have the story tools. Now let’s make something you can look at and build from." },
+  { id: "character", section: "04 · The GenJam", bg: "cream", variant: "cards", kicker: "THE BRIEF · PART 01", title: "Start with a", accent: "character", after: ".", lede: "Do not chase a perfect plot yet. Make one person, creature, or presence worth following first.", cards:[{label:"WHO",title:"Who are they?",copy:"Give them a name, a role, and a point of view."},{label:"WANT",title:"What do they want?",copy:"A simple want is enough to give the story movement."},{label:"LOOK",title:"What makes them visible?",copy:"Choose one detail in wardrobe, texture, gesture, or setting."}]},
+  { id: "visual-styles", section: "04 · The GenJam", bg: "cream", variant: "cards", kicker: "PICK A VISUAL LANGUAGE", title: "Make it in a style you", accent: "love", after: ".", lede: "Start from a visual language you already care about. Test it, challenge it, and see what your story looks like there.", cards:[{label:"01",title:"3D animation",copy:"Sculpted worlds, light, and camera movement."},{label:"02",title:"3D models",copy:"Tactile objects, materials, and form."},{label:"03",title:"Claymation",copy:"Handmade texture and imperfect motion."},{label:"04",title:"2D animation",copy:"Shape, drawing, rhythm, and graphic energy."},{label:"05",title:"2.5D",copy:"Painted depth with cinematic movement."},{label:"06",title:"Sketch",copy:"Loose lines, marks, and your own visual instinct."}]},
+  { id: "character-sheet", section: "04 · The GenJam", bg: "yellow", variant: "resource", kicker: "RESOURCE 01 · CHARACTER SHEET", title: "Make the person you want to", accent: "follow", after: ".", lede: "Open it on laptop, or scan it from your phone. You can speak a first character idea, then keep building from there.", image: ASSETS.characterRef },
+  { id: "prompt-director", section: "04 · The GenJam", bg: "ink", variant: "console", kicker: "LIVE DEMO · CHARACTER PROMPT", title: "Prompt like a", accent: "director", after: ".", lede: "You are not asking for a random picture. You are communicating a specific creative intention.", console:[{key:"character",value:"who they are"},{key:"look",value:"wardrobe, age, signature detail"},{key:"world",value:"place + time"},{key:"feeling",value:"mood and stakes"},{key:"visual language",value:"camera, light, texture"}]},
+  { id: "make-character", section: "04 · The GenJam", bg: "cream", variant: "cards", kicker: "YOUR TURN · WORK BLOCK 01", title: "Make your", accent: "character", after: ".", lede: "Generate a few directions, talk through the choices, and save the version that feels most alive.", cards:[{label:"01 · BUILD",title:"Use the sheet.",copy:"Give your character a want and a visual anchor."},{label:"02 · EXPLORE",title:"Try 2–3 directions.",copy:"Use the prompt structure to vary the mood or look."},{label:"03 · CHOOSE",title:"Pick one together.",copy:"The direction is a human decision, not a random result."}]},
+  { id: "four-beats", section: "04 · The GenJam", bg: "lime", variant: "cards", kicker: "THE STORY", title: "Four beats. One", accent: "arc", after: ".", lede: "Keep it simple enough to make today and specific enough to feel like your own.", cards:[{label:"BEAT 01",title:"Someone arrives.",copy:"Show us a person, a place, or a moment."},{label:"BEAT 02",title:"They want something.",copy:"Give the moment a direction."},{label:"BEAT 03",title:"Something changes.",copy:"Put a small obstacle, surprise, or choice in their path."},{label:"BEAT 04",title:"They decide.",copy:"End with a human action that shifts the story."}]},
+  { id: "somewhere", section: "05 · Storyboarding", bg: "ink", variant: "quote", kicker: "THE BRIEF · PART 02", title: "A stranger is doing what — and", accent: "where", after: "?", lede: "Give the story a place, a time, and one detail that makes the world feel real." },
+  { id: "frame-target", section: "05 · Storyboarding", bg: "cream", variant: "cards", kicker: "YOUR TARGET", title: "Aim for", accent: "12 frames", after: ".", lede: "Twelve images give a story room to breathe. You can move faster or take the longer path, depending on the room.", cards:[{label:"09 FRAMES",title:"Fast build.",copy:"A compact story spine when the session is moving quickly."},{label:"12 FRAMES",title:"Recommended.",copy:"Enough images to make a real storyboard and choose the strongest clips."},{label:"15 FRAMES",title:"Extended build.",copy:"More beats, more visual options, and more editing flexibility."}]},
+  { id: "build-shot", section: "05 · Storyboarding", bg: "ink", variant: "console", kicker: "LIVE DEMO · MASTER PROMPT", title: "Build the", accent: "shot", after: ".", lede: "[Art Style] [Camera Angle], [Subject] [Action] [Environment], [Lighting Style].", console:[{key:"art style",value:"the visual language you chose"},{key:"camera angle",value:"wide, medium, or close-up"},{key:"subject + action",value:"who we follow and what changes"},{key:"environment",value:"place + time"},{key:"lighting style",value:"how the scene should feel"}]},
+  { id: "camera-sequence", section: "05 · Storyboarding", bg: "yellow", variant: "cards", kicker: "YOUR FIRST FIVE SHOTS", title: "Start wide. Then pull us", accent: "closer", after: ".", lede: "This is a recommended sequence for a cinematic introduction—not a rule. Combine it, repeat it, or change it when the story asks for something else.", cards:[{label:"SHOT 01",title:"Wide",copy:"Show us who is here and where we are."},{label:"SHOT 02",title:"Medium",copy:"Introduce the people in the story."},{label:"SHOT 03",title:"Medium",copy:"Pull us closer to the action."},{label:"SHOT 04",title:"Extreme close-up",copy:"Make one detail carry meaning."},{label:"SHOT 05",title:"Headshot close-up",copy:"Let us read the human moment."}]},
+  { id: "plan-generate", section: "05 · Storyboarding", bg: "yellow", variant: "statement", kicker: "WORK SMART", title: "Plan, then", accent: "generate", after: ".", lede: "Write the moment first. Then generate with a purpose. A good image should have a job in your story.", tags:[{label:"WRITE THE MOMENT",tone:"pink"},{label:"MAKE THE FRAME",tone:"lime"},{label:"KEEP THE ONES THAT MATTER",tone:"yellow"}]},
+  { id: "storyboard", section: "05 · Storyboarding", bg: "cream", variant: "media", kicker: "YOUR TURN · WORK BLOCK 02", title: "Build the", accent: "storyboard", after: ".", lede: "Make the story real enough to see, discuss, and feel proud of before you animate anything.", image: ASSETS.storyboardRef, mediaLabel: "REFERENCE · 9 STORYBOARD FRAMES BECOME A MOVING SEQUENCE" },
+  { id: "checkin", section: "06 · Motion + Edit", bg: "pink", variant: "statement", kicker: "CHECK-IN", title: "Show us the", accent: "world", after: ".", lede: "Before we add motion, pause. Which 3–5 frames are essential to the final story?", tags:[{label:"LOOK FOR THE TURN",tone:"yellow"},{label:"KEEP THE STRONGEST FRAMES",tone:"lime"}]},
+  { id: "motion", section: "06 · Motion + Edit", bg: "cream", variant: "media", kicker: "FROM STILL TO MOTION", title: "Make the frame", accent: "move", after: ".", lede: "Start with your strongest image. A camera move, gesture, or change should reveal something the still frame cannot.", image: ASSETS.motion, mediaLabel: "MOTION STUDY · VISUAL REFERENCE" },
+  { id: "motion-demo", section: "06 · Motion + Edit", bg: "ink", variant: "console", kicker: "LIVE DEMO · GOOGLE FLOW", title: "Give motion a", accent: "reason", after: ".", lede: "A simple direction creates a usable clip: a gesture, a camera move, a reveal, or a change in light.", console:[{key:"source frame",value:"choose the still that matters"},{key:"camera",value:"push in, pan, or hold"},{key:"movement",value:"gesture or environmental change"},{key:"duration",value:"short enough to edit"},{key:"review",value:"keep, revise, or discard"}]},
+  { id: "cut-feeling", section: "06 · Motion + Edit", bg: "lime", variant: "cards", kicker: "EDITING RULE", title: "Cut for", accent: "feeling", after: ".", lede: "Your storyboard gave you options. Your cut only needs the frames and clips that make the story land.", cards:[{label:"12 FRAMES",title:"Can become 5 clips.",copy:"Choose the best visual beats instead of trying to animate every image."},{label:"SEQUENCE",title:"Start · turn · end.",copy:"Use the clearest beginning, the moment that changes, and the choice that lands."},{label:"PACE",title:"Leave room to feel.",copy:"A short clip can hold more weight when it is chosen with intention."}]},
+  { id: "build-cut", section: "06 · Motion + Edit", bg: "cream", variant: "cards", kicker: "YOUR TURN · WORK BLOCK 03", title: "Build your", accent: "cut", after: ".", lede: "Assemble the strongest clips. Trim for pace. Let the sequence become one small, complete film.", cards:[{label:"BEGINNING",title:"Set the world.",copy:"Make it clear who and where we are."},{label:"TURN",title:"Show the change.",copy:"Select the clip that shifts the story."},{label:"ENDING",title:"Land the choice.",copy:"Finish with a moment the audience can carry away."}]},
+  { id: "save", section: "06 · Motion + Edit", bg: "yellow", variant: "cards", kicker: "SAVE + KEEP", title: "Keep the", accent: "work", after: ".", lede: "The final clip is not the only thing you made. Keep the story materials that will let the project continue later.", cards:[{label:"EXPORT",title:"Save the edit.",copy:"Keep a usable video file from the sequence you assembled."},{label:"ARCHIVE",title:"Save the board.",copy:"Your images tell the visual history of the story."},{label:"RETAIN",title:"Keep the prompts.",copy:"The directions that worked are part of your craft."}]},
+  { id: "showcase", section: "07 · Showcase + Wrap", bg: "ink", variant: "cover", kicker: "SHOWCASE", title: "Let’s", accent: "watch", after: ".", lede: "Share a film, a storyboard, one frame, or simply the story you found. Curiosity first. No ranking required." },
+  { id: "reflection", section: "07 · Showcase + Wrap", bg: "cream", variant: "cards", kicker: "REFLECTION", title: "What did", accent: "you decide", after: "?", lede: "Talk about the human choices behind the work — not only what a tool produced.", cards:[{label:"STORY",title:"What did you want to say?",copy:"Name the idea that started the work."},{label:"SELECTION",title:"What did you keep or reject?",copy:"The choices are where direction appears."},{label:"NEXT",title:"What would you develop?",copy:"Carry one useful insight into whatever comes next."}]},
+  { id: "cheat-sheet", section: "07 · Showcase + Wrap", bg: "lime", variant: "cards", kicker: "KEEP THIS HANDY", title: "Your story", accent: "cheat sheet", after: ".", lede: "A simple process you can return to whenever a story needs to become visible.", cards:[{label:"01 · CHARACTER",title:"Give them a want.",copy:"Start with someone worth following."},{label:"02 · STORY",title:"Make a change happen.",copy:"Someone wants something. Something shifts. They choose."},{label:"03 · BOARD",title:"Aim for 12 frames.",copy:"Use still images to find the sequence before you animate."},{label:"04 · DIRECTION",title:"Write the shot.",copy:"Describe the subject, action, world, camera, light, and style."},{label:"05 · HUMAN",title:"Keep the final say.",copy:"You own the concept, prompt, selection, revision, and sharing."}]},
+  { id: "close", section: "07 · Showcase + Wrap", bg: "ink", variant: "cover", kicker: "BETTER YOUTH · GENJAM", title: "Go make", accent: "something", after: ".", lede: "Tell the story only you can tell — then make it visible." },
+];
+
+type TextResolver = (key: string, fallback: string) => string;
+type TextCommit = (key: string, value: string) => void;
+
+function EditableText({ textKey, fallback, editing, resolve, commit, className }: { textKey: string; fallback: string; editing: boolean; resolve: TextResolver; commit: TextCommit; className?: string }) {
+  return <span className={className} contentEditable={editing} suppressContentEditableWarning spellCheck={editing} data-edit-key={textKey} onBlur={(event) => commit(textKey, event.currentTarget.textContent?.replace(/\n+/g, " ").trim() || fallback)}>{resolve(textKey, fallback)}</span>;
+}
+
+function Title({ slide, editing, resolve, commit }: { slide: SlideSpec; editing: boolean; resolve: TextResolver; commit: TextCommit }) {
+  return <h1 className="h-xxl entry" style={{ "--i": 1 } as React.CSSProperties}><EditableText textKey={`${slide.id}.title`} fallback={slide.title ?? ""} editing={editing} resolve={resolve} commit={commit} /> {slide.accent && <EditableText className="accent-pink" textKey={`${slide.id}.accent`} fallback={slide.accent} editing={editing} resolve={resolve} commit={commit} />}<EditableText textKey={`${slide.id}.after`} fallback={slide.after ?? ""} editing={editing} resolve={resolve} commit={commit} /></h1>;
+}
+
+function Tags({ tags = [] }: { tags?: SlideSpec["tags"] }) {
+  if (!tags.length) return null;
+  return <div className="tag-row entry" style={{ "--i": 3 } as React.CSSProperties}>{tags.map((tag) => <span className={`tag ${tag.tone ? `tag--${tag.tone}` : ""}`} key={tag.label}>{tag.label}</span>)}</div>;
+}
+
+function CanvasFx({ active, type }: { active: boolean; type: "fireworks" | "goodluck" }) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  useEffect(() => {
+    if (!active || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const canvas = canvasRef.current; if (!canvas) return;
+    const context = canvas.getContext("2d"); if (!context) return;
+    let raf = 0; let last = 0; let stopped = false; let fireTimer = 0; let cannonTimer = 0; let rainTimer = 0;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const resize = () => { canvas.width = canvas.clientWidth * dpr; canvas.height = canvas.clientHeight * dpr; context.setTransform(dpr, 0, 0, dpr, 0, 0); };
+    resize(); window.addEventListener("resize", resize);
+    const palette = ["#FF3B5C", "#FFD93D", "#CCFF33", "#FAF3E3", "#7BD3F7"];
+    const rand = (a: number, b: number) => a + Math.random() * (b - a);
+    const pick = <T,>(values: T[]) => values[(Math.random() * values.length) | 0];
+    const rockets: { x:number; y:number; vx:number; vy:number; burstY:number; color:string }[] = [];
+    const sparks: { x:number; y:number; vx:number; vy:number; age:number; life:number; color:string; r:number }[] = [];
+    const confetti: { x:number; y:number; vx:number; vy:number; rot:number; vrot:number; w:number; h:number; color:string; sway:number; phase:number; strip:boolean }[] = [];
+    const launch = () => rockets.push({ x: rand(.15, .85) * canvas.clientWidth, y: canvas.clientHeight + 8, vx: rand(-.6,.6), vy: -rand(.0165,.021) * canvas.clientHeight, burstY: rand(.18,.45) * canvas.clientHeight, color: pick(palette) });
+    const explode = (rocket: typeof rockets[number]) => { if (sparks.length > 700) return; const total = rand(46,74) | 0; const secondColor = Math.random() < .5 ? pick(palette) : rocket.color; for (let i = 0; i < total; i += 1) { const angle = (i / total) * Math.PI * 2 + rand(-.05,.05); const speed = rand(1.4,5.2); sparks.push({ x:rocket.x, y:rocket.y, vx:Math.cos(angle)*speed, vy:Math.sin(angle)*speed, life:rand(.55,1), age:0, color:i%2?rocket.color:secondColor, r:rand(1.4,2.8) }); } };
+    const makePiece = (x:number, y:number, vx:number, vy:number) => { if (confetti.length > 900) return; confetti.push({ x,y,vx,vy,rot:rand(0,Math.PI*2),vrot:rand(-.25,.25),w:rand(6,12),h:rand(8,16),color:pick([...palette,"#FF8AB0"]),sway:rand(.6,1.6),phase:rand(0,Math.PI*2),strip:Math.random()<.35 }); };
+    const cannon = () => { for (let side = 0; side < 2; side += 1) { const originX = side === 0 ? canvas.clientWidth * .04 : canvas.clientWidth * .96; const aim = side === 0 ? 1 : -1; const shots = rand(34,52) | 0; for (let i = 0; i < shots; i += 1) { const spread = rand(.15,.9); makePiece(originX, canvas.clientHeight * 1.02, aim * rand(2,8) * spread, -rand(9,15) * (1 - spread * .4)); } } };
+    const rain = () => { for (let i = 0; i < (rand(4,9)|0); i += 1) makePiece(rand(0,canvas.clientWidth), -20, rand(-.8,.8), rand(1.5,3.2)); };
+    const twinkle = () => sparks.push({ x:rand(.08,.92)*canvas.clientWidth, y:rand(.12,.8)*canvas.clientHeight, r:rand(6,16), life:rand(.6,1.1), age:0, color:pick([...palette,"#FF8AB0"]), vx:0, vy:0 });
+    if (type === "fireworks") { launch(); launch(); fireTimer = performance.now() + rand(550,1100); } else { cannon(); cannon(); for (let i=0;i<6;i+=1) twinkle(); cannonTimer = performance.now() + rand(2200,3400); rainTimer = performance.now() + rand(180,360); }
+    const draw = (now: number) => { if (stopped || document.hidden) return; const dt = Math.min(now - last || 16.7, 100); last = now; const frame = dt / (1000/60); context.clearRect(0,0,canvas.clientWidth,canvas.clientHeight);
+      if (type === "fireworks" && now >= fireTimer) { launch(); if (Math.random()<.35) launch(); fireTimer = now + rand(550,1100); }
+      if (type === "goodluck") { if (now >= rainTimer) { rain(); if (Math.random()<.5) twinkle(); rainTimer = now + rand(180,360); } if (now >= cannonTimer) { cannon(); for (let i=0;i<3;i+=1) twinkle(); cannonTimer = now + rand(2200,3400); } }
+      for (let i=rockets.length-1;i>=0;i-=1) { const rocket=rockets[i]; rocket.x+=rocket.vx*frame; rocket.y+=rocket.vy*frame; rocket.vy+=.06*frame; context.globalAlpha=.9; context.strokeStyle=rocket.color; context.lineWidth=2.5; context.beginPath(); context.moveTo(rocket.x,rocket.y); context.lineTo(rocket.x-rocket.vx*3,rocket.y-rocket.vy*3); context.stroke(); if (rocket.y<=rocket.burstY||rocket.vy>-1){explode(rocket);rockets.splice(i,1);} }
+      for (let i=sparks.length-1;i>=0;i-=1) { const spark=sparks[i]; spark.age+=dt/1000; if(spark.age>=spark.life){sparks.splice(i,1);continue;} const progress=1-spark.age/spark.life; spark.x+=spark.vx*frame; spark.y+=spark.vy*frame; spark.vx*=Math.pow(.985,frame); spark.vy=spark.vy*Math.pow(.985,frame)+.05*frame; context.globalAlpha=.85*progress; context.fillStyle=spark.color; if(type==="goodluck"&&spark.vx===0&&spark.vy===0){const radius=spark.r*Math.sin((spark.age/spark.life)*Math.PI);context.save();context.translate(spark.x,spark.y);context.beginPath();for(let k=0;k<4;k+=1){const a=(k/4)*Math.PI*2;context.lineTo(Math.cos(a)*radius,Math.sin(a)*radius);context.lineTo(Math.cos(a+Math.PI/4)*radius*.32,Math.sin(a+Math.PI/4)*radius*.32);}context.closePath();context.fill();context.restore();}else{context.beginPath();context.arc(spark.x,spark.y,spark.r*(.5+progress*.5),0,7);context.fill();} }
+      for (let i=confetti.length-1;i>=0;i-=1) { const piece=confetti[i]; piece.vy+=.28*frame; piece.vx*=Math.pow(.99,frame); if(piece.vy>6) piece.vy=6; piece.phase+=.1*frame; piece.x+=(piece.vx+Math.sin(piece.phase)*piece.sway)*frame; piece.y+=piece.vy*frame; piece.rot+=piece.vrot*frame; if(piece.y-20>canvas.clientHeight){confetti.splice(i,1);continue;}context.save();context.translate(piece.x,piece.y);context.rotate(piece.rot);context.globalAlpha=.95;context.fillStyle=piece.color;const width=piece.strip?piece.w*.4:piece.w;const height=piece.strip?piece.h*1.4:piece.h*Math.abs(Math.cos(piece.phase));context.fillRect(-width/2,-height/2,width,Math.max(2,height));context.restore(); }
+      context.globalAlpha=1; raf=requestAnimationFrame(draw); };
+    raf=requestAnimationFrame(draw); return () => { stopped=true; cancelAnimationFrame(raf); window.removeEventListener("resize",resize); };
+  }, [active, type]);
+  return <canvas className="fx-canvas" ref={canvasRef} aria-hidden="true" />;
+}
+
+function AmbientField({ active }: { active: boolean }) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  useEffect(() => {
+    if (!active || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const canvas = canvasRef.current; const context = canvas?.getContext("2d"); if (!canvas || !context) return;
+    const palette = ["#FF3B5C", "#FFD93D", "#CCFF33", "#FAF3E3", "#7BD3F7"];
+    const shapes = ["rect", "circle", "tri", "ring"] as const;
+    const rand = (low: number, high: number) => low + Math.random() * (high - low);
+    const parts = Array.from({ length: 26 }, () => ({ x: Math.random(), y: Math.random(), vx: rand(-.012,.012), vy: rand(-.02,-.004), r: rand(4,16), rot: rand(0,Math.PI*2), vr: rand(-.01,.01), color: palette[(Math.random() * palette.length) | 0], shape: shapes[(Math.random() * shapes.length) | 0], alpha: rand(.1,.28) }));
+    let frame = 0; let last = 0; let stopped = false; const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const resize = () => { canvas.width = canvas.clientWidth * dpr; canvas.height = canvas.clientHeight * dpr; context.setTransform(dpr,0,0,dpr,0,0); };
+    const draw = (now: number) => { if (stopped || document.hidden) return; const delta = Math.min(now - last || 16.7, 100); last = now; const f = delta / (1000 / 60); context.clearRect(0,0,canvas.clientWidth,canvas.clientHeight); for (const part of parts) { part.x += (part.vx / 60) * f; part.y += (part.vy / 60) * f; part.rot += part.vr * f; if(part.y < -.06){part.y=1.06;part.x=Math.random();} if(part.x < -.06) part.x=1.06; if(part.x > 1.06) part.x=-.06; const x=part.x*canvas.clientWidth; const y=part.y*canvas.clientHeight; context.save(); context.translate(x,y); context.rotate(part.rot); context.globalAlpha=part.alpha; context.fillStyle=part.color; context.strokeStyle=part.color; context.lineWidth=3; if(part.shape==="rect") context.fillRect(-part.r,-part.r,part.r*2,part.r*2); else if(part.shape==="circle"){context.beginPath();context.arc(0,0,part.r,0,7);context.fill();} else if(part.shape==="ring"){context.beginPath();context.arc(0,0,part.r,0,7);context.stroke();} else {context.beginPath();context.moveTo(0,-part.r);context.lineTo(part.r,part.r);context.lineTo(-part.r,part.r);context.closePath();context.fill();} context.restore(); } frame=requestAnimationFrame(draw); };
+    resize(); window.addEventListener("resize",resize); frame=requestAnimationFrame(draw); return () => { stopped=true; cancelAnimationFrame(frame); window.removeEventListener("resize",resize); };
+  }, [active]);
+  return <canvas ref={canvasRef} className="ambient-field" aria-hidden="true" />;
+}
+
+function SlideContent({ slide, active, editing, resolve, commit }: { slide: SlideSpec; active: boolean; editing: boolean; resolve: TextResolver; commit: TextCommit }) {
+  const heading = <><span className="kicker entry" style={{ "--i": 0 } as React.CSSProperties}><EditableText textKey={`${slide.id}.kicker`} fallback={slide.kicker ?? ""} editing={editing} resolve={resolve} commit={commit} /></span><Title slide={slide} editing={editing} resolve={resolve} commit={commit} /><p className="lede entry" style={{ "--i": 2 } as React.CSSProperties}><EditableText textKey={`${slide.id}.lede`} fallback={slide.lede ?? ""} editing={editing} resolve={resolve} commit={commit} /></p></>;
+  const simpleTags = slide.variant === "cover" ? [{ label: "HUMAN-LED", tone: "pink" as const }, { label: "AI-ASSISTED", tone: "lime" as const }] : undefined;
+  switch (slide.variant) {
+    case "cover": return <><CanvasFx active={active} type={slide.id === "close" ? "goodluck" : "fireworks"} />{heading}<Tags tags={simpleTags} /><p className="body entry" style={{ "--i": 4 } as React.CSSProperties}>{slide.id === "close" ? "THANK YOU FOR CREATING" : <>PRESS <b>→</b> TO BEGIN</>}</p></>;
+    case "welcome": return <>{heading}<div className="tag-row entry" style={{ "--i": 3 } as React.CSSProperties}><span className="tag tag--yellow">NO PRESSURE TO DECIDE TODAY</span><span className="tag tag--lime">ASK THE HARD QUESTIONS</span></div></>;
+    case "agenda": { const items = [["00–05 MIN","Welcome","Why we are here — and what this room is for."],["05–15 MIN","Storyteller","Brandon’s background, 3D work, and creative process."],["15–30 MIN","See the shift","A comparison, a clear view of the tools, and your questions."],["THEN","GenJam","Create a character, a storyboard, moving footage, and a short cut."]]; return <><>{heading}</><div className="agenda-grid entry" style={{ "--i": 3 } as React.CSSProperties}>{items.map(([time,title,copy], itemIndex) => <article className="agenda-card" key={title}><span className="agenda-card__time"><EditableText textKey={`${slide.id}.agenda.${itemIndex}.time`} fallback={time} editing={editing} resolve={resolve} commit={commit} /></span><h2 className="agenda-card__title"><EditableText textKey={`${slide.id}.agenda.${itemIndex}.title`} fallback={title} editing={editing} resolve={resolve} commit={commit} /></h2><p className="agenda-card__copy"><EditableText textKey={`${slide.id}.agenda.${itemIndex}.copy`} fallback={copy} editing={editing} resolve={resolve} commit={commit} /></p></article>)}</div></>; }
+    case "goal": { const steps = ["ORIGINAL IDEA","STORYBOARD","VIDEO","FIRST CUT"]; return <><>{heading}</><div className="process-flow entry" style={{ "--i": 3 } as React.CSSProperties}>{steps.map((label, stepIndex) => <div className="process-step" key={label}><div className="process-node"><EditableText textKey={`${slide.id}.step.${stepIndex}`} fallback={label} editing={editing} resolve={resolve} commit={commit} /></div>{stepIndex < 3 && <span className="process-arrow">→</span>}</div>)}</div></>; }
+    case "bio": return <div className="bio-layout"><figure className="bio-photo"><img src={ASSETS.headshot} alt="Brandon Patino" /><figcaption className="bio-photo__cap">A STORYTELLER FIRST</figcaption></figure><div className="bio-content"><span className="kicker">{slide.kicker}</span><h1 className="bio-name">Meet <span className="accent-pink">Brandon.</span></h1><p className="bio-copy">{slide.lede}</p><ul className="bio-roles"><li><span className="role-label">CRAFT</span><span><b>Story, filmmaking, and visual direction</b> — the parts that make an image mean something.</span></li><li><span className="role-label">TODAY</span><span>A live guide through a practical creative process, with room to pause, ask, and reconsider.</span></li><li><span className="role-label">LATER</span><span>AI Film Academy context comes after you have seen what the workflow feels like.</span></li></ul></div></div>;
+    case "media": return <div className="media-layout"><div className="slide--left">{heading}</div><figure className={`media-slot ${slide.bg === "cream" ? "media-slot--light" : ""} entry`} style={{ "--i": 2 } as React.CSSProperties}>{slide.video ? <video src={slide.video} poster={slide.poster} autoPlay={slide.videoAutoplay} muted={slide.videoAutoplay} loop={slide.videoAutoplay} controls={slide.videoControls} playsInline preload="metadata" aria-label={slide.mediaLabel} /> : slide.image ? <img src={slide.image} alt={slide.mediaLabel ?? "Workshop reference"} /> : <div className="media-slot__guide"><span>ADD APPROVED MEDIA<br />IN FINAL REVIEW</span></div>}{slide.insetVideo && <div className="media-inset"><video src={slide.insetVideo} poster={slide.insetPoster} autoPlay muted loop playsInline preload="metadata" aria-label="Guinness World Records push-up demonstration"/><span>4 CLAPS · WORLD RECORD</span></div>}<figcaption className="media-slot__overlay">{slide.mediaLabel}</figcaption></figure></div>;
+    case "reel": return <div className="media-layout"><div className="slide--left">{heading}</div><div className="reel-grid entry" style={{ "--i": 2 } as React.CSSProperties}>{slide.videoPair?.map((source, videoIndex) => <figure className="reel-panel" key={source}><video src={source} poster={slide.posterPair?.[videoIndex]} autoPlay muted loop playsInline preload="metadata" aria-label={`Future.io motion-design example ${videoIndex + 1}`} /><figcaption>{videoIndex === 0 ? "MATERIAL + TIMING" : "CAMERA + MOVEMENT"}</figcaption></figure>)}<p className="reel-label">{slide.mediaLabel}</p></div></div>;
+    case "resource": { const resourceUrl = `${window.location.origin}${ASSETS.characterRef}`; return <><>{heading}</><div className="resource-layout entry" style={{ "--i": 3 } as React.CSSProperties}><figure className="resource-reference"><img src={slide.image} alt="Character design reference sheet showing front, side, and rear views" /><figcaption>CHARACTER REFERENCE · FRONT / BACK / HEAD ANGLES</figcaption></figure><div className="resource-card"><span className="resource-card__label">BRING IT WITH YOU</span><p>Open on laptop, scan on phone, or use speech-to-text for the first description.</p><div className="resource-qr"><QRCodeSVG value={resourceUrl} size={150} bgColor="#fff6de" fgColor="#141b34" level="M" includeMargin /></div><a className="resource-cta" href={ASSETS.characterRef} download="Better-Youth-Character-Reference.jpg" target="_blank" rel="noreferrer">OPEN + DOWNLOAD ↗</a></div></div></>;
+    }
+    case "statement": return <>{heading}<Tags tags={slide.id === "human-led" ? [{label:"STORY FIRST",tone:"pink"},{label:"TOOLS SECOND",tone:"lime"}] : undefined} /></>;
+    case "cards": return <><>{heading}</><ol className="facts" style={{ "--cols": slide.cards?.length || 3 } as React.CSSProperties}>{slide.cards?.map((card, cardIndex) => <li className="fact" key={card.label}><div className="fact__label"><EditableText textKey={`${slide.id}.card.${cardIndex}.label`} fallback={card.label} editing={editing} resolve={resolve} commit={commit} /></div><h2 className="fact__title"><EditableText textKey={`${slide.id}.card.${cardIndex}.title`} fallback={card.title} editing={editing} resolve={resolve} commit={commit} /></h2><p className="fact__copy"><EditableText textKey={`${slide.id}.card.${cardIndex}.copy`} fallback={card.copy} editing={editing} resolve={resolve} commit={commit} /></p></li>)}</ol></>;
+    case "quote": return <><p className="quote-mark entry" style={{ "--i": 0 } as React.CSSProperties}>“</p><h1 className="quote entry" style={{ "--i": 1 } as React.CSSProperties}><EditableText textKey={`${slide.id}.title`} fallback={slide.title ?? ""} editing={editing} resolve={resolve} commit={commit} /> <EditableText className="accent-pink" textKey={`${slide.id}.accent`} fallback={slide.accent ?? ""} editing={editing} resolve={resolve} commit={commit} /><EditableText textKey={`${slide.id}.after`} fallback={slide.after ?? ""} editing={editing} resolve={resolve} commit={commit} /></h1><p className="lede entry" style={{ "--i": 2 } as React.CSSProperties}><EditableText textKey={`${slide.id}.lede`} fallback={slide.lede ?? ""} editing={editing} resolve={resolve} commit={commit} /></p><p className="attribution entry" style={{ "--i": 3 } as React.CSSProperties}><EditableText textKey={`${slide.id}.kicker`} fallback={slide.kicker ?? ""} editing={editing} resolve={resolve} commit={commit} /></p></>;
+    case "definition": return <><>{heading}</><div className="process-flow entry" style={{ "--i": 3 } as React.CSSProperties}>{["PICK A STORY","MAKE A PLAN","CREATE THE FRAMES","WATCH + REFLECT"].map((label, index) => <div className="process-step" key={label}><div className="process-node">{label}</div>{index < 3 && <span className="process-arrow">→</span>}</div>)}</div></>;
+    case "ethics": return <><>{heading}</><div className="ethics-grid entry" style={{ "--i": 3 } as React.CSSProperties}>{["THE CONCEPT","THE PROMPT","THE SELECTION","THE REVISION","THE FINAL SHARE"].map((item, index) => <article className="ethic" key={item}><span className="ethic__n">0{index + 1}</span><h2 className="ethic__word">{item}</h2></article>)}</div></>;
+    case "console": return <><>{heading}</><div className="console entry" style={{ "--i": 3 } as React.CSSProperties}><div className="console__top"><i className="console__dot"/><i className="console__dot"/><i className="console__dot"/></div>{slide.console?.map((line, lineIndex) => <span className="console__line" key={line.key}><span className="console__key"><EditableText textKey={`${slide.id}.console.${lineIndex}.key`} fallback={line.key} editing={editing} resolve={resolve} commit={commit} />:</span> <EditableText textKey={`${slide.id}.console.${lineIndex}.value`} fallback={line.value} editing={editing} resolve={resolve} commit={commit} /></span>)}</div></>;
+  }
+}
+
+function Home() {
+  const total = slides.length;
+  const [editing] = useState(() => new URLSearchParams(window.location.search).get("edit") === "1");
+  const [overrides, setOverrides] = useState<Record<string, string>>(() => { try { return JSON.parse(window.localStorage.getItem("better-youth-genjam-text-draft") ?? "{}"); } catch { return {}; } });
+  const [saved, setSaved] = useState(false);
+  const initial = useMemo(() => { const n = Number(location.hash.replace("#", "")); return Number.isInteger(n) && n > 0 && n <= total ? n - 1 : 0; }, [total]);
+  const [index, setIndex] = useState(initial);
+  const [helpOpen, setHelpOpen] = useState(false);
+  const [tocOpen, setTocOpen] = useState(false);
+  const [idle, setIdle] = useState(false);
+  const touchRef = useRef({ x: 0, y: 0 });
+  const wheelLockRef = useRef(false);
+  const activeSlide = slides[index];
+  const dark = activeSlide.bg === "ink";
+  const go = useCallback((next: number) => { const safe = Math.max(0, Math.min(total - 1, next)); setIndex(safe); history.replaceState(null, "", `#${safe + 1}`); }, [total]);
+
+  useEffect(() => { document.body.dataset.bg = activeSlide.bg; document.title = `${activeSlide.title ?? "Better Youth GenJam"} · Better Youth GenJam`; }, [activeSlide]);
+  useEffect(() => { const onHash = () => { const n = Number(location.hash.replace("#", "")); if (n >= 1 && n <= total) setIndex(n - 1); }; window.addEventListener("hashchange", onHash); return () => window.removeEventListener("hashchange", onHash); }, [total]);
+  useEffect(() => { const onKey = (event: KeyboardEvent) => { if ((event.target as HTMLElement | null)?.isContentEditable) { if (event.key === "Escape") (event.target as HTMLElement).blur(); return; } if (event.metaKey || event.ctrlKey || event.altKey) return; if (["ArrowRight","ArrowDown","PageDown"," ","Enter"].includes(event.key)) { event.preventDefault(); go(index + 1); } else if (["ArrowLeft","ArrowUp","PageUp","Backspace"].includes(event.key)) { event.preventDefault(); go(index - 1); } else if (event.key === "Home") { event.preventDefault(); go(0); } else if (event.key === "End") { event.preventDefault(); go(total - 1); } else if (event.key.toLowerCase() === "f") { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen?.(); } else if (event.key === "?" || event.key === "/") { setHelpOpen((open) => !open); } else if (event.key === "Escape") { setHelpOpen(false); setTocOpen(false); if (document.fullscreenElement) document.exitFullscreen(); } }; window.addEventListener("keydown", onKey); return () => window.removeEventListener("keydown", onKey); }, [go, index, total]);
+  useEffect(() => { let timer = window.setTimeout(() => setIdle(true), 3000); const wake = () => { setIdle(false); window.clearTimeout(timer); timer = window.setTimeout(() => setIdle(true), 3000); }; ["mousemove","mousedown","touchstart","keydown","wheel"].forEach((type) => window.addEventListener(type, wake, { passive: true })); return () => { window.clearTimeout(timer); ["mousemove","mousedown","touchstart","keydown","wheel"].forEach((type) => window.removeEventListener(type, wake)); }; }, [index]);
+  const sections = Array.from(new Map(slides.map((slide, slideIndex) => [slide.section, slideIndex])).entries());
+  const resolveText = useCallback<TextResolver>((key, fallback) => overrides[key] ?? fallback, [overrides]);
+  const commitText = useCallback<TextCommit>((key, value) => { setSaved(false); setOverrides((current) => ({ ...current, [key]: value })); }, []);
+  const saveDraft = useCallback(() => { window.localStorage.setItem("better-youth-genjam-text-draft", JSON.stringify(overrides)); setSaved(true); window.setTimeout(() => setSaved(false), 1800); }, [overrides]);
+  const resetDraft = useCallback(() => { window.localStorage.removeItem("better-youth-genjam-text-draft"); setOverrides({}); setSaved(false); }, []);
+  const exportDraft = useCallback(() => { const blob = new Blob([JSON.stringify({ deck: "Better Youth GenJam", exportedAt: new Date().toISOString(), edits: overrides }, null, 2)], { type: "application/json" }); const url = URL.createObjectURL(blob); const anchor = document.createElement("a"); anchor.href = url; anchor.download = "better-youth-genjam-edits.json"; anchor.click(); URL.revokeObjectURL(url); }, [overrides]);
+
+  return <main className={`live-deck ${idle ? "is-chrome-idle" : ""} ${editing ? "is-editing" : ""}`} onWheel={(event) => { if (editing || wheelLockRef.current || Math.abs(event.deltaY) < 30) return; wheelLockRef.current = true; go(index + (event.deltaY > 0 ? 1 : -1)); window.setTimeout(() => { wheelLockRef.current = false; }, 450); }} onTouchStart={(event) => { const touch = event.touches[0]; touchRef.current = { x: touch.clientX, y: touch.clientY }; }} onTouchEnd={(event) => { if (editing) return; const touch = event.changedTouches[0]; const dx = touch.clientX - touchRef.current.x; const dy = touch.clientY - touchRef.current.y; if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.4) go(index + (dx < 0 ? 1 : -1)); }}>
+    {editing && <aside className="edit-toolbar" aria-label="Owner edit controls"><span>OWNER EDIT MODE · CLICK TEXT TO EDIT</span><button onClick={saveDraft}>{saved ? "SAVED" : "SAVE DRAFT"}</button><button onClick={exportDraft}>EXPORT EDITS</button><button onClick={resetDraft}>RESET</button><a href={location.pathname + location.hash}>EXIT EDIT MODE</a></aside>}
+    <div className="deck-stage">{slides.map((slide, slideIndex) => { const distance = slideIndex - index; const active = distance === 0; const direction = Math.sign(distance) * 100; return <section className={`slide slide--${slide.variant === "cover" || slide.variant === "goal" || slide.variant === "statement" || slide.variant === "definition" || slide.variant === "ethics" ? "center" : "left"} slide--${slide.id} ${slide.variant === "quote" ? "slide--quote" : ""} ${slide.id === "cheat-sheet" ? "slide--cheat" : ""} ${active ? "is-active" : ""} ${Math.abs(distance) > 1 ? "is-offstage" : ""}`} data-bg={slide.bg} aria-hidden={!active} inert={!active && !editing} key={slide.id} style={{ transform: `translateX(${direction}vw)` }}><AmbientField active={active} /><span className="section-index">{slide.section}</span><SlideContent slide={slide} active={active} editing={editing} resolve={resolveText} commit={commitText} /></section>; })}</div>
+    <div className="hud" data-dark={dark}><div className="hud__progress"><div className="hud__bar" style={{ transform: `scaleY(${(index + 1) / total})` }} /></div></div>
+    <button className="hud__counter" data-dark={dark} onClick={() => setTocOpen(true)} aria-label="Open section navigation">{String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}</button>
+    <button className="nav-arrow nav-arrow--prev" data-dark={dark} onClick={() => go(index - 1)} aria-label="Previous slide">‹</button><button className="nav-arrow nav-arrow--next" data-dark={dark} onClick={() => go(index + 1)} aria-label="Next slide">›</button>
+    <footer className="brand-rail" data-dark={dark}><div className="brand-lockup"><img src={ASSETS.mcCream} alt="Machine Cinema"/><span className="brand-lockup__sep"/><img className="afa-lockup__official" src={ASSETS.afaOfficial} alt="AI Film Academy"/></div><span className="brand-rail__section">{activeSlide.section}</span></footer>
+    {helpOpen && <div className="help" role="dialog" aria-modal="true" onClick={() => setHelpOpen(false)}><div className="help__card" onClick={(event) => event.stopPropagation()}><h2 className="h-l">Keyboard</h2><ul className="help__list"><li><kbd>→</kbd> <kbd>Space</kbd> next</li><li><kbd>←</kbd> previous</li><li><kbd>Home</kbd> first · <kbd>End</kbd> last</li><li><kbd>F</kbd> fullscreen · <kbd>?</kbd> help</li></ul></div></div>}
+    {tocOpen && <div className="toc" role="dialog" aria-modal="true" onClick={() => setTocOpen(false)}><div className="toc__card" onClick={(event) => event.stopPropagation()}><div className="toc__head"><div><span className="kicker">JUMP TO SECTION</span><h2 className="h-l" style={{ marginTop: ".8rem" }}>Better Youth<br/><span className="accent-pink">GenJam.</span></h2></div><button className="toc__close" onClick={() => setTocOpen(false)}>×</button></div><div className="toc__list">{sections.map(([name, slideIndex]) => <button className="toc__button" key={name} onClick={() => { go(slideIndex); setTocOpen(false); }}><span className="toc__number">{String(slideIndex + 1).padStart(2, "0")}</span><span>{name}</span></button>)}</div></div></div>}
   </main>;
 }
+
+export default Home;

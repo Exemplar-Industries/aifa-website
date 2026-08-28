@@ -70,7 +70,7 @@ function Router() {
 
 function App() {
   const [location] = useLocation();
-  const isLiveDeck = location === "/genjam/better-youth-0829";
+  const isLiveDeck = location.startsWith("/genjam/better-youth-0829");
   return (
     <ErrorBoundary>
       <AffiliateLinkProvider>
