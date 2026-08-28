@@ -1,4 +1,5 @@
 import { Toaster } from "@/components/ui/sonner";
+import { useEffect } from "react";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
 import { Redirect, Route, Switch, useLocation } from "wouter";
@@ -32,6 +33,15 @@ import EducationEvents from "./pages/EducationEvents";
 import Showcase from "./pages/Showcase";
 import BetterYouthGenJam from "./pages/BetterYouthGenJam";
 
+const SHOWCASE_UPLOAD_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSfxxjVTC8xrbIV9DQbcEPWFVcMFyPBMy_5Nbp4HsUlo1AaRcA/viewform";
+
+function ShowcaseUploadRedirect() {
+  useEffect(() => {
+    window.location.replace(SHOWCASE_UPLOAD_FORM_URL);
+  }, []);
+  return null;
+}
+
 function Router() {
   return (
     <Switch>
@@ -61,8 +71,9 @@ function Router() {
       <Route path={"/events"}><Redirect to="/" /></Route>
       <Route path={"/genjam-freebie"} component={GenJamFreebie} />
       <Route path={"/genjam-offer"} component={GenJamOffer} />
-      <Route path={"/sheet"}><Redirect to="/assets/genjam/malecref.jpg" /></Route>
+      <Route path={"/cref"}><Redirect to="/assets/genjam/malecref.jpg" /></Route>
       <Route path={"/genjam/character-sheet"}><Redirect to="/assets/genjam/malecref.jpg" /></Route>
+      <Route path={"/genjam/submit"} component={ShowcaseUploadRedirect} />
       <Route path={"/genjam/better-youth-0829"} component={BetterYouthGenJam} />
       <Route path={"/404"} component={NotFound} />
       <Route component={NotFound} />
