@@ -1,7 +1,7 @@
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
-import { Redirect, Route, Switch } from "wouter";
+import { Redirect, Route, Switch, useLocation } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
@@ -30,6 +30,7 @@ import Contact from "./pages/Contact";
 import Productions from "./pages/Productions";
 import EducationEvents from "./pages/EducationEvents";
 import Showcase from "./pages/Showcase";
+import BetterYouthGenJam from "./pages/BetterYouthGenJam";
 
 function Router() {
   return (
@@ -60,6 +61,7 @@ function Router() {
       <Route path={"/events"}><Redirect to="/" /></Route>
       <Route path={"/genjam-freebie"} component={GenJamFreebie} />
       <Route path={"/genjam-offer"} component={GenJamOffer} />
+      <Route path={"/genjam/better-youth-0829"} component={BetterYouthGenJam} />
       <Route path={"/404"} component={NotFound} />
       <Route component={NotFound} />
     </Switch>
@@ -67,16 +69,14 @@ function Router() {
 }
 
 function App() {
+  const [location] = useLocation();
+  const isLiveDeck = location === "/genjam/better-youth-0829";
   return (
     <ErrorBoundary>
       <AffiliateLinkProvider>
         <TooltipProvider>
           <Toaster />
-          <div className="aifa-readable">
-            <Navbar />
-            <Router />
-            <Footer />
-          </div>
+          {isLiveDeck ? <Router /> : <div className="aifa-readable"><Navbar /><Router /><Footer /></div>}
         </TooltipProvider>
       </AffiliateLinkProvider>
     </ErrorBoundary>
