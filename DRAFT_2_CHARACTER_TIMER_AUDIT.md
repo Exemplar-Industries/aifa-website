@@ -63,3 +63,11 @@ Check Slides 19–22 locally and on the real production route after the new asse
 | Slide 35 — Edit Work Block | The pink work screen now shows `Build your first cut.` as a readable two-line title; the period is attached to `cut.` and all supporting copy remains clear. |
 | Slide 38 — Reflection | The question mark now sits directly in `you think?`, with no separate orphan line. |
 | Slide 39 — Closing | Closing subtext was reduced to a concise two-sentence handoff, eliminating the prior crowded multi-line paragraph. |
+
+## Production verification — `b25085a`
+
+Railway reports `fix: polish GenJam work blocks and visual hierarchy` as the active successful release. The live production route was checked with `?v=b25085a` and serves the rebuilt Slide 22: the top-left clock clears the content, `Start creating.` is visible, and the work block now reads Make 3 directions → Compare together → Choose one.
+
+## Reflection-form QR audit
+
+The reflection screen now includes a separate high-contrast action panel with a QR code whose exact destination is `https://forms.gle/ajX2kc1qKcZcqCfBA`. The visible fallback reads `forms.gle/ajX2kc1qKcZcqCfBA` and is an active link. At the presentation viewport, the QR panel, all three reflection prompts, headline punctuation, footer rail, and navigation clear one another without overlap.
