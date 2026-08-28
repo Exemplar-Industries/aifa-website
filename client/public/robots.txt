@@ -1,3 +1,11 @@
+# Public AI Film Academy resources may be crawled by search engines.
 User-agent: *
 Disallow: /connect
+
+# Allow public AIFA resources to be eligible for ChatGPT Search discovery.
+# Training-crawl policy remains intentionally separate and is not set here.
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /connect
+
 Sitemap: https://www.aifilmacademy.com/sitemap.xml

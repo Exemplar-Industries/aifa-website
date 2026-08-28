@@ -32,6 +32,7 @@ import Productions from "./pages/Productions";
 import EducationEvents from "./pages/EducationEvents";
 import Showcase from "./pages/Showcase";
 import BetterYouthGenJam from "./pages/BetterYouthGenJam";
+import Seo from "./components/Seo";
 
 const SHOWCASE_UPLOAD_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSfxxjVTC8xrbIV9DQbcEPWFVcMFyPBMy_5Nbp4HsUlo1AaRcA/viewform";
 
@@ -85,8 +86,9 @@ function App() {
   const [location] = useLocation();
   const isLiveDeck = location.startsWith("/genjam/better-youth-0829");
   return (
-    <ErrorBoundary>
-      <AffiliateLinkProvider>
+      <ErrorBoundary>
+        <Seo />
+        <AffiliateLinkProvider>
         <TooltipProvider>
           <Toaster />
           {isLiveDeck ? <Router /> : <div className="aifa-readable"><Navbar /><Router /><Footer /></div>}
