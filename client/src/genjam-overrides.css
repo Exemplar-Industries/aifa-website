@@ -80,16 +80,16 @@
   width:min(100%,1540px);
 }
 .slide--client-work .h-xxl{
-  font-size:clamp(3rem,4.1vw,4.65rem);
-  max-width:none;
-  white-space:nowrap;
+  font-size:clamp(2.85rem,3.95vw,4.55rem);
+  max-width:14ch;
+  white-space:normal;
 }
 .slide--client-work .lede{
-  max-width:32ch;
-  font-size:clamp(1rem,1.42vw,1.4rem);
+  max-width:37ch;
+  font-size:clamp(.98rem,1.22vw,1.24rem);
 }
 .slide--client-work .reel-grid{
-  width:clamp(480px,27vw,540px);
+  width:clamp(430px,24vw,470px);
   max-width:100%;
   justify-self:end;
   gap:clamp(12px,1.7vh,18px);
@@ -99,14 +99,18 @@
   min-height:0;
   aspect-ratio:16/9;
 }
+.slide--client-work .reel-panel:nth-child(2){
+  transform:translateX(clamp(-74px,-3.3vw,-48px));
+}
 
 @media (max-width:900px){
   .slide--agenda .agenda-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
   .slide--client-work .h-xxl{white-space:normal;}
+  .slide--client-work .reel-panel:nth-child(2){transform:none;}
 }
 
 @media (min-width:901px) and (max-width:1499px){
   .slide--client-work .media-layout{grid-template-columns:minmax(475px,.9fr) minmax(480px,1.1fr);}
-  .slide--client-work .h-xxl{font-size:clamp(2.8rem,3.95vw,4.1rem);}
-  .slide--client-work .reel-grid{width:min(43vw,500px);}
+  .slide--client-work .h-xxl{font-size:clamp(2.75rem,3.75vw,4rem);}
+  .slide--client-work .reel-grid{width:min(39vw,455px);}
 }
