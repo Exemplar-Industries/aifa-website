@@ -41,7 +41,7 @@ type SlideSpec = {
 const ASSETS = {
   mcInk: "/assets/genjam/5.png",
   mcCream: "/assets/genjam/5-cream.png",
-  afaOfficial: "/assets/genjam/aifa-logo-horizontal-single.png",
+  afaOfficial: "/assets/genjam/aifa-logo-horizontal-single-cropped.png",
   collage: "/assets/genjam/story-worlds-collage.png",
   hands: "/assets/genjam/filmmaker-hands.png",
   motion: "/assets/genjam/motion-study.png",
@@ -121,7 +121,7 @@ const fromLegacy = (id: string, patch: Partial<SlideSpec> = {}): SlideSpec => {
 
 const draft2Slides: SlideSpec[] = [
   fromLegacy("welcome", { kicker: "BETTER YOUTH · PRIVATE GENJAM", title: "FROM IMAGINATION", accent: "TO SCREEN", after: "", lede: "Experience first hand how people can use AI as part of a creative process while keeping human ideas, choices, and values at the center." }),
-  fromLegacy("agenda", { title: "Agenda", accent: undefined, after: "", lede: "Work with your team to develop a story, create each scene, and bring a short film to life before the session ends.", cards: [{ label: "01", title: "WELCOME TO THE ROOM", copy: "Enter a space for curiosity, honest questions, and collaborative storytelling." }, { label: "02", title: "MEET YOUR GUIDE", copy: "See Brandon’s background, creative work, and the process behind his stories." }, { label: "03", title: "EXPLORE THE POSSIBILITIES", copy: "See the tools in action, compare the creative process, and bring your questions." }, { label: "04", title: "CREATE TOGETHER", copy: "Work with your team to develop a story, create each scene, and bring a short film to life before the session ends." }, { label: "05", title: "REFLECT ON THE EXPERIENCE", copy: "Share what worked, what challenged you, and how the session shaped your perspective on AI, art, and storytelling." }] }),
+  fromLegacy("agenda", { title: "Agenda", accent: undefined, after: "", lede: "Work with your team to develop a story, create each scene, and bring a short film to life before the session ends.", cards: [{ label: "01", title: "WELCOME TO THE ROOM", copy: "Enter a space for curiosity, honest questions, and collaborative storytelling." }, { label: "02", title: "MEET YOUR GUIDE", copy: "See Brandon’s background, creative work, and the process behind his stories." }, { label: "03", title: "CREATE TOGETHER", copy: "Work with your team to develop a story, create each scene, and bring a short film to life before the session ends." }, { label: "04", title: "REFLECT ON THE EXPERIENCE", copy: "Share what worked, what challenged you, and how the session shaped your perspective on AI, art, and storytelling." }] }),
   fromLegacy("room", { title: "This is a room for", accent: "questions.", after: "" }),
   fromLegacy("brandon", { kicker: "YOUR GUIDE TODAY", accent: "Brandon.", after: "", lede: "For six years, I have run a video-production agency making story videos, book trailers, short films, VFX, 3D models, and post-production work." }),
   fromLegacy("traditional", { id: "client-work", section: "02 · Brandon’s Work", bg: "ink", accent: undefined, after: "", lede: "Two examples from my background in 3D modeling, video production, and motion design—where camera, material, pacing, and emotion do the work.", kicker: "3D · VIDEO · MOTION", title: "Client work.", mediaLabel: "SELECT CLIENT WORK" }),

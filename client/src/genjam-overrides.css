@@ -17,15 +17,15 @@
   font-size:clamp(1.05rem,1.62vw,1.6rem);
 }
 .slide--agenda .agenda-grid{
-  grid-template-columns:repeat(5,minmax(0,1fr));
-  width:min(100%,1500px);
-  gap:clamp(.8rem,1.3vw,1.35rem);
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  width:min(100%,1400px);
+  gap:clamp(1rem,1.55vw,1.6rem);
 }
 .slide--agenda .agenda-card{
-  min-height:clamp(255px,36vh,330px);
-  padding:clamp(.9rem,1.4vw,1.3rem);
+  min-height:clamp(275px,39vh,340px);
+  padding:clamp(1rem,1.6vw,1.45rem);
 }
-.slide--agenda .agenda-card:nth-child(5){
+.slide--agenda .agenda-card:nth-child(4){
   box-shadow:10px 10px 0 var(--pink);
 }
 .slide--agenda .agenda-card__time{
@@ -42,30 +42,30 @@
 
 /* Footer: real approved horizontal AIFA asset, rendered white and balanced against Machine Cinema. */
 .brand-rail{
-  height:58px;
+  height:60px;
   left:clamp(30px,3vw,52px);
   bottom:clamp(14px,1.8vh,20px);
 }
 .brand-lockup{
-  height:47px;
-  gap:11px;
-  padding:5px 10px;
+  height:52px;
+  gap:10px;
+  padding:5px 11px;
   border-width:2px;
   box-shadow:4px 4px 0 var(--pink);
 }
 .brand-lockup img{
-  max-height:26px;
+  max-height:22px;
 }
 .brand-lockup__sep{
-  height:28px;
+  height:32px;
   width:2px;
 }
 .afa-lockup__official{
   width:auto;
-  height:25px!important;
-  max-height:25px!important;
-  max-width:150px!important;
-  filter:brightness(0) invert(1);
+  height:28px!important;
+  max-height:28px!important;
+  max-width:102px!important;
+  filter:brightness(0) invert(1) contrast(1.25);
   object-fit:contain;
 }
 
