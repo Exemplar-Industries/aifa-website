@@ -5,6 +5,7 @@ import { useEffect } from "react";
  * This unlisted route removes public-site chrome and presents the independently audited live deck at full viewport size.
  */
 export default function BetterYouthGenJam() {
+  const editMode = new URLSearchParams(window.location.search).get("edit") === "1";
   useEffect(() => {
     const previousTitle = document.title;
     document.title = "Better Youth GenJam · AI Film Academy";
@@ -26,7 +27,7 @@ export default function BetterYouthGenJam() {
 
   return <main style={{ position: "fixed", inset: 0, overflow: "hidden", background: "#141b34" }}>
     <iframe
-      src="https://3000-ip87un9g7h5on4x739x25-87e4e321.us2.manus.computer/studio/genjam-0829"
+      src={`https://3000-ip87un9g7h5on4x739x25-87e4e321.us2.manus.computer/studio/genjam-0829${editMode ? "?edit=1" : ""}`}
       title="Better Youth GenJam"
       allow="autoplay; fullscreen"
       style={{ display: "block", width: "100%", height: "100%", border: 0, background: "#141b34" }}
