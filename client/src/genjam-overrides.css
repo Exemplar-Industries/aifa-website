@@ -114,3 +114,24 @@
   .slide--client-work .h-xxl{font-size:clamp(2.75rem,3.75vw,4rem);}
   .slide--client-work .reel-grid{width:min(39vw,455px);}
 }
+
+/* Global media contract: preserve the full approved frame; no poster or video is allowed to crop. */
+.media-slot--video{
+  min-height:0;
+  height:auto;
+  aspect-ratio:16/9;
+}
+.media-slot img,
+.media-slot video,
+.reel-panel video,
+.media-inset video{
+  object-fit:contain;
+  object-position:center;
+  opacity:1;
+}
+.media-slot--video .media-slot__overlay{
+  display:none;
+}
+.media-inset{
+  aspect-ratio:16/9;
+}
