@@ -22,8 +22,9 @@
   gap:clamp(1rem,1.55vw,1.6rem);
 }
 .slide--agenda .agenda-card{
-  min-height:clamp(275px,39vh,340px);
-  padding:clamp(1rem,1.6vw,1.45rem);
+  min-height:clamp(258px,35vh,305px);
+  padding:clamp(.88rem,1.18vw,1.12rem);
+  justify-content:space-between;
 }
 .slide--agenda .agenda-card:nth-child(4){
   box-shadow:10px 10px 0 var(--pink);
@@ -32,12 +33,14 @@
   font-size:clamp(.68rem,.85vw,.85rem);
 }
 .slide--agenda .agenda-card__title{
-  font-size:clamp(1rem,1.38vw,1.42rem);
-  letter-spacing:-.025em;
+  font-size:clamp(1.28rem,1.88vw,2.08rem);
+  line-height:.96;
+  letter-spacing:-.035em;
+  max-width:100%;
 }
 .slide--agenda .agenda-card__copy{
-  font-size:clamp(.7rem,.87vw,.9rem);
-  line-height:1.28;
+  font-size:clamp(.75rem,.96vw,1rem);
+  line-height:1.24;
 }
 
 /* Footer: real approved horizontal AIFA asset, rendered white and balanced against Machine Cinema. */
