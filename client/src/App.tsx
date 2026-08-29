@@ -1,5 +1,5 @@
 import { Toaster } from "@/components/ui/sonner";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
 import { Redirect, Route, Switch, useLocation } from "wouter";
@@ -34,7 +34,7 @@ import Showcase from "./pages/Showcase";
 import BetterYouthGenJam from "./pages/BetterYouthGenJam";
 import Seo from "./components/Seo";
 
-const SHOWCASE_UPLOAD_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSfxxjVTC8xrbIV9DQbcEPWFVcMFyPBMy_5Nbp4HsUlo1AaRcA/viewform";
+const SHOWCASE_UPLOAD_FORM_URL = "https://drive.google.com/drive/u/0/folders/12Cy3_AAqqdfizjQlO1h9s3h-X-7PfezV";
 
 function ShowcaseUploadRedirect() {
   useEffect(() => {
@@ -55,6 +55,32 @@ function CharacterReferenceDownload() {
       <a href="/assets/genjam/malecref.jpg" download="Better-Youth-Character-Reference.jpg" style={{ display: "inline-block", marginBottom: "1.5rem", padding: ".85rem 1.1rem", background: "#FF3B5C", border: "3px solid #141B34", boxShadow: "5px 5px 0 #141B34", color: "#FAF3E3", textDecoration: "none", fontSize: ".78rem", fontWeight: 900, letterSpacing: ".08em" }}>DOWNLOAD CHARACTER SHEET</a>
       <img src="/assets/genjam/malecref.jpg" alt="Better Youth character reference sheet with front, back, and head angles" style={{ display: "block", width: "100%", height: "auto", border: "4px solid #141B34", background: "#fff" }} />
     </div>
+  </main>;
+}
+
+function BetterYouthWorkshopTimer() {
+  const [remaining, setRemaining] = useState(4 * 60 * 60);
+  const [running, setRunning] = useState(false);
+  useEffect(() => { document.title = "4-hour workshop timer · Better Youth GenJam"; }, []);
+  useEffect(() => {
+    if (!running || remaining <= 0) return;
+    const interval = window.setInterval(() => setRemaining((value) => Math.max(0, value - 1)), 1000);
+    return () => window.clearInterval(interval);
+  }, [running, remaining]);
+  const hours = Math.floor(remaining / 3600);
+  const minutes = Math.floor((remaining % 3600) / 60);
+  const seconds = remaining % 60;
+  return <main style={{ minHeight: "100vh", display: "grid", placeItems: "center", padding: "2rem", background: "#141B34", color: "#FAF3E3", fontFamily: "Arial, sans-serif" }}>
+    <section style={{ width: "min(100%, 940px)", textAlign: "center" }}>
+      <p style={{ margin: "0 0 1.2rem", letterSpacing: ".18em", fontSize: ".8rem", fontWeight: 800 }}>Better Youth · GenJam</p>
+      <h1 style={{ margin: "0", fontSize: "clamp(2.5rem, 7vw, 6.7rem)", lineHeight: ".88", fontWeight: 900 }}>Workshop timer</h1>
+      <p style={{ margin: "1.15rem auto 2rem", maxWidth: "42rem", fontSize: "1rem", lineHeight: 1.45 }}>Four-hour work block. Keep this tab open while you present the deck.</p>
+      <div style={{ border: "4px solid #FAF3E3", background: "#FF3B5C", boxShadow: "12px 12px 0 #FFD93D", padding: "clamp(1.25rem, 4vw, 3rem)", fontSize: "clamp(3.4rem, 12vw, 10rem)", fontWeight: 900, lineHeight: ".9", letterSpacing: "-.06em" }}>{`${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`}</div>
+      <div style={{ display: "flex", justifyContent: "center", gap: ".8rem", marginTop: "2rem", flexWrap: "wrap" }}>
+        <button type="button" onClick={() => setRunning((value) => !value)} style={{ border: "3px solid #FAF3E3", background: "#CCFF33", color: "#141B34", boxShadow: "5px 5px 0 #FAF3E3", padding: ".85rem 1.15rem", fontWeight: 900, letterSpacing: ".08em", cursor: "pointer" }}>{running ? "Pause timer" : "Start timer"}</button>
+        <button type="button" onClick={() => { setRunning(false); setRemaining(4 * 60 * 60); }} style={{ border: "3px solid #FAF3E3", background: "transparent", color: "#FAF3E3", padding: ".85rem 1.15rem", fontWeight: 900, letterSpacing: ".08em", cursor: "pointer" }}>Reset</button>
+      </div>
+    </section>
   </main>;
 }
 
@@ -90,6 +116,7 @@ function Router() {
       <Route path={"/cref"} component={CharacterReferenceDownload} />
       <Route path={"/genjam/character-sheet"} component={CharacterReferenceDownload} />
       <Route path={"/genjam/submit"} component={ShowcaseUploadRedirect} />
+      <Route path={"/genjam/better-youth-timer"} component={BetterYouthWorkshopTimer} />
       <Route path={"/genjam/better-youth-0829"} component={BetterYouthGenJam} />
       <Route path={"/404"} component={NotFound} />
       <Route component={NotFound} />
@@ -99,7 +126,7 @@ function Router() {
 
 function App() {
   const [location] = useLocation();
-  const isLiveDeck = location.startsWith("/genjam/better-youth-0829");
+  const isLiveDeck = location.startsWith("/genjam/better-youth-0829") || location.startsWith("/genjam/better-youth-timer") || location === "/cref";
   return (
       <ErrorBoundary>
         <Seo />

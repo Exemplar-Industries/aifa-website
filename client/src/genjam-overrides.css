@@ -203,3 +203,57 @@
     white-space:normal;
   }
 }
+
+/* Urgent presentation pass: restore centered title blocks at the screens Brandon identified. */
+.slide--welcome .kicker,.slide--welcome .h-xxl,.slide--welcome .lede,.slide--welcome .body,
+.slide--human-owns .kicker,.slide--human-owns .h-xxl,.slide--human-owns .lede,
+.slide--step1 .kicker,.slide--step1 .h-xxl,.slide--step1 .lede,
+.slide--step3 .kicker,.slide--step3 .h-xxl,.slide--step3 .lede,
+.slide--keep-best .kicker,.slide--keep-best .h-xxl,.slide--keep-best .lede,
+.slide--showcase .kicker,.slide--showcase .h-xxl,.slide--showcase .lede,
+.slide--close .kicker,.slide--close .h-xxl,.slide--close .lede{
+  text-align:center;
+  margin-inline:auto;
+}
+.slide--welcome .h-xxl > [data-edit-key],.slide--human-owns .h-xxl > [data-edit-key],
+.slide--step1 .h-xxl > [data-edit-key],.slide--step3 .h-xxl > [data-edit-key],
+.slide--keep-best .h-xxl > [data-edit-key],.slide--showcase .h-xxl > [data-edit-key],.slide--close .h-xxl > [data-edit-key]{margin-inline:auto;}
+
+/* Slide 7: reserve the left typography field and move the native 16:9 player decisively right. */
+.slide--one-day-film .media-layout{grid-template-columns:minmax(500px,.68fr) minmax(680px,1.32fr);gap:clamp(2.4rem,5.2vw,6.4rem);width:min(100%,1540px);}
+.slide--one-day-film .h-xxl{font-size:clamp(2.5rem,3.8vw,4.6rem);}
+.slide--one-day-film .media-slot{width:min(100%,680px);justify-self:end;transform:translateX(clamp(28px,4vw,72px));}
+
+/* The four-stage statement is authored as exactly two display lines. */
+.slide--how-it-works .h-xxl{max-width:none;line-height:.88;}
+.slide--how-it-works .h-xxl > [data-edit-key$=".title"],.slide--how-it-works .h-xxl > [data-edit-key$=".accent"]{display:block;white-space:nowrap;}
+
+/* Slide 21: preserve the full storyboard panel while removing the white border that crushed the copy column. */
+.slide--storyboard .media-layout{grid-template-columns:minmax(450px,.78fr) minmax(700px,1.22fr);gap:clamp(2.5rem,4.7vw,5.8rem);width:min(100%,1510px);}
+.slide--storyboard .media-slot{width:min(100%,770px);justify-self:end;background:var(--ink);}
+.slide--storyboard .media-slot--image img{object-fit:cover;object-position:center;}
+
+/* Slide 27: create an intentional breathing gap between the headline and its explanation. */
+.slide--motion-demo .slide--left .h-xxl{margin-bottom:0;}
+.slide--motion-demo .slide--left .lede{margin-top:clamp(1rem,2.2vh,1.45rem);}
+
+/* Character sheet comes before visual styles and uses the supplied drawing as primary visual media. */
+.slide--character-sheet .qr-action{grid-template-columns:minmax(0,1.12fr) minmax(390px,.88fr);gap:clamp(2rem,4.8vw,5rem);}
+.slide--character-sheet .qr-action__copy{gap:clamp(.75rem,1.5vh,1.05rem);}
+.slide--character-sheet .qr-action__copy .lede,.slide--character-sheet .qr-action__steps,.slide--character-sheet .resource-cta{display:none;}
+.slide--character-sheet .character-sheet-display{display:block;width:min(100%,720px);height:clamp(220px,31vh,318px);object-fit:contain;object-position:left center;border:4px solid var(--ink);background:#fffdf6;}
+.slide--character-sheet .qr-action__panel{min-height:clamp(390px,55vh,480px);}
+
+/* Timer launches in a dedicated browser tab; no persistent deck clock is rendered. */
+.timer-launch{margin-top:clamp(.8rem,1.7vh,1.2rem);border:3px solid var(--cream);background:var(--lime);box-shadow:5px 5px 0 var(--pink);color:var(--ink);padding:.75rem 1rem;font:900 clamp(.7rem,.9vw,.9rem) "Space Mono",monospace;letter-spacing:.08em;cursor:pointer;}
+.timer-launch:active{transform:translate(2px,2px);box-shadow:3px 3px 0 var(--pink);}
+
+/* Closing: one centered showcase line and one compact reflection instruction above its QR. */
+.slide--showcase .h-xxl{max-width:none;font-size:clamp(3.4rem,6.2vw,7.1rem);}
+.slide--showcase .h-xxl > [data-edit-key$=".title"]{white-space:nowrap;}
+.slide--reflection .qr-action__panel>span{color:var(--cream);font-size:clamp(.68rem,.92vw,.9rem);}
+
+@media (max-width:900px){
+  .slide--one-day-film .media-slot{transform:none;}
+  .slide--character-sheet .character-sheet-display{height:auto;}
+}
