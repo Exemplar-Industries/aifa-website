@@ -45,15 +45,14 @@ function ShowcaseUploadRedirect() {
 
 function CharacterReferenceDownload() {
   useEffect(() => {
-    document.title = "Character reference sheet · Better Youth GenJam";
+    document.title = "Character reference sheet";
   }, []);
   return <main style={{ minHeight: "100vh", padding: "7rem 1.5rem 4rem", background: "#FAF3E3", color: "#141B34" }}>
     <div style={{ width: "min(100%, 920px)", margin: "0 auto" }}>
-      <p style={{ fontSize: ".78rem", fontWeight: 800, letterSpacing: ".16em", marginBottom: ".75rem" }}>BETTER YOUTH · GENJAM RESOURCE</p>
       <h1 style={{ fontSize: "clamp(2.25rem, 6vw, 4.5rem)", lineHeight: .94, margin: "0 0 1rem", fontWeight: 900 }}>Character reference sheet</h1>
-      <p style={{ maxWidth: "45rem", fontSize: "1.05rem", lineHeight: 1.45, margin: "0 0 1.5rem" }}>Open this reference alongside Google Flow while you direct your character’s look, wardrobe, and angles.</p>
-      <a href="/assets/genjam/malecref.jpg" download="Better-Youth-Character-Reference.jpg" style={{ display: "inline-block", marginBottom: "1.5rem", padding: ".85rem 1.1rem", background: "#FF3B5C", border: "3px solid #141B34", boxShadow: "5px 5px 0 #141B34", color: "#FAF3E3", textDecoration: "none", fontSize: ".78rem", fontWeight: 900, letterSpacing: ".08em" }}>DOWNLOAD CHARACTER SHEET</a>
-      <img src="/assets/genjam/malecref.jpg" alt="Better Youth character reference sheet with front, back, and head angles" style={{ display: "block", width: "100%", height: "auto", border: "4px solid #141B34", background: "#fff" }} />
+      <p style={{ maxWidth: "45rem", fontSize: "1.05rem", lineHeight: 1.45, margin: "0 0 1.5rem" }}>Use this reference while you direct your character’s look, wardrobe, and angles.</p>
+      <a href="/assets/genjam/malecref.jpg" download="Character-Reference-Sheet.jpg" style={{ display: "inline-block", marginBottom: "1.5rem", padding: ".85rem 1.1rem", background: "#FF3B5C", border: "3px solid #141B34", boxShadow: "5px 5px 0 #141B34", color: "#FAF3E3", textDecoration: "none", fontSize: ".78rem", fontWeight: 900, letterSpacing: ".08em" }}>Download character sheet</a>
+      <img src="/assets/genjam/malecref.jpg" alt="Character reference sheet with front, back, and head angles" style={{ display: "block", width: "100%", height: "auto", border: "4px solid #141B34", background: "#fff" }} />
     </div>
   </main>;
 }

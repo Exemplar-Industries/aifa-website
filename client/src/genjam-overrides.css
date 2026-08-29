@@ -262,6 +262,7 @@
 .slide--showcase .h-xxl{max-width:none;font-size:clamp(3.4rem,6.2vw,7.1rem);}
 .slide--showcase .h-xxl > [data-edit-key$=".title"]{white-space:nowrap;}
 .slide--reflection .qr-action__panel>span{color:var(--cream);font-size:clamp(.68rem,.92vw,.9rem);}
+.qr-action__fallback{display:block;max-width:100%;color:var(--cream);font:700 clamp(.62rem,.76vw,.78rem) "Space Mono",monospace;line-height:1.2;text-align:center;text-decoration:underline;text-underline-offset:.18em;word-break:break-word;}
 
 @media (max-width:900px){
   .slide--one-day-film .media-slot{transform:none;}
