@@ -212,6 +212,12 @@ function EditableText({ textKey, fallback, editing, resolve, commit, className, 
 }
 
 function Title({ slide, editing, resolve, commit }: { slide: SlideSpec; editing: boolean; resolve: TextResolver; commit: TextCommit }) {
+  if (slide.id === "human-owns") {
+    return <h1 className="h-xxl entry" style={{ "--i": 1 } as React.CSSProperties}>
+      <span className="human-owns__line"><EditableText textKey={`${slide.id}.title`} fallback="You still" editing={editing} resolve={resolve} commit={commit} /> <EditableText className="accent-pink human-owns__hot-word" textKey={`${slide.id}.own`} fallback="own" editing={editing} resolve={resolve} commit={commit} continuation /></span>
+      <span className="human-owns__line"><EditableText textKey={`${slide.id}.the`} fallback="the" editing={editing} resolve={resolve} commit={commit} /> <EditableText className="accent-pink human-owns__hot-word" textKey={`${slide.id}.accent`} fallback="choices." editing={editing} resolve={resolve} commit={commit} continuation /></span>
+    </h1>;
+  }
   const newSentence = Boolean(slide.title?.trim().match(/[.!?]$/));
   return <h1 className="h-xxl entry" style={{ "--i": 1 } as React.CSSProperties}><EditableText textKey={`${slide.id}.title`} fallback={slide.title ?? ""} editing={editing} resolve={resolve} commit={commit} /> {slide.accent && <EditableText className="accent-pink" textKey={`${slide.id}.accent`} fallback={slide.accent} editing={editing} resolve={resolve} commit={commit} continuation={!newSentence} />}<EditableText textKey={`${slide.id}.after`} fallback={slide.after ?? ""} editing={editing} resolve={resolve} commit={commit} /></h1>;
 }

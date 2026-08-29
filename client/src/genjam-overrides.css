@@ -219,6 +219,11 @@
 .slide--step1 .h-xxl > [data-edit-key],.slide--step3 .h-xxl > [data-edit-key],
 .slide--keep-best .h-xxl > [data-edit-key],.slide--showcase .h-xxl > [data-edit-key],.slide--close .h-xxl > [data-edit-key]{margin-inline:auto;}
 
+/* Slide 11: fixed two-line ownership statement; both key choice words share the same pink signal glow. */
+.slide--human-owns .h-xxl{max-width:none;line-height:.88;}
+.slide--human-owns .human-owns__line{display:block;width:max-content;max-width:100%;margin-inline:auto;white-space:nowrap;}
+.slide--human-owns .human-owns__hot-word{filter:drop-shadow(0 0 11px rgba(255,59,92,.34));text-shadow:0 0 14px rgba(255,59,92,.48),0 0 30px rgba(255,59,92,.22);}
+
 /* Slide 7: reserve the left typography field and move the native 16:9 player decisively right. */
 .slide--one-day-film .media-layout{grid-template-columns:minmax(500px,.68fr) minmax(680px,1.32fr);gap:clamp(2.4rem,5.2vw,6.4rem);width:min(100%,1540px);}
 .slide--one-day-film .h-xxl{font-size:clamp(2.5rem,3.8vw,4.6rem);}
