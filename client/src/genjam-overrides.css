@@ -238,8 +238,8 @@
 
 /* Slide 21: preserve the full storyboard panel while removing the white border that crushed the copy column. */
 .slide--storyboard .media-layout{grid-template-columns:minmax(450px,.78fr) minmax(700px,1.22fr);gap:clamp(2.5rem,4.7vw,5.8rem);width:min(100%,1510px);}
-.slide--storyboard .media-slot{width:min(100%,770px);justify-self:end;background:var(--ink);}
-.slide--storyboard .media-slot--image img{object-fit:cover;object-position:center;}
+.slide--storyboard .media-slot{width:min(100%,770px);height:auto;min-height:0;aspect-ratio:1061 / 638;justify-self:end;background:var(--ink);}
+.slide--storyboard .media-slot--image img{object-fit:contain;object-position:center;}
 
 /* Slide 27: create an intentional breathing gap between the headline and its explanation. */
 .slide--motion-demo .slide--left .h-xxl{margin-bottom:0;}

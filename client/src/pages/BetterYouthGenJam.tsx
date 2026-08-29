@@ -49,7 +49,7 @@ const ASSETS = {
   headshot: "/assets/genjam/BrandonHeadshotSilver(1).png",
   trail: "/assets/genjam/7ded84b3-f747-42c0-a8f4-773dc0f8681f.jpg",
   characterRef: "/assets/genjam/malecref.jpg",
-  storyboardRef: "/assets/genjam/pasted_file_qsi0Af_image.png",
+  storyboardRef: "/assets/genjam/storyboard-sequence-brandon.png",
   futureLogo: "/assets/genjam/FutureioIntro.mp4",
   futureDrone: "/assets/genjam/Exemplar_-_Future.io_-_Intro.mp4",
   futureLogoPoster: "/assets/genjam/future-logo-poster.jpg",
