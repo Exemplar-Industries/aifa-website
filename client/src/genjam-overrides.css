@@ -245,12 +245,14 @@
 .slide--motion-demo .slide--left .h-xxl{margin-bottom:0;}
 .slide--motion-demo .slide--left .lede{margin-top:clamp(1rem,2.2vh,1.45rem);}
 
-/* Character sheet comes before visual styles and uses the supplied drawing as primary visual media. */
-.slide--character-sheet .qr-action{grid-template-columns:minmax(0,1.12fr) minmax(390px,.88fr);gap:clamp(2rem,4.8vw,5rem);}
-.slide--character-sheet .qr-action__copy{gap:clamp(.75rem,1.5vh,1.05rem);}
+/* Character sheet: protected left title/reference field and independently anchored QR field. */
+.slide--character-sheet .qr-action{grid-template-columns:minmax(0,43%) minmax(420px,34%);justify-content:space-between;gap:0;width:min(100%,1400px);}
+.slide--character-sheet .qr-action__copy{width:100%;gap:clamp(.75rem,1.5vh,1.05rem);}
+.slide--character-sheet .qr-action__copy .h-xxl{max-width:100%;font-size:clamp(3rem,4.1vw,4.85rem);line-height:.9;}
+.slide--character-sheet .qr-action__copy .h-xxl .accent-pink{white-space:nowrap;}
 .slide--character-sheet .qr-action__copy .lede,.slide--character-sheet .qr-action__steps,.slide--character-sheet .resource-cta{display:none;}
-.slide--character-sheet .character-sheet-display{display:block;width:min(100%,720px);height:clamp(220px,31vh,318px);object-fit:contain;object-position:left center;border:4px solid var(--ink);background:#fffdf6;}
-.slide--character-sheet .qr-action__panel{min-height:clamp(390px,55vh,480px);}
+.slide--character-sheet .character-sheet-display{display:block;width:100%;height:clamp(220px,29vh,290px);object-fit:contain;object-position:left center;border:4px solid var(--ink);background:#fffdf6;}
+.slide--character-sheet .qr-action__panel{min-height:clamp(390px,55vh,480px);justify-self:end;}
 
 /* Timer launches in a dedicated browser tab; no persistent deck clock is rendered. */
 .timer-launch{margin-top:clamp(.8rem,1.7vh,1.2rem);border:3px solid var(--cream);background:var(--lime);box-shadow:5px 5px 0 var(--pink);color:var(--ink);padding:.75rem 1rem;font:900 clamp(.7rem,.9vw,.9rem) "Space Mono",monospace;letter-spacing:.08em;cursor:pointer;}
