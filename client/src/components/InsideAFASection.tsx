@@ -18,6 +18,7 @@ const CREATIVE_SYSTEM_STEPS: Array<{
       type: "image",
       src: "/assets/aifa-workflow-card.webp",
       alt: "AIFA production workflow from idea through final cut",
+      fit: "contain",
     },
   },
   {
