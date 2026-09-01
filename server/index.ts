@@ -311,6 +311,118 @@ async function sendPaidPurchasePostProcessing(input: {
   );
 }
 
+type ServerSeoPage = {
+  title: string;
+  description: string;
+  canonicalPath?: string;
+  noindex?: boolean;
+};
+
+const SEO_SITE_ORIGIN = "https://www.aifilmacademy.com";
+const SEO_SITE_NAME = "AI Film Academy";
+const SEO_DEFAULT_IMAGE = `${SEO_SITE_ORIGIN}/assets/afa-icon-180.png`;
+const SEO_DEFAULT_PAGE: ServerSeoPage = {
+  title: "AI Film Academy™ | Learn AI Filmmaking and Build Your Portfolio",
+  description: "Learn a director-led AI filmmaking workflow to create films, ads, trailers, and animation with practical feedback, portfolio support, events, and certification.",
+  canonicalPath: "/",
+};
+
+const SEO_PUBLIC_PAGES: Record<string, ServerSeoPage> = {
+  "/": SEO_DEFAULT_PAGE,
+  "/membership": {
+    title: "AI Filmmaking Membership | AI Film Academy",
+    description: "Join AI Film Academy to learn a practical AI filmmaking workflow, get feedback, build portfolio-ready work, and create alongside a global community.",
+  },
+  "/free-video-training": {
+    title: "Free AI Filmmaking Training | AI Film Academy",
+    description: "Watch free AI filmmaking training and learn the practical workflow behind portfolio-ready AI films, trailers, ads, and animation.",
+  },
+  "/masterclass": {
+    title: "AI Filmmaking Masterclass | AI Film Academy",
+    description: "Explore an AI filmmaking masterclass built for creators who want a clear director-led workflow from idea to finished visual story.",
+  },
+  "/certification": {
+    title: "AI Filmmaking Certification | AI Film Academy",
+    description: "Explore AI Film Academy certification and the portfolio-ready creative standards it is designed to help members demonstrate.",
+  },
+  "/showcase": {
+    title: "AI Filmmaking Showcase | AI Film Academy",
+    description: "Explore original AI filmmaking work, creator projects, and portfolio-ready visual storytelling from the AI Film Academy community.",
+  },
+  "/productions": {
+    title: "AI Video Production for Brands | AI Film Academy",
+    description: "Work with AI Film Academy on director-led AI video production for brands, campaigns, trailers, and visual storytelling projects.",
+  },
+  "/consulting": {
+    title: "AI Filmmaking Consulting | AI Film Academy",
+    description: "Get focused AI filmmaking consulting for creative workflow, production strategy, tools, and portfolio-ready execution.",
+  },
+  "/education-events": {
+    title: "AI Filmmaking Education and Events | AI Film Academy",
+    description: "Explore AI filmmaking education, events, and creative-learning experiences from AI Film Academy.",
+  },
+  "/faq": {
+    title: "AI Film Academy FAQs | Membership, Workflow, and Certification",
+    description: "Find answers to common questions about AI Film Academy membership, AI filmmaking workflow, certification, feedback, and the creator community.",
+  },
+  "/contact": {
+    title: "Contact AI Film Academy | Education and Production Inquiries",
+    description: "Contact AI Film Academy for education, membership, certification, consulting, and AI video production inquiries.",
+  },
+  "/work-with-us": {
+    title: "Contact AI Film Academy | Education and Production Inquiries",
+    description: "Contact AI Film Academy for education, membership, certification, consulting, and AI video production inquiries.",
+    canonicalPath: "/contact",
+  },
+};
+
+function escapeSeoHtml(value: string): string {
+  return value.replace(/[&<>\"']/g, (character) => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    "\"": "&quot;",
+    "'": "&#39;",
+  })[character] || character);
+}
+
+function routeSeoHead(pathname: string): string {
+  const normalizedPath = pathname === "/" ? "/" : pathname.replace(/\/+$/, "") || "/";
+  const privateRoute = normalizedPath === "/connect" || normalizedPath.startsWith("/lessons/") || normalizedPath.startsWith("/genjam") || ["/lpv3", "/anthum-exclusive", "/live-exclusive", "/refund-policy", "/terms", "/privacy", "/membership/success", "/internal/lessons"].includes(normalizedPath);
+  const page = SEO_PUBLIC_PAGES[normalizedPath] ?? (privateRoute
+    ? { title: "AI Film Academy", description: "AI Film Academy creator experience.", noindex: true }
+    : { title: "Page Not Found | AI Film Academy", description: "The requested AI Film Academy page could not be found.", noindex: true });
+  const canonicalPath = page.canonicalPath ?? normalizedPath;
+  const canonicalUrl = `${SEO_SITE_ORIGIN}${canonicalPath === "/" ? "/" : canonicalPath}`;
+  const robots = page.noindex ? "noindex,follow" : "index,follow";
+  const structuredData = JSON.stringify({
+    "@context": "https://schema.org",
+    "@graph": [
+      { "@type": "Organization", "@id": `${SEO_SITE_ORIGIN}/#organization`, name: SEO_SITE_NAME, url: SEO_SITE_ORIGIN, logo: SEO_DEFAULT_IMAGE, description: SEO_DEFAULT_PAGE.description },
+      canonicalPath === "/"
+        ? { "@type": "WebSite", "@id": `${SEO_SITE_ORIGIN}/#website`, url: SEO_SITE_ORIGIN, name: SEO_SITE_NAME, publisher: { "@id": `${SEO_SITE_ORIGIN}/#organization` } }
+        : { "@type": "WebPage", "@id": `${canonicalUrl}#webpage`, url: canonicalUrl, name: page.title, description: page.description, isPartOf: { "@id": `${SEO_SITE_ORIGIN}/#website` }, about: { "@id": `${SEO_SITE_ORIGIN}/#organization` } },
+    ],
+  }).replace(/</g, "\\u003c");
+  return [
+    `<title>${escapeSeoHtml(page.title)}</title>`,
+    `<meta name="description" content="${escapeSeoHtml(page.description)}" />`,
+    `<meta name="robots" content="${robots}" />`,
+    `<link rel="canonical" href="${canonicalUrl}" />`,
+    `<meta property="og:title" content="${escapeSeoHtml(page.title)}" />`,
+    `<meta property="og:description" content="${escapeSeoHtml(page.description)}" />`,
+    '<meta property="og:type" content="website" />',
+    `<meta property="og:url" content="${canonicalUrl}" />`,
+    `<meta property="og:site_name" content="${SEO_SITE_NAME}" />`,
+    `<meta property="og:image" content="${SEO_DEFAULT_IMAGE}" />`,
+    '<meta name="twitter:card" content="summary" />',
+    `<meta name="twitter:title" content="${escapeSeoHtml(page.title)}" />`,
+    `<meta name="twitter:description" content="${escapeSeoHtml(page.description)}" />`,
+    `<meta name="twitter:image" content="${SEO_DEFAULT_IMAGE}" />`,
+    `<script id="aifa-seo-structured-data" type="application/ld+json">${structuredData}</script>`,
+  ].join("\n    ");
+}
+
 // ─── SERVER ───────────────────────────────────────────────────────────────────
 async function startServer() {
   const app = express();
@@ -648,11 +760,19 @@ async function startServer() {
       ? path.resolve(__dirname, "public")
       : path.resolve(__dirname, "..", "dist", "public");
 
-  app.use(express.static(staticPath));
+  const indexTemplatePath = path.join(staticPath, "index.html");
+  const indexTemplate = await fs.promises.readFile(indexTemplatePath, "utf8");
 
-  // Handle client-side routing - serve index.html for all routes
-  app.get("*", (_req, res) => {
-    res.sendFile(path.join(staticPath, "index.html"));
+  // Keep asset responses static, while route documents receive canonical metadata before JavaScript executes.
+  app.use(express.static(staticPath, { index: false }));
+
+  // Handle client-side routing with route-aware server-rendered SEO metadata.
+  app.get("*", (req, res) => {
+    const pageHtml = indexTemplate.replace(
+      /<!-- AIFA_SEO_HEAD_START -->[\s\S]*?<!-- AIFA_SEO_HEAD_END -->/,
+      `<!-- AIFA_SEO_HEAD_START -->\n    ${routeSeoHead(req.path)}\n    <!-- AIFA_SEO_HEAD_END -->`
+    );
+    res.type("html").send(pageHtml);
   });
 
   const port = process.env.PORT || 3000;
