@@ -79,6 +79,12 @@ function HeroForm() {
           }),
         });
         if (!response.ok) throw new Error(`Submission failed with status ${response.status}`);
+        if (typeof window.fbq === "function") {
+          window.fbq("track", "Lead", {
+            content_name: "Free Video Training",
+            content_category: "free_training_signup",
+          });
+        }
         setFormState("success");
       } catch {
         setFormState("error");
@@ -524,6 +530,12 @@ function AboutAndForm() {
           }),
         });
         if (!response.ok) throw new Error(`Submission failed with status ${response.status}`);
+        if (typeof window.fbq === "function") {
+          window.fbq("track", "Lead", {
+            content_name: "Free Video Training",
+            content_category: "free_training_signup",
+          });
+        }
         setFormState("success");
       } catch {
         setFormState("error");
