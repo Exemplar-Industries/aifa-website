@@ -10,5 +10,4 @@ export const TOTAL_INVITE_SLOTS = 100;
 
 // Skool direct webhook — append ?email=EMAIL to trigger an instant invite
 // Skool sends the invite email directly — no Zapier or n8n needed
-export const SKOOL_WEBHOOK_BASE_URL =
   "https://api2.skool.com/groups/aifilmacademy/webhooks/9a86544a0f29423a9a02444dfe481693";
