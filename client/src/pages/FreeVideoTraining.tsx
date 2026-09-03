@@ -79,6 +79,9 @@ function HeroForm() {
           }),
         });
         if (!response.ok) throw new Error(`Submission failed with status ${response.status}`);
+        window.gtag?.("event", "aifa_free_training_submit_success", {
+          form_location: "free_video_training",
+        });
         if (typeof window.fbq === "function") {
           window.fbq("track", "Lead", {
             content_name: "Free Video Training",
@@ -530,6 +533,9 @@ function AboutAndForm() {
           }),
         });
         if (!response.ok) throw new Error(`Submission failed with status ${response.status}`);
+        window.gtag?.("event", "aifa_free_training_submit_success", {
+          form_location: "free_video_training",
+        });
         if (typeof window.fbq === "function") {
           window.fbq("track", "Lead", {
             content_name: "Free Video Training",
