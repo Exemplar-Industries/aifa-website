@@ -1,5 +1,5 @@
 import { Toaster } from "@/components/ui/sonner";
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
 import { Redirect, Route, Switch, useLocation } from "wouter";
@@ -8,32 +8,33 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import { AffiliateLinkProvider } from "./contexts/AffiliateLinkContext";
 import Home from "./pages/Home";
-import Consulting from "./pages/Consulting";
-import Certification from "./pages/Certification";
-import CertificationStatus from "./pages/CertificationStatus";
-import LPV3 from "./pages/LPV3";
-import Invite from "./pages/Invite";
-import LiveExclusive from "./pages/LiveExclusive";
-import FAQ from "./pages/FAQ";
-import Connect from "./pages/Connect";
-import InternalLessons from "./pages/InternalLessons";
-import SlideViewer from "./pages/SlideViewer";
-import Masterclass from "./pages/Masterclass";
-import FreeVideoTraining from "./pages/FreeVideoTraining";
-import GenJamFreebie from "./pages/GenJamFreebie";
-import GenJamOffer from "./pages/GenJamOffer";
-import Membership from "./pages/Membership";
-import MembershipSuccess from "./pages/MembershipSuccess";
-import RefundPolicy from "./pages/RefundPolicy";
-import Terms from "./pages/Terms";
-import Privacy from "./pages/Privacy";
-import Contact from "./pages/Contact";
-import Productions from "./pages/Productions";
-import EducationEvents from "./pages/EducationEvents";
-import Showcase from "./pages/Showcase";
-import BetterYouthGenJam from "./pages/BetterYouthGenJam";
-import HowToMakeAIFilm from "./pages/HowToMakeAIFilm";
 import Seo from "./components/Seo";
+
+const Consulting = lazy(() => import("./pages/Consulting"));
+const Certification = lazy(() => import("./pages/Certification"));
+const CertificationStatus = lazy(() => import("./pages/CertificationStatus"));
+const LPV3 = lazy(() => import("./pages/LPV3"));
+const Invite = lazy(() => import("./pages/Invite"));
+const LiveExclusive = lazy(() => import("./pages/LiveExclusive"));
+const FAQ = lazy(() => import("./pages/FAQ"));
+const Connect = lazy(() => import("./pages/Connect"));
+const InternalLessons = lazy(() => import("./pages/InternalLessons"));
+const SlideViewer = lazy(() => import("./pages/SlideViewer"));
+const Masterclass = lazy(() => import("./pages/Masterclass"));
+const FreeVideoTraining = lazy(() => import("./pages/FreeVideoTraining"));
+const GenJamFreebie = lazy(() => import("./pages/GenJamFreebie"));
+const GenJamOffer = lazy(() => import("./pages/GenJamOffer"));
+const Membership = lazy(() => import("./pages/Membership"));
+const MembershipSuccess = lazy(() => import("./pages/MembershipSuccess"));
+const RefundPolicy = lazy(() => import("./pages/RefundPolicy"));
+const Terms = lazy(() => import("./pages/Terms"));
+const Privacy = lazy(() => import("./pages/Privacy"));
+const Contact = lazy(() => import("./pages/Contact"));
+const Productions = lazy(() => import("./pages/Productions"));
+const EducationEvents = lazy(() => import("./pages/EducationEvents"));
+const Showcase = lazy(() => import("./pages/Showcase"));
+const BetterYouthGenJam = lazy(() => import("./pages/BetterYouthGenJam"));
+const HowToMakeAIFilm = lazy(() => import("./pages/HowToMakeAIFilm"));
 
 const SHOWCASE_UPLOAD_FORM_URL = "https://drive.google.com/drive/u/0/folders/12Cy3_AAqqdfizjQlO1h9s3h-X-7PfezV";
 
@@ -134,7 +135,19 @@ function App() {
         <AffiliateLinkProvider>
         <TooltipProvider>
           <Toaster />
-          {isLiveDeck ? <Router /> : <div className="aifa-readable"><Navbar /><Router /><Footer /></div>}
+          {isLiveDeck ? (
+            <Suspense fallback={<main aria-busy="true" aria-label="Loading page" style={{ minHeight: "100vh" }} />}>
+              <Router />
+            </Suspense>
+          ) : (
+            <div className="aifa-readable">
+              <Navbar />
+              <Suspense fallback={<main aria-busy="true" aria-label="Loading page" style={{ minHeight: "100vh" }} />}>
+                <Router />
+              </Suspense>
+              <Footer />
+            </div>
+          )}
         </TooltipProvider>
       </AffiliateLinkProvider>
     </ErrorBoundary>
