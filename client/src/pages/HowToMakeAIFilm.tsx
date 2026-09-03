@@ -169,6 +169,11 @@ export default function HowToMakeAIFilm() {
               </table>
             </div>
           </div>
+          <div style={{ ...card, borderLeft: `4px solid ${red}`, marginTop: "1.5rem", padding: "1.2rem 1.35rem" }}>
+            <strong style={{ display: "block", fontFamily: "'JetBrains Mono', monospace", fontSize: ".78rem", letterSpacing: ".08em" }}>NEXT FIELD GUIDE</strong>
+            <p style={{ color: muted, lineHeight: 1.55, margin: ".55rem 0 0" }}>Your character sheet becomes useful only when you can carry it through the next scene. Use the character-consistency guide to build the reference pack, continuity brief, and approved-frame loop.</p>
+            <Link href="/resources/workflows/ai-character-consistency" style={{ color: copy, display: "inline-block", fontFamily: "'JetBrains Mono', monospace", fontSize: ".8rem", fontWeight: 800, letterSpacing: ".05em", marginTop: ".9rem", textDecorationColor: red }}>KEEP AI CHARACTERS CONSISTENT →</Link>
+          </div>
         </section>
 
         <section style={{ marginBottom: "clamp(4rem, 9vw, 8rem)" }}>
