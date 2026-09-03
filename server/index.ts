@@ -21,14 +21,12 @@ const AIFA_SUPABASE_URL = process.env.AIFA_SUPABASE_URL || "";
 const AIFA_SUPABASE_ANON_KEY = process.env.AIFA_SUPABASE_ANON_KEY || "";
 
 // ─── RAILWAY SYNC TRIGGER CONFIG ────────────────────────────────────────────
-const RAILWAY_TOKEN = process.env.RAILWAY_TOKEN || "9a2f81cf-8c46-44e0-85ae-9baeb78e7183";
+const RAILWAY_TOKEN = process.env.RAILWAY_TOKEN || "";
 const RAILWAY_SYNC_SERVICE_ID = process.env.RAILWAY_SYNC_SERVICE_ID || "fcf6db96-29b5-4019-b016-829b850a4eb4";
 const RAILWAY_SYNC_ENVIRONMENT_ID = process.env.RAILWAY_SYNC_ENVIRONMENT_ID || "8d58f4c4-64a4-40cb-9180-2bf5df9beff0";
 
 // ─── TWENTY CRM CONFIG ────────────────────────────────────────────────────────
-const TWENTY_API_KEY =
-  process.env.TWENTY_API_KEY ||
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhOTk2ZDE5Ni05YzI4LTRhODUtOTE3Yi1mNzE1Y2U2YWQ4NzciLCJ0eXBlIjoiQVBJX0tFWSIsIndvcmtzcGFjZUlkIjoiYTk5NmQxOTYtOWMyOC00YTg1LTkxN2ItZjcxNWNlNmFkODc3IiwiaWF0IjoxNzc3NDM5MTQ4LCJleHAiOjQ5MzEwMzkxNDcsImp0aSI6ImU3YWFiZDFhLTYzZjctNDcwNy05M2U2LTFlOTUxMmVjNDhhZiJ9.ImbLg6H5WvD79YIHe1w8-0B2dvFQ7L5PEfP-0AFz9gs";
+const TWENTY_API_KEY = process.env.TWENTY_API_KEY || "";
 const TWENTY_GRAPHQL_URL =
   "https://twenty-server-production-5cd9.up.railway.app/graphql";
 
