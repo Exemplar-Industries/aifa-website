@@ -34,6 +34,12 @@ const ROUTE_SEO: Record<string, SeoPage> = {
     description:
       "Join AI Film Academy to learn a practical AI filmmaking workflow, get feedback, build portfolio-ready work, and create alongside a global community.",
   },
+  "/resources/workflows/how-to-make-an-ai-film": {
+    title: "How to Make an AI Short Film: The AIFA Workflow | AI Film Academy",
+    description:
+      "Make an AI short film with AIFA’s practical workflow: character sheets, location design, shot lists, Google Flow footage, editing, music, sound, and voiceover.",
+    type: "article",
+  },
   "/free-video-training": {
     title: "Free AI Filmmaking Training | AI Film Academy",
     description:
