@@ -29,6 +29,11 @@ const DEFAULT_SEO: SeoPage = {
 
 const ROUTE_SEO: Record<string, SeoPage> = {
   "/": DEFAULT_SEO,
+  "/cref": {
+    title: "Character Reference Sheet | AI Film Academy",
+    description: "Download the AI Film Academy character reference sheet for directing character look, wardrobe, and angles.",
+    noindex: true,
+  },
   "/membership": {
     title: "AI Filmmaking Membership | AI Film Academy",
     description:
