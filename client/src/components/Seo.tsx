@@ -45,6 +45,12 @@ const ROUTE_SEO: Record<string, SeoPage> = {
       "Make an AI short film with AIFA’s practical workflow: character sheets, location design, shot lists, Google Flow footage, editing, music, sound, and voiceover.",
     type: "article",
   },
+  "/resources/workflows/ai-character-consistency": {
+    title: "How to Keep AI Characters Consistent Across Scenes | AI Film Academy",
+    description:
+      "Keep AI characters consistent with AIFA’s practical system: character bible, world reference, Google Flow Ingredients, approved frames, and a continuity pass before editing.",
+    type: "article",
+  },
   "/free-video-training": {
     title: "Free AI Filmmaking Training | AI Film Academy",
     description:
