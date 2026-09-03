@@ -337,10 +337,6 @@ const SEO_PUBLIC_PAGES: Record<string, ServerSeoPage> = {
     title: "Free AI Filmmaking Training | AI Film Academy",
     description: "Watch free AI filmmaking training and learn the practical workflow behind portfolio-ready AI films, trailers, ads, and animation.",
   },
-  "/resources/workflows/how-to-make-an-ai-film": {
-    title: "How to Make an AI Short Film: A 3-Step Workflow | AI Film Academy",
-    description: "Learn a practical pre-production, production, and post-production workflow for making an AI short film. Plan your shots, build references, generate deliberately, and finish the cut.",
-  },
   "/masterclass": {
     title: "AI Filmmaking Masterclass | AI Film Academy",
     description: "Explore an AI filmmaking masterclass built for creators who want a clear director-led workflow from idea to finished visual story.",
@@ -766,6 +762,12 @@ async function startServer() {
 
   const indexTemplatePath = path.join(staticPath, "index.html");
   const indexTemplate = await fs.promises.readFile(indexTemplatePath, "utf8");
+
+  // The initial Resource 01 article was withdrawn for substantive rewrite. Preserve a useful destination while preventing it from remaining an indexable resource.
+  app.get("/resources/workflows/how-to-make-an-ai-film", (_req, res) => {
+    res.set("X-Robots-Tag", "noindex,follow");
+    res.redirect(302, "/free-video-training");
+  });
 
   // Keep asset responses static, while route documents receive canonical metadata before JavaScript executes.
   app.use(express.static(staticPath, { index: false }));

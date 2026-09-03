@@ -32,7 +32,6 @@ import Productions from "./pages/Productions";
 import EducationEvents from "./pages/EducationEvents";
 import Showcase from "./pages/Showcase";
 import BetterYouthGenJam from "./pages/BetterYouthGenJam";
-import HowToMakeAIFilm from "./pages/HowToMakeAIFilm";
 import Seo from "./components/Seo";
 
 const SHOWCASE_UPLOAD_FORM_URL = "https://drive.google.com/drive/u/0/folders/12Cy3_AAqqdfizjQlO1h9s3h-X-7PfezV";
@@ -102,7 +101,6 @@ function Router() {
       <Route path={"/masterclass"} component={Masterclass} />
       <Route path={"/free-video-training"} component={FreeVideoTraining} />
       <Route path={"/membership"} component={Membership} />
-      <Route path={"/resources/workflows/how-to-make-an-ai-film"} component={HowToMakeAIFilm} />
       <Route path={"/membership/success"} component={MembershipSuccess} />
       <Route path={"/refund-policy"} component={RefundPolicy} />
       <Route path={"/terms"} component={Terms} />

@@ -39,12 +39,6 @@ const ROUTE_SEO: Record<string, SeoPage> = {
     description:
       "Watch free AI filmmaking training and learn the practical workflow behind portfolio-ready AI films, trailers, ads, and animation.",
   },
-  "/resources/workflows/how-to-make-an-ai-film": {
-    title: "How to Make an AI Short Film: A 3-Step Workflow | AI Film Academy",
-    description:
-      "Learn a practical pre-production, production, and post-production workflow for making an AI short film. Plan your shots, build references, generate deliberately, and finish the cut.",
-    type: "article",
-  },
   "/masterclass": {
     title: "AI Filmmaking Masterclass | AI Film Academy",
     description:
