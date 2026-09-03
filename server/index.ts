@@ -769,6 +769,12 @@ async function startServer() {
   app.use(express.static(staticPath, { index: false }));
 
   // Handle client-side routing with route-aware server-rendered SEO metadata.
+// Lightweight readiness endpoint for external uptime checks.
+// No authentication, customer data, configuration, or internal details are exposed.
+app.get("/health", (_req, res) => {
+  res.status(200).json({ status: "ok" });
+});
+
   app.get("*", (req, res) => {
     const pageHtml = indexTemplate.replace(
       /<!-- AIFA_SEO_HEAD_START -->[\s\S]*?<!-- AIFA_SEO_HEAD_END -->/,
