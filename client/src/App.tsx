@@ -36,6 +36,7 @@ const Showcase = lazy(() => import("./pages/Showcase"));
 const BetterYouthGenJam = lazy(() => import("./pages/BetterYouthGenJam"));
 const HowToMakeAIFilm = lazy(() => import("./pages/HowToMakeAIFilm"));
 const CharacterConsistencyGuide = lazy(() => import("./pages/CharacterConsistencyGuide"));
+const SlideArchive = lazy(() => import("./pages/SlideArchive"));
 
 const SHOWCASE_UPLOAD_FORM_URL = "https://drive.google.com/drive/u/0/folders/12Cy3_AAqqdfizjQlO1h9s3h-X-7PfezV";
 
@@ -100,6 +101,8 @@ function Router() {
       <Route path={"/anthum-exclusive"} component={Invite} />
       <Route path={"/live-exclusive"} component={LiveExclusive} />
       <Route path={"/internal/lessons"} component={InternalLessons} />
+      <Route path={"/internal/slide-archive"} component={SlideArchive} />
+      <Route path={"/internal/slide-archive/:slug"} component={SlideArchive} />
       <Route path={"/lessons/:week"} component={SlideViewer} />
       <Route path={"/masterclass"} component={Masterclass} />
       <Route path={"/free-video-training"} component={FreeVideoTraining} />
@@ -130,7 +133,7 @@ function Router() {
 
 function App() {
   const [location] = useLocation();
-  const isLiveDeck = location.startsWith("/genjam/better-youth-0829") || location.startsWith("/genjam/better-youth-timer") || location === "/cref";
+  const isLiveDeck = location.startsWith("/genjam/better-youth-0829") || location.startsWith("/genjam/better-youth-timer") || location === "/cref" || location.startsWith("/internal/slide-archive");
   return (
       <ErrorBoundary>
         <Seo />
