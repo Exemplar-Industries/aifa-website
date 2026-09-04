@@ -21,6 +21,8 @@ import "../slide-archive.css";
 
 type AccessState = "loading" | "anonymous" | "denied" | "granted" | "setup";
 
+const OWNER_ARCHIVE_EMAIL = "llcexemplar@gmail.com";
+
 const cameraMotionFallback: SlideDeckRecord = {
   id: "camera-motion",
   slug: "camera-motion",
@@ -31,7 +33,14 @@ const cameraMotionFallback: SlideDeckRecord = {
   source_bundle_path: null,
   presentation_route: "/internal/slide-archive/camera-motion",
   presentation_mode: "native",
-  media_manifest: {},
+  media_manifest: {
+    pushIn: "private/camera-motion/push_in_guitar_tuning.mp4",
+    pullOut: "private/camera-motion/pull_out_guitar_fireplace.mp4",
+    tracking: "private/camera-motion/tracking_car_driving_away.mp4",
+    pan: "private/camera-motion/pan_neon_market.mp4",
+    orbit: "private/camera-motion/orbit_option_b_first4.mp4",
+    crane: "private/camera-motion/crane_neon_market_trimmed.mp4",
+  },
   tags: ["Camera", "Motion", "Course lesson"],
   status: "ready",
   sort_order: 10,
@@ -70,6 +79,11 @@ function useArchiveAccess() {
       if (!session?.user) {
         setMembership(null);
         setAccess("anonymous");
+        return;
+      }
+      if (session.user.email?.trim().toLowerCase() === OWNER_ARCHIVE_EMAIL) {
+        setMembership({ user_id: session.user.id, role: "admin", status: "active" });
+        setAccess("granted");
         return;
       }
       try {
