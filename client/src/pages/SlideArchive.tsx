@@ -344,11 +344,6 @@ function ArchiveIndex({ membership }: { membership: ArchiveMembership | null }) 
         <Link href="/" className="archive-wordmark"><Film size={17} /> AIFA <span>Internal</span></Link>
         <div className="archive-topbar-actions"><span className="archive-user-state"><LockKeyhole size={15} /> {membership?.role === "admin" ? "Admin" : "Internal access"}</span><button type="button" onClick={() => supabase.auth.signOut()}><LogOut size={16} /> Sign out</button></div>
       </header>
-      <section className="archive-hero">
-        <p className="archive-kicker">Private presentation library</p>
-        <h1>Make the work <em>last.</em></h1>
-        <p>Every interactive deck, in one controlled archive. Present natively, preserve the motion, and keep the source bundle with the final experience.</p>
-      </section>
       <section className="archive-library" aria-label="Slide deck archive">
         <div className="archive-library-head"><div><p>Library</p><h2>Deck archive</h2></div><span>{visibleDecks.length} {visibleDecks.length === 1 ? "deck" : "decks"}</span></div>
         <div className="archive-filters" role="tablist" aria-label="Deck categories">
