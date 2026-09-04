@@ -19,6 +19,59 @@ const FAST_PASS_PRODUCT_ID = "prod_UZGwA0tsMGTOR2";
 // record exists. These values are provided through Railway, never source fallbacks.
 const AIFA_SUPABASE_URL = process.env.AIFA_SUPABASE_URL || "";
 const AIFA_SUPABASE_ANON_KEY = process.env.AIFA_SUPABASE_ANON_KEY || "";
+const AIFA_SUPABASE_SERVICE_ROLE_KEY = process.env.AIFA_SUPABASE_SERVICE_ROLE_KEY || "";
+const AIFA_ARCHIVE_PASSCODE = process.env.AIFA_ARCHIVE_PASSCODE || "";
+const AIFA_ARCHIVE_SESSION_SECRET = process.env.AIFA_ARCHIVE_SESSION_SECRET || STRIPE_WEBHOOK_SECRET || AIFA_ARCHIVE_PASSCODE;
+const AIFA_ARCHIVE_COOKIE = "aifa_archive_access";
+const AIFA_ARCHIVE_SESSION_MAX_AGE_SECONDS = 60 * 60 * 24 * 14;
+const AIFA_ARCHIVE_MEDIA = new Set([
+  "push_in_guitar_tuning.mp4",
+  "pull_out_guitar_fireplace.mp4",
+  "tracking_car_driving_away.mp4",
+  "pan_neon_market.mp4",
+  "orbit_option_b_first4.mp4",
+  "crane_neon_market_trimmed.mp4",
+]);
+
+function parseCookies(header: string | undefined): Record<string, string> {
+  return (header ?? "").split(";").reduce<Record<string, string>>((cookies, pair) => {
+    const separator = pair.indexOf("=");
+    if (separator > 0) {
+      const key = pair.slice(0, separator).trim();
+      const value = pair.slice(separator + 1).trim();
+      cookies[key] = decodeURIComponent(value);
+    }
+    return cookies;
+  }, {});
+}
+
+function archiveSessionSignature(expiresAt: number): string {
+  return crypto.createHmac("sha256", AIFA_ARCHIVE_SESSION_SECRET).update(`archive:${expiresAt}`).digest("hex");
+}
+
+function createArchiveSession(): string {
+  const expiresAt = Date.now() + AIFA_ARCHIVE_SESSION_MAX_AGE_SECONDS * 1000;
+  return `${expiresAt}.${archiveSessionSignature(expiresAt)}`;
+}
+
+function hasArchiveAccess(cookieHeader: string | undefined): boolean {
+  if (!AIFA_ARCHIVE_SESSION_SECRET) return false;
+  const token = parseCookies(cookieHeader)[AIFA_ARCHIVE_COOKIE];
+  if (!token) return false;
+  const [expiresValue, signature] = token.split(".");
+  const expiresAt = Number(expiresValue);
+  if (!Number.isFinite(expiresAt) || expiresAt < Date.now() || !signature) return false;
+  const expected = archiveSessionSignature(expiresAt);
+  if (signature.length !== expected.length) return false;
+  return crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expected));
+}
+
+function matchesArchivePasscode(candidate: unknown): boolean {
+  if (!AIFA_ARCHIVE_PASSCODE || typeof candidate !== "string") return false;
+  const actual = Buffer.from(candidate);
+  const expected = Buffer.from(AIFA_ARCHIVE_PASSCODE);
+  return actual.length === expected.length && crypto.timingSafeEqual(actual, expected);
+}
 
 // ─── RAILWAY SYNC TRIGGER CONFIG ────────────────────────────────────────────
 const RAILWAY_TOKEN = process.env.RAILWAY_TOKEN || "";
@@ -450,6 +503,63 @@ async function startServer() {
 
   // Parse JSON bodies for all other API routes
   app.use(express.json());
+
+  // ── PRIVATE SLIDE ARCHIVE ─────────────────────────────────────────────────
+  // The archive uses a short, server-signed httpOnly session after a valid
+  // internal passcode entry. Video bytes are proxied through this same session;
+  // no Camera Motion MP4 paths or storage credentials are exposed in the client.
+  app.post("/api/archive/unlock", (req, res) => {
+    if (!matchesArchivePasscode(req.body?.passcode)) {
+      res.status(401).json({ error: "Incorrect passcode." });
+      return;
+    }
+    res.setHeader("Set-Cookie", `${AIFA_ARCHIVE_COOKIE}=${createArchiveSession()}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=${AIFA_ARCHIVE_SESSION_MAX_AGE_SECONDS}`);
+    res.json({ authorized: true });
+  });
+
+  app.get("/api/archive/session", (req, res) => {
+    res.json({ authorized: hasArchiveAccess(req.headers.cookie) });
+  });
+
+  app.post("/api/archive/logout", (_req, res) => {
+    res.setHeader("Set-Cookie", `${AIFA_ARCHIVE_COOKIE}=; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=0`);
+    res.json({ authorized: false });
+  });
+
+  app.get("/api/archive/media/:asset", async (req, res) => {
+    if (!hasArchiveAccess(req.headers.cookie)) {
+      res.status(401).json({ error: "Archive access required." });
+      return;
+    }
+    const asset = String(req.params.asset ?? "");
+    if (!AIFA_ARCHIVE_MEDIA.has(asset)) {
+      res.status(404).json({ error: "Archive media not found." });
+      return;
+    }
+    const storageKey = AIFA_SUPABASE_SERVICE_ROLE_KEY || AIFA_SUPABASE_ANON_KEY;
+    if (!AIFA_SUPABASE_URL || !storageKey) {
+      res.status(503).json({ error: "Private archive media is not configured." });
+      return;
+    }
+    try {
+      const upstream = await axios.get(
+        `${AIFA_SUPABASE_URL}/storage/v1/object/aifa-slide-archive/private/camera-motion/${encodeURIComponent(asset)}`,
+        {
+          responseType: "stream",
+          headers: { apikey: storageKey, Authorization: `Bearer ${storageKey}` },
+          timeout: 30000,
+        }
+      );
+      res.status(200);
+      res.setHeader("Content-Type", upstream.headers["content-type"] || "video/mp4");
+      if (upstream.headers["content-length"]) res.setHeader("Content-Length", upstream.headers["content-length"]);
+      res.setHeader("Cache-Control", "private, max-age=300");
+      upstream.data.pipe(res);
+    } catch (error) {
+      console.error("[archive-media] Private media retrieval failed:", error);
+      res.status(502).json({ error: "Private archive media could not be loaded." });
+    }
+  });
 
   // ── CERTIFICATION ELIGIBILITY CHECK ──────────────────────────────────────
   app.post("/api/check-certification-eligibility", async (req, res) => {

@@ -1,27 +1,15 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useLocation, useRoute } from "wouter";
-import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight, Expand, Film, FolderArchive, Loader2, LockKeyhole, LogOut, Plus, Send, Upload, UserPlus, Users } from "lucide-react";
-import { supabase } from "@/lib/supabase";
+import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight, Expand, Film, Loader2, LockKeyhole, LogOut } from "lucide-react";
 import {
   archiveCategories,
   archiveCategoryClass,
-  claimArchiveAccess,
-  createSignedArchiveUrls,
-  getArchiveDeck,
-  getArchiveDecks,
-  getArchiveInvites,
-  getArchiveMembership,
-  inviteArchiveUser,
   type ArchiveCategory,
-  type ArchiveInvite,
-  type ArchiveMembership,
   type SlideDeckRecord,
 } from "@/lib/slideArchive";
 import "../slide-archive.css";
 
-type AccessState = "loading" | "anonymous" | "denied" | "granted" | "setup";
-
-const OWNER_ARCHIVE_EMAIL = "llcexemplar@gmail.com";
+type AccessState = "loading" | "locked" | "granted";
 
 const cameraMotionFallback: SlideDeckRecord = {
   id: "camera-motion",
@@ -68,53 +56,30 @@ const betterYouthFallback: SlideDeckRecord = {
 
 function useArchiveAccess() {
   const [access, setAccess] = useState<AccessState>("loading");
-  const [membership, setMembership] = useState<ArchiveMembership | null>(null);
+
+  async function refresh() {
+    try {
+      const response = await fetch("/api/archive/session", { credentials: "include" });
+      const payload = await response.json() as { authorized?: boolean };
+      setAccess(payload.authorized ? "granted" : "locked");
+    } catch {
+      setAccess("locked");
+    }
+  }
 
   useEffect(() => {
-    let active = true;
-
-    async function resolveAccess() {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!active) return;
-      if (!session?.user) {
-        setMembership(null);
-        setAccess("anonymous");
-        return;
-      }
-      if (session.user.email?.trim().toLowerCase() === OWNER_ARCHIVE_EMAIL) {
-        setMembership({ user_id: session.user.id, role: "admin", status: "active" });
-        setAccess("granted");
-        return;
-      }
-      try {
-        await claimArchiveAccess();
-        const record = await getArchiveMembership(session.user.id);
-        if (!active) return;
-        setMembership(record);
-        setAccess(record?.status === "active" ? "granted" : "denied");
-      } catch {
-        if (active) setAccess("setup");
-      }
-    }
-
-    resolveAccess();
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(() => resolveAccess());
-    return () => {
-      active = false;
-      subscription.unsubscribe();
-    };
+    void refresh();
   }, []);
 
-  return { access, membership };
+  return { access, refresh };
 }
 
 function ArchiveLoading() {
   return <main className="archive-shell archive-loading"><Loader2 aria-label="Loading archive" className="archive-spinner" /></main>;
 }
 
-function ArchiveSignIn() {
-  const [email, setEmail] = useState("");
-  const [submitted, setSubmitted] = useState(false);
+function ArchiveSignIn({ onUnlocked }: { onUnlocked: () => void }) {
+  const [passcode, setPasscode] = useState("");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
 
@@ -122,16 +87,19 @@ function ArchiveSignIn() {
     event.preventDefault();
     setBusy(true);
     setError("");
-    const { error: signInError } = await supabase.auth.signInWithOtp({
-      email: email.trim(),
-      options: { emailRedirectTo: `${window.location.origin}/internal/slide-archive` },
+    const response = await fetch("/api/archive/unlock", {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ passcode }),
     });
     setBusy(false);
-    if (signInError) {
-      setError("The secure sign-in link could not be sent. Please try again or confirm your internal email is approved.");
+    if (!response.ok) {
+      setError("That passcode is not correct.");
       return;
     }
-    setSubmitted(true);
+    setPasscode("");
+    onUnlocked();
   }
 
   return (
@@ -140,45 +108,14 @@ function ArchiveSignIn() {
         <div className="archive-mark"><Film size={18} aria-hidden="true" /> AI Film Academy</div>
         <p className="archive-kicker">Private system</p>
         <h1>Slide archive</h1>
-        <p className="archive-lede">A secure internal library for interactive course lessons, presentations, and reusable visual systems.</p>
-        {submitted ? (
-          <div className="archive-notice"><Send size={19} aria-hidden="true" /><span>Secure sign-in link sent. Open it in this browser to enter the archive.</span></div>
-        ) : (
-          <form onSubmit={handleSubmit} className="archive-signin-form">
-            <label htmlFor="archive-email">Approved internal email</label>
-            <input id="archive-email" type="email" autoComplete="email" required value={email} onChange={(event) => setEmail(event.target.value)} placeholder="you@company.com" />
-            {error && <p className="archive-error" role="alert">{error}</p>}
-            <button className="archive-button archive-button-primary" disabled={busy} type="submit">{busy ? "Sending secure link…" : "Email secure sign-in link"}<ArrowRight size={17} /></button>
-          </form>
-        )}
-        <p className="archive-footnote"><LockKeyhole size={14} /> Deck records and media are available only to approved archive users.</p>
-      </section>
-    </main>
-  );
-}
-
-function ArchiveDenied() {
-  return (
-    <main className="archive-shell archive-auth">
-      <section className="archive-auth-panel">
-        <div className="archive-mark"><Film size={18} aria-hidden="true" /> AI Film Academy</div>
-        <p className="archive-kicker">Access restricted</p>
-        <h1>This archive is private.</h1>
-        <p className="archive-lede">Your account is signed in but has not been approved for the internal slide archive.</p>
-        <button className="archive-button archive-button-secondary" type="button" onClick={() => supabase.auth.signOut()}><LogOut size={17} /> Sign out</button>
-      </section>
-    </main>
-  );
-}
-
-function ArchiveSetupNotice() {
-  return (
-    <main className="archive-shell archive-auth">
-      <section className="archive-auth-panel">
-        <div className="archive-mark"><Film size={18} aria-hidden="true" /> AI Film Academy</div>
-        <p className="archive-kicker">Secure setup in progress</p>
-        <h1>Archive is not provisioned yet.</h1>
-        <p className="archive-lede">The app shell is ready, but its database table and private storage policies still need the included Supabase migration applied before any deck information can be loaded.</p>
+        <p className="archive-lede">Enter the internal archive passcode to access course decks and interactive presentations.</p>
+        <form onSubmit={handleSubmit} className="archive-signin-form">
+          <label htmlFor="archive-passcode">Archive passcode</label>
+          <input id="archive-passcode" type="password" autoComplete="current-password" required value={passcode} onChange={(event) => setPasscode(event.target.value)} placeholder="Enter passcode" />
+          {error && <p className="archive-error" role="alert">{error}</p>}
+          <button className="archive-button archive-button-primary" disabled={busy} type="submit">{busy ? "Opening archive…" : "Open archive"}<ArrowRight size={17} /></button>
+        </form>
+        <p className="archive-footnote"><LockKeyhole size={14} /> Access creates a private browser session for this archive.</p>
       </section>
     </main>
   );
@@ -205,158 +142,22 @@ function DeckCard({ deck, onOpen }: { deck: SlideDeckRecord; onOpen: () => void 
   );
 }
 
-function ImportPanel({ onImported }: { onImported: () => void }) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [title, setTitle] = useState("");
-  const [category, setCategory] = useState<ArchiveCategory>("Course Lessons");
-  const [description, setDescription] = useState("");
-  const [route, setRoute] = useState("");
-  const [bundle, setBundle] = useState<File | null>(null);
-  const [thumbnail, setThumbnail] = useState<File | null>(null);
-  const [media, setMedia] = useState<File[]>([]);
-  const [status, setStatus] = useState("");
-  const [busy, setBusy] = useState(false);
-
-  const slug = useMemo(() => title.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, ""), [title]);
-
-  async function uploadFile(file: File, key: string) {
-    const { error } = await supabase.storage.from("aifa-slide-archive").upload(key, file, { upsert: false, contentType: file.type || undefined });
-    if (error) throw error;
-    return key;
-  }
-
-  async function handleImport(event: React.FormEvent) {
-    event.preventDefault();
-    if (!slug || !route) return;
-    setBusy(true);
-    setStatus("");
-    try {
-      const mediaManifest: Record<string, string> = {};
-      for (const file of media) {
-        const key = `decks/${slug}/media/${file.name}`;
-        mediaManifest[file.name] = await uploadFile(file, key);
-      }
-      const thumbnailPath = thumbnail ? await uploadFile(thumbnail, `decks/${slug}/thumbnail/${thumbnail.name}`) : null;
-      const bundlePath = bundle ? await uploadFile(bundle, `decks/${slug}/source/${bundle.name}`) : null;
-      const { error } = await supabase.from("slide_decks").insert({
-        slug,
-        title,
-        category,
-        description,
-        thumbnail_path: thumbnailPath,
-        source_bundle_path: bundlePath,
-        presentation_route: route,
-        presentation_mode: "native",
-        media_manifest: mediaManifest,
-        tags: [],
-        status: "draft",
-      });
-      if (error) throw error;
-      setStatus("Deck draft stored privately. Build its presentation route, then mark it ready in Supabase.");
-      setTitle(""); setDescription(""); setRoute(""); setBundle(null); setThumbnail(null); setMedia([]);
-      onImported();
-    } catch {
-      setStatus("Import could not complete. Confirm that the Supabase archive migration and private storage policies are applied for your admin account.");
-    } finally {
-      setBusy(false);
-    }
-  }
-
-  return (
-    <section className="archive-import">
-      <button type="button" className="archive-import-trigger" onClick={() => setIsOpen((value) => !value)}><Plus size={18} /> Import future deck</button>
-      {isOpen && <form className="archive-import-form" onSubmit={handleImport}>
-        <div className="archive-import-heading"><div><p>Admin import</p><h2>Register a private deck</h2></div><FolderArchive size={24} /></div>
-        <div className="archive-import-grid">
-          <label>Deck title<input required value={title} onChange={(event) => setTitle(event.target.value)} placeholder="e.g. Creative strategy sprint" /></label>
-          <label>Category<select value={category} onChange={(event) => setCategory(event.target.value as ArchiveCategory)}>{archiveCategories.map((item) => <option key={item}>{item}</option>)}</select></label>
-          <label className="archive-import-full">Description<textarea required value={description} onChange={(event) => setDescription(event.target.value)} placeholder="What the deck is for and who should use it." /></label>
-          <label className="archive-import-full">Presentation route<input required value={route} onChange={(event) => setRoute(event.target.value)} placeholder="/internal/slide-archive/your-deck" /></label>
-          <label>Source bundle (.zip)<input type="file" accept=".zip,application/zip" onChange={(event) => setBundle(event.target.files?.[0] ?? null)} /></label>
-          <label>Thumbnail<input type="file" accept="image/png,image/jpeg,image/webp" onChange={(event) => setThumbnail(event.target.files?.[0] ?? null)} /></label>
-          <label className="archive-import-full">Media assets<input type="file" multiple accept="video/mp4,image/png,image/jpeg,image/webp" onChange={(event) => setMedia(Array.from(event.target.files ?? []))} /></label>
-        </div>
-        {status && <p className="archive-import-status">{status}</p>}
-        <button className="archive-button archive-button-primary" type="submit" disabled={busy}>{busy ? "Importing…" : "Store private deck draft"}<Upload size={17} /></button>
-      </form>}
-    </section>
-  );
-}
-
-function AccessPanel() {
-  const [open, setOpen] = useState(false);
-  const [email, setEmail] = useState("");
-  const [role, setRole] = useState<"admin" | "viewer">("viewer");
-  const [invites, setInvites] = useState<ArchiveInvite[]>([]);
-  const [status, setStatus] = useState("");
-  const [busy, setBusy] = useState(false);
-
-  async function loadInvites() {
-    try { setInvites(await getArchiveInvites()); } catch { setStatus("The access list will appear once the private archive migration is active."); }
-  }
-
-  useEffect(() => { if (open) loadInvites(); }, [open]);
-
-  async function handleInvite(event: React.FormEvent) {
-    event.preventDefault();
-    setBusy(true);
-    setStatus("");
-    try {
-      await inviteArchiveUser(email, role);
-      setEmail("");
-      setStatus("Internal user approved. They can sign in with this email to claim access.");
-      await loadInvites();
-    } catch {
-      setStatus("Approval could not be saved. Confirm the private archive migration is active for this AIFA account.");
-    } finally { setBusy(false); }
-  }
-
-  return (
-    <section className="archive-import archive-access-panel">
-      <button type="button" className="archive-import-trigger" onClick={() => setOpen((value) => !value)}><Users size={18} /> Manage internal access</button>
-      {open && <div className="archive-import-form">
-        <div className="archive-import-heading"><div><p>Admin access</p><h2>Approve an internal user</h2></div><UserPlus size={24} /></div>
-        <form onSubmit={handleInvite} className="archive-access-form">
-          <label>Internal email<input type="email" required value={email} onChange={(event) => setEmail(event.target.value)} placeholder="team@aifilmacademy.com" /></label>
-          <label>Permission<select value={role} onChange={(event) => setRole(event.target.value as "admin" | "viewer")}><option value="viewer">Viewer</option><option value="admin">Admin</option></select></label>
-          <button className="archive-button archive-button-primary" type="submit" disabled={busy}>{busy ? "Approving…" : "Approve access"}<UserPlus size={17} /></button>
-        </form>
-        {status && <p className="archive-import-status">{status}</p>}
-        {invites.length > 0 && <div className="archive-invite-list">{invites.map((invite) => <div key={invite.email}><span>{invite.email}</span><em>{invite.role}</em><small>{invite.status}</small></div>)}</div>}
-      </div>}
-    </section>
-  );
-}
-
-function ArchiveIndex({ membership }: { membership: ArchiveMembership | null }) {
+function ArchiveIndex() {
   const [, navigate] = useLocation();
-  const [decks, setDecks] = useState<SlideDeckRecord[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<ArchiveCategory | "All">("All");
-  const [loading, setLoading] = useState(true);
-  const [dataError, setDataError] = useState(false);
-
-  async function loadDecks() {
-    setLoading(true);
-    try {
-      const records = await getArchiveDecks();
-      setDecks(records);
-      setDataError(false);
-    } catch {
-      setDecks([cameraMotionFallback, betterYouthFallback]);
-      setDataError(true);
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  useEffect(() => { loadDecks(); }, []);
+  const decks = [cameraMotionFallback, betterYouthFallback];
   const visibleDecks = decks.filter((deck) => selectedCategory === "All" || deck.category === selectedCategory);
+
+  async function logout() {
+    await fetch("/api/archive/logout", { method: "POST", credentials: "include" });
+    window.location.reload();
+  }
 
   return (
     <main className="archive-shell archive-index">
       <header className="archive-topbar">
         <Link href="/" className="archive-wordmark"><Film size={17} /> AIFA <span>Internal</span></Link>
-        <div className="archive-topbar-actions"><span className="archive-user-state"><LockKeyhole size={15} /> {membership?.role === "admin" ? "Admin" : "Internal access"}</span><button type="button" onClick={() => supabase.auth.signOut()}><LogOut size={16} /> Sign out</button></div>
+        <div className="archive-topbar-actions"><span className="archive-user-state"><LockKeyhole size={15} /> Internal access</span><button type="button" onClick={logout}><LogOut size={16} /> Lock archive</button></div>
       </header>
       <section className="archive-library" aria-label="Slide deck archive">
         <div className="archive-library-head"><div><p>Library</p><h2>Deck archive</h2></div><span>{visibleDecks.length} {visibleDecks.length === 1 ? "deck" : "decks"}</span></div>
@@ -364,10 +165,8 @@ function ArchiveIndex({ membership }: { membership: ArchiveMembership | null }) 
           <button role="tab" aria-selected={selectedCategory === "All"} className={selectedCategory === "All" ? "is-active" : ""} onClick={() => setSelectedCategory("All")}>All decks</button>
           {archiveCategories.map((category) => <button key={category} role="tab" aria-selected={selectedCategory === category} className={selectedCategory === category ? "is-active" : ""} onClick={() => setSelectedCategory(category)}>{category}</button>)}
         </div>
-        {dataError && <div className="archive-provisioning-note">Archive records are using the locked local registry until the included Supabase migration is applied. No private media is being served until that secure backend is active.</div>}
-        {loading ? <div className="archive-card-skeletons"><div /><div /></div> : <div className="archive-grid">{visibleDecks.map((deck) => <DeckCard key={deck.slug} deck={deck} onOpen={() => navigate(deck.presentation_route)} />)}</div>}
+        <div className="archive-grid">{visibleDecks.map((deck) => <DeckCard key={deck.slug} deck={deck} onOpen={() => navigate(deck.presentation_route)} />)}</div>
       </section>
-      {membership?.role === "admin" && <><AccessPanel /><ImportPanel onImported={loadDecks} /></>}
     </main>
   );
 }
@@ -390,14 +189,7 @@ const cameraSlides: CameraSlide[] = [
 function CameraMotionViewer({ deck }: { deck: SlideDeckRecord }) {
   const [, navigate] = useLocation();
   const [slideIndex, setSlideIndex] = useState(0);
-  const [videoUrls, setVideoUrls] = useState<Record<string, string>>({});
   const [mediaError, setMediaError] = useState(false);
-
-  useEffect(() => {
-    let active = true;
-    createSignedArchiveUrls(deck.media_manifest).then((urls) => { if (active) setVideoUrls(urls); }).catch(() => { if (active) setMediaError(true); });
-    return () => { active = false; };
-  }, [deck.media_manifest]);
 
   useEffect(() => {
     function handleKey(event: KeyboardEvent) {
@@ -411,7 +203,8 @@ function CameraMotionViewer({ deck }: { deck: SlideDeckRecord }) {
   }, [navigate]);
 
   const slide = cameraSlides[slideIndex];
-  const mediaUrl = slide.media ? videoUrls[slide.media] : undefined;
+  const mediaFile = slide.media ? deck.media_manifest[slide.media] : undefined;
+  const mediaUrl = mediaFile ? `/api/archive/media/${encodeURIComponent(mediaFile.split("/").pop() || "")}` : undefined;
   return (
     <main className="camera-deck" onClick={() => setSlideIndex((index) => Math.min(cameraSlides.length - 1, index + 1))}>
       <div className="camera-deck-chrome" onClick={(event) => event.stopPropagation()}>
@@ -429,7 +222,7 @@ function CameraMotionViewer({ deck }: { deck: SlideDeckRecord }) {
           {slide.prompt && <div className="camera-slide-prompt"><span>Prompt</span><p>{slide.prompt}</p></div>}
         </div>
         {slide.media && <div className="camera-slide-media-frame">
-          {mediaUrl ? <video key={mediaUrl} src={mediaUrl} autoPlay loop muted playsInline preload="auto" /> : <div className="camera-media-wait">{mediaError ? "Private media is not provisioned yet." : "Loading secure motion clip…"}</div>}
+          {mediaUrl ? <video key={mediaUrl} src={mediaUrl} autoPlay loop muted playsInline preload="auto" onError={() => setMediaError(true)} /> : <div className="camera-media-wait">{mediaError ? "Private media is not available." : "Loading secure motion clip…"}</div>}
         </div>}
       </section>
       <div className="camera-deck-controls" onClick={(event) => event.stopPropagation()}>
@@ -446,35 +239,19 @@ function LegacyDeckViewer({ deck }: { deck: SlideDeckRecord }) {
   return <ArchiveLoading />;
 }
 
-function ArchiveDeckRoute({ membership }: { membership: ArchiveMembership | null }) {
+function ArchiveDeckRoute() {
   const [, params] = useRoute("/internal/slide-archive/:slug");
-  const [deck, setDeck] = useState<SlideDeckRecord | null>(null);
-  const [loading, setLoading] = useState(true);
   const slug = params?.slug;
-
-  useEffect(() => {
-    let active = true;
-    if (!slug) return;
-    getArchiveDeck(slug).then((record) => {
-      if (active) setDeck(record ?? (slug === "camera-motion" ? cameraMotionFallback : slug === "better-youth-genjam" ? betterYouthFallback : null));
-    }).catch(() => {
-      if (active) setDeck(slug === "camera-motion" ? cameraMotionFallback : slug === "better-youth-genjam" ? betterYouthFallback : null);
-    }).finally(() => { if (active) setLoading(false); });
-    return () => { active = false; };
-  }, [slug]);
-
-  if (loading) return <ArchiveLoading />;
+  const deck = slug === "camera-motion" ? cameraMotionFallback : slug === "better-youth-genjam" ? betterYouthFallback : null;
   if (!deck) return <main className="archive-shell archive-auth"><section className="archive-auth-panel"><h1>Deck not found.</h1><Link href="/internal/slide-archive" className="archive-button archive-button-secondary">Return to archive</Link></section></main>;
   if (deck.presentation_mode === "legacy") return <LegacyDeckViewer deck={deck} />;
   return <CameraMotionViewer deck={deck} />;
 }
 
 export default function SlideArchive() {
-  const { access, membership } = useArchiveAccess();
+  const { access, refresh } = useArchiveAccess();
   const [isDeckRoute] = useRoute("/internal/slide-archive/:slug");
   if (access === "loading") return <ArchiveLoading />;
-  if (access === "anonymous") return <ArchiveSignIn />;
-  if (access === "denied") return <ArchiveDenied />;
-  if (access === "setup") return <ArchiveSetupNotice />;
-  return isDeckRoute ? <ArchiveDeckRoute membership={membership} /> : <ArchiveIndex membership={membership} />;
+  if (access === "locked") return <ArchiveSignIn onUnlocked={refresh} />;
+  return isDeckRoute ? <ArchiveDeckRoute /> : <ArchiveIndex />;
 }
