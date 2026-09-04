@@ -394,7 +394,7 @@ function escapeSeoHtml(value: string): string {
 
 function routeSeoHead(pathname: string): string {
   const normalizedPath = pathname === "/" ? "/" : pathname.replace(/\/+$/, "") || "/";
-  const privateRoute = normalizedPath === "/connect" || normalizedPath.startsWith("/lessons/") || normalizedPath.startsWith("/genjam") || ["/lpv3", "/anthum-exclusive", "/live-exclusive", "/refund-policy", "/terms", "/privacy", "/membership/success", "/internal/lessons"].includes(normalizedPath);
+  const privateRoute = normalizedPath === "/connect" || normalizedPath.startsWith("/lessons/") || normalizedPath.startsWith("/genjam") || normalizedPath.startsWith("/internal/slide-archive") || ["/lpv3", "/anthum-exclusive", "/live-exclusive", "/refund-policy", "/terms", "/privacy", "/membership/success", "/internal/lessons"].includes(normalizedPath);
   const page = SEO_PUBLIC_PAGES[normalizedPath] ?? (privateRoute
     ? { title: "AI Film Academy", description: "AI Film Academy creator experience.", noindex: true }
     : { title: "Page Not Found | AI Film Academy", description: "The requested AI Film Academy page could not be found.", noindex: true });
