@@ -141,6 +141,14 @@ function getPage(pathname: string): SeoPage {
     };
   }
 
+  if (pathname.startsWith("/internal/slide-archive")) {
+    return {
+      title: "Private Slide Archive | AI Film Academy",
+      description: "AI Film Academy internal slide archive.",
+      noindex: true,
+    };
+  }
+
   if (
     pathname.startsWith("/genjam-") ||
     pathname.startsWith("/genjam/") ||
