@@ -85,7 +85,7 @@
 .camera-slide:not(.camera-slide-media) .camera-slide-copy { align-items: center; }
 .camera-slide-copy { display: flex; flex-direction: column; align-items: flex-start; }
 .camera-slide-label { margin: 0 0 .8rem; color: #e31e24; font-size: clamp(.68rem, 1.2vw, 1rem); font-weight: 900; letter-spacing: .15em; text-transform: uppercase; }
-.camera-slide h1 { margin: 0; color: #fff; font-family: "Montserrat", "DM Sans", sans-serif; font-size: clamp(3rem, 5.7vw, 6.15rem); font-weight: 900; letter-spacing: -.055em; line-height: .96; text-transform: uppercase; }
+.camera-slide h1 { margin: 0; color: #fff; font-family: "Montserrat", "DM Sans", sans-serif; font-size: clamp(3rem, 5.7vw, 6.15rem); font-weight: 900; letter-spacing: -.022em; line-height: .96; text-transform: uppercase; }
 .camera-slide-rule { width: 4.8rem; height: .4rem; margin: 1.3rem 0; background: #e31e24; }
 .camera-slide-primary { max-width: 42rem; margin: 0; color: #f7f4ee; font-size: clamp(1.14rem, 1.8vw, 1.75rem); font-weight: 700; line-height: 1.35; }
 .camera-slide-detail, .camera-slide-prompt { width: 100%; max-width: 34rem; margin-top: 1.3rem; }
