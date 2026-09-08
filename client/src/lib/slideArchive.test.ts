@@ -15,6 +15,7 @@ describe("slide archive metadata", () => {
 
   it("creates stable visual category identifiers", () => {
     expect(archiveCategoryClass("Course Lessons")).toBe("course-lessons");
+    expect(archiveCategoryClass("Free Training Funnel")).toBe("free-training-funnel");
     expect(archiveCategoryClass("Workshops & Events")).toBe("workshops-events");
   });
 

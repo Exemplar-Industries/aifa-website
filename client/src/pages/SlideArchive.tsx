@@ -36,6 +36,42 @@ const cameraMotionFallback: SlideDeckRecord = {
   updated_at: "2026-09-04T00:00:00.000Z",
 };
 
+const whyCameraMotionFallback: SlideDeckRecord = {
+  id: "why-camera-motion-matters",
+  slug: "why-camera-motion-matters",
+  title: "Why Camera Motion Matters",
+  category: "Free Training Funnel",
+  description: "A free visual primer on why intentional motion makes AI films feel more cinematic and emotionally clear.",
+  thumbnail_path: null,
+  source_bundle_path: null,
+  presentation_route: "/internal/slide-archive/why-camera-motion-matters",
+  presentation_mode: "native",
+  media_manifest: {},
+  tags: ["Free training", "Camera motion", "Story"],
+  status: "ready",
+  sort_order: 15,
+  created_at: "2026-09-05T00:00:00.000Z",
+  updated_at: "2026-09-05T00:00:00.000Z",
+};
+
+const whyCameraAnglesFallback: SlideDeckRecord = {
+  id: "why-camera-angles-matter",
+  slug: "why-camera-angles-matter",
+  title: "Why Camera Angles Matter",
+  category: "Free Training Funnel",
+  description: "A free visual primer on how intentional angles direct emotion, pacing, and viewer attention.",
+  thumbnail_path: null,
+  source_bundle_path: null,
+  presentation_route: "/internal/slide-archive/why-camera-angles-matter",
+  presentation_mode: "native",
+  media_manifest: {},
+  tags: ["Free training", "Camera angles", "Retention"],
+  status: "ready",
+  sort_order: 16,
+  created_at: "2026-09-05T00:00:00.000Z",
+  updated_at: "2026-09-05T00:00:00.000Z",
+};
+
 const betterYouthFallback: SlideDeckRecord = {
   id: "better-youth-genjam",
   slug: "better-youth-genjam",
@@ -145,7 +181,7 @@ function DeckCard({ deck, onOpen }: { deck: SlideDeckRecord; onOpen: () => void 
 function ArchiveIndex() {
   const [, navigate] = useLocation();
   const [selectedCategory, setSelectedCategory] = useState<ArchiveCategory | "All">("All");
-  const decks = [cameraMotionFallback, betterYouthFallback];
+  const decks = [cameraMotionFallback, whyCameraMotionFallback, whyCameraAnglesFallback, betterYouthFallback];
   const visibleDecks = decks.filter((deck) => selectedCategory === "All" || deck.category === selectedCategory);
 
   async function logout() {
@@ -172,6 +208,7 @@ function ArchiveIndex() {
 }
 
 type CameraSlide = { label: string; title: string; copy: string; detail?: string; prompt?: string; media?: keyof typeof cameraMotionFallback.media_manifest };
+type FreeTrainingSlide = { label: string; title: string; copy: string; detail?: string };
 
 const cameraSlides: CameraSlide[] = [
   { label: "AI Film Academy · Course Lesson", title: "Camera motion", copy: "Make the viewer feel something." },
@@ -184,6 +221,32 @@ const cameraSlides: CameraSlide[] = [
   { label: "Orbit", title: "Orbit", copy: "Tension. Attraction. A moment turning.", detail: "The camera physically moves around the subject.", prompt: "Fast clockwise orbit around the red convertible, keeping it centered as the desert station sweeps behind it.", media: "orbit" },
   { label: "Crane / boom", title: "Crane / boom", copy: "Awe. Scale. A final release.", detail: "The camera physically rises or descends.", prompt: "Smooth crane up to reveal the full rain-soaked market.", media: "crane" },
   { label: "Practice", title: "Pick the feeling. Then choose the move.", copy: "Use one clear motion at a time. Make it earn its place in the story." },
+];
+
+const whyCameraMotionSlides: FreeTrainingSlide[] = [
+  { label: "AI Film Academy · Free Training", title: "Why camera motion matters", copy: "The difference between a moving image and a cinematic moment." },
+  { label: "The gap", title: "A camera move gives the shot a job.", copy: "Without intention, movement is decoration. With intention, it tells the audience what to feel." },
+  { label: "Attention", title: "Motion tells the viewer where to lean in.", copy: "It can pull us toward a thought, carry us beside the action, or reveal what the frame was hiding." },
+  { label: "Emotion", title: "The same scene can feel completely different.", copy: "Push in for intimacy. Pull out for distance. Track for momentum. The image changes—but so does the feeling." },
+  { label: "The pairing", title: "Angle sets perspective. Motion sets energy.", copy: "Put the right move on the right angle and a simple frame starts to feel directed—not generated." },
+  { label: "The standard", title: "Professional work feels deliberate.", copy: "The audience may not name the move. They will feel whether the camera had a reason to move." },
+  { label: "The good news", title: "You do not need five years to begin.", copy: "You need enough of the visual language to make a clear choice, then the reps to turn instinct into taste." },
+  { label: "The foundation", title: "Start with five core motions.", copy: "Push in. Pull out. Tracking. Pan. Orbit. Crane / boom." },
+  { label: "Your first sequence", title: "Pick the feeling. Then choose the move.", copy: "Build one short moment around one emotional decision. One clear move is already a major upgrade." },
+  { label: "Inside AI Film Academy", title: "Turn good images into better stories.", copy: "We teach the core camera-motion fundamentals, give you practical resources, and show you how to experiment with confidence." },
+];
+
+const whyCameraAnglesSlides: FreeTrainingSlide[] = [
+  { label: "AI Film Academy · Free Training", title: "Why camera angles matter", copy: "The frame changes what the audience knows, feels, and follows." },
+  { label: "The truth", title: "Your camera is never neutral.", copy: "Every angle makes a decision about power, distance, attention, and point of view—even when you did not mean it to." },
+  { label: "Emotion", title: "The viewer feels the frame before they explain it.", copy: "A low angle can give a subject weight. A high angle can make them feel exposed. An eye-level frame can pull us beside them." },
+  { label: "Attention", title: "Angles decide what matters now.", copy: "A wide frame introduces the world. A medium frame carries the action. A close frame makes the reaction impossible to ignore." },
+  { label: "Story", title: "Good angles make the story easier to follow.", copy: "You introduce the place, reveal the important object, and land on the response—without asking the viewer to work for the moment." },
+  { label: "Pacing", title: "Every cut can either build or bleed momentum.", copy: "Intentional changes in size, height, and perspective create rhythm. Random changes just feel random." },
+  { label: "Retention", title: "Pattern interrupts work when they earn their place.", copy: "A new angle can reset attention, but it works best when it also reveals something the story needs." },
+  { label: "The pairing", title: "Angle plus motion creates a complete beat.", copy: "Choose the perspective first. Then choose how the camera should move through that perspective." },
+  { label: "Your first sequence", title: "Give every frame one clear job.", copy: "Set the scene. Show the action. Land on the reaction. Reveal the detail. That is a sequence the viewer can feel." },
+  { label: "Inside AI Film Academy", title: "Stop guessing at every frame.", copy: "We teach five core angle fundamentals, practical retention sequences, and the visual storytelling tools that make AI films feel intentional." },
 ];
 
 function CameraMotionViewer({ deck }: { deck: SlideDeckRecord }) {
@@ -234,6 +297,47 @@ function CameraMotionViewer({ deck }: { deck: SlideDeckRecord }) {
   );
 }
 
+function FreeTrainingViewer({ slides }: { slides: FreeTrainingSlide[] }) {
+  const [, navigate] = useLocation();
+  const [slideIndex, setSlideIndex] = useState(0);
+  const slide = slides[slideIndex];
+
+  useEffect(() => {
+    function handleKey(event: KeyboardEvent) {
+      if (event.key === "ArrowRight" || event.key === " ") setSlideIndex((index) => Math.min(slides.length - 1, index + 1));
+      if (event.key === "ArrowLeft") setSlideIndex((index) => Math.max(0, index - 1));
+      if (event.key.toLowerCase() === "f") document.documentElement.requestFullscreen?.();
+      if (event.key === "Escape" && !document.fullscreenElement) navigate("/internal/slide-archive");
+    }
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [navigate, slides.length]);
+
+  return (
+    <main className="camera-deck free-training-deck" onClick={() => setSlideIndex((index) => Math.min(slides.length - 1, index + 1))}>
+      <div className="camera-deck-chrome" onClick={(event) => event.stopPropagation()}>
+        <button type="button" onClick={() => navigate("/internal/slide-archive")} aria-label="Back to archive"><ArrowLeft size={18} /></button>
+        <span>{String(slideIndex + 1).padStart(2, "0")} / {String(slides.length).padStart(2, "0")}</span>
+        <button type="button" onClick={() => document.documentElement.requestFullscreen?.()} aria-label="Fullscreen presentation"><Expand size={18} /></button>
+      </div>
+      <section className="camera-slide free-training-slide">
+        <div className="camera-slide-copy">
+          <p className="camera-slide-label">{slide.label}</p>
+          <h1>{slide.title}</h1>
+          <div className="camera-slide-rule" />
+          <p className="camera-slide-primary">{slide.copy}</p>
+          {slide.detail && <div className="camera-slide-detail"><span>Keep in mind</span><p>{slide.detail}</p></div>}
+        </div>
+      </section>
+      <div className="camera-deck-controls" onClick={(event) => event.stopPropagation()}>
+        <button type="button" disabled={slideIndex === 0} onClick={() => setSlideIndex((index) => Math.max(0, index - 1))}><ChevronLeft size={20} /> Previous</button>
+        <div>{slides.map((_, index) => <button key={index} type="button" className={index === slideIndex ? "is-active" : ""} aria-label={`Go to slide ${index + 1}`} onClick={() => setSlideIndex(index)} />)}</div>
+        <button type="button" disabled={slideIndex === slides.length - 1} onClick={() => setSlideIndex((index) => Math.min(slides.length - 1, index + 1))}>Next <ChevronRight size={20} /></button>
+      </div>
+    </main>
+  );
+}
+
 function LegacyDeckViewer({ deck }: { deck: SlideDeckRecord }) {
   useEffect(() => { window.location.replace(deck.presentation_route); }, [deck.presentation_route]);
   return <ArchiveLoading />;
@@ -242,9 +346,11 @@ function LegacyDeckViewer({ deck }: { deck: SlideDeckRecord }) {
 function ArchiveDeckRoute() {
   const [, params] = useRoute("/internal/slide-archive/:slug");
   const slug = params?.slug;
-  const deck = slug === "camera-motion" ? cameraMotionFallback : slug === "better-youth-genjam" ? betterYouthFallback : null;
+  const deck = slug === "camera-motion" ? cameraMotionFallback : slug === "why-camera-motion-matters" ? whyCameraMotionFallback : slug === "why-camera-angles-matter" ? whyCameraAnglesFallback : slug === "better-youth-genjam" ? betterYouthFallback : null;
   if (!deck) return <main className="archive-shell archive-auth"><section className="archive-auth-panel"><h1>Deck not found.</h1><Link href="/internal/slide-archive" className="archive-button archive-button-secondary">Return to archive</Link></section></main>;
   if (deck.presentation_mode === "legacy") return <LegacyDeckViewer deck={deck} />;
+  if (deck.slug === "why-camera-motion-matters") return <FreeTrainingViewer slides={whyCameraMotionSlides} />;
+  if (deck.slug === "why-camera-angles-matter") return <FreeTrainingViewer slides={whyCameraAnglesSlides} />;
   return <CameraMotionViewer deck={deck} />;
 }
 

@@ -83,6 +83,11 @@
 .camera-slide { width: min(100%, 1440px); min-height: 0; display: grid; grid-template-columns: minmax(0, .78fr) minmax(0, 1fr); align-items: center; gap: clamp(1.5rem, 4vw, 4.5rem); margin: 0 auto; padding: clamp(1.5rem, 4vw, 4rem); }
 .camera-slide:not(.camera-slide-media) { grid-template-columns: minmax(0, 1180px); justify-content: center; text-align: center; }
 .camera-slide:not(.camera-slide-media) .camera-slide-copy { align-items: center; }
+.free-training-deck { background: radial-gradient(circle at 12% 80%, rgba(209,35,52,.16), transparent 28%), radial-gradient(circle at 88% 12%, rgba(173,42,56,.17), transparent 31%), linear-gradient(135deg, #242529 0%, #191a1e 52%, #191214 100%); }
+.free-training-slide { grid-template-columns: minmax(0, 1040px) !important; justify-content: center; text-align: center; }
+.free-training-slide .camera-slide-copy { align-items: center; }
+.free-training-slide h1 { max-width: 13ch; }
+.free-training-slide .camera-slide-primary { max-width: 38rem; }
 .camera-slide-copy { display: flex; flex-direction: column; align-items: flex-start; }
 .camera-slide-label { margin: 0 0 .8rem; color: #e31e24; font-size: clamp(.68rem, 1.2vw, 1rem); font-weight: 900; letter-spacing: .15em; text-transform: uppercase; }
 .camera-slide h1 { margin: 0; color: #fff; font-family: "Montserrat", "DM Sans", sans-serif; font-size: clamp(3rem, 5.7vw, 6.15rem); font-weight: 900; letter-spacing: -.022em; line-height: .96; text-transform: uppercase; }
