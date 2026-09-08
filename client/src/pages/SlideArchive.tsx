@@ -46,7 +46,7 @@ const whyCameraMotionFallback: SlideDeckRecord = {
   source_bundle_path: null,
   presentation_route: "/internal/slide-archive/why-camera-motion-matters",
   presentation_mode: "native",
-  media_manifest: {},
+  media_manifest: cameraMotionFallback.media_manifest,
   tags: ["Free training", "Camera motion", "Story"],
   status: "ready",
   sort_order: 15,
@@ -64,7 +64,7 @@ const whyCameraAnglesFallback: SlideDeckRecord = {
   source_bundle_path: null,
   presentation_route: "/internal/slide-archive/why-camera-angles-matter",
   presentation_mode: "native",
-  media_manifest: {},
+  media_manifest: cameraMotionFallback.media_manifest,
   tags: ["Free training", "Camera angles", "Retention"],
   status: "ready",
   sort_order: 16,
@@ -208,7 +208,7 @@ function ArchiveIndex() {
 }
 
 type CameraSlide = { label: string; title: string; copy: string; detail?: string; prompt?: string; media?: keyof typeof cameraMotionFallback.media_manifest };
-type FreeTrainingSlide = { label: string; title: string; copy: string; detail?: string };
+type FreeTrainingSlide = { label: string; title: string; copy: string; detail?: string; media?: keyof typeof cameraMotionFallback.media_manifest };
 
 const cameraSlides: CameraSlide[] = [
   { label: "AI Film Academy · Course Lesson", title: "Camera motion", copy: "Make the viewer feel something." },
@@ -224,29 +224,29 @@ const cameraSlides: CameraSlide[] = [
 ];
 
 const whyCameraMotionSlides: FreeTrainingSlide[] = [
-  { label: "AI Film Academy · Free Training", title: "Why camera motion matters", copy: "The difference between a moving image and a cinematic moment." },
-  { label: "The gap", title: "A camera move gives the shot a job.", copy: "Without intention, movement is decoration. With intention, it tells the audience what to feel." },
-  { label: "Attention", title: "Motion tells the viewer where to lean in.", copy: "It can pull us toward a thought, carry us beside the action, or reveal what the frame was hiding." },
-  { label: "Emotion", title: "The same scene can feel completely different.", copy: "Push in for intimacy. Pull out for distance. Track for momentum. The image changes—but so does the feeling." },
-  { label: "The pairing", title: "Angle sets perspective. Motion sets energy.", copy: "Put the right move on the right angle and a simple frame starts to feel directed—not generated." },
-  { label: "The standard", title: "Professional work feels deliberate.", copy: "The audience may not name the move. They will feel whether the camera had a reason to move." },
-  { label: "The good news", title: "You do not need five years to begin.", copy: "You need enough of the visual language to make a clear choice, then the reps to turn instinct into taste." },
-  { label: "The foundation", title: "Start with five core motions.", copy: "Push in. Pull out. Tracking. Pan. Orbit. Crane / boom." },
-  { label: "Your first sequence", title: "Pick the feeling. Then choose the move.", copy: "Build one short moment around one emotional decision. One clear move is already a major upgrade." },
-  { label: "Inside AI Film Academy", title: "Turn good images into better stories.", copy: "We teach the core camera-motion fundamentals, give you practical resources, and show you how to experiment with confidence." },
+  { label: "AI Film Academy · Free Training", title: "Why motion matters", copy: "The difference between a moving image and a cinematic moment." },
+  { label: "The gap", title: "Give motion a job", copy: "Without intention, movement is decoration. With intention, it tells the audience what to feel." },
+  { label: "Attention", title: "Direct the eye", copy: "A push in tells us exactly where to lean in—and why the moment matters.", media: "pushIn" },
+  { label: "Emotion", title: "Change the feeling", copy: "A pull out can create distance and release. A tracking shot can create momentum and pursuit.", media: "pullOut" },
+  { label: "The pairing", title: "Perspective plus energy", copy: "Choose the angle that frames the story. Then choose the move that gives the frame energy.", media: "tracking" },
+  { label: "The standard", title: "Make it deliberate", copy: "The audience may not name the move. They will feel whether the camera had a reason to move." },
+  { label: "The good news", title: "Start sooner", copy: "You need enough visual language to make a clear choice—then the reps to turn instinct into taste." },
+  { label: "The foundation", title: "Learn five moves", copy: "Push in. Pull out. Tracking. Pan. Orbit. Crane / boom.", media: "orbit" },
+  { label: "Your first sequence", title: "Choose the feeling", copy: "Build one short moment around one emotional decision. One clear move is already a major upgrade." },
+  { label: "Inside AI Film Academy", title: "Make better stories", copy: "We teach the core camera-motion fundamentals, give you practical resources, and show you how to experiment with confidence." },
 ];
 
 const whyCameraAnglesSlides: FreeTrainingSlide[] = [
-  { label: "AI Film Academy · Free Training", title: "Why camera angles matter", copy: "The frame changes what the audience knows, feels, and follows." },
-  { label: "The truth", title: "Your camera is never neutral.", copy: "Every angle makes a decision about power, distance, attention, and point of view—even when you did not mean it to." },
-  { label: "Emotion", title: "The viewer feels the frame before they explain it.", copy: "A low angle can give a subject weight. A high angle can make them feel exposed. An eye-level frame can pull us beside them." },
-  { label: "Attention", title: "Angles decide what matters now.", copy: "A wide frame introduces the world. A medium frame carries the action. A close frame makes the reaction impossible to ignore." },
-  { label: "Story", title: "Good angles make the story easier to follow.", copy: "You introduce the place, reveal the important object, and land on the response—without asking the viewer to work for the moment." },
-  { label: "Pacing", title: "Every cut can either build or bleed momentum.", copy: "Intentional changes in size, height, and perspective create rhythm. Random changes just feel random." },
-  { label: "Retention", title: "Pattern interrupts work when they earn their place.", copy: "A new angle can reset attention, but it works best when it also reveals something the story needs." },
-  { label: "The pairing", title: "Angle plus motion creates a complete beat.", copy: "Choose the perspective first. Then choose how the camera should move through that perspective." },
-  { label: "Your first sequence", title: "Give every frame one clear job.", copy: "Set the scene. Show the action. Land on the reaction. Reveal the detail. That is a sequence the viewer can feel." },
-  { label: "Inside AI Film Academy", title: "Stop guessing at every frame.", copy: "We teach five core angle fundamentals, practical retention sequences, and the visual storytelling tools that make AI films feel intentional." },
+  { label: "AI Film Academy · Free Training", title: "Why angles matter", copy: "The frame changes what the audience knows, feels, and follows." },
+  { label: "The truth", title: "Every frame decides", copy: "An angle always makes a choice about power, distance, attention, and point of view." },
+  { label: "Emotion", title: "Frame the feeling", copy: "A close frame brings us inward. A wider frame gives the subject context. The right angle tells us how to feel.", media: "pushIn" },
+  { label: "Attention", title: "Show what matters", copy: "A wide shot introduces the world. A medium carries action. A close shot makes the reaction impossible to miss." },
+  { label: "Story", title: "Guide the story", copy: "Introduce the place, reveal the object, then land on the response—so the viewer always knows what matters.", media: "tracking" },
+  { label: "Pacing", title: "Build the rhythm", copy: "Changes in size, height, and perspective create rhythm. Random changes just feel random." },
+  { label: "Retention", title: "Interrupt with purpose", copy: "A new angle can reset attention when it reveals something the story needs.", media: "pan" },
+  { label: "The pairing", title: "Perspective plus motion", copy: "Choose the perspective first. Then choose how the camera should move through that perspective.", media: "orbit" },
+  { label: "Your first sequence", title: "Give frames jobs", copy: "Set the scene. Show the action. Land on the reaction. Reveal the detail." },
+  { label: "Inside AI Film Academy", title: "Stop guessing", copy: "We teach five core angle fundamentals, retention sequences, and the visual tools that make AI films feel intentional." },
 ];
 
 function CameraMotionViewer({ deck }: { deck: SlideDeckRecord }) {
@@ -297,10 +297,17 @@ function CameraMotionViewer({ deck }: { deck: SlideDeckRecord }) {
   );
 }
 
-function FreeTrainingViewer({ slides }: { slides: FreeTrainingSlide[] }) {
+function FreeTrainingViewer({ deck, slides }: { deck: SlideDeckRecord; slides: FreeTrainingSlide[] }) {
   const [, navigate] = useLocation();
   const [slideIndex, setSlideIndex] = useState(0);
+  const [mediaError, setMediaError] = useState(false);
   const slide = slides[slideIndex];
+  const mediaFile = slide.media ? deck.media_manifest[slide.media] : undefined;
+  const mediaUrl = mediaFile ? `/api/archive/media/${encodeURIComponent(mediaFile.split("/").pop() || "")}` : undefined;
+
+  useEffect(() => {
+    setMediaError(false);
+  }, [slideIndex]);
 
   useEffect(() => {
     function handleKey(event: KeyboardEvent) {
@@ -320,7 +327,7 @@ function FreeTrainingViewer({ slides }: { slides: FreeTrainingSlide[] }) {
         <span>{String(slideIndex + 1).padStart(2, "0")} / {String(slides.length).padStart(2, "0")}</span>
         <button type="button" onClick={() => document.documentElement.requestFullscreen?.()} aria-label="Fullscreen presentation"><Expand size={18} /></button>
       </div>
-      <section className="camera-slide free-training-slide">
+      <section className={`camera-slide free-training-slide ${slide.media ? "camera-slide-media" : ""}`}>
         <div className="camera-slide-copy">
           <p className="camera-slide-label">{slide.label}</p>
           <h1>{slide.title}</h1>
@@ -328,6 +335,9 @@ function FreeTrainingViewer({ slides }: { slides: FreeTrainingSlide[] }) {
           <p className="camera-slide-primary">{slide.copy}</p>
           {slide.detail && <div className="camera-slide-detail"><span>Keep in mind</span><p>{slide.detail}</p></div>}
         </div>
+        {slide.media && <div className="camera-slide-media-frame">
+          {mediaUrl ? <video key={mediaUrl} src={mediaUrl} autoPlay loop muted playsInline preload="auto" onError={() => setMediaError(true)} /> : <div className="camera-media-wait">{mediaError ? "Private media is not available." : "Loading secure motion clip…"}</div>}
+        </div>}
       </section>
       <div className="camera-deck-controls" onClick={(event) => event.stopPropagation()}>
         <button type="button" disabled={slideIndex === 0} onClick={() => setSlideIndex((index) => Math.max(0, index - 1))}><ChevronLeft size={20} /> Previous</button>
@@ -349,8 +359,8 @@ function ArchiveDeckRoute() {
   const deck = slug === "camera-motion" ? cameraMotionFallback : slug === "why-camera-motion-matters" ? whyCameraMotionFallback : slug === "why-camera-angles-matter" ? whyCameraAnglesFallback : slug === "better-youth-genjam" ? betterYouthFallback : null;
   if (!deck) return <main className="archive-shell archive-auth"><section className="archive-auth-panel"><h1>Deck not found.</h1><Link href="/internal/slide-archive" className="archive-button archive-button-secondary">Return to archive</Link></section></main>;
   if (deck.presentation_mode === "legacy") return <LegacyDeckViewer deck={deck} />;
-  if (deck.slug === "why-camera-motion-matters") return <FreeTrainingViewer slides={whyCameraMotionSlides} />;
-  if (deck.slug === "why-camera-angles-matter") return <FreeTrainingViewer slides={whyCameraAnglesSlides} />;
+  if (deck.slug === "why-camera-motion-matters") return <FreeTrainingViewer deck={deck} slides={whyCameraMotionSlides} />;
+  if (deck.slug === "why-camera-angles-matter") return <FreeTrainingViewer deck={deck} slides={whyCameraAnglesSlides} />;
   return <CameraMotionViewer deck={deck} />;
 }
 
