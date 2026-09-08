@@ -345,7 +345,7 @@ function LegacyDeckViewer({ deck }: { deck: SlideDeckRecord }) {
 
 function ArchiveDeckRoute() {
   const [, params] = useRoute("/internal/slide-archive/:slug");
-  const slug = params?.slug;
+  const slug = params?.slug ?? window.location.pathname.split("/").filter(Boolean).at(-1);
   const deck = slug === "camera-motion" ? cameraMotionFallback : slug === "why-camera-motion-matters" ? whyCameraMotionFallback : slug === "why-camera-angles-matter" ? whyCameraAnglesFallback : slug === "better-youth-genjam" ? betterYouthFallback : null;
   if (!deck) return <main className="archive-shell archive-auth"><section className="archive-auth-panel"><h1>Deck not found.</h1><Link href="/internal/slide-archive" className="archive-button archive-button-secondary">Return to archive</Link></section></main>;
   if (deck.presentation_mode === "legacy") return <LegacyDeckViewer deck={deck} />;
