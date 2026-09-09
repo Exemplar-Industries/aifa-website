@@ -8,6 +8,10 @@ export const privateStoryboardAssets = [
   "storyboard-creator.png",
 ] as const;
 
+export const privateCharacterAssets = [
+  "character-sheet-santiago.jpg",
+] as const;
+
 export const archiveCategories = [
   "Course Lessons",
   "Strategy",
