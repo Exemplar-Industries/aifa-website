@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { ARCHIVE_BUCKET, archiveCategories, archiveCategoryClass, privateStoryboardAssets } from "./slideArchive";
+import { ARCHIVE_BUCKET, archiveCategories, archiveCategoryClass, privateCharacterAssets, privateStoryboardAssets } from "./slideArchive";
 
 describe("slide archive metadata", () => {
   it("keeps all approved archive categories available", () => {
@@ -31,5 +31,10 @@ describe("slide archive metadata", () => {
       "storyboard-creator.png",
     ]);
     expect(privateStoryboardAssets.every((asset) => !asset.includes("/"))).toBe(true);
+  });
+
+  it("keeps the Character Consistency sheet in a closed private-media allowlist", () => {
+    expect(privateCharacterAssets).toEqual(["character-sheet-santiago.jpg"]);
+    expect(privateCharacterAssets.every((asset) => !asset.includes("/"))).toBe(true);
   });
 });
