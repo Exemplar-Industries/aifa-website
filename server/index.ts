@@ -34,6 +34,7 @@ const AIFA_ARCHIVE_MEDIA = new Map([
   ["storyboard-football.png", "private/camera-angles/storyboard-football.png"],
   ["storyboard-forest.png", "private/camera-angles/storyboard-forest.png"],
   ["storyboard-creator.png", "private/camera-angles/storyboard-creator.png"],
+  ["character-sheet-santiago.jpg", "private/character-consistency/character-sheet-santiago.jpg"],
 ]);
 
 function parseCookies(header: string | undefined): Record<string, string> {
@@ -503,6 +504,7 @@ async function startServer() {
 
   // Raw body needed for Stripe webhook signature verification
   app.use("/api/stripe-webhook", express.raw({ type: "application/json" }));
+  app.use("/api/archive/import-character-sheet", express.raw({ type: "image/jpeg", limit: "2mb" }));
 
   // Parse JSON bodies for all other API routes
   app.use(express.json());
@@ -527,6 +529,44 @@ async function startServer() {
   app.post("/api/archive/logout", (_req, res) => {
     res.setHeader("Set-Cookie", `${AIFA_ARCHIVE_COOKIE}=; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=0`);
     res.json({ authorized: false });
+  });
+
+  app.put("/api/archive/import-character-sheet", async (req, res) => {
+    if (!hasArchiveAccess(req.headers.cookie)) {
+      res.status(401).json({ error: "Archive access required." });
+      return;
+    }
+    const asset = "character-sheet-santiago.jpg";
+    const storagePath = AIFA_ARCHIVE_MEDIA.get(asset);
+    if (!storagePath || !Buffer.isBuffer(req.body) || req.body.length === 0) {
+      res.status(400).json({ error: "Invalid character-sheet import request." });
+      return;
+    }
+    const storageKey = AIFA_SUPABASE_SERVICE_ROLE_KEY || AIFA_SUPABASE_ANON_KEY;
+    if (!AIFA_SUPABASE_URL || !storageKey) {
+      res.status(503).json({ error: "Private archive media is not configured." });
+      return;
+    }
+    try {
+      await axios.put(
+        `${AIFA_SUPABASE_URL}/storage/v1/object/aifa-slide-archive/${storagePath.split("/").map(encodeURIComponent).join("/")}`,
+        req.body,
+        {
+          headers: {
+            apikey: storageKey,
+            Authorization: `Bearer ${storageKey}`,
+            "Content-Type": "image/jpeg",
+            "x-upsert": "true",
+          },
+          maxBodyLength: Infinity,
+          timeout: 30000,
+        }
+      );
+      res.status(201).json({ uploaded: asset });
+    } catch (error) {
+      console.error("[archive-character-sheet-import] Private image upload failed:", error);
+      res.status(502).json({ error: "Private character sheet could not be uploaded." });
+    }
   });
 
   app.get("/api/archive/media/:asset", async (req, res) => {
