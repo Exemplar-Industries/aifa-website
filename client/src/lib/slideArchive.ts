@@ -2,6 +2,12 @@ import { supabase } from "@/lib/supabase";
 
 export const ARCHIVE_BUCKET = "aifa-slide-archive";
 
+export const privateStoryboardAssets = [
+  "storyboard-football.png",
+  "storyboard-forest.png",
+  "storyboard-creator.png",
+] as const;
+
 export const archiveCategories = [
   "Course Lessons",
   "Strategy",
