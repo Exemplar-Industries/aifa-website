@@ -24,13 +24,16 @@ const AIFA_ARCHIVE_PASSCODE = process.env.AIFA_ARCHIVE_PASSCODE || "";
 const AIFA_ARCHIVE_SESSION_SECRET = process.env.AIFA_ARCHIVE_SESSION_SECRET || STRIPE_WEBHOOK_SECRET || AIFA_ARCHIVE_PASSCODE;
 const AIFA_ARCHIVE_COOKIE = "aifa_archive_access";
 const AIFA_ARCHIVE_SESSION_MAX_AGE_SECONDS = 60 * 60 * 24 * 14;
-const AIFA_ARCHIVE_MEDIA = new Set([
-  "push_in_guitar_tuning.mp4",
-  "pull_out_guitar_fireplace.mp4",
-  "tracking_car_driving_away.mp4",
-  "pan_neon_market.mp4",
-  "orbit_option_b_first4.mp4",
-  "crane_neon_market_trimmed.mp4",
+const AIFA_ARCHIVE_MEDIA = new Map([
+  ["push_in_guitar_tuning.mp4", "private/camera-motion/push_in_guitar_tuning.mp4"],
+  ["pull_out_guitar_fireplace.mp4", "private/camera-motion/pull_out_guitar_fireplace.mp4"],
+  ["tracking_car_driving_away.mp4", "private/camera-motion/tracking_car_driving_away.mp4"],
+  ["pan_neon_market.mp4", "private/camera-motion/pan_neon_market.mp4"],
+  ["orbit_option_b_first4.mp4", "private/camera-motion/orbit_option_b_first4.mp4"],
+  ["crane_neon_market_trimmed.mp4", "private/camera-motion/crane_neon_market_trimmed.mp4"],
+  ["storyboard-football.png", "private/camera-angles/storyboard-football.png"],
+  ["storyboard-forest.png", "private/camera-angles/storyboard-forest.png"],
+  ["storyboard-creator.png", "private/camera-angles/storyboard-creator.png"],
 ]);
 
 function parseCookies(header: string | undefined): Record<string, string> {
@@ -500,6 +503,7 @@ async function startServer() {
 
   // Raw body needed for Stripe webhook signature verification
   app.use("/api/stripe-webhook", express.raw({ type: "application/json" }));
+  app.use("/api/archive/import-storyboard", express.raw({ type: "image/png", limit: "8mb" }));
 
   // Parse JSON bodies for all other API routes
   app.use(express.json());
@@ -526,13 +530,53 @@ async function startServer() {
     res.json({ authorized: false });
   });
 
+  app.put("/api/archive/import-storyboard/:asset", async (req, res) => {
+    if (!hasArchiveAccess(req.headers.cookie)) {
+      res.status(401).json({ error: "Archive access required." });
+      return;
+    }
+    const asset = String(req.params.asset ?? "");
+    const storagePath = AIFA_ARCHIVE_MEDIA.get(asset);
+    const allowedStoryboardAsset = asset === "storyboard-football.png" || asset === "storyboard-forest.png" || asset === "storyboard-creator.png";
+    if (!allowedStoryboardAsset || !storagePath || !Buffer.isBuffer(req.body)) {
+      res.status(400).json({ error: "Invalid storyboard import request." });
+      return;
+    }
+    const storageKey = AIFA_SUPABASE_SERVICE_ROLE_KEY || AIFA_SUPABASE_ANON_KEY;
+    if (!AIFA_SUPABASE_URL || !storageKey) {
+      res.status(503).json({ error: "Private archive media is not configured." });
+      return;
+    }
+    try {
+      await axios.put(
+        `${AIFA_SUPABASE_URL}/storage/v1/object/aifa-slide-archive/${storagePath.split("/").map(encodeURIComponent).join("/")}`,
+        req.body,
+        {
+          headers: {
+            apikey: storageKey,
+            Authorization: `Bearer ${storageKey}`,
+            "Content-Type": "image/png",
+            "x-upsert": "true",
+          },
+          maxBodyLength: Infinity,
+          timeout: 30000,
+        }
+      );
+      res.status(201).json({ uploaded: asset });
+    } catch (error) {
+      console.error("[archive-storyboard-import] Private image upload failed:", error);
+      res.status(502).json({ error: "Private storyboard image could not be uploaded." });
+    }
+  });
+
   app.get("/api/archive/media/:asset", async (req, res) => {
     if (!hasArchiveAccess(req.headers.cookie)) {
       res.status(401).json({ error: "Archive access required." });
       return;
     }
     const asset = String(req.params.asset ?? "");
-    if (!AIFA_ARCHIVE_MEDIA.has(asset)) {
+    const storagePath = AIFA_ARCHIVE_MEDIA.get(asset);
+    if (!storagePath) {
       res.status(404).json({ error: "Archive media not found." });
       return;
     }
@@ -543,7 +587,7 @@ async function startServer() {
     }
     try {
       const upstream = await axios.get(
-        `${AIFA_SUPABASE_URL}/storage/v1/object/aifa-slide-archive/private/camera-motion/${encodeURIComponent(asset)}`,
+        `${AIFA_SUPABASE_URL}/storage/v1/object/aifa-slide-archive/${storagePath.split("/").map(encodeURIComponent).join("/")}`,
         {
           responseType: "stream",
           headers: { apikey: storageKey, Authorization: `Bearer ${storageKey}` },
