@@ -503,7 +503,6 @@ async function startServer() {
 
   // Raw body needed for Stripe webhook signature verification
   app.use("/api/stripe-webhook", express.raw({ type: "application/json" }));
-  app.use("/api/archive/import-storyboard", express.raw({ type: "image/png", limit: "8mb" }));
 
   // Parse JSON bodies for all other API routes
   app.use(express.json());
@@ -528,45 +527,6 @@ async function startServer() {
   app.post("/api/archive/logout", (_req, res) => {
     res.setHeader("Set-Cookie", `${AIFA_ARCHIVE_COOKIE}=; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=0`);
     res.json({ authorized: false });
-  });
-
-  app.put("/api/archive/import-storyboard/:asset", async (req, res) => {
-    if (!hasArchiveAccess(req.headers.cookie)) {
-      res.status(401).json({ error: "Archive access required." });
-      return;
-    }
-    const asset = String(req.params.asset ?? "");
-    const storagePath = AIFA_ARCHIVE_MEDIA.get(asset);
-    const allowedStoryboardAsset = asset === "storyboard-football.png" || asset === "storyboard-forest.png" || asset === "storyboard-creator.png";
-    if (!allowedStoryboardAsset || !storagePath || !Buffer.isBuffer(req.body)) {
-      res.status(400).json({ error: "Invalid storyboard import request." });
-      return;
-    }
-    const storageKey = AIFA_SUPABASE_SERVICE_ROLE_KEY || AIFA_SUPABASE_ANON_KEY;
-    if (!AIFA_SUPABASE_URL || !storageKey) {
-      res.status(503).json({ error: "Private archive media is not configured." });
-      return;
-    }
-    try {
-      await axios.put(
-        `${AIFA_SUPABASE_URL}/storage/v1/object/aifa-slide-archive/${storagePath.split("/").map(encodeURIComponent).join("/")}`,
-        req.body,
-        {
-          headers: {
-            apikey: storageKey,
-            Authorization: `Bearer ${storageKey}`,
-            "Content-Type": "image/png",
-            "x-upsert": "true",
-          },
-          maxBodyLength: Infinity,
-          timeout: 30000,
-        }
-      );
-      res.status(201).json({ uploaded: asset });
-    } catch (error) {
-      console.error("[archive-storyboard-import] Private image upload failed:", error);
-      res.status(502).json({ error: "Private storyboard image could not be uploaded." });
-    }
   });
 
   app.get("/api/archive/media/:asset", async (req, res) => {
