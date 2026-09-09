@@ -4,6 +4,7 @@ import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight, Expand, Film, Loader2
 import {
   archiveCategories,
   archiveCategoryClass,
+  privateCharacterAssets,
   privateStoryboardAssets,
   type ArchiveCategory,
   type SlideDeckRecord,
@@ -71,6 +72,42 @@ const whyCameraAnglesFallback: SlideDeckRecord = {
   sort_order: 16,
   created_at: "2026-09-05T00:00:00.000Z",
   updated_at: "2026-09-05T00:00:00.000Z",
+};
+
+const characterConsistencyFallback: SlideDeckRecord = {
+  id: "character-consistency",
+  slug: "character-consistency",
+  title: "Character Consistency",
+  category: "Free Training Funnel",
+  description: "A simple beginner framework for creating one character reference sheet and reusing it across scenes.",
+  thumbnail_path: null,
+  source_bundle_path: null,
+  presentation_route: "/internal/slide-archive/character-consistency",
+  presentation_mode: "native",
+  media_manifest: cameraMotionFallback.media_manifest,
+  tags: ["Free training", "Characters", "Reference sheet"],
+  status: "ready",
+  sort_order: 17,
+  created_at: "2026-09-09T00:00:00.000Z",
+  updated_at: "2026-09-09T00:00:00.000Z",
+};
+
+const stateOfAiFilmmakingFallback: SlideDeckRecord = {
+  id: "state-of-ai-filmmaking",
+  slug: "state-of-ai-filmmaking",
+  title: "The State of AI Filmmaking",
+  category: "Free Training Funnel",
+  description: "A concise introduction to the current AI filmmaking opportunity and the fundamentals creators need to begin.",
+  thumbnail_path: null,
+  source_bundle_path: null,
+  presentation_route: "/internal/slide-archive/state-of-ai-filmmaking",
+  presentation_mode: "native",
+  media_manifest: cameraMotionFallback.media_manifest,
+  tags: ["Free training", "AI filmmaking", "Workflow"],
+  status: "ready",
+  sort_order: 18,
+  created_at: "2026-09-09T00:00:00.000Z",
+  updated_at: "2026-09-09T00:00:00.000Z",
 };
 
 const betterYouthFallback: SlideDeckRecord = {
@@ -182,7 +219,7 @@ function DeckCard({ deck, onOpen }: { deck: SlideDeckRecord; onOpen: () => void 
 function ArchiveIndex() {
   const [, navigate] = useLocation();
   const [selectedCategory, setSelectedCategory] = useState<ArchiveCategory | "All">("All");
-  const decks = [cameraMotionFallback, whyCameraMotionFallback, whyCameraAnglesFallback, betterYouthFallback];
+  const decks = [cameraMotionFallback, whyCameraMotionFallback, whyCameraAnglesFallback, characterConsistencyFallback, stateOfAiFilmmakingFallback, betterYouthFallback];
   const visibleDecks = decks.filter((deck) => selectedCategory === "All" || deck.category === selectedCategory);
 
   async function logout() {
@@ -214,8 +251,13 @@ const storyboardAssets = {
   creator: { asset: privateStoryboardAssets[2], alt: "Creator storyboard showing a planned progression of scenes and framing choices." },
 } as const;
 
+const privateDeckImages = {
+  ...storyboardAssets,
+  characterSheet: { asset: privateCharacterAssets[0], alt: "AIFA character reference sheet showing front, side, back, expressions, wardrobe, and detail anchors." },
+} as const;
+
 type CameraSlide = { label: string; title: string; copy: string; detail?: string; prompt?: string; media?: keyof typeof cameraMotionFallback.media_manifest };
-type FreeTrainingSlide = { label: string; title: string; copy: string; detail?: string; media?: keyof typeof cameraMotionFallback.media_manifest; storyboard?: keyof typeof storyboardAssets };
+type FreeTrainingSlide = { label: string; title: string; copy: string; detail?: string; media?: keyof typeof cameraMotionFallback.media_manifest; image?: keyof typeof privateDeckImages };
 
 const cameraSlides: CameraSlide[] = [
   { label: "AI Film Academy · Course Lesson", title: "Camera motion", copy: "Make the viewer feel something." },
@@ -245,15 +287,41 @@ const whyCameraMotionSlides: FreeTrainingSlide[] = [
 
 const whyCameraAnglesSlides: FreeTrainingSlide[] = [
   { label: "AI Film Academy · Free Training", title: "Why angles matter", copy: "The frame changes what the audience knows, feels, and follows." },
-  { label: "The truth", title: "Every frame decides", copy: "An angle always makes a choice about power, distance, attention, and point of view.", storyboard: "football" },
+  { label: "The truth", title: "Every frame decides", copy: "An angle always makes a choice about power, distance, attention, and point of view.", image: "football" },
   { label: "Emotion", title: "Frame the feeling", copy: "A close frame brings us inward. A wider frame gives the subject context. The right angle tells us how to feel.", media: "pushIn" },
   { label: "Attention", title: "Show what matters", copy: "A wide shot introduces the world. A medium carries action. A close shot makes the reaction impossible to miss." },
-  { label: "Story", title: "Guide the story", copy: "Introduce the place, reveal the object, then land on the response—so the viewer always knows what matters.", storyboard: "forest" },
+  { label: "Story", title: "Guide the story", copy: "Introduce the place, reveal the object, then land on the response—so the viewer always knows what matters.", image: "forest" },
   { label: "Pacing", title: "Build the rhythm", copy: "Changes in size, height, and perspective create rhythm. Random changes just feel random." },
   { label: "Retention", title: "Interrupt with purpose", copy: "A new angle can reset attention when it reveals something the story needs.", media: "crane" },
   { label: "The pairing", title: "Perspective plus motion", copy: "Choose the perspective first. Then choose how the camera should move through that perspective.", media: "orbit" },
-  { label: "Your first sequence", title: "Plan before you animate", copy: "Set the scene. Show the action. Land on the reaction. Reveal the detail.", storyboard: "creator" },
+  { label: "Your first sequence", title: "Plan before you animate", copy: "Set the scene. Show the action. Land on the reaction. Reveal the detail.", image: "creator" },
   { label: "Inside AI Film Academy", title: "Stop guessing", copy: "We teach five core angle fundamentals, retention sequences, and the visual tools that make AI films feel intentional." },
+];
+
+const characterConsistencySlides: FreeTrainingSlide[] = [
+  { label: "AI Film Academy · Free Training", title: "Character consistency", copy: "Create one character you can keep using as your story grows." },
+  { label: "The problem", title: "Every new image can drift", copy: "If you start from scratch every time, the model has to guess who your character is again." },
+  { label: "The starting point", title: "Make one clear character", copy: "Pick one person. Give them a clear face, hair, age range, wardrobe, posture, and overall feeling." },
+  { label: "The anchor", title: "Build a reference sheet", copy: "A simple sheet gives you visual anchors: front, side, back, expressions, wardrobe, and the details you want to protect.", image: "characterSheet" },
+  { label: "The words", title: "Write the details down", copy: "Keep one short character description and reuse it. The image and the written anchor work better together." },
+  { label: "The rule", title: "Keep identity stable", copy: "Let the scene, action, angle, and mood change. Keep the character’s defining traits consistent." },
+  { label: "The benefit", title: "Consistency creates freedom", copy: "Once the person feels dependable, you can spend your energy making the story, not rebuilding the character." },
+  { label: "The practice", title: "Reuse the same anchors", copy: "Bring the sheet and the same core description into the next image, then adjust only what the new scene needs." },
+  { label: "Your first exercise", title: "Make one sheet", copy: "Do not build an entire cast. Make one usable character reference sheet and one written description." },
+  { label: "Inside AI Film Academy", title: "Share it with us", copy: "Your first exercise is the character sheet. Join the community, post it, and turn it into your first sequence." },
+];
+
+const stateOfAiFilmmakingSlides: FreeTrainingSlide[] = [
+  { label: "AI Film Academy · Free Training", title: "The State of AI Filmmaking", copy: "Cinematic visual storytelling is more accessible than it has ever been." },
+  { label: "The moment", title: "You are here at the right time", copy: "You do not need a film crew, a Hollywood budget, or years of technical training to start making real visual stories." },
+  { label: "The change", title: "The barrier has moved", copy: "What used to require a full production pipeline can now begin with a clear idea, a strong image, and an intentional next step." },
+  { label: "The opportunity", title: "AI filmmaking is real now", copy: "The tools have matured enough for creators to move from experiments into actual scenes, concepts, and portfolio work." },
+  { label: "What changed", title: "Images can become scenes", copy: "Creators can now design visual references, animate them, add motion, and build short sequences without starting from a blank production floor." },
+  { label: "The mistake", title: "Too many tools, not enough workflow", copy: "The fastest way to stay stuck is to chase every new release instead of finishing a small project with a repeatable process." },
+  { label: "The foundation", title: "Start with the fundamentals", copy: "A clear story, intentional reference images, camera choices, motion, and a simple sequence will take you farther than tool overload." },
+  { label: "What you can build", title: "Make work you can show", copy: "Every practice session can become a scene, a character, a short sequence, or the beginning of a real portfolio." },
+  { label: "The advantage", title: "You do not learn alone", copy: "A good community gives you exercises, feedback, examples, and the structure to keep moving when the tools change." },
+  { label: "Inside AI Film Academy", title: "Start your first project", copy: "Learn the core workflow, build your first character and scene, and keep stacking the fundamentals that make the work feel cinematic." },
 ];
 
 function CameraMotionViewer({ deck }: { deck: SlideDeckRecord }) {
@@ -309,9 +377,9 @@ function FreeTrainingViewer({ deck, slides }: { deck: SlideDeckRecord; slides: F
   const [slideIndex, setSlideIndex] = useState(0);
   const [mediaError, setMediaError] = useState(false);
   const slide = slides[slideIndex];
-  const storyboard = slide.storyboard ? storyboardAssets[slide.storyboard] : undefined;
-  const hasVisual = Boolean(slide.media || storyboard);
-  const mediaFile = slide.media ? deck.media_manifest[slide.media] : storyboard?.asset;
+  const image = slide.image ? privateDeckImages[slide.image] : undefined;
+  const hasVisual = Boolean(slide.media || image);
+  const mediaFile = slide.media ? deck.media_manifest[slide.media] : image?.asset;
   const mediaUrl = mediaFile ? `/api/archive/media/${encodeURIComponent(mediaFile.split("/").pop() || "")}` : undefined;
 
   useEffect(() => {
@@ -344,11 +412,11 @@ function FreeTrainingViewer({ deck, slides }: { deck: SlideDeckRecord; slides: F
           <p className="camera-slide-primary">{slide.copy}</p>
           {slide.detail && <div className="camera-slide-detail"><span>Keep in mind</span><p>{slide.detail}</p></div>}
         </div>
-        {hasVisual && <div className={`camera-slide-media-frame ${storyboard ? "camera-slide-storyboard-frame" : ""}`}>
+        {hasVisual && <div className={`camera-slide-media-frame ${image ? "camera-slide-storyboard-frame" : ""}`}>
           {mediaUrl && !mediaError
             ? slide.media
               ? <video key={mediaUrl} src={mediaUrl} autoPlay loop muted playsInline preload="auto" onError={() => setMediaError(true)} />
-              : <img key={mediaUrl} src={mediaUrl} alt={storyboard?.alt ?? "Private storyboard reference"} onError={() => setMediaError(true)} />
+              : <img key={mediaUrl} src={mediaUrl} alt={image?.alt ?? "Private visual reference"} onError={() => setMediaError(true)} />
             : <div className="camera-media-wait">{mediaError ? "Private media is not available." : "Loading secure visual…"}</div>}
         </div>}
       </section>
@@ -369,11 +437,13 @@ function LegacyDeckViewer({ deck }: { deck: SlideDeckRecord }) {
 function ArchiveDeckRoute() {
   const [, params] = useRoute("/internal/slide-archive/:slug");
   const slug = params?.slug ?? window.location.pathname.split("/").filter(Boolean).at(-1);
-  const deck = slug === "camera-motion" ? cameraMotionFallback : slug === "why-camera-motion-matters" ? whyCameraMotionFallback : slug === "why-camera-angles-matter" ? whyCameraAnglesFallback : slug === "better-youth-genjam" ? betterYouthFallback : null;
+  const deck = slug === "camera-motion" ? cameraMotionFallback : slug === "why-camera-motion-matters" ? whyCameraMotionFallback : slug === "why-camera-angles-matter" ? whyCameraAnglesFallback : slug === "character-consistency" ? characterConsistencyFallback : slug === "state-of-ai-filmmaking" ? stateOfAiFilmmakingFallback : slug === "better-youth-genjam" ? betterYouthFallback : null;
   if (!deck) return <main className="archive-shell archive-auth"><section className="archive-auth-panel"><h1>Deck not found.</h1><Link href="/internal/slide-archive" className="archive-button archive-button-secondary">Return to archive</Link></section></main>;
   if (deck.presentation_mode === "legacy") return <LegacyDeckViewer deck={deck} />;
   if (deck.slug === "why-camera-motion-matters") return <FreeTrainingViewer deck={deck} slides={whyCameraMotionSlides} />;
   if (deck.slug === "why-camera-angles-matter") return <FreeTrainingViewer deck={deck} slides={whyCameraAnglesSlides} />;
+  if (deck.slug === "character-consistency") return <FreeTrainingViewer deck={deck} slides={characterConsistencySlides} />;
+  if (deck.slug === "state-of-ai-filmmaking") return <FreeTrainingViewer deck={deck} slides={stateOfAiFilmmakingSlides} />;
   return <CameraMotionViewer deck={deck} />;
 }
 
