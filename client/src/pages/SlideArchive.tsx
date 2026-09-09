@@ -4,6 +4,7 @@ import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight, Expand, Film, Loader2
 import {
   archiveCategories,
   archiveCategoryClass,
+  privateStoryboardAssets,
   type ArchiveCategory,
   type SlideDeckRecord,
 } from "@/lib/slideArchive";
@@ -207,8 +208,14 @@ function ArchiveIndex() {
   );
 }
 
+const storyboardAssets = {
+  football: { asset: privateStoryboardAssets[0], alt: "Football storyboard showing a progression from an establishing shot to a close-up." },
+  forest: { asset: privateStoryboardAssets[1], alt: "Forest storyboards showing a visual sequence from environment to character reaction." },
+  creator: { asset: privateStoryboardAssets[2], alt: "Creator storyboard showing a planned progression of scenes and framing choices." },
+} as const;
+
 type CameraSlide = { label: string; title: string; copy: string; detail?: string; prompt?: string; media?: keyof typeof cameraMotionFallback.media_manifest };
-type FreeTrainingSlide = { label: string; title: string; copy: string; detail?: string; media?: keyof typeof cameraMotionFallback.media_manifest };
+type FreeTrainingSlide = { label: string; title: string; copy: string; detail?: string; media?: keyof typeof cameraMotionFallback.media_manifest; storyboard?: keyof typeof storyboardAssets };
 
 const cameraSlides: CameraSlide[] = [
   { label: "AI Film Academy · Course Lesson", title: "Camera motion", copy: "Make the viewer feel something." },
@@ -238,14 +245,14 @@ const whyCameraMotionSlides: FreeTrainingSlide[] = [
 
 const whyCameraAnglesSlides: FreeTrainingSlide[] = [
   { label: "AI Film Academy · Free Training", title: "Why angles matter", copy: "The frame changes what the audience knows, feels, and follows." },
-  { label: "The truth", title: "Every frame decides", copy: "An angle always makes a choice about power, distance, attention, and point of view." },
+  { label: "The truth", title: "Every frame decides", copy: "An angle always makes a choice about power, distance, attention, and point of view.", storyboard: "football" },
   { label: "Emotion", title: "Frame the feeling", copy: "A close frame brings us inward. A wider frame gives the subject context. The right angle tells us how to feel.", media: "pushIn" },
   { label: "Attention", title: "Show what matters", copy: "A wide shot introduces the world. A medium carries action. A close shot makes the reaction impossible to miss." },
-  { label: "Story", title: "Guide the story", copy: "Introduce the place, reveal the object, then land on the response—so the viewer always knows what matters.", media: "tracking" },
+  { label: "Story", title: "Guide the story", copy: "Introduce the place, reveal the object, then land on the response—so the viewer always knows what matters.", storyboard: "forest" },
   { label: "Pacing", title: "Build the rhythm", copy: "Changes in size, height, and perspective create rhythm. Random changes just feel random." },
-  { label: "Retention", title: "Interrupt with purpose", copy: "A new angle can reset attention when it reveals something the story needs.", media: "pan" },
+  { label: "Retention", title: "Interrupt with purpose", copy: "A new angle can reset attention when it reveals something the story needs.", media: "crane" },
   { label: "The pairing", title: "Perspective plus motion", copy: "Choose the perspective first. Then choose how the camera should move through that perspective.", media: "orbit" },
-  { label: "Your first sequence", title: "Give frames jobs", copy: "Set the scene. Show the action. Land on the reaction. Reveal the detail." },
+  { label: "Your first sequence", title: "Plan before you animate", copy: "Set the scene. Show the action. Land on the reaction. Reveal the detail.", storyboard: "creator" },
   { label: "Inside AI Film Academy", title: "Stop guessing", copy: "We teach five core angle fundamentals, retention sequences, and the visual tools that make AI films feel intentional." },
 ];
 
@@ -302,7 +309,9 @@ function FreeTrainingViewer({ deck, slides }: { deck: SlideDeckRecord; slides: F
   const [slideIndex, setSlideIndex] = useState(0);
   const [mediaError, setMediaError] = useState(false);
   const slide = slides[slideIndex];
-  const mediaFile = slide.media ? deck.media_manifest[slide.media] : undefined;
+  const storyboard = slide.storyboard ? storyboardAssets[slide.storyboard] : undefined;
+  const hasVisual = Boolean(slide.media || storyboard);
+  const mediaFile = slide.media ? deck.media_manifest[slide.media] : storyboard?.asset;
   const mediaUrl = mediaFile ? `/api/archive/media/${encodeURIComponent(mediaFile.split("/").pop() || "")}` : undefined;
 
   useEffect(() => {
@@ -327,7 +336,7 @@ function FreeTrainingViewer({ deck, slides }: { deck: SlideDeckRecord; slides: F
         <span>{String(slideIndex + 1).padStart(2, "0")} / {String(slides.length).padStart(2, "0")}</span>
         <button type="button" onClick={() => document.documentElement.requestFullscreen?.()} aria-label="Fullscreen presentation"><Expand size={18} /></button>
       </div>
-      <section className={`camera-slide free-training-slide ${slide.media ? "camera-slide-media" : ""}`}>
+      <section className={`camera-slide free-training-slide ${hasVisual ? "camera-slide-media" : ""}`}>
         <div className="camera-slide-copy">
           <p className="camera-slide-label">{slide.label}</p>
           <h1>{slide.title}</h1>
@@ -335,8 +344,12 @@ function FreeTrainingViewer({ deck, slides }: { deck: SlideDeckRecord; slides: F
           <p className="camera-slide-primary">{slide.copy}</p>
           {slide.detail && <div className="camera-slide-detail"><span>Keep in mind</span><p>{slide.detail}</p></div>}
         </div>
-        {slide.media && <div className="camera-slide-media-frame">
-          {mediaUrl ? <video key={mediaUrl} src={mediaUrl} autoPlay loop muted playsInline preload="auto" onError={() => setMediaError(true)} /> : <div className="camera-media-wait">{mediaError ? "Private media is not available." : "Loading secure motion clip…"}</div>}
+        {hasVisual && <div className={`camera-slide-media-frame ${storyboard ? "camera-slide-storyboard-frame" : ""}`}>
+          {mediaUrl && !mediaError
+            ? slide.media
+              ? <video key={mediaUrl} src={mediaUrl} autoPlay loop muted playsInline preload="auto" onError={() => setMediaError(true)} />
+              : <img key={mediaUrl} src={mediaUrl} alt={storyboard?.alt ?? "Private storyboard reference"} onError={() => setMediaError(true)} />
+            : <div className="camera-media-wait">{mediaError ? "Private media is not available." : "Loading secure visual…"}</div>}
         </div>}
       </section>
       <div className="camera-deck-controls" onClick={(event) => event.stopPropagation()}>
