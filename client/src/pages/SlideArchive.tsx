@@ -350,7 +350,7 @@ const learningObjectivesSlides: FreeTrainingSlide[] = [
   { label: "03 · Planning", title: "Plan the shots", copy: "Translate a script into ordered images using intentional framing, camera angles, and shot sizes.", image: "creator" },
   { label: "04 · Consistency", title: "Keep worlds consistent", copy: "Build a character reference sheet and use image references to protect appearance, setting, and visual style across shots.", image: "characterSheet" },
   { label: "05 · Prompts", title: "Refine prompts", copy: "Describe the subject, action, environment, lighting, and style—then revise generated images until they match the creative direction." },
-  { label: "06 · Production", title: "Generate footage", copy: "Animate storyboard images and direct camera motion and character action to create usable video clips.", media: "tracking" },
+  { label: "06 · Production", title: "Generate footage", copy: "Animate storyboard images and direct camera motion and character action to create usable video clips." },
   { label: "07 · Audio", title: "Build the soundtrack", copy: "Use voice, dialogue, music, sound effects, and lip sync to support the scene and its intended emotion." },
   { label: "08 · Edit", title: "Edit with purpose", copy: "Arrange and trim footage, control pacing, balance audio, and use cuts, transitions, and keyframes with purpose." },
   { label: "09 · Review", title: "Review and improve", copy: "Review images and clips for consistency, movement, and story clarity, then refine the work through practice and feedback." },
