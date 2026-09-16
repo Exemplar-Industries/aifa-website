@@ -110,6 +110,24 @@ const stateOfAiFilmmakingFallback: SlideDeckRecord = {
   updated_at: "2026-09-09T00:00:00.000Z",
 };
 
+const learningObjectivesFallback: SlideDeckRecord = {
+  id: "learning-objectives",
+  slug: "learning-objectives",
+  title: "Learning Objectives",
+  category: "Course Lessons",
+  description: "The four-week AI Film Academy curriculum path from preproduction to a finished, presentable AI video.",
+  thumbnail_path: null,
+  source_bundle_path: null,
+  presentation_route: "/internal/slide-archive/learning-objectives",
+  presentation_mode: "native",
+  media_manifest: cameraMotionFallback.media_manifest,
+  tags: ["Course overview", "Curriculum", "AI video specialist"],
+  status: "ready",
+  sort_order: 11,
+  created_at: "2026-09-09T00:00:00.000Z",
+  updated_at: "2026-09-09T00:00:00.000Z",
+};
+
 const betterYouthFallback: SlideDeckRecord = {
   id: "better-youth-genjam",
   slug: "better-youth-genjam",
@@ -219,7 +237,7 @@ function DeckCard({ deck, onOpen }: { deck: SlideDeckRecord; onOpen: () => void 
 function ArchiveIndex() {
   const [, navigate] = useLocation();
   const [selectedCategory, setSelectedCategory] = useState<ArchiveCategory | "All">("All");
-  const decks = [cameraMotionFallback, whyCameraMotionFallback, whyCameraAnglesFallback, characterConsistencyFallback, stateOfAiFilmmakingFallback, betterYouthFallback];
+  const decks = [cameraMotionFallback, learningObjectivesFallback, whyCameraMotionFallback, whyCameraAnglesFallback, characterConsistencyFallback, stateOfAiFilmmakingFallback, betterYouthFallback];
   const visibleDecks = decks.filter((deck) => selectedCategory === "All" || deck.category === selectedCategory);
 
   async function logout() {
@@ -322,6 +340,24 @@ const stateOfAiFilmmakingSlides: FreeTrainingSlide[] = [
   { label: "What you can build", title: "Make work you can show", copy: "Every practice session can become a scene, a character, a short sequence, or the beginning of a real portfolio." },
   { label: "The advantage", title: "You do not learn alone", copy: "A good community gives you exercises, feedback, examples, and the structure to keep moving when the tools change." },
   { label: "Inside AI Film Academy", title: "Start your first project", copy: "Learn the core workflow, build your first character and scene, and keep stacking the fundamentals that make the work feel cinematic." },
+];
+
+const learningObjectivesSlides: FreeTrainingSlide[] = [
+  { label: "AI Film Academy · Course Overview", title: "Learning objectives", copy: "Turn one idea into a finished short film, advertisement, or creative video using emerging media technologies." },
+  { label: "The path", title: "A four-week production system", copy: "The core curriculum follows a repeatable path through preproduction, production, and postproduction." },
+  { label: "01 · Workflow", title: "Apply a complete workflow", copy: "Choose image-generation, video-generation, and editing tools—and use them in the right sequence to finish a project." },
+  { label: "02 · Story", title: "Develop a short visual story", copy: "Write a 30 to 60 second concept with a clear progression, emotional payoff, and call to action when appropriate." },
+  { label: "03 · Planning", title: "Plan the shot sequence", copy: "Translate a script into ordered images using intentional framing, camera angles, and shot sizes.", image: "creator" },
+  { label: "04 · Consistency", title: "Create consistent worlds", copy: "Build a character reference sheet and use image references to protect appearance, setting, and visual style across shots.", image: "characterSheet" },
+  { label: "05 · Prompts", title: "Write and refine prompts", copy: "Describe the subject, action, environment, lighting, and style—then revise generated images until they match the creative direction." },
+  { label: "06 · Production", title: "Generate footage with intention", copy: "Animate storyboard images and direct camera motion and character action to create usable video clips.", media: "tracking" },
+  { label: "07 · Audio", title: "Create and synchronize audio", copy: "Use voice, dialogue, music, sound effects, and lip sync to support the scene and its intended emotion." },
+  { label: "08 · Edit", title: "Edit a coherent video", copy: "Arrange and trim footage, control pacing, balance audio, and use cuts, transitions, and keyframes with purpose." },
+  { label: "09 · Review", title: "Evaluate and improve", copy: "Review images and clips for consistency, movement, and story clarity, then refine the work through practice and feedback." },
+  { label: "10 · Present", title: "Export and present work", copy: "Export at 1080p or higher in the right horizontal or vertical format, then select strong projects for a portfolio." },
+  { label: "Practical demonstration", title: "Make one complete sequence", copy: "Demonstrate the process through a character sheet, an ordered storyboard, and a finished 30 to 60 second video with intentional choices." },
+  { label: "Further learning", title: "Keep building beyond the core", copy: "Bonus lessons explore commercial hooks, real product integration, portfolio pitching, pricing, scope, revisions, client delivery, visual effects, and soundtrack design." },
+  { label: "AI Video Specialist", title: "Finish with proof of work", copy: "Complete the course and certification, pair it with a finished portfolio, and show clients or employers what you can apply on real projects." },
 ];
 
 function CameraMotionViewer({ deck }: { deck: SlideDeckRecord }) {
@@ -437,13 +473,14 @@ function LegacyDeckViewer({ deck }: { deck: SlideDeckRecord }) {
 function ArchiveDeckRoute() {
   const [, params] = useRoute("/internal/slide-archive/:slug");
   const slug = params?.slug ?? window.location.pathname.split("/").filter(Boolean).at(-1);
-  const deck = slug === "camera-motion" ? cameraMotionFallback : slug === "why-camera-motion-matters" ? whyCameraMotionFallback : slug === "why-camera-angles-matter" ? whyCameraAnglesFallback : slug === "character-consistency" ? characterConsistencyFallback : slug === "state-of-ai-filmmaking" ? stateOfAiFilmmakingFallback : slug === "better-youth-genjam" ? betterYouthFallback : null;
+  const deck = slug === "camera-motion" ? cameraMotionFallback : slug === "learning-objectives" ? learningObjectivesFallback : slug === "why-camera-motion-matters" ? whyCameraMotionFallback : slug === "why-camera-angles-matter" ? whyCameraAnglesFallback : slug === "character-consistency" ? characterConsistencyFallback : slug === "state-of-ai-filmmaking" ? stateOfAiFilmmakingFallback : slug === "better-youth-genjam" ? betterYouthFallback : null;
   if (!deck) return <main className="archive-shell archive-auth"><section className="archive-auth-panel"><h1>Deck not found.</h1><Link href="/internal/slide-archive" className="archive-button archive-button-secondary">Return to archive</Link></section></main>;
   if (deck.presentation_mode === "legacy") return <LegacyDeckViewer deck={deck} />;
   if (deck.slug === "why-camera-motion-matters") return <FreeTrainingViewer deck={deck} slides={whyCameraMotionSlides} />;
   if (deck.slug === "why-camera-angles-matter") return <FreeTrainingViewer deck={deck} slides={whyCameraAnglesSlides} />;
   if (deck.slug === "character-consistency") return <FreeTrainingViewer deck={deck} slides={characterConsistencySlides} />;
   if (deck.slug === "state-of-ai-filmmaking") return <FreeTrainingViewer deck={deck} slides={stateOfAiFilmmakingSlides} />;
+  if (deck.slug === "learning-objectives") return <FreeTrainingViewer deck={deck} slides={learningObjectivesSlides} />;
   return <CameraMotionViewer deck={deck} />;
 }
 
