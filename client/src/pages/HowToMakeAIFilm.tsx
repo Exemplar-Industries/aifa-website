@@ -126,13 +126,13 @@ export default function HowToMakeAIFilm() {
             This is where most of the work happens. Before you generate moving footage, you need a character reference, a location plan, and a shot list. These are not optional extras. They are the source of truth that lets every shot belong to the same film.
           </p>
           <div style={{ display: "grid", gap: "1.25rem", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))" }}>
-            <NumberedStep number="A" title="Build the character sheet">
-              <p style={{ color: muted, margin: 0 }}>Create one page that locks the choices you do not want the model to forget.</p>
+            <NumberedStep number="A" title="Build the character sheet in Nano Banana Pro">
+              <p style={{ color: muted, margin: 0 }}>Do not write a character description and hope every new scene remembers it. Build one visual reference sheet in Nano Banana Pro before you make scene art or footage.</p>
               <Checklist items={[
-                "Front, three-quarter, side, and back views of the character.",
-                "Wardrobe, silhouette, color palette, accessories, age range, and key facial details.",
-                "A short expression set: neutral, tension, reaction, and one story-specific emotion.",
-                "A written master prompt that names the subject, action, environment, shot size, lens, lighting, and style.",
+                "Gather only the references that define the person: face, character-sheet layout, clothing, footwear, accessories, and any prop that must survive across shots.",
+                "Combine those separate references into one clean multi-view sheet: front, three-quarter, side, and back views.",
+                "Keep the facial details, hair, silhouette, wardrobe, and story-specific accessories visible enough to reuse as the source for the next image.",
+                "Add expressions only when the scene needs performance. This sheet is a production reference, not a pretty mood board.",
               ]} />
             </NumberedStep>
             <NumberedStep number="B" title="Design the locations">
@@ -144,18 +144,18 @@ export default function HowToMakeAIFilm() {
                 "Keep each location board next to the character sheet while you plan shots.",
               ]} />
             </NumberedStep>
-            <NumberedStep number="C" title="Write the shot list">
-              <p style={{ color: muted, margin: 0 }}>Turn the concept into six to ten shots for a short first film. Each shot must earn its place in the edit.</p>
+            <NumberedStep number="C" title="Write the list in Google Docs. Build the board in Canva.">
+              <p style={{ color: muted, margin: 0 }}>Paste the script into a Google Doc. Read it line by line, decide what the audience needs to see, then make the rough shot list before you generate anything.</p>
               <Checklist items={[
-                "Start with a wide shot that establishes the world and gives the audience orientation.",
-                "Use medium shots for most performance and story information.",
-                "Use close-ups only when you need emotion, a decision, or a detail to land.",
-                "For every shot, write: image reference, framing, action, camera move, duration, and what it cuts to next.",
+                "Start rough with about six shots. A 30 to 60 second concept can grow to roughly 6 to 10 storyboard images when the story and pace require it.",
+                "Choose the camera decision for each beat: wide to establish, medium for most performance, and close-up or insert when a reaction or detail needs to land.",
+                "For every shot, write the image reference, framing, action, camera move, duration, and what it cuts to next.",
+                "Open Canva with Create → Whiteboard. Drag the approved images onto the infinite canvas and use Auto-lineup to organize them in story order.",
               ]} />
             </NumberedStep>
           </div>
           <div style={{ ...card, marginTop: "1.5rem", padding: "1.4rem" }}>
-            <p style={{ color: red, fontFamily: "'JetBrains Mono', monospace", fontSize: ".76rem", fontWeight: 800, letterSpacing: ".1em", margin: 0 }}>SHOT LIST EXAMPLE</p>
+              <p style={{ color: red, fontFamily: "'JetBrains Mono', monospace", fontSize: ".76rem", fontWeight: 800, letterSpacing: ".1em", margin: 0 }}>GOOGLE DOCS SHOT LIST → CANVA WHITEBOARD</p>
             <div style={{ marginTop: "1rem", overflowX: "auto" }}>
               <table style={{ borderCollapse: "collapse", minWidth: "760px", width: "100%" }}>
                 <thead>
@@ -163,8 +163,8 @@ export default function HowToMakeAIFilm() {
                 </thead>
                 <tbody>
                   <tr><td style={{ padding: ".72rem .65rem" }}>01</td><td>Wide</td><td>Character enters the location</td><td>Location board A</td><td>Locked or slow push-in</td><td>Medium performance shot</td></tr>
-                  <tr><td style={{ padding: ".72rem .65rem" }}>02</td><td>Medium</td><td>Character notices the problem</td><td>Character sheet + location board A</td><td>Subtle push-in</td><td>Detail or reaction</td></tr>
-                  <tr><td style={{ padding: ".72rem .65rem" }}>03</td><td>Close-up</td><td>Decision lands on the face or prop</td><td>Character expression reference</td><td>Minimal movement</td><td>Action shot</td></tr>
+                  <tr><td style={{ padding: ".72rem .65rem" }}>02</td><td>Medium</td><td>Character notices the problem</td><td>Nano Banana Pro character sheet + location board A</td><td>Subtle push-in</td><td>Detail or reaction</td></tr>
+                  <tr><td style={{ padding: ".72rem .65rem" }}>03</td><td>Close-up</td><td>Decision lands on the face or prop</td><td>Character-sheet expression reference</td><td>Minimal movement</td><td>Action shot</td></tr>
                 </tbody>
               </table>
             </div>
