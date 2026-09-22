@@ -51,6 +51,12 @@ const ROUTE_SEO: Record<string, SeoPage> = {
       "Keep AI characters consistent with AIFA’s practical system: character bible, world reference, Google Flow Ingredients, approved frames, and a continuity pass before editing.",
     type: "article",
   },
+  "/resources/templates/ai-storyboard-template": {
+    title: "AI Storyboard Template for a Short Film | AI Film Academy",
+    description:
+      "Build an AI film storyboard with AIFA’s practical workflow: a six-shot Google Docs list, camera-first decisions, and a Canva Whiteboard review before Google Flow.",
+    type: "article",
+  },
   "/free-video-training": {
     title: "Free AI Filmmaking Training | AI Film Academy",
     description:

@@ -396,6 +396,10 @@ const SEO_PUBLIC_PAGES: Record<string, ServerSeoPage> = {
     title: "How to Keep AI Characters Consistent Across Scenes | AI Film Academy",
     description: "Keep AI characters consistent with AIFA’s practical system: character bible, world reference, Google Flow Ingredients, approved frames, and a continuity pass before editing.",
   },
+  "/resources/templates/ai-storyboard-template": {
+    title: "AI Storyboard Template for a Short Film | AI Film Academy",
+    description: "Build an AI film storyboard with AIFA’s practical workflow: a six-shot Google Docs list, camera-first decisions, and a Canva Whiteboard review before Google Flow.",
+  },
   "/free-video-training": {
     title: "Free AI Filmmaking Training | AI Film Academy",
     description: "Watch free AI filmmaking training and learn the practical workflow behind portfolio-ready AI films, trailers, ads, and animation.",

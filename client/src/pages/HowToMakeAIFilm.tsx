@@ -171,8 +171,11 @@ export default function HowToMakeAIFilm() {
           </div>
           <div style={{ ...card, borderLeft: `4px solid ${red}`, marginTop: "1.5rem", padding: "1.2rem 1.35rem" }}>
             <strong style={{ display: "block", fontFamily: "'JetBrains Mono', monospace", fontSize: ".78rem", letterSpacing: ".08em" }}>NEXT FIELD GUIDE</strong>
-            <p style={{ color: muted, lineHeight: 1.55, margin: ".55rem 0 0" }}>Your character sheet becomes useful only when you can carry it through the next scene. Use the character-consistency guide to build the reference pack, continuity brief, and approved-frame loop.</p>
-            <Link href="/resources/workflows/ai-character-consistency" style={{ color: copy, display: "inline-block", fontFamily: "'JetBrains Mono', monospace", fontSize: ".8rem", fontWeight: 800, letterSpacing: ".05em", marginTop: ".9rem", textDecorationColor: red }}>KEEP AI CHARACTERS CONSISTENT →</Link>
+            <p style={{ color: muted, lineHeight: 1.55, margin: ".55rem 0 0" }}>Your character sheet becomes useful only when the shots have a real plan. Build the shot list and visual board first, then use the character-consistency guide to protect the reference pack through the next scene.</p>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem", marginTop: ".9rem" }}>
+              <Link href="/resources/templates/ai-storyboard-template" style={{ color: copy, display: "inline-block", fontFamily: "'JetBrains Mono', monospace", fontSize: ".8rem", fontWeight: 800, letterSpacing: ".05em", textDecorationColor: red }}>BUILD THE SHOT LIST →</Link>
+              <Link href="/resources/workflows/ai-character-consistency" style={{ color: copy, display: "inline-block", fontFamily: "'JetBrains Mono', monospace", fontSize: ".8rem", fontWeight: 800, letterSpacing: ".05em", textDecorationColor: red }}>KEEP CHARACTERS CONSISTENT →</Link>
+            </div>
           </div>
         </section>
 
