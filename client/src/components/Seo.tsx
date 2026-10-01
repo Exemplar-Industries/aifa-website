@@ -57,6 +57,12 @@ const ROUTE_SEO: Record<string, SeoPage> = {
       "Build an AI film storyboard with AIFA’s practical workflow: a six-shot Google Docs list, camera-first decisions, and a Canva Whiteboard review before Google Flow.",
     type: "article",
   },
+  "/resources/templates/ai-character-bible": {
+    title: "AI Character Bible Template for Consistent Film Worlds | AI Film Academy",
+    description:
+      "Use AIFA’s practical character bible template to lock the details that must stay consistent across AI film scenes before you generate.",
+    type: "article",
+  },
   "/free-video-training": {
     title: "Free AI Filmmaking Training | AI Film Academy",
     description:

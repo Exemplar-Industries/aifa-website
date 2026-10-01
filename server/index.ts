@@ -400,6 +400,10 @@ const SEO_PUBLIC_PAGES: Record<string, ServerSeoPage> = {
     title: "AI Storyboard Template for a Short Film | AI Film Academy",
     description: "Build an AI film storyboard with AIFA’s practical workflow: a six-shot Google Docs list, camera-first decisions, and a Canva Whiteboard review before Google Flow.",
   },
+  "/resources/templates/ai-character-bible": {
+    title: "AI Character Bible Template for Consistent Film Worlds | AI Film Academy",
+    description: "Use AIFA’s practical character bible template to lock the details that must stay consistent across AI film scenes before you generate.",
+  },
   "/free-video-training": {
     title: "Free AI Filmmaking Training | AI Film Academy",
     description: "Watch free AI filmmaking training and learn the practical workflow behind portfolio-ready AI films, trailers, ads, and animation.",

@@ -37,6 +37,7 @@ const BetterYouthGenJam = lazy(() => import("./pages/BetterYouthGenJam"));
 const HowToMakeAIFilm = lazy(() => import("./pages/HowToMakeAIFilm"));
 const CharacterConsistencyGuide = lazy(() => import("./pages/CharacterConsistencyGuide"));
 const AIStoryboardTemplate = lazy(() => import("./pages/AIStoryboardTemplate"));
+const AICharacterBibleTemplate = lazy(() => import("./pages/AICharacterBibleTemplate"));
 const SlideArchive = lazy(() => import("./pages/SlideArchive"));
 
 const SHOWCASE_UPLOAD_FORM_URL = "https://drive.google.com/drive/u/0/folders/12Cy3_AAqqdfizjQlO1h9s3h-X-7PfezV";
@@ -111,6 +112,7 @@ function Router() {
       <Route path={"/resources/workflows/how-to-make-an-ai-film"} component={HowToMakeAIFilm} />
       <Route path={"/resources/workflows/ai-character-consistency"} component={CharacterConsistencyGuide} />
       <Route path={"/resources/templates/ai-storyboard-template"} component={AIStoryboardTemplate} />
+      <Route path={"/resources/templates/ai-character-bible"} component={AICharacterBibleTemplate} />
       <Route path={"/membership/success"} component={MembershipSuccess} />
       <Route path={"/refund-policy"} component={RefundPolicy} />
       <Route path={"/terms"} component={Terms} />
