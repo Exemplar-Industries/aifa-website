@@ -400,10 +400,6 @@ const SEO_PUBLIC_PAGES: Record<string, ServerSeoPage> = {
     title: "AI Storyboard Template for a Short Film | AI Film Academy",
     description: "Build an AI film storyboard with AIFA’s practical workflow: a six-shot Google Docs list, camera-first decisions, and a Canva Whiteboard review before Google Flow.",
   },
-  "/resources/templates/ai-character-bible": {
-    title: "AI Character Bible Template for Consistent Film Worlds | AI Film Academy",
-    description: "Use AIFA’s practical character bible template to lock the details that must stay consistent across AI film scenes before you generate.",
-  },
   "/free-video-training": {
     title: "Free AI Filmmaking Training | AI Film Academy",
     description: "Watch free AI filmmaking training and learn the practical workflow behind portfolio-ready AI films, trailers, ads, and animation.",
@@ -881,6 +877,12 @@ async function startServer() {
       console.error("[slide-save] Error:", err);
       res.status(500).json({ error: "Failed to save slide" });
     }
+  });
+
+  // Retired resource: the latest AIFA resource standard requires worked examples or usable prompts rather than a blank worksheet.
+  // Preserve the reader path and any early discovery while routing to the stronger continuity field guide.
+  app.get("/resources/templates/ai-character-bible", (_req, res) => {
+    res.redirect(301, "/resources/workflows/ai-character-consistency");
   });
 
   // Serve static files from dist/public in production
