@@ -1,4 +1,5 @@
 import { Link } from "wouter";
+import { useSkoolCta } from "@/contexts/AffiliateLinkContext";
 
 const red = "#C72E2E";
 const dark = "#0A0A0A";
@@ -47,6 +48,8 @@ function Checklist({ items }: { items: string[] }) {
 }
 
 export default function HowToMakeAIFilm() {
+  const { skoolUrl, trackCtaClick } = useSkoolCta();
+
   return (
     <main style={{ background: dark, color: copy, minHeight: "100vh", paddingTop: "4.5rem" }}>
       <section style={{ background: "radial-gradient(circle at 76% 16%, rgba(199,46,46,.28), transparent 32%), linear-gradient(180deg, #111 0%, #0A0A0A 100%)", borderBottom: `1px solid ${border}`, padding: "clamp(4.5rem, 9vw, 8rem) 1.5rem clamp(3.25rem, 7vw, 6rem)" }}>
@@ -280,7 +283,7 @@ export default function HowToMakeAIFilm() {
           </p>
           <div style={{ display: "flex", flexWrap: "wrap", gap: ".9rem" }}>
             <Link href="/free-video-training" className="btn-primary" style={{ minHeight: "3.25rem", padding: ".75rem 1.2rem", textDecoration: "none" }}>WATCH FREE TRAINING</Link>
-            <Link href="/membership" className="btn-outline" style={{ minHeight: "3.25rem", padding: ".75rem 1.2rem", textDecoration: "none" }}>EXPLORE MEMBERSHIP</Link>
+            <a href={skoolUrl} className="btn-outline" style={{ minHeight: "3.25rem", padding: ".75rem 1.2rem", textDecoration: "none" }} onClick={() => trackCtaClick("Film Guide Explore Membership")}>EXPLORE MEMBERSHIP</a>
           </div>
         </section>
       </article>

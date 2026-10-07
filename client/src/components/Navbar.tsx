@@ -5,22 +5,23 @@
 
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
+import { useSkoolCta } from "@/contexts/AffiliateLinkContext";
 
 const LOGO_URL = "/assets/afa-logo-horizontal.png";
-
-const navLinks = [
-  { label: "Home", href: "/" },
-  { label: "Membership", href: "/membership" },
-  { label: "Productions", href: "/productions" },
-  { label: "Events", href: "/education-events" },
-  { label: "Showcase", href: "/showcase" },
-  { label: "Contact", href: "/contact" },
-  { label: "FAQ", href: "/faq" },
-];
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const { skoolUrl, trackCtaClick } = useSkoolCta();
+  const navLinks = [
+    { label: "Home", href: "/" },
+    { label: "Membership", href: skoolUrl, membershipCta: true },
+    { label: "Productions", href: "/productions" },
+    { label: "Events", href: "/education-events" },
+    { label: "Showcase", href: "/showcase" },
+    { label: "Contact", href: "/contact" },
+    { label: "FAQ", href: "/faq" },
+  ];
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 8);
@@ -52,6 +53,7 @@ export default function Navbar() {
               key={link.href}
               href={link.href}
               className="nav-link whitespace-nowrap text-[0.98rem] font-semibold transition-colors duration-150"
+              onClick={link.membershipCta ? () => trackCtaClick("Navigation Membership") : undefined}
             >
               {link.label}
             </a>
@@ -86,7 +88,10 @@ export default function Navbar() {
                 key={link.href}
                 href={link.href}
                 className="nav-link border-b border-white/12 py-4 text-[1.08rem] font-semibold transition-colors"
-                onClick={() => setMenuOpen(false)}
+                onClick={() => {
+                  if (link.membershipCta) trackCtaClick("Navigation Membership");
+                  setMenuOpen(false);
+                }}
               >
                 {link.label}
               </a>

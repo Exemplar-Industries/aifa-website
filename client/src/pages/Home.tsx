@@ -6,6 +6,7 @@
 import InsideAFASection from "@/components/InsideAFASection";
 import ProofSection from "@/components/ProofSection";
 import StartHereSection from "@/components/StartHereSection";
+import { useSkoolCta } from "@/contexts/AffiliateLinkContext";
 import { useEffect, useRef, useState } from "react";
 
 const HERO_VIDEO_URL =
@@ -14,6 +15,7 @@ const HERO_VIDEO_URL =
 function FullscreenHero() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoLoaded, setVideoLoaded] = useState(false);
+  const { skoolUrl, trackCtaClick } = useSkoolCta();
 
   useEffect(() => {
     const timer = window.setTimeout(() => setVideoLoaded(true), 600);
@@ -72,8 +74,9 @@ function FullscreenHero() {
 
         <div className="mt-9 flex flex-col justify-center gap-4 sm:flex-row">
           <a
-            href="/membership"
+            href={skoolUrl}
             className="btn-primary pulse-cta min-h-14 px-8 py-4 text-[1rem] font-bold"
+            onClick={() => trackCtaClick("Homepage Explore Membership")}
           >
             Explore Membership
           </a>

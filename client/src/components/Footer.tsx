@@ -3,12 +3,15 @@
  * Readable public-site navigation with primary AIFA social channels.
  */
 
+import { useSkoolCta } from "@/contexts/AffiliateLinkContext";
+
 const LOGO_URL = "/assets/afa-logo-horizontal.png";
 
 type FooterLink = {
   label: string;
   href: string;
   external?: boolean;
+  ctaLabel?: string;
 };
 
 type FooterColumn = {
@@ -16,11 +19,12 @@ type FooterColumn = {
   links: FooterLink[];
 };
 
-const columns: FooterColumn[] = [
+function getColumns(skoolUrl: string): FooterColumn[] {
+  return [
   {
     heading: "Start Here",
     links: [
-      { label: "Membership", href: "/membership" },
+      { label: "Membership", href: skoolUrl, ctaLabel: "Footer Membership" },
       { label: "Try Free", href: "/free-video-training" },
       { label: "FAQ", href: "/faq" },
     ],
@@ -50,9 +54,13 @@ const columns: FooterColumn[] = [
       { label: "Refund Policy", href: "/refund-policy" },
     ],
   },
-];
+  ];
+}
 
 export default function Footer() {
+  const { skoolUrl, trackCtaClick } = useSkoolCta();
+  const columns = getColumns(skoolUrl);
+
   return (
     <footer className="border-t border-white/15 bg-[#050505] text-white">
       <div className="container py-12 md:py-16">
@@ -83,6 +91,7 @@ export default function Footer() {
                       target={link.external ? "_blank" : undefined}
                       rel={link.external ? "noopener noreferrer" : undefined}
                       className="footer-link text-[1rem] font-medium text-white/85 transition-colors"
+                      onClick={link.ctaLabel ? () => trackCtaClick(link.ctaLabel) : undefined}
                     >
                       {link.label}
                     </a>

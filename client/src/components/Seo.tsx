@@ -34,11 +34,6 @@ const ROUTE_SEO: Record<string, SeoPage> = {
     description: "Download the AI Film Academy character reference sheet for directing character look, wardrobe, and angles.",
     noindex: true,
   },
-  "/membership": {
-    title: "AI Filmmaking Membership | AI Film Academy",
-    description:
-      "Join AI Film Academy to learn a practical AI filmmaking workflow, get feedback, build portfolio-ready work, and create alongside a global community.",
-  },
   "/resources/workflows/how-to-make-an-ai-film": {
     title: "How to Make an AI Short Film: The AIFA Workflow | AI Film Academy",
     description:
@@ -293,7 +288,7 @@ export default function Seo() {
       let eventName = "";
       const params: Record<string, string> = { cta_text: label };
 
-      if (path === "/membership") eventName = "aifa_membership_cta_click";
+      if (path === "/membership" || href.startsWith("https://www.skool.com/aifilmacademy/about")) eventName = "aifa_membership_cta_click";
       else if (path === "/free-video-training") eventName = "aifa_free_training_click";
       else if (path === "/contact" || path === "/work-with-us") eventName = "aifa_contact_cta_click";
       else if (path === "/productions") eventName = "aifa_production_cta_click";

@@ -5,6 +5,7 @@
  */
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { useSkoolCta } from "@/contexts/AffiliateLinkContext";
 import { ArrowUpRight } from "lucide-react";
 
 const faqGroups = [
@@ -51,6 +52,8 @@ const faqGroups = [
 ];
 
 export default function FAQ() {
+  const { skoolUrl, trackCtaClick } = useSkoolCta();
+
   return (
     <div className="min-h-screen bg-[#080808] text-white">
       <main>
@@ -99,7 +102,7 @@ export default function FAQ() {
               <h2 className="mt-3 text-4xl text-white md:text-6xl">Turn The Answers Into Finished Work.</h2>
             </div>
             <div className="flex flex-col justify-center gap-3 sm:flex-row">
-              <a href="/membership" className="btn-primary px-7 py-4 font-bold">
+              <a href={skoolUrl} className="btn-primary px-7 py-4 font-bold" onClick={() => trackCtaClick("FAQ Join AIFA")}>
                 Join AIFA <ArrowUpRight className="h-4 w-4" />
               </a>
               <a href="/free-video-training" className="btn-outline px-7 py-4 font-semibold">Try Free</a>

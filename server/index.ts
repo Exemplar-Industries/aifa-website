@@ -12,6 +12,7 @@ const __dirname = path.dirname(__filename);
 // ─── STRIPE CONFIG ───────────────────────────────────────────────────────────
 const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY || "";
 const STRIPE_WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET || "";
+const SKOOL_MEMBERSHIP_URL = "https://www.skool.com/aifilmacademy/about";
 const FAST_PASS_PRODUCT_ID = "prod_UZGwA0tsMGTOR2";
 
 // ─── PAID-SUBSCRIBER INVITE CLAIM CONFIG ──────────────────────────────────────
@@ -883,6 +884,16 @@ async function startServer() {
   // Preserve the reader path and any early discovery while routing to the stronger continuity field guide.
   app.get("/resources/templates/ai-character-bible", (_req, res) => {
     res.redirect(301, "/resources/workflows/ai-character-consistency");
+  });
+
+  // The public membership offer is now owned by Skool. Preserve affiliate
+  // attribution for legacy links while keeping the retired website route usable.
+  app.get("/membership", (req, res) => {
+    const ref = typeof req.query.ref === "string" ? req.query.ref.trim() : "";
+    const destination = ref
+      ? `${SKOOL_MEMBERSHIP_URL}?ref=${encodeURIComponent(ref)}`
+      : SKOOL_MEMBERSHIP_URL;
+    res.redirect(302, destination);
   });
 
   // Serve static files from dist/public in production

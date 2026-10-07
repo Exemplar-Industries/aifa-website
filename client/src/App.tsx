@@ -6,7 +6,7 @@ import { Redirect, Route, Switch, useLocation } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-import { AffiliateLinkProvider } from "./contexts/AffiliateLinkContext";
+import { AffiliateLinkProvider, useSkoolUrl } from "./contexts/AffiliateLinkContext";
 import Home from "./pages/Home";
 import Seo from "./components/Seo";
 
@@ -24,7 +24,6 @@ const Masterclass = lazy(() => import("./pages/Masterclass"));
 const FreeVideoTraining = lazy(() => import("./pages/FreeVideoTraining"));
 const GenJamFreebie = lazy(() => import("./pages/GenJamFreebie"));
 const GenJamOffer = lazy(() => import("./pages/GenJamOffer"));
-const Membership = lazy(() => import("./pages/Membership"));
 const MembershipSuccess = lazy(() => import("./pages/MembershipSuccess"));
 const RefundPolicy = lazy(() => import("./pages/RefundPolicy"));
 const Terms = lazy(() => import("./pages/Terms"));
@@ -40,6 +39,16 @@ const AIStoryboardTemplate = lazy(() => import("./pages/AIStoryboardTemplate"));
 const SlideArchive = lazy(() => import("./pages/SlideArchive"));
 
 const SHOWCASE_UPLOAD_FORM_URL = "https://drive.google.com/drive/u/0/folders/12Cy3_AAqqdfizjQlO1h9s3h-X-7PfezV";
+
+function MembershipRedirect() {
+  const skoolUrl = useSkoolUrl();
+
+  useEffect(() => {
+    window.location.replace(skoolUrl);
+  }, [skoolUrl]);
+
+  return null;
+}
 
 function ShowcaseUploadRedirect() {
   useEffect(() => {
@@ -107,7 +116,7 @@ function Router() {
       <Route path={"/lessons/:week"} component={SlideViewer} />
       <Route path={"/masterclass"} component={Masterclass} />
       <Route path={"/free-video-training"} component={FreeVideoTraining} />
-      <Route path={"/membership"} component={Membership} />
+      <Route path={"/membership"} component={MembershipRedirect} />
       <Route path={"/resources/workflows/how-to-make-an-ai-film"} component={HowToMakeAIFilm} />
       <Route path={"/resources/workflows/ai-character-consistency"} component={CharacterConsistencyGuide} />
       <Route path={"/resources/templates/ai-storyboard-template"} component={AIStoryboardTemplate} />
