@@ -55,9 +55,14 @@ export default function InsideAFASection() {
           <h2 className="mx-auto max-w-4xl text-[clamp(3.1rem,6.2vw,5.85rem)] leading-[0.9] text-[#F5F5F0]">
             Join the Future of <span style={{ color: "var(--afa-red)" }}>Creative Work.</span>
           </h2>
-          <p className="creative-system-statement mx-auto max-w-3xl text-[clamp(1.42rem,2.15vw,1.88rem)] font-semibold leading-[1.42] text-white">
-            Most AI resources leave creators and freelancers overwhelmed. AIFA gives you one production system to move from idea to final piece, build a premium portfolio, and land more paid work.
-          </p>
+          <div className="mx-auto max-w-3xl">
+            <p className="creative-system-statement text-[clamp(1.42rem,2.15vw,1.88rem)] font-semibold leading-[1.42] text-white">
+              Most AI resources leave creators and freelancers overwhelmed. AIFA gives you one production system to move from idea to final piece, build a premium portfolio, and land more paid work.
+            </p>
+            <a href="/resources" className="mt-5 inline-flex border-b border-[var(--afa-red)] pb-1 text-[0.88rem] font-bold tracking-[0.09em] text-white transition-colors hover:text-[var(--afa-red)]">
+              EXPLORE FREE FILMMAKING RESOURCES →
+            </a>
+          </div>
         </div>
 
         <div className="mt-14 grid gap-5 md:grid-cols-3 md:gap-6">

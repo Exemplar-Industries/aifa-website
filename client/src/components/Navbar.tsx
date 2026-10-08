@@ -16,6 +16,7 @@ export default function Navbar() {
   const navLinks = [
     { label: "Home", href: "/" },
     { label: "Membership", href: skoolUrl, membershipCta: true },
+    { label: "Resources", href: "/resources" },
     { label: "Productions", href: "/productions" },
     { label: "Events", href: "/education-events" },
     { label: "Showcase", href: "/showcase" },

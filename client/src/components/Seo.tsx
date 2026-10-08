@@ -34,6 +34,12 @@ const ROUTE_SEO: Record<string, SeoPage> = {
     description: "Download the AI Film Academy character reference sheet for directing character look, wardrobe, and angles.",
     noindex: true,
   },
+  "/resources": {
+    title: "Free AI Filmmaking Resources | AI Film Academy",
+    description:
+      "Use AIFA’s practical AI filmmaking field guides for the full film workflow, six-shot storyboards, character consistency, Google Flow footage, and the final cut.",
+    type: "website",
+  },
   "/resources/workflows/how-to-make-an-ai-film": {
     title: "How to Make an AI Short Film: The AIFA Workflow | AI Film Academy",
     description:

@@ -32,6 +32,7 @@ function getColumns(skoolUrl: string): FooterColumn[] {
   {
     heading: "Explore AIFA",
     links: [
+      { label: "Resources", href: "/resources" },
       { label: "Showcase", href: "/showcase" },
       { label: "Production", href: "/productions" },
       { label: "Events", href: "/education-events" },
