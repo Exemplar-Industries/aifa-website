@@ -5,6 +5,7 @@ import { deliverAifaForm } from "@/lib/formDelivery";
 import { buildInquiryPayload } from "@/lib/inquiryForms";
 import { InquiryIdentityFields, MasterInquiryFields } from "@/components/SharedInquiryFields";
 import Turnstile from "@/components/Turnstile";
+import BetterYouthCaseStudy from "@/components/BetterYouthCaseStudy";
 
 const SERVICES = [
   ["GenJam", "A live six-hour creative challenge where teams make, share, learn, and build together."],
@@ -105,6 +106,8 @@ export default function EducationEvents() {
           <a className="events-primary" href="#event-inquiry">Plan an event with AIFA <ArrowRight size={20} /></a>
         </div>
       </section>
+
+      <BetterYouthCaseStudy />
 
       <section className="events-section events-section--services">
         <div className="events-shell">
