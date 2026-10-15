@@ -372,6 +372,9 @@ type ServerSeoPage = {
   description: string;
   canonicalPath?: string;
   noindex?: boolean;
+  schema?: "collection" | "article";
+  publishedDate?: string;
+  modifiedDate?: string;
 };
 
 const SEO_SITE_ORIGIN = "https://www.aifilmacademy.com";
@@ -392,18 +395,28 @@ const SEO_PUBLIC_PAGES: Record<string, ServerSeoPage> = {
   "/resources": {
     title: "Free AI Filmmaking Resources | AI Film Academy",
     description: "Use AIFA’s practical AI filmmaking field guides for the full film workflow, six-shot storyboards, character consistency, Google Flow footage, and the final cut.",
+    schema: "collection",
   },
   "/resources/workflows/how-to-make-an-ai-film": {
     title: "How to Make an AI Short Film: The AIFA Workflow | AI Film Academy",
     description: "Make an AI short film with AIFA’s practical workflow: character sheets, location design, shot lists, Google Flow footage, editing, music, sound, and voiceover.",
+    schema: "article",
+    publishedDate: "2026-09-03",
+    modifiedDate: "2026-09-17",
   },
   "/resources/workflows/ai-character-consistency": {
     title: "How to Keep AI Characters Consistent Across Scenes | AI Film Academy",
     description: "Keep AI characters consistent with AIFA’s practical system: character bible, world reference, Google Flow Ingredients, approved frames, and a continuity pass before editing.",
+    schema: "article",
+    publishedDate: "2026-09-03",
+    modifiedDate: "2026-09-03",
   },
   "/resources/templates/ai-storyboard-template": {
     title: "AI Storyboard Template for a Short Film | AI Film Academy",
     description: "Build an AI film storyboard with AIFA’s practical workflow: a six-shot Google Docs list, camera-first decisions, and a Canva Whiteboard review before Google Flow.",
+    schema: "article",
+    publishedDate: "2026-09-22",
+    modifiedDate: "2026-09-22",
   },
   "/free-video-training": {
     title: "Free AI Filmmaking Training | AI Film Academy",
@@ -458,6 +471,82 @@ function escapeSeoHtml(value: string): string {
   })[character] || character);
 }
 
+function buildRouteStructuredData(canonicalUrl: string, page: ServerSeoPage): string {
+  const organization = {
+    "@type": "Organization",
+    "@id": `${SEO_SITE_ORIGIN}/#organization`,
+    name: SEO_SITE_NAME,
+    url: SEO_SITE_ORIGIN,
+    logo: SEO_DEFAULT_IMAGE,
+    description: SEO_DEFAULT_PAGE.description,
+  };
+  const website = {
+    "@type": "WebSite",
+    "@id": `${SEO_SITE_ORIGIN}/#website`,
+    url: SEO_SITE_ORIGIN,
+    name: SEO_SITE_NAME,
+    publisher: { "@id": `${SEO_SITE_ORIGIN}/#organization` },
+  };
+
+  if (canonicalUrl === `${SEO_SITE_ORIGIN}/`) {
+    return JSON.stringify({ "@context": "https://schema.org", "@graph": [organization, website] }).replace(/</g, "\\u003c");
+  }
+
+  const webPage = {
+    "@type": page.schema === "collection" ? "CollectionPage" : "WebPage",
+    "@id": `${canonicalUrl}#webpage`,
+    url: canonicalUrl,
+    name: page.title,
+    description: page.description,
+    isPartOf: { "@id": `${SEO_SITE_ORIGIN}/#website` },
+    about: { "@id": `${SEO_SITE_ORIGIN}/#organization` },
+  };
+  const crumbs = [
+    { "@type": "ListItem", position: 1, name: "AI Film Academy", item: SEO_SITE_ORIGIN },
+    ...(page.schema ? [{ "@type": "ListItem", position: 2, name: "Resources", item: `${SEO_SITE_ORIGIN}/resources` }] : []),
+    ...(canonicalUrl !== `${SEO_SITE_ORIGIN}/resources` && page.schema
+      ? [{ "@type": "ListItem", position: 3, name: page.title.replace(/\s+\|\s+AI Film Academy$/, ""), item: canonicalUrl }]
+      : []),
+  ];
+  const graph: Array<Record<string, unknown>> = [organization, website, webPage];
+
+  if (page.schema === "collection") {
+    graph.push(
+      {
+        "@type": "ItemList",
+        "@id": `${canonicalUrl}#workflow-library`,
+        name: "AIFA Filmmaking Workflow Library",
+        numberOfItems: 3,
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "How to Make an AI Short Film", item: `${SEO_SITE_ORIGIN}/resources/workflows/how-to-make-an-ai-film` },
+          { "@type": "ListItem", position: 2, name: "AI Storyboard Template for a Short Film", item: `${SEO_SITE_ORIGIN}/resources/templates/ai-storyboard-template` },
+          { "@type": "ListItem", position: 3, name: "How to Keep AI Characters Consistent Across Scenes", item: `${SEO_SITE_ORIGIN}/resources/workflows/ai-character-consistency` },
+        ],
+      },
+      { "@type": "BreadcrumbList", itemListElement: crumbs },
+    );
+  }
+
+  if (page.schema === "article") {
+    graph.push(
+      {
+        "@type": "Article",
+        "@id": `${canonicalUrl}#article`,
+        headline: page.title.replace(/\s+\|\s+AI Film Academy$/, ""),
+        description: page.description,
+        mainEntityOfPage: { "@id": `${canonicalUrl}#webpage` },
+        author: { "@id": `${SEO_SITE_ORIGIN}/#organization` },
+        publisher: { "@id": `${SEO_SITE_ORIGIN}/#organization` },
+        ...(page.publishedDate ? { datePublished: page.publishedDate } : {}),
+        ...(page.modifiedDate ? { dateModified: page.modifiedDate } : {}),
+      },
+      { "@type": "BreadcrumbList", itemListElement: crumbs },
+    );
+  }
+
+  return JSON.stringify({ "@context": "https://schema.org", "@graph": graph }).replace(/</g, "\\u003c");
+}
+
 function routeSeoHead(pathname: string): string {
   const normalizedPath = pathname === "/" ? "/" : pathname.replace(/\/+$/, "") || "/";
   const privateRoute = normalizedPath === "/connect" || normalizedPath.startsWith("/lessons/") || normalizedPath.startsWith("/genjam") || normalizedPath.startsWith("/internal/slide-archive") || ["/lpv3", "/anthum-exclusive", "/live-exclusive", "/refund-policy", "/terms", "/privacy", "/membership/success", "/internal/lessons"].includes(normalizedPath);
@@ -467,15 +556,8 @@ function routeSeoHead(pathname: string): string {
   const canonicalPath = page.canonicalPath ?? normalizedPath;
   const canonicalUrl = `${SEO_SITE_ORIGIN}${canonicalPath === "/" ? "/" : canonicalPath}`;
   const robots = page.noindex ? "noindex,follow" : "index,follow";
-  const structuredData = JSON.stringify({
-    "@context": "https://schema.org",
-    "@graph": [
-      { "@type": "Organization", "@id": `${SEO_SITE_ORIGIN}/#organization`, name: SEO_SITE_NAME, url: SEO_SITE_ORIGIN, logo: SEO_DEFAULT_IMAGE, description: SEO_DEFAULT_PAGE.description },
-      canonicalPath === "/"
-        ? { "@type": "WebSite", "@id": `${SEO_SITE_ORIGIN}/#website`, url: SEO_SITE_ORIGIN, name: SEO_SITE_NAME, publisher: { "@id": `${SEO_SITE_ORIGIN}/#organization` } }
-        : { "@type": "WebPage", "@id": `${canonicalUrl}#webpage`, url: canonicalUrl, name: page.title, description: page.description, isPartOf: { "@id": `${SEO_SITE_ORIGIN}/#website` }, about: { "@id": `${SEO_SITE_ORIGIN}/#organization` } },
-    ],
-  }).replace(/</g, "\\u003c");
+  const ogType = page.schema === "article" ? "article" : "website";
+  const structuredData = buildRouteStructuredData(canonicalUrl, page);
   return [
     `<title>${escapeSeoHtml(page.title)}</title>`,
     `<meta name="description" content="${escapeSeoHtml(page.description)}" />`,
@@ -483,7 +565,7 @@ function routeSeoHead(pathname: string): string {
     `<link rel="canonical" href="${canonicalUrl}" />`,
     `<meta property="og:title" content="${escapeSeoHtml(page.title)}" />`,
     `<meta property="og:description" content="${escapeSeoHtml(page.description)}" />`,
-    '<meta property="og:type" content="website" />',
+    `<meta property="og:type" content="${ogType}" />`,
     `<meta property="og:url" content="${canonicalUrl}" />`,
     `<meta property="og:site_name" content="${SEO_SITE_NAME}" />`,
     `<meta property="og:image" content="${SEO_DEFAULT_IMAGE}" />`,

@@ -13,6 +13,9 @@ type SeoPage = {
   canonicalPath?: string;
   noindex?: boolean;
   type?: "website" | "article";
+  schema?: "collection" | "article";
+  publishedDate?: string;
+  modifiedDate?: string;
 };
 
 const SITE_ORIGIN = "https://www.aifilmacademy.com";
@@ -39,24 +42,34 @@ const ROUTE_SEO: Record<string, SeoPage> = {
     description:
       "Use AIFA’s practical AI filmmaking field guides for the full film workflow, six-shot storyboards, character consistency, Google Flow footage, and the final cut.",
     type: "website",
+    schema: "collection",
   },
   "/resources/workflows/how-to-make-an-ai-film": {
     title: "How to Make an AI Short Film: The AIFA Workflow | AI Film Academy",
     description:
       "Make an AI short film with AIFA’s practical workflow: character sheets, location design, shot lists, Google Flow footage, editing, music, sound, and voiceover.",
     type: "article",
+    schema: "article",
+    publishedDate: "2026-09-03",
+    modifiedDate: "2026-09-17",
   },
   "/resources/workflows/ai-character-consistency": {
     title: "How to Keep AI Characters Consistent Across Scenes | AI Film Academy",
     description:
       "Keep AI characters consistent with AIFA’s practical system: character bible, world reference, Google Flow Ingredients, approved frames, and a continuity pass before editing.",
     type: "article",
+    schema: "article",
+    publishedDate: "2026-09-03",
+    modifiedDate: "2026-09-03",
   },
   "/resources/templates/ai-storyboard-template": {
     title: "AI Storyboard Template for a Short Film | AI Film Academy",
     description:
       "Build an AI film storyboard with AIFA’s practical workflow: a six-shot Google Docs list, camera-first decisions, and a Canva Whiteboard review before Google Flow.",
     type: "article",
+    schema: "article",
+    publishedDate: "2026-09-22",
+    modifiedDate: "2026-09-22",
   },
   "/free-video-training": {
     title: "Free AI Filmmaking Training | AI Film Academy",
@@ -199,7 +212,6 @@ function setLink(selector: string, attributes: Record<string, string>) {
 
 function getStructuredData(canonicalUrl: string, page: SeoPage) {
   const organization = {
-    "@context": "https://schema.org",
     "@type": "Organization",
     "@id": `${SITE_ORIGIN}/#organization`,
     name: SITE_NAME,
@@ -207,38 +219,77 @@ function getStructuredData(canonicalUrl: string, page: SeoPage) {
     logo: DEFAULT_IMAGE,
     description: DEFAULT_SEO.description,
   };
+  const website = {
+    "@type": "WebSite",
+    "@id": `${SITE_ORIGIN}/#website`,
+    url: SITE_ORIGIN,
+    name: SITE_NAME,
+    publisher: { "@id": `${SITE_ORIGIN}/#organization` },
+  };
 
   if (canonicalUrl === `${SITE_ORIGIN}/`) {
-    return {
-      "@context": "https://schema.org",
-      "@graph": [
-        organization,
-        {
-          "@type": "WebSite",
-          "@id": `${SITE_ORIGIN}/#website`,
-          url: SITE_ORIGIN,
-          name: SITE_NAME,
-          publisher: { "@id": `${SITE_ORIGIN}/#organization` },
-        },
-      ],
-    };
+    return { "@context": "https://schema.org", "@graph": [organization, website] };
   }
 
-  return {
-    "@context": "https://schema.org",
-    "@graph": [
-      organization,
-      {
-        "@type": "WebPage",
-        "@id": `${canonicalUrl}#webpage`,
-        url: canonicalUrl,
-        name: page.title,
-        description: page.description,
-        isPartOf: { "@id": `${SITE_ORIGIN}/#website` },
-        about: { "@id": `${SITE_ORIGIN}/#organization` },
-      },
-    ],
+  const webPage = {
+    "@type": page.schema === "collection" ? "CollectionPage" : "WebPage",
+    "@id": `${canonicalUrl}#webpage`,
+    url: canonicalUrl,
+    name: page.title,
+    description: page.description,
+    isPartOf: { "@id": `${SITE_ORIGIN}/#website` },
+    about: { "@id": `${SITE_ORIGIN}/#organization` },
   };
+  const crumbs = [
+    { "@type": "ListItem", position: 1, name: "AI Film Academy", item: SITE_ORIGIN },
+    ...(page.schema ? [{ "@type": "ListItem", position: 2, name: "Resources", item: `${SITE_ORIGIN}/resources` }] : []),
+    ...(canonicalUrl !== `${SITE_ORIGIN}/resources` && page.schema
+      ? [{ "@type": "ListItem", position: 3, name: page.title.replace(/\s+\|\s+AI Film Academy$/, ""), item: canonicalUrl }]
+      : []),
+  ];
+  const graph: Record<string, unknown>[] = [organization, website, webPage];
+
+  if (page.schema === "collection") {
+    graph.push(
+      {
+        "@type": "ItemList",
+        "@id": `${canonicalUrl}#workflow-library`,
+        name: "AIFA Filmmaking Workflow Library",
+        numberOfItems: 3,
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "How to Make an AI Short Film", item: `${SITE_ORIGIN}/resources/workflows/how-to-make-an-ai-film` },
+          { "@type": "ListItem", position: 2, name: "AI Storyboard Template for a Short Film", item: `${SITE_ORIGIN}/resources/templates/ai-storyboard-template` },
+          { "@type": "ListItem", position: 3, name: "How to Keep AI Characters Consistent Across Scenes", item: `${SITE_ORIGIN}/resources/workflows/ai-character-consistency` },
+        ],
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: crumbs,
+      },
+    );
+  }
+
+  if (page.schema === "article") {
+    graph.push(
+      {
+        "@type": "Article",
+        "@id": `${canonicalUrl}#article`,
+        headline: page.title.replace(/\s+\|\s+AI Film Academy$/, ""),
+        description: page.description,
+        mainEntityOfPage: { "@id": `${canonicalUrl}#webpage` },
+        author: { "@id": `${SITE_ORIGIN}/#organization` },
+        publisher: { "@id": `${SITE_ORIGIN}/#organization` },
+        ...(page.publishedDate ? { datePublished: page.publishedDate } : {}),
+        ...(page.modifiedDate ? { dateModified: page.modifiedDate } : {}),
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: crumbs,
+      },
+    );
+  }
+
+  return { "@context": "https://schema.org", "@graph": graph };
 }
 
 export default function Seo() {
