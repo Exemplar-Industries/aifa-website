@@ -249,6 +249,9 @@ const AIFA_MEMBERSHIP_MONTHLY_PRICE_ID = process.env.AIFA_MEMBERSHIP_MONTHLY_PRI
 const AIFA_MEMBERSHIP_ANNUAL_PRICE_ID = process.env.AIFA_MEMBERSHIP_ANNUAL_PRICE_ID ?? "price_1U3n22AtNs5zyUU7RW9EP9V2";
 const AIFA_SKOOL_INVITE_FUNCTION_URL = process.env.AIFA_SKOOL_INVITE_FUNCTION_URL ?? "https://mdjjmanqnlfgttwtlufx.supabase.co/functions/v1/send-skool-invite";
 const AIFA_PAID_PURCHASE_FULFILLMENT_URL = process.env.AIFA_PAID_PURCHASE_FULFILLMENT_URL ?? "";
+// Optional during staged rollout; make this required only after n8n's endpoint
+// has been migrated to header authentication and validated in production.
+const AIFA_PAID_PURCHASE_FULFILLMENT_TOKEN = process.env.AIFA_PAID_PURCHASE_FULFILLMENT_TOKEN ?? "";
 
 function getMembershipPlanFromPrice(priceId: string): MembershipBillingCycle | null {
   if (priceId === AIFA_MEMBERSHIP_MONTHLY_PRICE_ID) return "monthly";
@@ -366,7 +369,15 @@ async function sendPaidPurchasePostProcessing(input: {
       sessionId: input.sessionId,
       source: "stripe_website_membership",
     },
-    { headers: { "Content-Type": "application/json" }, timeout: 15000 }
+    {
+      headers: {
+        "Content-Type": "application/json",
+        ...(AIFA_PAID_PURCHASE_FULFILLMENT_TOKEN
+          ? { "X-AIFA-Fulfillment-Token": AIFA_PAID_PURCHASE_FULFILLMENT_TOKEN }
+          : {}),
+      },
+      timeout: 15000,
+    }
   );
 }
 
