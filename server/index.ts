@@ -12,6 +12,9 @@ const __dirname = path.dirname(__filename);
 // ─── STRIPE CONFIG ───────────────────────────────────────────────────────────
 const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY || "";
 const STRIPE_WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET || "";
+// Retain only during a controlled signing-secret overlap. Remove after Stripe's
+// previous-secret grace period and after webhook delivery has been verified.
+const STRIPE_WEBHOOK_SECRET_PREVIOUS = process.env.STRIPE_WEBHOOK_SECRET_PREVIOUS || "";
 const SKOOL_MEMBERSHIP_URL = "https://www.skool.com/aifilmacademy/about";
 const FAST_PASS_PRODUCT_ID = "prod_UZGwA0tsMGTOR2";
 
@@ -736,30 +739,44 @@ async function startServer() {
     const sig = req.headers["stripe-signature"] as string;
     const rawBody = req.body as Buffer;
 
-    // Verify webhook signature if secret is configured
-    if (STRIPE_WEBHOOK_SECRET) {
-      try {
-        const timestamp = sig.split(",").find((p) => p.startsWith("t="))?.slice(2);
-        const v1 = sig.split(",").find((p) => p.startsWith("v1="))?.slice(3);
-        if (!timestamp || !v1) {
-          res.status(400).json({ error: "Invalid signature format" });
-          return;
-        }
-        const payload = `${timestamp}.${rawBody.toString("utf8")}`;
-        const expected = crypto
-          .createHmac("sha256", STRIPE_WEBHOOK_SECRET)
-          .update(payload)
-          .digest("hex");
-        if (expected !== v1) {
-          console.error("[stripe-webhook] Signature mismatch");
-          res.status(400).json({ error: "Signature verification failed" });
-          return;
-        }
-      } catch (err) {
-        console.error("[stripe-webhook] Signature error:", err);
-        res.status(400).json({ error: "Signature error" });
+    const webhookSecrets = [STRIPE_WEBHOOK_SECRET, STRIPE_WEBHOOK_SECRET_PREVIOUS].filter(Boolean);
+    if (!webhookSecrets.length) {
+      console.error("[stripe-webhook] No signing secret configured");
+      res.status(503).json({ error: "Webhook verification is not configured" });
+      return;
+    }
+
+    try {
+      if (!sig || !Buffer.isBuffer(rawBody)) {
+        res.status(400).json({ error: "Invalid signature format" });
         return;
       }
+      const timestamp = sig.split(",").find((part) => part.startsWith("t="))?.slice(2);
+      const signatures = sig
+        .split(",")
+        .filter((part) => part.startsWith("v1="))
+        .map((part) => part.slice(3));
+      if (!timestamp || !signatures.length) {
+        res.status(400).json({ error: "Invalid signature format" });
+        return;
+      }
+      const payload = `${timestamp}.${rawBody.toString("utf8")}`;
+      const signatureMatches = webhookSecrets.some((secret) => {
+        const expected = crypto.createHmac("sha256", secret).update(payload).digest("hex");
+        return signatures.some((signature) =>
+          signature.length === expected.length &&
+          crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expected))
+        );
+      });
+      if (!signatureMatches) {
+        console.error("[stripe-webhook] Signature mismatch");
+        res.status(400).json({ error: "Signature verification failed" });
+        return;
+      }
+    } catch (err) {
+      console.error("[stripe-webhook] Signature error:", err);
+      res.status(400).json({ error: "Signature error" });
+      return;
     }
 
     let event: { id?: string; type: string; data: { object: Record<string, unknown> } };
