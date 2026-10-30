@@ -3,7 +3,6 @@ import { useLocation } from "wouter";
 import PageMeta from "@/components/PageMeta";
 
 const JOIN_URL = "https://www.skool.com/aifilmacademy/about";
-const FAST_PASS_URL = "https://buy.stripe.com/7sY3cu1Baggo3Kf3ny7Vm00";
 
 function LockIcon() {
   return (
@@ -103,7 +102,7 @@ export default function CertificationStatus() {
         </p>
       </div>
 
-      <div className="w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+      <div className="w-full max-w-lg mb-12">
         <OptionCard
           badge="Join the course"
           title="Join AI Film Academy"
@@ -116,18 +115,6 @@ export default function CertificationStatus() {
           cta="Join AI Film Academy"
           href={JOIN_URL}
           primary
-        />
-        <OptionCard
-          badge="Fast-Pass"
-          title="Pay $47 Fast-Pass"
-          description="A one-time $47 Fast-Pass checkout is still available if you need the test unlocked before your course email is confirmed."
-          bullets={[
-            "One-time $47 payment",
-            "Opens the certification test",
-            "Use the email from checkout",
-          ]}
-          cta="Pay $47 Fast-Pass"
-          href={FAST_PASS_URL}
         />
       </div>
 

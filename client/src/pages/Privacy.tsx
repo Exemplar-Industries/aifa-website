@@ -43,7 +43,7 @@ const PRIVACY_SECTIONS = [
     title: "Your Privacy Choices",
     body: (
       <span>
-        You may unsubscribe from marketing email at any time. You may ask us to update, access, correct, or delete information we hold about you, subject to applicable law and legitimate recordkeeping needs, by emailing <a href="mailto:hello@aifilmacademy.com" style={{ color: "var(--afa-red)" }}>hello@aifilmacademy.com</a>. You can also manage interest-based advertising through your browser settings, Meta advertising settings, or the industry opt-out tools at <a href="https://optout.aboutads.info/" target="_blank" rel="noreferrer" style={{ color: "var(--afa-red)" }}>optout.aboutads.info</a>. Where applicable law gives you additional privacy rights, we will honor verified requests as required.
+        You may unsubscribe from marketing email at any time. You may ask us to update, access, correct, or delete information we hold about you, subject to applicable law and legitimate recordkeeping needs, by emailing <a href="mailto:brandon@aifilmacademy.com" style={{ color: "var(--afa-red)" }}>brandon@aifilmacademy.com</a>. You can also manage interest-based advertising through your browser settings, Meta advertising settings, or the industry opt-out tools at <a href="https://optout.aboutads.info/" target="_blank" rel="noreferrer" style={{ color: "var(--afa-red)" }}>optout.aboutads.info</a>. Where applicable law gives you additional privacy rights, we will honor verified requests as required.
       </span>
     ),
   },
@@ -57,7 +57,7 @@ const PRIVACY_SECTIONS = [
   },
   {
     title: "Changes and Contact",
-    body: "We may update this policy as our services or practices change. We will post an updated date when we do. For privacy questions or requests, email hello@aifilmacademy.com.",
+    body: "We may update this policy as our services or practices change. We will post an updated date when we do. For privacy questions or requests, email brandon@aifilmacademy.com.",
   },
 ];
 

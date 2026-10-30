@@ -16,7 +16,6 @@ const STRIPE_WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET || "";
 // previous-secret grace period and after webhook delivery has been verified.
 const STRIPE_WEBHOOK_SECRET_PREVIOUS = process.env.STRIPE_WEBHOOK_SECRET_PREVIOUS || "";
 const SKOOL_MEMBERSHIP_URL = "https://www.skool.com/aifilmacademy/about";
-const FAST_PASS_PRODUCT_ID = "prod_UZGwA0tsMGTOR2";
 
 // ─── PAID-SUBSCRIBER INVITE CLAIM CONFIG ──────────────────────────────────────
 // The Skool invite edge function authorizes an email only after an invite_claims
@@ -149,7 +148,7 @@ async function checkEligibility(email: string): Promise<EligibilityResult> {
   const status: string = person.membershipStatus ?? "";
   const fastPassGranted: boolean = person.fastPassGranted === true;
 
-  // Fast-Pass purchased via Stripe still opens the test.
+  // A certification unlock already stored on the person record still opens the test.
   if (fastPassGranted) {
     return { eligible: true };
   }
@@ -174,50 +173,6 @@ async function checkEligibility(email: string): Promise<EligibilityResult> {
   }
 
   return { eligible: false, reason: "not_active_member" };
-}
-
-// ─── CRM HELPERS ─────────────────────────────────────────────────────────────
-async function grantFastPass(email: string): Promise<boolean> {
-  // Find the person in CRM
-  const query = `
-    query FindPerson($email: String!) {
-      people(filter: { emails: { primaryEmail: { eq: $email } } }, first: 1) {
-        edges { node { id } }
-      }
-    }
-  `;
-  const findResp = await axios.post(
-    TWENTY_GRAPHQL_URL,
-    { query, variables: { email: email.toLowerCase().trim() } },
-    { headers: { Authorization: `Bearer ${TWENTY_API_KEY}`, "Content-Type": "application/json" }, timeout: 10000 }
-  );
-  const edges = findResp.data?.data?.people?.edges ?? [];
-
-  if (edges.length === 0) {
-    // Person not in CRM yet — create a minimal record so the Fast-Pass is tracked
-    await axios.post(
-      `${TWENTY_GRAPHQL_URL.replace("/graphql", "/rest/people")}`,
-      {
-        emails: { primaryEmail: email.toLowerCase().trim() },
-        fastPassGranted: true,
-        fastPassGrantedAt: new Date().toISOString().split("T")[0],
-        source: "Stripe",
-      },
-      { headers: { Authorization: `Bearer ${TWENTY_API_KEY}`, "Content-Type": "application/json" }, timeout: 10000 }
-    );
-    return true;
-  }
-
-  const personId = edges[0].node.id;
-  const patchResp = await axios.patch(
-    `${TWENTY_GRAPHQL_URL.replace("/graphql", `/rest/people/${personId}`)}`,
-    {
-      fastPassGranted: true,
-      fastPassGrantedAt: new Date().toISOString().split("T")[0],
-    },
-    { headers: { Authorization: `Bearer ${TWENTY_API_KEY}`, "Content-Type": "application/json" }, timeout: 10000 }
-  );
-  return patchResp.status === 200;
 }
 
 // ─── PAID MEMBERSHIP CONFIGURATION ───────────────────────────────────────────
@@ -680,9 +635,9 @@ async function startServer() {
     });
   });
 
-  // ── STRIPE FAST-PASS + PAID MEMBERSHIP WEBHOOK ─────────────────────────────
-  // Stripe sends checkout.session.completed when a Fast-Pass is purchased.
-  // We verify the signature, confirm the product matches, then tag the CRM.
+  // ── STRIPE PAID MEMBERSHIP WEBHOOK ─────────────────────────────────────────
+  // Stripe sends checkout.session.completed for a legacy subscription checkout.
+  // We verify the signature, confirm the price, then record the purchase.
   app.post("/api/stripe-webhook", async (req, res) => {
     const sig = req.headers["stripe-signature"] as string;
     const rawBody = req.body as Buffer;
@@ -745,9 +700,8 @@ async function startServer() {
         ((session.customer_details as Record<string, unknown>)?.name as string) ??
         "";
 
-      // Confirm the exact purchased product through Stripe line items. Payment
+      // Confirm the exact purchased price through Stripe line items. Payment
       // fulfillment must never rely on browser-provided price or product details.
-      let isFastPass = false;
       let paidMembershipCycle: MembershipBillingCycle | null = null;
       try {
         if (STRIPE_SECRET_KEY && session.id) {
@@ -759,10 +713,6 @@ async function startServer() {
             }
           );
           const items = lineResp.data?.data ?? [];
-          isFastPass = items.some(
-            (item: Record<string, unknown>) =>
-              (item.price as Record<string, unknown>)?.product === FAST_PASS_PRODUCT_ID
-          );
           for (const item of items as Record<string, unknown>[]) {
             const priceId = (item.price as Record<string, unknown>)?.id as string | undefined;
             if (priceId) {
@@ -770,14 +720,11 @@ async function startServer() {
               if (cycle) paidMembershipCycle = cycle;
             }
           }
-        } else {
-          // Existing Fast-Pass legacy behavior. Paid memberships never fail open.
-          isFastPass = true;
         }
       } catch (err) {
         console.error("[stripe-webhook] Line item check failed:", err);
-        // Existing Fast-Pass legacy behavior. Paid memberships never fail open.
-        isFastPass = true;
+        res.status(500).json({ error: "Could not confirm the purchased price." });
+        return;
       }
 
       if (paidMembershipCycle && email) {
@@ -800,15 +747,8 @@ async function startServer() {
           res.status(500).json({ error: "Membership fulfillment failed; Stripe will retry this event." });
           return;
         }
-      } else if (isFastPass && email) {
-        try {
-          const granted = await grantFastPass(email);
-          console.log(`[stripe-webhook] Fast-Pass granted for ${email}: ${granted}`);
-        } catch (err) {
-          console.error(`[stripe-webhook] CRM update failed for ${email}:`, err);
-        }
       } else {
-        console.log(`[stripe-webhook] Skipping — not a configured membership, not a Fast-Pass, or no email. isFastPass=${isFastPass}, membership=${paidMembershipCycle}, email=${email}`);
+        console.log(`[stripe-webhook] Skipping checkout ${String(session.id ?? "")}. No configured price or no email.`);
       }
     }
 

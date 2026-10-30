@@ -45,7 +45,7 @@ const TERMS = [
   },
   {
     title: "Changes and Contact",
-    body: "We may update these Terms as AI Film Academy evolves. We will post an updated date when we do. For questions about these Terms, the course purchase, or access, contact hello@aifilmacademy.com.",
+    body: "We may update these Terms as AI Film Academy evolves. We will post an updated date when we do. For questions about these Terms, the course purchase, or access, contact brandon@aifilmacademy.com.",
   },
 ];
 

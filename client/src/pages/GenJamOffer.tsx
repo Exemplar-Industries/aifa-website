@@ -83,7 +83,7 @@ function PaymentSuccess() {
           ))}
         </div>
         <p style={{ marginTop: "1.5rem", fontSize: "0.78rem", color: "rgba(255,255,255,0.25)" }}>
-          Questions? <a href="mailto:hello@aifilmacademy.com" style={{ color: "rgba(255,255,255,0.4)", textDecoration: "underline" }}>hello@aifilmacademy.com</a>
+          Questions? <a href="mailto:brandon@aifilmacademy.com" style={{ color: "rgba(255,255,255,0.4)", textDecoration: "underline" }}>brandon@aifilmacademy.com</a>
         </p>
       </div>
     </div>

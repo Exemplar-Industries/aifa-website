@@ -23,7 +23,7 @@ function Section({ title, children }: { title: string; children: React.ReactNode
   );
 }
 
-const CONTACT_EMAIL = "hello@aifilmacademy.com";
+const CONTACT_EMAIL = "brandon@aifilmacademy.com";
 const linkStyle = { color: "var(--afa-red)", fontWeight: 700 };
 
 export default function RefundPolicy() {

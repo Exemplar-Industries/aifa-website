@@ -13,7 +13,7 @@ import {
  * It uses AIFA black/red, an authentic Brandon portrait, a native film player, and copy-only contact controls.
  */
 const phoneNumber = "661-713-2851";
-const emailAddress = "llcexemplar@gmail.com";
+const emailAddress = "brandon@aifilmacademy.com";
 const portraitUrl =
   "https://d2xsxph8kpxj0f.cloudfront.net/310419663032668673/9znEqYZ2JpzLxCzomcgMbf/brandon-guinness_4043d965.webp";
 
