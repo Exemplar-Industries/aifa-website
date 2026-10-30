@@ -15,10 +15,9 @@ export default function Navbar() {
   const { skoolUrl, trackCtaClick } = useSkoolCta();
   const navLinks = [
     { label: "Home", href: "/" },
-    { label: "Membership", href: skoolUrl, membershipCta: true },
+    { label: "Join AI Film Academy", href: skoolUrl, membershipCta: true },
     { label: "Resources", href: "/resources" },
-    { label: "Productions", href: "/productions" },
-    { label: "Events", href: "/education-events" },
+    { label: "Work with Brandon", href: "/work-with-brandon" },
     { label: "Showcase", href: "/showcase" },
     { label: "Contact", href: "/contact" },
     { label: "FAQ", href: "/faq" },
@@ -54,7 +53,7 @@ export default function Navbar() {
               key={link.href}
               href={link.href}
               className="nav-link whitespace-nowrap text-[0.98rem] font-semibold transition-colors duration-150"
-              onClick={link.membershipCta ? () => trackCtaClick("Navigation Membership") : undefined}
+              onClick={link.membershipCta ? () => trackCtaClick("Navigation Join AI Film Academy") : undefined}
             >
               {link.label}
             </a>
@@ -90,7 +89,7 @@ export default function Navbar() {
                 href={link.href}
                 className="nav-link border-b border-white/12 py-4 text-[1.08rem] font-semibold transition-colors"
                 onClick={() => {
-                  if (link.membershipCta) trackCtaClick("Navigation Membership");
+                  if (link.membershipCta) trackCtaClick("Navigation Join AI Film Academy");
                   setMenuOpen(false);
                 }}
               >

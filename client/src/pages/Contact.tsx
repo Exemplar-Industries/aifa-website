@@ -20,9 +20,9 @@ const TOPIC_DETAILS: Record<InquiryTopic, { label: string; messageLabel: string;
     messagePlaceholder: "Share the audience, goals, and what you want people to leave with.",
   },
   membership: {
-    label: "AIFA membership",
+    label: "Joining the course",
     messageLabel: "How can we help?",
-    messagePlaceholder: "Tell us what you would like to know about the membership, training, or community.",
+    messagePlaceholder: "Tell us what you would like to know about the course, training, or community.",
   },
   other: {
     label: "Something else",
@@ -61,8 +61,8 @@ export default function Contact() {
   return (
     <main className="contact-page">
       <PageMeta
-        title="Contact AI Film Academy | Productions, Events & Membership"
-        description="Contact AI Film Academy about a production project, a workshop or keynote, AIFA membership, or another creative inquiry."
+        title="Contact AI Film Academy | Course, Production, and Events"
+        description="Contact AI Film Academy about the course, a production project, a workshop or keynote, or another creative inquiry."
         path="/contact"
       />
 

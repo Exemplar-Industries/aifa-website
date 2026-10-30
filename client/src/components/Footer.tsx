@@ -24,7 +24,7 @@ function getColumns(skoolUrl: string): FooterColumn[] {
   {
     heading: "Start Here",
     links: [
-      { label: "Membership", href: skoolUrl, ctaLabel: "Footer Membership" },
+      { label: "Join AI Film Academy", href: skoolUrl, ctaLabel: "Footer Join AI Film Academy" },
       { label: "Try Free", href: "/free-video-training" },
       { label: "FAQ", href: "/faq" },
     ],
@@ -34,8 +34,7 @@ function getColumns(skoolUrl: string): FooterColumn[] {
     links: [
       { label: "Resources", href: "/resources" },
       { label: "Showcase", href: "/showcase" },
-      { label: "Production", href: "/productions" },
-      { label: "Events", href: "/education-events" },
+      { label: "Work with Brandon", href: "/work-with-brandon" },
       { label: "Contact", href: "/contact" },
     ],
   },

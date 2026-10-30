@@ -13,16 +13,11 @@ import Seo from "./components/Seo";
 const Consulting = lazy(() => import("./pages/Consulting"));
 const Certification = lazy(() => import("./pages/Certification"));
 const CertificationStatus = lazy(() => import("./pages/CertificationStatus"));
-const LPV3 = lazy(() => import("./pages/LPV3"));
-const Invite = lazy(() => import("./pages/Invite"));
-const LiveExclusive = lazy(() => import("./pages/LiveExclusive"));
 const FAQ = lazy(() => import("./pages/FAQ"));
 const Connect = lazy(() => import("./pages/Connect"));
 const InternalLessons = lazy(() => import("./pages/InternalLessons"));
 const SlideViewer = lazy(() => import("./pages/SlideViewer"));
-const Masterclass = lazy(() => import("./pages/Masterclass"));
 const FreeVideoTraining = lazy(() => import("./pages/FreeVideoTraining"));
-const GenJamFreebie = lazy(() => import("./pages/GenJamFreebie"));
 const GenJamOffer = lazy(() => import("./pages/GenJamOffer"));
 const MembershipSuccess = lazy(() => import("./pages/MembershipSuccess"));
 const RefundPolicy = lazy(() => import("./pages/RefundPolicy"));
@@ -30,7 +25,7 @@ const Terms = lazy(() => import("./pages/Terms"));
 const Privacy = lazy(() => import("./pages/Privacy"));
 const Contact = lazy(() => import("./pages/Contact"));
 const Productions = lazy(() => import("./pages/Productions"));
-const EducationEvents = lazy(() => import("./pages/EducationEvents"));
+const WorkWithBrandon = lazy(() => import("./pages/WorkWithBrandon"));
 const Showcase = lazy(() => import("./pages/Showcase"));
 const BetterYouthGenJam = lazy(() => import("./pages/BetterYouthGenJam"));
 const HowToMakeAIFilm = lazy(() => import("./pages/HowToMakeAIFilm"));
@@ -108,14 +103,14 @@ function Router() {
       <Route path={"/consulting"} component={Consulting} />
       <Route path={"/certification"} component={Certification} />
       <Route path={"/certification-status"} component={CertificationStatus} />
-      <Route path={"/lpv3"} component={LPV3} />
-      <Route path={"/anthum-exclusive"} component={Invite} />
-      <Route path={"/live-exclusive"} component={LiveExclusive} />
+      <Route path={"/lpv3"} component={MembershipRedirect} />
+      <Route path={"/anthum-exclusive"}><Redirect to="/" /></Route>
+      <Route path={"/live-exclusive"}><Redirect to="/" /></Route>
       <Route path={"/internal/lessons"} component={InternalLessons} />
       <Route path={"/internal/slide-archive"} component={SlideArchive} />
       <Route path={"/internal/slide-archive/:slug"} component={SlideArchive} />
       <Route path={"/lessons/:week"} component={SlideViewer} />
-      <Route path={"/masterclass"} component={Masterclass} />
+      <Route path={"/masterclass"}><Redirect to="/" /></Route>
       <Route path={"/free-video-training"} component={FreeVideoTraining} />
       <Route path={"/membership"} component={MembershipRedirect} />
       <Route path={"/resources"} component={ResourceLibrary} />
@@ -127,11 +122,12 @@ function Router() {
       <Route path={"/terms"} component={Terms} />
       <Route path={"/privacy"} component={Privacy} />
       <Route path={"/contact"} component={Contact} />
-      <Route path={"/work-with-us"} component={Contact} />
+      <Route path={"/work-with-us"}><Redirect to="/work-with-brandon" /></Route>
+      <Route path={"/work-with-brandon"} component={WorkWithBrandon} />
       <Route path={"/productions"} component={Productions} />
-      <Route path={"/education-events"} component={EducationEvents} />
+      <Route path={"/education-events"}><Redirect to="/work-with-brandon" /></Route>
       <Route path={"/events"}><Redirect to="/" /></Route>
-      <Route path={"/genjam-freebie"} component={GenJamFreebie} />
+      <Route path={"/genjam-freebie"}><Redirect to="/" /></Route>
       <Route path={"/genjam-offer"} component={GenJamOffer} />
       <Route path={"/cref"} component={CharacterReferenceDownload} />
       <Route path={"/genjam/character-sheet"} component={CharacterReferenceDownload} />

@@ -76,15 +76,19 @@ const ROUTE_SEO: Record<string, SeoPage> = {
     description:
       "Watch free AI filmmaking training and learn the practical workflow behind portfolio-ready AI films, trailers, ads, and animation.",
   },
-  "/masterclass": {
-    title: "AI Filmmaking Masterclass | AI Film Academy",
-    description:
-      "Explore an AI filmmaking masterclass built for creators who want a clear director-led workflow from idea to finished visual story.",
-  },
   "/certification": {
     title: "AI Filmmaking Certification | AI Film Academy",
     description:
       "Explore AI Film Academy certification and the portfolio-ready creative standards it is designed to help members demonstrate.",
+  },
+  "/certification-status": {
+    title: "Certification status | AI Film Academy",
+    description: "Enter the email you joined with to open the AI Film Academy certification test.",
+    noindex: true,
+  },
+  "/work-with-brandon": {
+    title: "Work with Brandon Patino | AI Film Academy",
+    description: "AI production, workshops, and creative AI consulting for brands, schools, and organizations.",
   },
   "/showcase": {
     title: "AI Filmmaking Showcase | AI Film Academy",
@@ -107,14 +111,14 @@ const ROUTE_SEO: Record<string, SeoPage> = {
       "Explore AI filmmaking education, events, and creative-learning experiences from AI Film Academy.",
   },
   "/faq": {
-    title: "AI Film Academy FAQs | Membership, Workflow, and Certification",
+    title: "AI Film Academy FAQs | Course, Workflow, and Certification",
     description:
-      "Find answers to common questions about AI Film Academy membership, AI filmmaking workflow, certification, feedback, and the creator community.",
+      "Find answers to common questions about the AI Film Academy course, AI filmmaking workflow, certification, feedback, and the creator community.",
   },
   "/contact": {
     title: "Contact AI Film Academy | Education and Production Inquiries",
     description:
-      "Contact AI Film Academy for education, membership, certification, consulting, and AI video production inquiries.",
+      "Contact AI Film Academy about the course, certification, consulting, and AI video production inquiries.",
   },
   "/connect": {
     title: "Connect With AI Film Academy",
@@ -137,8 +141,8 @@ const ROUTE_SEO: Record<string, SeoPage> = {
     noindex: true,
   },
   "/membership/success": {
-    title: "Membership Confirmation | AI Film Academy",
-    description: "Your AI Film Academy membership confirmation.",
+    title: "Purchase confirmation | AI Film Academy",
+    description: "Your AI Film Academy course purchase confirmation.",
     noindex: true,
   },
   "/internal/lessons": {

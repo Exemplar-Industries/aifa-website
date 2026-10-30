@@ -172,6 +172,7 @@ export default function Productions() {
         <div className="productions-shell">
           <h1 className="productions-display productions-title"><span>Done For You</span> Productions.</h1>
           <p className="productions-hero-copy">Work with our in house production studio for ambitious animations, commercials, and trailers.</p>
+          <p className="productions-hero-copy">Production, workshops, and consulting now start on <a href="/work-with-brandon" style={{ color: "var(--afa-red)", textDecoration: "underline" }}>Work with Brandon</a>. This page keeps the production steps.</p>
           <div className="productions-actions">
             <a className="productions-primary" href="#production-inquiry">Request a Custom Production <Send size={19} /></a>
           </div>

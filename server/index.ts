@@ -147,54 +147,32 @@ async function checkEligibility(email: string): Promise<EligibilityResult> {
   const person = edges[0].node;
   const plan: string = person.afaSubscriptionPlan ?? "";
   const status: string = person.membershipStatus ?? "";
-  const dateJoined: string | null = person.dateJoined ?? null;
   const fastPassGranted: boolean = person.fastPassGranted === true;
 
-  // ALLOW: Fast-Pass purchased via Stripe — check this first
+  // Fast-Pass purchased via Stripe still opens the test.
   if (fastPassGranted) {
     return { eligible: true };
   }
 
-  // ALLOW: Annual members (any price point)
-  if (status === "ANNUAL_PAYING" || plan.toLowerCase().includes("annual")) {
+  // The public course is a one-time purchase. Anyone with an active course
+  // record can take the test. Legacy monthly, annual, lifetime, and free
+  // records stay eligible. The old 90-day monthly wait is retired.
+  const haystack = `${status} ${plan}`.toLowerCase();
+  if (/churn|cancel|inactive|expired|refund|past_due|paused/.test(haystack)) {
+    return { eligible: false, reason: "not_active_member" };
+  }
+
+  const normalizedStatus = status.toUpperCase();
+  const activeStatus = normalizedStatus === "ANNUAL_PAYING"
+    || normalizedStatus === "MONTHLY_PAYING"
+    || normalizedStatus === "FREE_MEMBER"
+    || normalizedStatus === "ACTIVE"
+    || normalizedStatus.includes("PAYING");
+  const activePlan = /(annual|lifetime|monthly|free|one[- ]?time|skool|member)/.test(plan.toLowerCase());
+  if (activeStatus || activePlan) {
     return { eligible: true };
   }
 
-  // ALLOW: Lifetime members
-  if (plan.toLowerCase().includes("lifetime")) {
-    return { eligible: true };
-  }
-
-  // ALLOW: Free members
-  if (status === "FREE_MEMBER" || plan.toLowerCase() === "free") {
-    return { eligible: true };
-  }
-
-  // MONTHLY: Apply the 90-day tenure gate
-  if (status === "MONTHLY_PAYING" || plan.toLowerCase().includes("monthly")) {
-    if (!dateJoined) {
-      // No join date on a monthly member — CRM sync bug. Block them.
-      // The sync fix (defaulting to today) will populate this on next run.
-      return {
-        eligible: false,
-        reason: "tenure_too_short",
-        daysRemaining: 90,
-        daysCompleted: 0,
-      };
-    }
-    const tenure = daysSince(dateJoined);
-    if (tenure >= 90) {
-      return { eligible: true };
-    }
-    return {
-      eligible: false,
-      reason: "tenure_too_short",
-      daysRemaining: 90 - tenure,
-      daysCompleted: tenure,
-    };
-  }
-
-  // Churned or unknown — block
   return { eligible: false, reason: "not_active_member" };
 }
 
@@ -403,8 +381,17 @@ const SEO_DEFAULT_PAGE: ServerSeoPage = {
 const SEO_PUBLIC_PAGES: Record<string, ServerSeoPage> = {
   "/": SEO_DEFAULT_PAGE,
   "/membership": {
-    title: "AI Filmmaking Membership | AI Film Academy",
+    title: "Join AI Film Academy",
     description: "Join AI Film Academy to learn a practical AI filmmaking workflow, get feedback, build portfolio-ready work, and create alongside a global community.",
+  },
+  "/work-with-brandon": {
+    title: "Work with Brandon Patino | AI Film Academy",
+    description: "AI production, workshops, and creative AI consulting for brands, schools, and organizations.",
+  },
+  "/certification-status": {
+    title: "Certification status | AI Film Academy",
+    description: "Enter the email you joined with to open the AI Film Academy certification test.",
+    noindex: true,
   },
   "/resources": {
     title: "Free AI Filmmaking Resources | AI Film Academy",
@@ -436,10 +423,6 @@ const SEO_PUBLIC_PAGES: Record<string, ServerSeoPage> = {
     title: "Free AI Filmmaking Training | AI Film Academy",
     description: "Watch free AI filmmaking training and learn the practical workflow behind portfolio-ready AI films, trailers, ads, and animation.",
   },
-  "/masterclass": {
-    title: "AI Filmmaking Masterclass | AI Film Academy",
-    description: "Explore an AI filmmaking masterclass built for creators who want a clear director-led workflow from idea to finished visual story.",
-  },
   "/certification": {
     title: "AI Filmmaking Certification | AI Film Academy",
     description: "Explore AI Film Academy certification and the portfolio-ready creative standards it is designed to help members demonstrate.",
@@ -461,17 +444,12 @@ const SEO_PUBLIC_PAGES: Record<string, ServerSeoPage> = {
     description: "Explore AI filmmaking education, events, and creative-learning experiences from AI Film Academy.",
   },
   "/faq": {
-    title: "AI Film Academy FAQs | Membership, Workflow, and Certification",
-    description: "Find answers to common questions about AI Film Academy membership, AI filmmaking workflow, certification, feedback, and the creator community.",
+    title: "AI Film Academy FAQs | Course, Workflow, and Certification",
+    description: "Find answers to common questions about the AI Film Academy course, AI filmmaking workflow, certification, feedback, and the creator community.",
   },
   "/contact": {
     title: "Contact AI Film Academy | Education and Production Inquiries",
-    description: "Contact AI Film Academy for education, membership, certification, consulting, and AI video production inquiries.",
-  },
-  "/work-with-us": {
-    title: "Contact AI Film Academy | Education and Production Inquiries",
-    description: "Contact AI Film Academy for education, membership, certification, consulting, and AI video production inquiries.",
-    canonicalPath: "/contact",
+    description: "Contact AI Film Academy about the course, certification, consulting, and AI video production inquiries.",
   },
 };
 
@@ -596,12 +574,15 @@ async function startServer() {
   const app = express();
   const server = createServer(app);
 
-  // Redirect non-www to www, preserving full path and query string
+  // Redirect the bare host to www for every path and query string.
+  // Railway often puts the public host in x-forwarded-host and may include a port.
   app.use((req, res, next) => {
-    const host = req.headers.host || "";
-    if (host === "aifilmacademy.com" || host === "aifilmacademy.com:443") {
-      const redirectUrl = `https://www.aifilmacademy.com${req.originalUrl}`;
-      res.redirect(301, redirectUrl);
+    const forwarded = req.headers["x-forwarded-host"];
+    const forwardedValue = Array.isArray(forwarded) ? forwarded[0] : forwarded;
+    const rawHost = (forwardedValue && forwardedValue.trim()) || req.headers.host || "";
+    const host = rawHost.split(",")[0].trim().toLowerCase().replace(/:\d+$/, "").replace(/\.$/, "");
+    if (host === "aifilmacademy.com") {
+      res.redirect(301, `https://www.aifilmacademy.com${req.originalUrl}`);
       return;
     }
     next();
@@ -691,56 +672,12 @@ async function startServer() {
     }
   });
 
-  // ── MEMBERSHIP CHECKOUT SESSION ──────────────────────────────────────────
-  // The browser sends only the approved billing cycle. The server determines the
-  // corresponding Stripe Price ID and creates the hosted subscription checkout.
-  app.post("/api/create-membership-checkout", async (req, res) => {
-    const billingCycle = req.body?.billingCycle as MembershipBillingCycle | undefined;
-    if (billingCycle !== "monthly" && billingCycle !== "annual") {
-      res.status(400).json({ error: "Choose a valid membership plan." });
-      return;
-    }
-
-    const priceId = billingCycle === "monthly" ? AIFA_MEMBERSHIP_MONTHLY_PRICE_ID : AIFA_MEMBERSHIP_ANNUAL_PRICE_ID;
-    if (!STRIPE_SECRET_KEY || !priceId) {
-      console.error("[membership-checkout] Stripe membership price configuration is incomplete");
-      res.status(503).json({ error: "Secure checkout is not configured yet. Please try again shortly." });
-      return;
-    }
-
-    try {
-      const siteUrl = "https://www.aifilmacademy.com";
-      const form = new URLSearchParams({
-        mode: "subscription",
-        success_url: `${siteUrl}/membership/success?session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `${siteUrl}/membership?checkout=cancelled`,
-        "line_items[0][price]": priceId,
-        "line_items[0][quantity]": "1",
-        "metadata[aifa_product]": "membership",
-        "metadata[aifa_billing_cycle]": billingCycle,
-        "subscription_data[metadata][aifa_product]": "membership",
-        "subscription_data[metadata][aifa_billing_cycle]": billingCycle,
-      });
-      const stripeResponse = await axios.post(
-        "https://api.stripe.com/v1/checkout/sessions",
-        form.toString(),
-        {
-          headers: {
-            Authorization: `Bearer ${STRIPE_SECRET_KEY}`,
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-          timeout: 15000,
-        }
-      );
-      const checkoutUrl = stripeResponse.data?.url;
-      if (!checkoutUrl || typeof checkoutUrl !== "string") {
-        throw new Error("Stripe did not return a hosted checkout URL");
-      }
-      res.json({ url: checkoutUrl });
-    } catch (error) {
-      console.error("[membership-checkout] Checkout session creation failed:", error);
-      res.status(502).json({ error: "Secure checkout is temporarily unavailable. Please try again shortly." });
-    }
+  // New subscription checkout is closed. The course is a one-time Skool purchase.
+  // Legacy Stripe subscription webhooks below still record an existing renewal.
+  app.post("/api/create-membership-checkout", async (_req, res) => {
+    res.status(410).json({
+      error: "The course is a one-time purchase on Skool. This checkout is closed.",
+    });
   });
 
   // ── STRIPE FAST-PASS + PAID MEMBERSHIP WEBHOOK ─────────────────────────────
@@ -1002,12 +939,29 @@ async function startServer() {
 
   // The public membership offer is now owned by Skool. Preserve affiliate
   // attribution for legacy links while keeping the retired website route usable.
-  app.get("/membership", (req, res) => {
+  function skoolAboutUrl(req: express.Request): string {
     const ref = typeof req.query.ref === "string" ? req.query.ref.trim() : "";
-    const destination = ref
-      ? `${SKOOL_MEMBERSHIP_URL}?ref=${encodeURIComponent(ref)}`
-      : SKOOL_MEMBERSHIP_URL;
-    res.redirect(302, destination);
+    return ref ? `${SKOOL_MEMBERSHIP_URL}?ref=${encodeURIComponent(ref)}` : SKOOL_MEMBERSHIP_URL;
+  }
+
+  app.get("/membership", (req, res) => {
+    res.redirect(302, skoolAboutUrl(req));
+  });
+
+  // Retired paid landing page. Send it to the live one-time course page.
+  app.get("/lpv3", (req, res) => {
+    res.redirect(301, skoolAboutUrl(req));
+  });
+
+  // Retired free-claim and countdown pages. Homepage, because they were not the paid course.
+  app.get(["/live-exclusive", "/anthum-exclusive", "/genjam-freebie", "/masterclass"], (req, res) => {
+    const query = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
+    res.redirect(301, `/${query}`);
+  });
+
+  // Scattered high-ticket URLs whose offer is now on one page.
+  app.get(["/education-events", "/work-with-us"], (_req, res) => {
+    res.redirect(301, "/work-with-brandon");
   });
 
   // Serve static files from dist/public in production
@@ -1029,13 +983,54 @@ app.get("/health", (_req, res) => {
   res.status(200).json({ status: "ok" });
 });
 
+  const KNOWN_SPA_PATHS = new Set([
+    "/",
+    "/faq",
+    "/showcase",
+    "/connect",
+    "/consulting",
+    "/certification",
+    "/certification-status",
+    "/internal/lessons",
+    "/free-video-training",
+    "/resources",
+    "/resources/workflows/how-to-make-an-ai-film",
+    "/resources/workflows/ai-character-consistency",
+    "/resources/templates/ai-storyboard-template",
+    "/membership/success",
+    "/refund-policy",
+    "/terms",
+    "/privacy",
+    "/contact",
+    "/productions",
+    "/work-with-brandon",
+    "/genjam-offer",
+    "/cref",
+    "/genjam/character-sheet",
+    "/genjam/submit",
+    "/genjam/better-youth-timer",
+    "/genjam/better-youth-0829",
+    "/events",
+    "/404",
+  ]);
+
+  function isKnownSpaPath(pathname: string): boolean {
+    const normalized = pathname === "/" ? "/" : pathname.replace(/\/+$/, "") || "/";
+    if (KNOWN_SPA_PATHS.has(normalized)) return true;
+    if (normalized.startsWith("/lessons/") && normalized.length > "/lessons/".length) return true;
+    if (normalized === "/internal/slide-archive" || normalized.startsWith("/internal/slide-archive/")) return true;
+    return false;
+  }
+
   app.get("*", (req, res) => {
+    const known = isKnownSpaPath(req.path);
     const pageHtml = indexTemplate.replace(
       /<!-- AIFA_SEO_HEAD_START -->[\s\S]*?<!-- AIFA_SEO_HEAD_END -->/,
       `<!-- AIFA_SEO_HEAD_START -->\n    ${routeSeoHead(req.path)}\n    <!-- AIFA_SEO_HEAD_END -->`
     );
-    res.type("html").send(pageHtml);
+    res.status(known ? 200 : 404).type("html").send(pageHtml);
   });
+
 
   const port = process.env.PORT || 3000;
 

@@ -22,8 +22,8 @@ export default function StartHereSection() {
               Master one production system, create a premium portfolio, and land high ticket creative work.
             </p>
             <div className="mt-10 flex flex-col justify-center gap-4 sm:flex-row">
-              <a href={skoolUrl} className="btn-primary min-h-14 min-w-[220px] px-8 py-4 text-[1rem] font-bold" onClick={() => trackCtaClick("Homepage Join the Membership")}>
-                Join the Membership
+              <a href={skoolUrl} className="btn-primary min-h-14 min-w-[220px] px-8 py-4 text-[1rem] font-bold" onClick={() => trackCtaClick("Homepage Join AI Film Academy")}>
+                Join AI Film Academy
               </a>
               <a href="/free-video-training" className="btn-outline final-action-outline min-h-14 min-w-[180px] px-8 py-4 text-[1rem] font-bold">
                 Try Free

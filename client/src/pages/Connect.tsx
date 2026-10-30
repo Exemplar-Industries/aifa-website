@@ -36,7 +36,7 @@ const actions = [
 ];
 
 const stats = [
-  { value: "30,000+", label: "Global Learners Reached" },
+  { value: "30,000+", label: "Learners in live education" },
   { value: "5+", label: "B2B Educational Partnerships" },
   { value: "1,100+", label: "Private Community Members" },
 ];
@@ -110,7 +110,10 @@ export default function Connect() {
             <h1 id="connect-name">Brandon Patino</h1>
             <p className="connect-role">Founder, AI Film Academy</p>
             <p className="connect-description">
-              I help brands create premium AI video and educational organizations implement ethical creative AI curriculum, workshops, and speaking events.
+              I help brands create premium AI video and educational organizations implement ethical creative AI curriculum, workshops, and speaking events. For a production, workshop, or consulting project, start at Work with Brandon.
+            </p>
+            <p className="connect-description">
+              <a href="/work-with-brandon" style={{ color: "#E63329", fontWeight: 700, textDecoration: "underline" }}>Work with Brandon</a>
             </p>
 
             <div className="connect-copy-actions" aria-label="Copy Brandon Patino contact details">
