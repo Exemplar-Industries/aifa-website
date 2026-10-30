@@ -7,7 +7,7 @@ import { Quote } from "lucide-react";
 const GOOGLE_STAR_GOLD = "#fbbc04";
 
 const MEMBER_PROOF = [
-  ["30,000+", "Global learners"],
+  ["30,000+", "Learners in live education"],
   ["5.0", "On Google (33 reviews)"],
   ["1,100+", "Private community members"],
 ];

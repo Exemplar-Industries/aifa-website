@@ -23,7 +23,7 @@ function Section({ title, children }: { title: string; children: React.ReactNode
   );
 }
 
-const CONTACT_EMAIL = "hello@aifilmacademy.com";
+const CONTACT_EMAIL = "brandon@aifilmacademy.com";
 const linkStyle = { color: "var(--afa-red)", fontWeight: 700 };
 
 export default function RefundPolicy() {
@@ -33,38 +33,37 @@ export default function RefundPolicy() {
         <div style={{ maxWidth: "880px", margin: "0 auto" }}>
           <a href="/" style={{ color: "rgba(255,255,255,0.72)", fontSize: "1rem", fontWeight: 700, textDecoration: "none" }}>← AI Film Academy</a>
           <h1 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(3.3rem, 9vw, 7rem)", lineHeight: 0.9, letterSpacing: "0.02em", marginBottom: "1.3rem" }}>Refund & <span style={{ color: "var(--afa-red)" }}>Cancellation Policy</span></h1>
-          <p style={{ maxWidth: "760px", color: "rgba(255,255,255,0.92)", fontSize: "1.08rem", fontWeight: 600, lineHeight: 1.7 }}>Every new membership includes a clear 7-day refund window. This policy explains refunds, cancellation, renewals, and membership access for AI Film Academy memberships purchased through Stripe.</p>
-          <p style={{ color: "rgba(255,255,255,0.86)", fontSize: "1rem", marginTop: "1.5rem" }}>Last updated: August 18, 2026</p>
+          <p style={{ maxWidth: "760px", color: "rgba(255,255,255,0.92)", fontSize: "1.08rem", fontWeight: 600, lineHeight: 1.7 }}>The AI Film Academy course is a one-time purchase. Every new course purchase includes a 7-day refund window. This policy explains that window, how refunds are returned, and what happens to course and community access.</p>
+          <p style={{ color: "rgba(255,255,255,0.86)", fontSize: "1rem", marginTop: "1.5rem" }}>Last updated: October 30, 2026</p>
         </div>
       </section>
 
       <section style={{ maxWidth: "880px", margin: "0 auto", padding: "2rem 1.5rem 5rem" }}>
         <Section title="7-Day, No-Questions-Asked Refund">
-          <p>Every new AI Film Academy membership includes a full 7-day, no-questions-asked refund window. The window begins on the date and time of your first successful membership payment.</p>
-          <p style={{ marginTop: "0.85rem" }}>To request a refund, email <a href={`mailto:${CONTACT_EMAIL}`} style={linkStyle}>{CONTACT_EMAIL}</a> from the email address used for your purchase within 7 calendar days. Please include your name and purchase email so we can locate the transaction.</p>
-          <p style={{ marginTop: "0.85rem" }}>When a refund is issued, membership access, private-community access, and member-only resources end when the refund is processed.</p>
+          <p>Every new AI Film Academy course purchase includes a full 7-day, no-questions-asked refund window. The window begins on the date and time of the successful payment.</p>
+          <p style={{ marginTop: "0.85rem" }}>To request a refund, email <a href={`mailto:${CONTACT_EMAIL}`} style={linkStyle}>{CONTACT_EMAIL}</a> from the email address used for your purchase within 7 calendar days. Please include your name, purchase email, and where you paid (Skool or Stripe) so we can locate the transaction.</p>
+          <p style={{ marginTop: "0.85rem" }}>When a refund is issued, course access, private-community access, and member-only resources end when the refund is processed.</p>
         </Section>
 
         <Section title="How Refunds Are Processed">
-          <p>Approved refunds are returned to the original payment method through Stripe. Your financial institution controls when the credit appears on your statement, and it may take several business days after we issue the refund. If we cannot locate a purchase or need more information to process the request, we will contact you using the purchase email.</p>
+          <p>If you bought the $297 Machine Cinema partner rate through Stripe, approved refunds are returned to the original payment method through Stripe. If you bought the $500 course on Skool, include the Skool receipt in your email and we will process the request with Skool. Your financial institution controls when a credit appears on your statement, and it may take several business days after the refund is issued. If we cannot locate a purchase or need more information, we will contact you using the purchase email.</p>
         </Section>
 
-        <Section title="Monthly and Annual Memberships">
-          <p>AI Film Academy offers recurring monthly and annual membership plans. Your plan renews automatically at the end of each billing period unless you cancel before the next renewal date. The price, billing frequency, and any applicable promotional terms shown at Stripe checkout control your purchase.</p>
-          <p style={{ marginTop: "0.85rem" }}>The 7-day refund window applies only to your first successful membership payment. Except where required by law, payments made after that initial window are not refundable. Cancelling a membership stops future renewals; it does not automatically create a refund for a completed billing period.</p>
+        <Section title="One-Time Course Purchase">
+          <p>The public course is a one-time $500 purchase on Skool at <a href="https://www.skool.com/aifilmacademy/about" style={linkStyle}>skool.com/aifilmacademy/about</a>. The only other course price is the Machine Cinema partner rate, a one-time $297 purchase through the Stripe checkout on the GenJam offer page. That payment includes the self-paced course and the community.</p>
+          <p style={{ marginTop: "0.85rem" }}>AI Film Academy does not sell a monthly, annual, or lifetime plan for this course, and a course purchase does not renew. The 7-day refund window applies to that one-time payment. Except where required by law, a request made after the 7 calendar days is not refundable.</p>
         </Section>
 
-        <Section title="How to Cancel">
-          <p>You have easy access to manage billing through Stripe using the billing-portal link in your billing and receipt emails. Use that portal to cancel before your next renewal date. If you cannot access it, email <a href={`mailto:${CONTACT_EMAIL}`} style={linkStyle}>{CONTACT_EMAIL}</a> before your next renewal date and we will help you cancel.</p>
-          <p style={{ marginTop: "0.85rem" }}>Unless a refund is issued, you retain membership access through the end of the billing period you already paid for. Cancellation does not delete your account records that we need to keep for billing, security, or legal purposes.</p>
+        <Section title="Access After You Pay">
+          <p>A completed purchase does not create a later bill. Unless a refund is issued, you keep course and community access. A refund request does not delete account records we need to keep for billing, security, or legal purposes.</p>
         </Section>
 
         <Section title="Custom Productions and Corporate Services">
-          <p>This policy applies to AI Film Academy memberships. Done-for-you productions, corporate events, workshops, speaking engagements, deposits, and other custom services may have separate scope, cancellation, payment, and refund terms in the applicable proposal, statement of work, invoice, or agreement. If those service-specific terms conflict with this policy, the service-specific terms control.</p>
+          <p>This policy applies to the AI Film Academy course. Done-for-you productions, corporate events, workshops, speaking engagements, deposits, and other custom services may have separate scope, cancellation, payment, and refund terms in the applicable proposal, statement of work, invoice, or agreement. If those service-specific terms conflict with this policy, the service-specific terms control.</p>
         </Section>
 
         <Section title="Contact">
-          <p>For membership billing, cancellation, or refund requests, contact <a href={`mailto:${CONTACT_EMAIL}`} style={linkStyle}>{CONTACT_EMAIL}</a>. We will respond using the purchase information you provide.</p>
+          <p>For a course refund request, contact <a href={`mailto:${CONTACT_EMAIL}`} style={linkStyle}>{CONTACT_EMAIL}</a>. We will respond using the purchase information you provide.</p>
         </Section>
       </section>
     </main>

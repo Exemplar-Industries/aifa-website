@@ -1151,7 +1151,7 @@ export default function Certification() {
             className="text-sm text-white/50 leading-relaxed mb-10"
             style={{ fontFamily: "'DM Sans', sans-serif" }}
           >
-            Enter your membership email to verify access. Annual and Lifetime members enter immediately. Monthly members unlock after 90 days of membership. Alternatively, monthly members can upgrade to annual or purchase a one-time fast pass to certify today.
+            Enter the email you joined with. We use it to confirm your course access, then open the test.
           </p>
 
           <div className="space-y-4 mb-8">
@@ -1160,7 +1160,7 @@ export default function Certification() {
                 className="block text-xs font-mono uppercase tracking-widest text-white/40 mb-2"
                 style={{ fontFamily: "'JetBrains Mono', monospace" }}
               >
-                Membership Email
+                Email you joined with
               </label>
               <input
                 type="email"
@@ -1184,14 +1184,14 @@ export default function Certification() {
             className="w-full py-4 bg-[#E63329] text-white font-bold uppercase tracking-wider text-sm hover:bg-[#c42b22] transition-colors duration-200 disabled:opacity-30 disabled:cursor-not-allowed"
             style={{ fontFamily: "'DM Sans', sans-serif" }}
           >
-            {loading ? "Verifying Membership..." : "Verify & Continue"}
+            {loading ? "Checking your email..." : "Verify and continue"}
           </button>
 
           <p
             className="text-xs text-white/20 text-center mt-4"
             style={{ fontFamily: "'DM Sans', sans-serif" }}
           >
-            Your email is used only to verify your membership status.
+            Your email is used only to confirm that you joined.
           </p>
         </div>
       </div>

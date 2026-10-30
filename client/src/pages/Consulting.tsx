@@ -55,6 +55,9 @@ export default function Consulting() {
         }}>
           Helping forward-thinking organizations master Generative AI workflows for media, art, and video storytelling.
         </p>
+        <p style={{ fontSize: "0.95rem", marginTop: "1.25rem" }}>
+          <a href="/work-with-brandon" style={{ color: "#E63329", fontWeight: 700, textDecoration: "underline" }}>New project inquiries start on Work with Brandon.</a>
+        </p>
       </header>
 
       {/* ── HERO VIDEO ── */}

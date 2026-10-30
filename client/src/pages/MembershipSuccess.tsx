@@ -18,7 +18,7 @@ export default function MembershipSuccess() {
             </div>
           ))}
         </div>
-        <p style={{ color: "rgba(255,255,255,0.42)", fontSize: "0.86rem", lineHeight: 1.65, marginBottom: "1.5rem" }}>If you do not receive your invite shortly, check spam or contact <a href="mailto:hello@aifilmacademy.com" style={{ color: "#f87171" }}>hello@aifilmacademy.com</a>.</p>
+        <p style={{ color: "rgba(255,255,255,0.42)", fontSize: "0.86rem", lineHeight: 1.65, marginBottom: "1.5rem" }}>If you do not receive your invite shortly, check spam or contact <a href="mailto:brandon@aifilmacademy.com" style={{ color: "#f87171" }}>brandon@aifilmacademy.com</a>.</p>
         <a href="/" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", minHeight: "48px", borderRadius: "9px", border: "1px solid rgba(255,255,255,0.24)", padding: "0 1.5rem", color: "#fff", textDecoration: "none", fontWeight: 800, fontSize: "0.9rem" }}>Return to AI Film Academy</a>
       </div>
     </main>

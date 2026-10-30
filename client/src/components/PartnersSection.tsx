@@ -120,7 +120,7 @@ export default function PartnersSection() {
         <p className="mt-8 text-white/20 text-xs" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
           Interested in partnering with AIFA?{" "}
           <a
-            href="mailto:llcexemplar@gmail.com"
+            href="mailto:brandon@aifilmacademy.com"
             className="underline hover:text-white/40 transition-colors"
           >
             Get in touch →

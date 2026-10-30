@@ -76,9 +76,9 @@ function FullscreenHero() {
           <a
             href={skoolUrl}
             className="btn-primary pulse-cta min-h-14 px-8 py-4 text-[1rem] font-bold"
-            onClick={() => trackCtaClick("Homepage Explore Membership")}
+            onClick={() => trackCtaClick("Homepage Join AI Film Academy")}
           >
-            Explore Membership
+            Join AI Film Academy
           </a>
           <a
             href="/free-video-training"

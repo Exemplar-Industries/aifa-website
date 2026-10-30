@@ -95,7 +95,7 @@ export default function ResourceLibrary() {
           <p style={{ color: muted, fontSize: "1.12rem", lineHeight: 1.58, margin: "1.25rem 0 0", maxWidth: "42rem" }}>The free training gives you the foundation. The AIFA community gives you live learning, feedback, and a place to keep finishing projects.</p>
           <div style={{ display: "flex", flexWrap: "wrap", gap: ".9rem", marginTop: "1.8rem" }}>
             <Link href="/free-video-training" style={{ alignItems: "center", background: red, color: copy, display: "inline-flex", fontSize: ".82rem", fontWeight: 900, justifyContent: "center", letterSpacing: ".08em", minHeight: "3.25rem", padding: ".8rem 1rem", textDecoration: "none" }}>WATCH FREE TRAINING</Link>
-            <a href="https://www.skool.com/aifilmacademy/about" style={{ alignItems: "center", border: `1px solid ${copy}`, color: copy, display: "inline-flex", fontSize: ".82rem", fontWeight: 900, justifyContent: "center", letterSpacing: ".08em", minHeight: "3.25rem", padding: ".8rem 1rem", textDecoration: "none" }}>EXPLORE MEMBERSHIP</a>
+            <a href="https://www.skool.com/aifilmacademy/about" style={{ alignItems: "center", border: `1px solid ${copy}`, color: copy, display: "inline-flex", fontSize: ".82rem", fontWeight: 900, justifyContent: "center", letterSpacing: ".08em", minHeight: "3.25rem", padding: ".8rem 1rem", textDecoration: "none" }}>Join AI Film Academy</a>
           </div>
         </div>
       </section>

@@ -242,11 +242,11 @@ export default function CharacterConsistencyGuide() {
         <section style={{ borderTop: `1px solid ${border}`, marginTop: "clamp(4rem, 8vw, 7rem)", paddingTop: "clamp(2.2rem, 5vw, 4rem)" }}>
           <h2 style={{ ...stageTitle, fontSize: "clamp(2.3rem, 5vw, 4.25rem)", maxWidth: "16ch" }}>Want help building a film that holds together?</h2>
           <p style={{ color: muted, fontSize: "1.14rem", lineHeight: 1.6, margin: "1rem 0 1.6rem", maxWidth: "680px" }}>
-            Start with the free training for the complete AIFA workflow. Join the membership when you want feedback on the assets, coverage, and edit decisions that turn separate generations into a finished film.
+            Start with the free training for the complete AIFA workflow. Join AI Film Academy when you want feedback on the assets, coverage, and edit decisions that turn separate generations into a finished film.
           </p>
           <div style={{ display: "flex", flexWrap: "wrap", gap: ".9rem" }}>
             <Link href="/free-video-training" className="btn-primary" style={{ minHeight: "3.25rem", padding: ".75rem 1.2rem", textDecoration: "none" }}>WATCH FREE TRAINING</Link>
-            <a href={skoolUrl} className="btn-outline" style={{ minHeight: "3.25rem", padding: ".75rem 1.2rem", textDecoration: "none" }} onClick={() => trackCtaClick("Character Guide Explore Membership")}>EXPLORE MEMBERSHIP</a>
+            <a href={skoolUrl} className="btn-outline" style={{ minHeight: "3.25rem", padding: ".75rem 1.2rem", textDecoration: "none" }} onClick={() => trackCtaClick("Character Guide Join AI Film Academy")}>Join AI Film Academy</a>
           </div>
         </section>
       </article>

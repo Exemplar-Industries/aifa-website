@@ -33,7 +33,7 @@ const faqGroups = [
     title: "Inside AI Film Academy",
     questions: [
       ["Who is AI Film Academy (AIFA) for?", "AIFA serves creators overwhelmed by the AI tool landscape, storytellers who want to turn ideas into films or trailers, and brand owners who want more distinctive visual content. Members range from beginners to experienced video professionals."],
-      ["Why is AIFA a community instead of a one-time course?", "AI filmmaking changes too quickly for a static course to remain sufficient on its own. A community can evolve with the tools while providing live feedback, peer review, accountability, events, portfolio support, and practical help when members get stuck."],
+      ["Is AIFA a course or a community?", "You buy AIFA once for $500. That purchase includes the self-paced course and the community: live feedback, peer review, accountability, events, portfolio support, and practical help when you get stuck. The lessons can be updated as the tools change. There is no monthly plan and no annual plan."],
       ["How does AIFA help members build a portfolio?", "Members complete real films, ads, trailers, and animated projects rather than only watching lessons. Weekly challenges, creative exercises, portfolio reviews, events, and feedback turn practice into finished work members can confidently share."],
       ["What feedback and support do members receive?", "Support includes peer review, live expert feedback, office hours, portfolio reviews, and personalized Loom responses when appropriate. The goal is to help members see what is working, understand what to improve, and keep moving toward a stronger final piece."],
       ["What events and creative opportunities are available?", "AIFA connects members with GenJams, competitions, festivals, challenges, portfolio-building exercises, and relevant opportunities shared through the network. Availability changes as new events and partnerships are introduced."],
@@ -46,7 +46,7 @@ const faqGroups = [
     questions: [
       ["Can people make money with AI filmmaking?", "Yes, when the work solves a real creative or business need. AI filmmaking can support advertisements, trailers, branded content, animation, and other forms of video production. The strongest opportunities combine technical capability with storytelling, reliability, and a credible portfolio."],
       ["Where is AI filmmaking going next?", "As the tools become more accessible, audiences will increasingly judge the work the way they judge other films: whether it is engaging, emotionally effective, and worth watching. Storytelling and creative judgment will matter even more."],
-      ["Where should I start if I want to learn more?", "Choose one workflow, begin with a manageable project, and get feedback early. Explore the AIFA community for the complete member experience, or watch the free training to learn the core production approach first."],
+      ["Where should I start if I want to learn more?", "Choose one workflow, begin with a manageable project, and get feedback early. Join AI Film Academy for the one-time course and community, or watch the free training to learn the core production approach first."],
     ],
   },
 ];
@@ -103,7 +103,7 @@ export default function FAQ() {
             </div>
             <div className="flex flex-col justify-center gap-3 sm:flex-row">
               <a href={skoolUrl} className="btn-primary px-7 py-4 font-bold" onClick={() => trackCtaClick("FAQ Join AIFA")}>
-                Join AIFA <ArrowUpRight className="h-4 w-4" />
+                Join AI Film Academy <ArrowUpRight className="h-4 w-4" />
               </a>
               <a href="/free-video-training" className="btn-outline px-7 py-4 font-semibold">Try Free</a>
             </div>

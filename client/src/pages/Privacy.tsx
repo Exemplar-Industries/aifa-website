@@ -5,11 +5,11 @@ const PRIVACY_SECTIONS = [
   },
   {
     title: "Information We Collect",
-    body: "We collect information you provide directly, including your name, email address, inquiry details, project brief, messages, training-signup information, and communications with us. If you purchase a membership, we receive transaction and subscription information from Stripe, such as your customer contact details, plan, payment status, and subscription status. Stripe processes payment-card information; we do not receive or store your full payment-card number.",
+    body: "We collect information you provide directly, including your name, email address, inquiry details, project brief, messages, training-signup information, and communications with us. If you purchase the course, we receive transaction information from Skool or Stripe, such as your customer contact details, the purchase amount, and payment status. Stripe processes payment-card information for the partner-rate checkout; we do not receive or store your full payment-card number.",
   },
   {
     title: "How We Use Information",
-    body: "We use information to respond to inquiries, deliver requested training, operate membership access, manage subscriptions and billing support, send service and account communications, invite eligible members to the private community, run training and events, improve the website and services, protect the security and integrity of our systems, and comply with legal, accounting, and recordkeeping obligations.",
+    body: "We use information to respond to inquiries, deliver requested training, operate course and community access, manage purchases and billing support, send service and account communications, invite eligible members to the private community, run training and events, improve the website and services, protect the security and integrity of our systems, and comply with legal, accounting, and recordkeeping obligations.",
   },
   {
     title: "Marketing Email",
@@ -17,7 +17,7 @@ const PRIVACY_SECTIONS = [
   },
   {
     title: "Payments, Community, and Service Providers",
-    body: "We use service providers to operate the business. These include Stripe for checkout, recurring billing, and payment processing; Skool for private-community access; n8n workflows and email providers to deliver forms, training, notices, and member communications; and hosting and infrastructure providers to run the website. These providers process information only as needed to provide their services, subject to their own privacy terms and applicable agreements.",
+    body: "We use service providers to operate the business. These include Skool for the one-time course checkout and private-community access, Stripe for the one-time partner-rate checkout and payment processing, n8n workflows and email providers to deliver forms, training, notices, and member communications, and hosting and infrastructure providers to run the website. These providers process information only as needed to provide their services, subject to their own privacy terms and applicable agreements.",
   },
   {
     title: "Advertising and Website Analytics",
@@ -43,7 +43,7 @@ const PRIVACY_SECTIONS = [
     title: "Your Privacy Choices",
     body: (
       <span>
-        You may unsubscribe from marketing email at any time. You may ask us to update, access, correct, or delete information we hold about you, subject to applicable law and legitimate recordkeeping needs, by emailing <a href="mailto:hello@aifilmacademy.com" style={{ color: "var(--afa-red)" }}>hello@aifilmacademy.com</a>. You can also manage interest-based advertising through your browser settings, Meta advertising settings, or the industry opt-out tools at <a href="https://optout.aboutads.info/" target="_blank" rel="noreferrer" style={{ color: "var(--afa-red)" }}>optout.aboutads.info</a>. Where applicable law gives you additional privacy rights, we will honor verified requests as required.
+        You may unsubscribe from marketing email at any time. You may ask us to update, access, correct, or delete information we hold about you, subject to applicable law and legitimate recordkeeping needs, by emailing <a href="mailto:brandon@aifilmacademy.com" style={{ color: "var(--afa-red)" }}>brandon@aifilmacademy.com</a>. You can also manage interest-based advertising through your browser settings, Meta advertising settings, or the industry opt-out tools at <a href="https://optout.aboutads.info/" target="_blank" rel="noreferrer" style={{ color: "var(--afa-red)" }}>optout.aboutads.info</a>. Where applicable law gives you additional privacy rights, we will honor verified requests as required.
       </span>
     ),
   },
@@ -57,7 +57,7 @@ const PRIVACY_SECTIONS = [
   },
   {
     title: "Changes and Contact",
-    body: "We may update this policy as our services or practices change. We will post an updated date when we do. For privacy questions or requests, email hello@aifilmacademy.com.",
+    body: "We may update this policy as our services or practices change. We will post an updated date when we do. For privacy questions or requests, email brandon@aifilmacademy.com.",
   },
 ];
 

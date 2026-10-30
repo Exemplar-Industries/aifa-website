@@ -598,7 +598,7 @@ function AboutAndForm() {
               marginBottom: "22px",
             }}
           >
-            I've trained <strong>30,000+ students globally</strong>, built a private community of
+            I've trained <strong>30,000+ learners in live education</strong>, built a private community of
             over 1,000 AI filmmakers, and host live AI workshops for companies worldwide.
           </p>
           <p
@@ -614,7 +614,7 @@ function AboutAndForm() {
           </p>
           <div style={{ display: "flex", gap: "40px", flexWrap: "wrap" }}>
             {[
-              { n: "30k+", l: "Global Students" },
+              { n: "30k+", l: "Learners in live education" },
               { n: "1,000+", l: "Community Members" },
               { n: "5.0 ★", l: "Google Reviews" },
             ].map(({ n, l }) => (

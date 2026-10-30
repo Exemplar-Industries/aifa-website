@@ -13,7 +13,7 @@ import {
  * It uses AIFA black/red, an authentic Brandon portrait, a native film player, and copy-only contact controls.
  */
 const phoneNumber = "661-713-2851";
-const emailAddress = "llcexemplar@gmail.com";
+const emailAddress = "brandon@aifilmacademy.com";
 const portraitUrl =
   "https://d2xsxph8kpxj0f.cloudfront.net/310419663032668673/9znEqYZ2JpzLxCzomcgMbf/brandon-guinness_4043d965.webp";
 
@@ -36,7 +36,7 @@ const actions = [
 ];
 
 const stats = [
-  { value: "30,000+", label: "Global Learners Reached" },
+  { value: "30,000+", label: "Learners in live education" },
   { value: "5+", label: "B2B Educational Partnerships" },
   { value: "1,100+", label: "Private Community Members" },
 ];
@@ -110,7 +110,10 @@ export default function Connect() {
             <h1 id="connect-name">Brandon Patino</h1>
             <p className="connect-role">Founder, AI Film Academy</p>
             <p className="connect-description">
-              I help brands create premium AI video and educational organizations implement ethical creative AI curriculum, workshops, and speaking events.
+              I help brands create premium AI video and educational organizations implement ethical creative AI curriculum, workshops, and speaking events. For a production, workshop, or consulting project, start at Work with Brandon.
+            </p>
+            <p className="connect-description">
+              <a href="/work-with-brandon" style={{ color: "#E63329", fontWeight: 700, textDecoration: "underline" }}>Work with Brandon</a>
             </p>
 
             <div className="connect-copy-actions" aria-label="Copy Brandon Patino contact details">
