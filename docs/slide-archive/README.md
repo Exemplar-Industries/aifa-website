@@ -6,7 +6,7 @@ The archive lives in this repository and is exposed in the AIFA app at `/interna
 
 The app uses Supabase magic-link authentication, an owner-only first-claim path, the `slide_archive_invites` approved-user allowlist, and row-level security. Deck records are only readable by approved active members. Media is stored only in the private `aifa-slide-archive` bucket and is delivered to the browser through short-lived signed URLs after the user has authenticated and passed the member check. Do not place future presentation MP4s or deck bundles in `client/public`, `src`, or the public GitHub repository.
 
-## One-time AIFA backend provisioning
+## Initial AIFA backend provisioning
 
 Apply `supabase/migrations/202609040001_private_slide_archive.sql` to the existing AIFA Supabase project. The migration creates the membership/deck tables, RLS policies, private storage bucket, owner bootstrap, and initial Camera Motion + Better Youth GenJam deck records. Confirm that `https://www.aifilmacademy.com/internal/slide-archive` is an approved Supabase Auth redirect URL.
 

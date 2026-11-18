@@ -1,23 +1,15 @@
 /*
- * AI Film Academy — Machine Cinema Partner Rate Offer Page
+ * AI Film Academy — Machine Cinema GenJam alumni page
  * Route: /genjam-offer
- * Purpose: Post-GenJam premium conversion — $297 one-time Machine Cinema Partner Rate
+ * Purpose: Invite GenJam alumni to the free community on Skool.
  *
  * Structure:
- *   1. Hero — congratulations + updated subheadline
- *   2. Community Showcase — private community visual with stats + Brandon bio
- *   3. What's Included — dark card grid with section heading
- *   4. Pricing Comparison — $297 one time vs the $500 public price
- *   5. Final CTA
- *   6. Post-payment success state
+ *   1. Hero
+ *   2. Community showcase
+ *   3. What's included
+ *   4. Free join
  */
-import { useEffect, useState } from "react";
-
-const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/bJe9AS1Bae8ga8D6zK7Vm04";
 const SKOOL_COMMUNITY_URL = "https://www.skool.com/aifilmacademy/about";
-const PUBLIC_ONE_TIME = 500;
-const PARTNER_ONE_TIME = 297;
-const PARTNER_SAVINGS = PUBLIC_ONE_TIME - PARTNER_ONE_TIME;
 
 const GENJAM_OFFER_CSS = `
   .genjam-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; }
@@ -36,10 +28,10 @@ const GENJAM_OFFER_CSS = `
 `;
 
 const INCLUDED = [
-  { icon: "🎬", label: "Master AI Filmmaking in 30 Days", desc: "The complete AI filmmaking course — concept to final cut, updated August 2026" },
+  { icon: "🎬", label: "Master AI Filmmaking in 30 Days", desc: "The complete AI filmmaking course, from concept to final cut, updated August 2026" },
   { icon: "🤖", label: "AIFA Workflow System", desc: "The exact AI tool stack and production process used by AFA members to ship real films" },
   { icon: "🏆", label: "Industry Certification", desc: "LinkedIn-ready AI Media Specialist certification that signals your skills to clients and employers" },
-  { icon: "🎥", label: "Monthly 5-Hour GenJams", desc: "Live collaborative filmmaking sessions every month — the same experience you just had" },
+  { icon: "🎥", label: "Monthly 5-Hour GenJams", desc: "Live collaborative filmmaking sessions every month, the same experience you just had" },
   { icon: "📋", label: "Weekly Creative Exercises", desc: "Structured weekly practice to build real skills and a portfolio you can show clients" },
   { icon: "🎤", label: "Personalized Video Feedback", desc: "Get your work reviewed with Loom feedback from instructors and working creators" },
   { icon: "💼", label: "Curated Job Listings", desc: "Hand-picked AI filmmaking opportunities, freelance gigs, and industry contests" },
@@ -51,54 +43,19 @@ function CTAButton({ size = "lg" }: { size?: "lg" | "xl" }) {
   const pad = size === "xl" ? "22px 56px" : "18px 40px";
   const fs = size === "xl" ? "clamp(1.1rem,3vw,1.3rem)" : "clamp(1rem,2.5vw,1.1rem)";
   return (
-    <a href={STRIPE_PAYMENT_LINK}
+    <a href={SKOOL_COMMUNITY_URL}
+      target="_blank"
+      rel="noopener noreferrer"
       style={{ display: "inline-block", background: "linear-gradient(135deg,#ef4444,#b91c1c)", borderRadius: "14px", padding: pad, color: "#fff", fontWeight: 800, fontSize: fs, textTransform: "uppercase", letterSpacing: "0.08em", textDecoration: "none", boxShadow: "0 0 60px rgba(239,68,68,0.45)", transition: "transform 0.15s, box-shadow 0.15s" }}
       onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(-2px)"; (e.currentTarget as HTMLAnchorElement).style.boxShadow = "0 0 80px rgba(239,68,68,0.65)"; }}
       onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(0)"; (e.currentTarget as HTMLAnchorElement).style.boxShadow = "0 0 60px rgba(239,68,68,0.45)"; }}>
-      Join with one payment, ${PARTNER_ONE_TIME} →
+      Join the community
     </a>
-  );
-}
-
-// ─── Post-Payment Success ─────────────────────────────────────────────────────
-function PaymentSuccess() {
-  return (
-    <div style={{ background: "#0A0A0A", minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "2rem", fontFamily: "'DM Sans', sans-serif" }}>
-      <div style={{ maxWidth: "520px", width: "100%", background: "rgba(239,68,68,0.07)", border: "1px solid rgba(239,68,68,0.2)", borderRadius: "24px", padding: "clamp(2rem,5vw,3.5rem)", textAlign: "center" }}>
-        <div style={{ fontSize: "4.5rem", marginBottom: "1.25rem" }}>🎬</div>
-        <h1 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2.5rem,7vw,3.5rem)", color: "#fff", letterSpacing: "0.02em", marginBottom: "1rem", lineHeight: 1 }}>
-          Welcome to the Academy.
-        </h1>
-        <p style={{ color: "rgba(255,255,255,0.55)", fontSize: "1.1rem", lineHeight: 1.65, marginBottom: "2rem" }}>
-          Your one-time Machine Cinema Partner Rate purchase is confirmed.{" "}
-          <strong style={{ color: "#fff" }}>Check your inbox</strong> — your Skool invite is on its way within 15 minutes.
-        </p>
-        <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "14px", padding: "1.5rem", textAlign: "left" }}>
-          <p style={{ fontSize: "0.72rem", color: "rgba(255,255,255,0.35)", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: "1rem" }}>What happens next</p>
-          {["You'll receive a Skool invite email within 15 minutes", "Accept the invite to access the full AI Film Academy course and community", "GenJams are listed on the community calendar", "Start with the AIFA Workflow System in the course library"].map((step, i) => (
-            <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: "0.75rem", marginBottom: i < 3 ? "0.85rem" : 0 }}>
-              <span style={{ width: "22px", height: "22px", borderRadius: "50%", background: "rgba(239,68,68,0.2)", color: "#ef4444", fontSize: "0.75rem", fontWeight: 800, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: "1px" }}>{i + 1}</span>
-              <span style={{ fontSize: "0.95rem", color: "rgba(255,255,255,0.6)", lineHeight: 1.5 }}>{step}</span>
-            </div>
-          ))}
-        </div>
-        <p style={{ marginTop: "1.5rem", fontSize: "0.78rem", color: "rgba(255,255,255,0.25)" }}>
-          Questions? <a href="mailto:brandon@aifilmacademy.com" style={{ color: "rgba(255,255,255,0.4)", textDecoration: "underline" }}>brandon@aifilmacademy.com</a>
-        </p>
-      </div>
-    </div>
   );
 }
 
 // ─── Main Page ────────────────────────────────────────────────────────────────
 export default function GenJamOffer() {
-  const [isSuccess, setIsSuccess] = useState(false);
-
-  useEffect(() => {
-    if (new URLSearchParams(window.location.search).get("payment") === "success") setIsSuccess(true);
-  }, []);
-  if (isSuccess) return <PaymentSuccess />;
-
   return (
     <div style={{ background: "#0A0A0A", color: "#F5F5F0", fontFamily: "'DM Sans', sans-serif", minHeight: "100vh" }}>
       <style>{GENJAM_OFFER_CSS}</style>
@@ -115,8 +72,8 @@ export default function GenJamOffer() {
           Finishing a GenJam.
         </h1>
         <p style={{ fontSize: "clamp(1.1rem,3vw,1.45rem)", color: "rgba(255,255,255,0.65)", lineHeight: 1.65, maxWidth: "720px", margin: "0 auto" }}>
-          Here's your offer for continued education, exercises, and GenJam sessions.
-          Plus curated job listings, industry certification, and new trainings added every month.
+          The community is free to join. Keep going with the course, exercises, and GenJam sessions,
+          plus job listings, certification, and new trainings.
         </p>
       </section>
 
@@ -174,90 +131,22 @@ export default function GenJamOffer() {
         </div>
       </section>
 
-      {/* ── SECTION 4: PRICING COMPARISON ── */}
+      {/* ── SECTION 4: FREE JOIN ── */}
       <section style={{ background: "#111", borderTop: "1px solid rgba(255,255,255,0.06)", borderBottom: "1px solid rgba(255,255,255,0.06)", padding: "clamp(4rem,8vw,6rem) clamp(1.5rem,5vw,3rem)" }}>
-        <div style={{ maxWidth: "860px", margin: "0 auto" }}>
-          <h2 id="partner-rate" style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2rem,6vw,4rem)", letterSpacing: "0.04em", color: "#F5F5F0", textAlign: "center", marginBottom: "clamp(2rem,5vw,3rem)", lineHeight: 1 }}>
-            Your Exclusive Rate
+        <div style={{ maxWidth: "720px", margin: "0 auto", textAlign: "center" }}>
+          <h2 id="join" style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2rem,6vw,4rem)", letterSpacing: "0.04em", color: "#F5F5F0", marginBottom: "1rem", lineHeight: 1 }}>
+            Free to Join
           </h2>
-
-          <div className="genjam-pricing-grid">
-            {/* Public rate */}
-            <div className="genjam-public-card" style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: "16px", padding: "clamp(1.5rem,4vw,2.25rem)", opacity: 0.5 }}>
-              <p style={{ fontSize: "0.72rem", color: "rgba(255,255,255,0.4)", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: "0.75rem" }}>Public price</p>
-              <p style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2.5rem,7vw,4rem)", color: "rgba(255,255,255,0.5)", lineHeight: 1, marginBottom: "0.25rem", textDecoration: "line-through" }}>
-                ${PUBLIC_ONE_TIME}<span style={{ fontSize: "1.2rem", fontFamily: "'DM Sans', sans-serif", fontWeight: 400 }}> one time</span>
-              </p>
-              <p style={{ fontSize: "0.9rem", color: "rgba(255,255,255,0.48)", marginBottom: "1rem" }}>One-time price on Skool</p>
-              <p style={{ fontSize: "0.85rem", color: "rgba(255,255,255,0.3)", lineHeight: 1.5 }}>The public course, including the community</p>
-            </div>
-
-            {/* Partner rate */}
-            <div className="genjam-partner-card" style={{ background: "linear-gradient(135deg, rgba(239,68,68,0.1) 0%, rgba(185,28,28,0.05) 100%)", border: "2px solid rgba(239,68,68,0.35)", borderRadius: "16px", padding: "clamp(1.5rem,4vw,2.25rem)", position: "relative", overflow: "hidden" }}>
-              <div style={{ position: "absolute", top: "-40px", right: "-40px", width: "120px", height: "120px", borderRadius: "50%", background: "rgba(239,68,68,0.12)", filter: "blur(40px)", pointerEvents: "none" }} />
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.75rem" }}>
-                <p style={{ fontSize: "0.72rem", color: "#ef4444", textTransform: "uppercase", letterSpacing: "0.12em", fontWeight: 700 }}>Machine Cinema Partner Rate</p>
-                <span style={{ background: "#ef4444", color: "#fff", fontSize: "0.65rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.1em", padding: "3px 10px", borderRadius: "100px" }}>Exclusive</span>
-              </div>
-              <p style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(3rem,8vw,5rem)", color: "#fff", lineHeight: 1, marginBottom: "0.25rem" }}>
-                ${PARTNER_ONE_TIME}<span style={{ fontSize: "1.25rem", fontFamily: "'DM Sans', sans-serif", fontWeight: 400, color: "rgba(255,255,255,0.6)" }}> one time</span>
-              </p>
-              <p style={{ fontSize: "0.98rem", color: "rgba(255,255,255,0.72)", marginBottom: "1rem", lineHeight: 1.55 }}>
-                $297 one time. Public price $500 one time. Save <strong style={{ color: "#ef4444" }}>${PARTNER_SAVINGS}</strong>.
-              </p>
-              <div style={{ margin: "0 0 1.5rem", padding: "1rem", borderRadius: "12px", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.09)" }}>
-                <p style={{ margin: 0, fontSize: "0.95rem", color: "rgba(255,255,255,0.88)", fontWeight: 700, lineHeight: 1.45 }}>Full AIFA access. One payment.</p>
-                <p style={{ margin: "0.35rem 0 0", fontSize: "0.88rem", color: "rgba(255,255,255,0.64)", lineHeight: 1.55 }}>Training, feedback, certification, community, curated opportunities, and GenJams.</p>
-                <p style={{ margin: "0.65rem 0 0", fontSize: "0.82rem", color: "rgba(255,255,255,0.52)", lineHeight: 1.45 }}>One-time $297 purchase for Machine Cinema GenJam alumni.</p>
-              </div>
-              <a href={STRIPE_PAYMENT_LINK}
-                style={{ display: "block", width: "100%", textAlign: "center", background: "linear-gradient(135deg,#ef4444,#b91c1c)", borderRadius: "12px", padding: "18px 16px", color: "#fff", fontWeight: 800, fontSize: "clamp(1rem,3vw,1.1rem)", textTransform: "uppercase", letterSpacing: "0.06em", textDecoration: "none", boxShadow: "0 0 40px rgba(239,68,68,0.4)", boxSizing: "border-box" }}>
-                Join with one payment, ${PARTNER_ONE_TIME} →
-              </a>
-            </div>
-          </div>
-
-          {/* Savings callout */}
-          <div style={{ marginTop: "1.5rem", textAlign: "center", padding: "1.25rem", background: "rgba(239,68,68,0.06)", border: "1px solid rgba(239,68,68,0.15)", borderRadius: "12px" }}>
-            <p style={{ fontSize: "clamp(0.95rem,2.5vw,1.1rem)", color: "rgba(255,255,255,0.6)", lineHeight: 1.6 }}>
-              $297 one time. Public price <strong style={{ color: "rgba(255,255,255,0.8)" }}>$500 one time</strong>. Save{" "}
-              <strong style={{ color: "#ef4444" }}>${PARTNER_SAVINGS}</strong>.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* ── SECTION 5: SCARCITY + FINAL CTA ── */}
-      <section style={{ maxWidth: "800px", margin: "0 auto", padding: "clamp(4rem,8vw,6rem) clamp(1.5rem,5vw,3rem)", textAlign: "center" }}>
-        <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2rem,6vw,4rem)", letterSpacing: "0.02em", color: "#F5F5F0", lineHeight: 1.05, marginBottom: "1.25rem" }}>
-          This rate is only available<br />
-          <span style={{ color: "#ef4444" }}>to GenJam alumni.</span>
-        </h2>
-        <p style={{ fontSize: "clamp(1rem,2.5vw,1.2rem)", color: "rgba(255,255,255,0.5)", lineHeight: 1.7, maxWidth: "580px", margin: "0 auto 2.5rem" }}>
-          Machine Cinema GenJam alumni can join here for $297 one time. The public price is <strong style={{ color: "rgba(255,255,255,0.75)" }}>$500 one time</strong>.
-        </p>
-        <CTAButton size="xl" />
-        <p style={{ marginTop: "1.25rem", fontSize: "0.8rem", color: "rgba(255,255,255,0.25)" }}>
-          Secure checkout via Stripe. Skool invite delivered automatically after payment.
-        </p>
-        <div style={{ marginTop: "1.5rem" }}>
-          <a
-            href={SKOOL_COMMUNITY_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", color: "rgba(255,255,255,0.4)", fontSize: "0.9rem", textDecoration: "none", borderBottom: "1px solid rgba(255,255,255,0.15)", paddingBottom: "2px", transition: "color 0.2s" }}
-            onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.color = "rgba(255,255,255,0.75)"; }}
-            onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.color = "rgba(255,255,255,0.4)"; }}
-          >
-            <span>👀</span>
-            <span>Preview the community before you join →</span>
-          </a>
+          <p style={{ fontSize: "clamp(1rem,2.5vw,1.2rem)", color: "rgba(255,255,255,0.72)", lineHeight: 1.7, margin: "0 auto 2rem" }}>
+            The AI Film Academy community and course are free. GenJam alumni can join or request to join on Skool.
+          </p>
+          <CTAButton size="xl" />
         </div>
       </section>
 
       <footer style={{ borderTop: "1px solid rgba(255,255,255,0.05)", padding: "1.5rem", textAlign: "center" }}>
         <p style={{ fontSize: "0.72rem", color: "rgba(255,255,255,0.18)" }}>
-          © 2026 AI Film Academy™ (AIFA). All rights reserved. This offer is exclusively for Machine Cinema GenJam alumni.
+          © 2026 AI Film Academy™ (AIFA). All rights reserved. The community is free to join.
         </p>
       </footer>
     </div>

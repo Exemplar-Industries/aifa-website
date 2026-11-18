@@ -5,8 +5,8 @@
  * 1. Creator's ad → aifilmacademy.com?ref=<their_ref_code>
  * 2. This context reads ?ref= from URL synchronously on init (no render delay)
  * 3. useSkoolUrl() returns Skool URL with ref appended → creator gets credit
- * 4. trackCtaClick() fires Meta Pixel "InitiateCheckout" event with ref data
- *    so Meta knows which creator's ad drove the conversion intent
+ * 4. trackCtaClick() fires a Meta Pixel Lead event with ref data
+ *    so Meta knows which creator's ad drove the join click. The community is free, so no price is sent.
  *
  * CONTRACTOR REF CODES (from TEAM_Full_Contractor_Database):
  * cf768b4a74b447ed9248d18863689820 → Bruno Saki
@@ -72,19 +72,17 @@ const AffiliateLinkContext = createContext<AffiliateLinkContextType>({
 export function AffiliateLinkProvider({ children }: { children: ReactNode }) {
   /**
    * Call this when user clicks any "Join" CTA button.
-   * Fires Meta Pixel "InitiateCheckout" event with affiliate data.
-   * Meta uses this to attribute the conversion to the correct ad/creator.
+   * Fires a Meta Pixel Lead event with affiliate data.
+   * Meta uses this to attribute the join click to the correct ad/creator.
+   * No price is sent because the community is free.
    */
   const trackCtaClick = useCallback((ctaLabel = "Join the Academy") => {
     if (typeof window.fbq === "function") {
-      window.fbq("track", "InitiateCheckout", {
+      window.fbq("track", "Lead", {
         content_name: ctaLabel,
         content_category: RESOLVED_REF ? "affiliate_cta" : "organic_cta",
         // Attach ref code so you can filter by creator in Meta Events Manager
         ...(RESOLVED_REF && { content_ids: [RESOLVED_REF] }),
-        currency: "USD",
-        value: 19.00,
-        num_items: 1,
       });
     }
   }, []);

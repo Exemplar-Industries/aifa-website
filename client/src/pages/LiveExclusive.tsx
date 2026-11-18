@@ -2,7 +2,7 @@
  * AI Film Academy — Live Session Exclusive Free Membership Page
  * Route: /live-exclusive
  * Purpose: Free full membership for live session attendees — no slot cap
- * Value framing: $49/month offer given free to live attendees
+ * Live attendees are invited to the free community.
  * Backend: Supabase (duplicate prevention) → Skool direct webhook invite
  */
 
@@ -192,9 +192,8 @@ export default function LiveExclusive() {
             border: "1px solid rgba(255,255,255,0.1)",
           }}
         >
-          <span className="text-gray-500 line-through text-sm">$49/month</span>
           <span className="text-white font-black text-lg">FREE</span>
-          <span className="text-gray-400 text-sm">— for being here today</span>
+          <span className="text-gray-400 text-sm">to join</span>
         </div>
 
         {/* Headline */}
@@ -216,7 +215,7 @@ export default function LiveExclusive() {
           you feel confident sharing — without getting overwhelmed.
         </p>
         <p className="text-gray-600 text-sm text-center mb-12">
-          This is the same membership everyone else pays $49/month for. Yours free — because you showed up live.
+          The community is free to join. You are welcome because you showed up live.
         </p>
 
         {/* ── What's Inside — ABOVE the form ── */}
@@ -286,9 +285,7 @@ export default function LiveExclusive() {
             style={{ background: "rgba(239,68,68,0.07)", border: "1px solid rgba(239,68,68,0.15)" }}
           >
             <p className="text-xs text-gray-400">
-              Regular members pay{" "}
-              <span className="text-white font-bold">$49/month</span> for everything above.
-              You're getting it free — today only.
+              The community is free to join, including everything above.
             </p>
           </div>
         </div>

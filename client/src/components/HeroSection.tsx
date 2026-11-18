@@ -345,8 +345,8 @@ export default function HeroSection() {
               Stop drowning in 12 different tools. Get{" "}
               <strong style={{ color: "rgba(245,245,240,0.9)" }}>one clear workflow</strong>, a
               proven tech stack, and a{" "}
-              <strong style={{ color: "rgba(245,245,240,0.9)" }}>LinkedIn certification</strong> —
-              all for less than a Netflix subscription.
+              <strong style={{ color: "rgba(245,245,240,0.9)" }}>LinkedIn certification</strong>.
+              The community is free to join.
             </p>
 
             {/* CTAs */}
@@ -361,7 +361,7 @@ export default function HeroSection() {
                 className="btn-primary pulse-cta px-8 py-4 text-base font-bold"
                 style={{ fontSize: "1rem", letterSpacing: "0.03em" }}
               >
-                Join the Academy — From $19/mo
+                Join the community
               </a>
               <a
                 href="#what-you-get"
@@ -380,7 +380,7 @@ export default function HeroSection() {
               }}
             >
               {[
-                "Cancel anytime",
+                "Free to join",
                 "1,100+ active creators",
                 "Google Certified AI Educator",
               ].map((item) => (

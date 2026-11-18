@@ -469,7 +469,7 @@ export default function Invite() {
           no tool overwhelm, and real skill certification.
         </p>
         <p className="text-gray-600 text-sm text-center mb-10">
-          Normally $19/month — yours free, permanently.
+          The AI Film Academy community is free to join.
         </p>
 
         {/* Live counter */}

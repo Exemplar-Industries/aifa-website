@@ -1151,7 +1151,7 @@ export default function Certification() {
             className="text-sm text-white/50 leading-relaxed mb-10"
             style={{ fontFamily: "'DM Sans', sans-serif" }}
           >
-            Enter the email you joined with. We use it to confirm your course access, then open the test.
+            Enter the email you joined with. We use it to confirm you are a community member, then open the test.
           </p>
 
           <div className="space-y-4 mb-8">

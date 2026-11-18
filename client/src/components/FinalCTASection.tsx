@@ -53,7 +53,7 @@ export default function FinalCTASection() {
           className="mt-8 text-white/60 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed"
           style={{ fontFamily: "'DM Sans', sans-serif" }}
         >
-          Every week you wait is a week your competitors are getting ahead. For $19/month — or just $149/year — you get the workflow, the tools, the community, and the certification to become a professional AI filmmaker.
+          The community is free to join. You get the workflow, the tools, the community, and the certification path for community members.
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-12">
@@ -63,13 +63,13 @@ export default function FinalCTASection() {
             rel="noopener noreferrer"
             className="btn-primary pulse-cta px-12 py-5 text-xl font-bold"
           >
-            Join the Academy — From $19/mo
+            Join the community
           </a>
         </div>
 
         <div className="flex flex-wrap items-center justify-center gap-6 mt-8">
           {[
-            "Cancel anytime",
+            "Free to join",
             "Instant access",
             "1,100+ members",
             "Google Certified Educator",

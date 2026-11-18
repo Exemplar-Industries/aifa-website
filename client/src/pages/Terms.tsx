@@ -1,19 +1,19 @@
 const TERMS = [
   {
     title: "Agreement to These Terms",
-    body: "These Terms of Service govern your use of the AI Film Academy website, course, training, community, events, and related services. AI Film Academy is operated by Exemplar Industries, LLC. By accessing the site, submitting a form, joining the community, or purchasing the course or a service, you agree to these Terms and the Refund & Cancellation Policy.",
+    body: "These Terms of Service govern your use of the AI Film Academy website, course, training, community, events, and related services. AI Film Academy is operated by Exemplar Industries, LLC. By accessing the site, submitting a form, joining the community, or requesting a service, you agree to these Terms and the Refund Policy.",
   },
   {
     title: "Website and Course Access",
-    body: "AI Film Academy provides education, creative practice, feedback, community access, events, and related resources. The public course is a one-time $500 purchase on Skool and includes the self-paced course plus the community. The Machine Cinema partner rate is a separate one-time $297 purchase. We may improve, update, replace, reschedule, or retire individual lessons, events, tools, community features, and resources as the program evolves, while working to preserve the overall value of the course.",
+    body: "AI Film Academy provides education, creative practice, feedback, community access, events, and related resources. Membership in the community is free. The course and the community are available when you join on Skool at https://www.skool.com/aifilmacademy/about. We may improve, update, replace, reschedule, or retire individual lessons, events, tools, community features, and resources as the program evolves.",
   },
   {
-    title: "Billing",
-    body: "The course is a one-time purchase. It does not renew, and AI Film Academy does not sell a monthly, annual, or lifetime plan for it. The $500 price is paid on Skool. The $297 Machine Cinema partner rate is paid through Stripe on the GenJam offer page. The price shown at that checkout is the price you pay. There is no later billing period and no billing-portal cancellation, because the purchase does not auto-renew.",
+    title: "Membership",
+    body: "Membership in the AI Film Academy community is free. You join, or request to join, on Skool. This website does not take payment for the course or the community.",
   },
   {
     title: "Refunds",
-    body: "New course purchases are covered by the 7-day, no-questions-asked refund window described in the Refund & Cancellation Policy. That policy is incorporated into these Terms. The window starts when the one-time payment succeeds. A request after those 7 calendar days is not a refund except where the law requires one. Unless a refund is issued, course and community access continues.",
+    body: "The community and course are free, so there is nothing to refund for joining. If you paid for the course before it was free, email brandon@aifilmacademy.com and we will help with that earlier payment. Custom productions and other services follow the terms in their own agreement. The Refund Policy is part of these Terms.",
   },
   {
     title: "Community Access and Conduct",
@@ -29,7 +29,7 @@ const TERMS = [
   },
   {
     title: "Outcomes and Opportunities",
-    body: "AI Film Academy provides education, creative practice, feedback, community, and access to opportunities designed to strengthen work readiness, improve portfolio quality, and help members develop a more effective creative process. Where appropriate, we may choose to provide priority visibility for member work or members in connection with relevant briefs or opportunities. That visibility is discretionary, context-specific, and is not a placement promise. Buying the course does not guarantee employment, client work, paid opportunities, income, festival selection, revenue, audience growth, tool performance, certification outcomes, or any particular creative or business result. You remain responsible for your own projects, creative decisions, legal clearances, and professional choices.",
+    body: "AI Film Academy provides education, creative practice, feedback, community, and access to opportunities designed to strengthen work readiness, improve portfolio quality, and help members develop a more effective creative process. Where appropriate, we may choose to provide priority visibility for member work or members in connection with relevant briefs or opportunities. That visibility is discretionary, context-specific, and is not a placement promise. Joining the community does not guarantee employment, client work, paid opportunities, income, festival selection, revenue, audience growth, tool performance, certification outcomes, or any particular creative or business result. You remain responsible for your own projects, creative decisions, legal clearances, and professional choices.",
   },
   {
     title: "Custom Productions and Corporate Services",
@@ -37,7 +37,7 @@ const TERMS = [
   },
   {
     title: "Third-Party Services and Links",
-    body: "The site and services may link to or rely on third-party services, including Stripe, Skool, and creative-AI platforms. Those services are governed by their own terms and privacy practices. We are not responsible for third-party services, content, availability, or transactions outside the scope of our own services.",
+    body: "The site and services may link to or rely on third-party services, including Skool and creative-AI platforms. Those services are governed by their own terms and privacy practices. We are not responsible for third-party services, content, or availability outside the scope of our own services. Custom services may name their own payment arrangements in the agreement for that work.",
   },
   {
     title: "Availability, Disclaimers, and Limits",
@@ -45,7 +45,7 @@ const TERMS = [
   },
   {
     title: "Changes and Contact",
-    body: "We may update these Terms as AI Film Academy evolves. We will post an updated date when we do. For questions about these Terms, the course purchase, or access, contact brandon@aifilmacademy.com.",
+    body: "We may update these Terms as AI Film Academy evolves. We will post an updated date when we do. For questions about these Terms or access, contact brandon@aifilmacademy.com.",
   },
 ];
 
@@ -56,8 +56,8 @@ export default function Terms() {
         <div style={{ maxWidth: "880px", margin: "0 auto" }}>
           <a href="/" style={{ color: "rgba(255,255,255,0.72)", fontSize: "1rem", fontWeight: 700, textDecoration: "none" }}>← AI Film Academy</a>
           <h1 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(3.3rem, 9vw, 7rem)", lineHeight: 0.9, letterSpacing: "0.02em", marginBottom: "1.3rem" }}>Terms of <span style={{ color: "var(--afa-red)" }}>Service</span></h1>
-          <p style={{ maxWidth: "760px", color: "rgba(255,255,255,0.92)", fontSize: "1.08rem", fontWeight: 600, lineHeight: 1.7 }}>These Terms explain how the one-time AI Film Academy course, training, community participation, billing, and custom services work.</p>
-          <p style={{ color: "rgba(255,255,255,0.86)", fontSize: "1rem", marginTop: "1.5rem" }}>Last updated: October 30, 2026</p>
+          <p style={{ maxWidth: "760px", color: "rgba(255,255,255,0.92)", fontSize: "1.08rem", fontWeight: 600, lineHeight: 1.7 }}>These Terms explain how the free AI Film Academy community, training, community participation, and custom services work.</p>
+          <p style={{ color: "rgba(255,255,255,0.86)", fontSize: "1rem", marginTop: "1.5rem" }}>Last updated: November 18, 2026</p>
         </div>
       </section>
       <section style={{ maxWidth: "880px", margin: "0 auto", padding: "2rem 1.5rem 5rem" }}>

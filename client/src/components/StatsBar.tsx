@@ -5,7 +5,7 @@
 
 const stats = [
   { number: "1,100+", label: "Active Creators" },
-  { number: "$19", label: "Per Month" },
+  { number: "Free", label: "To Join" },
   { number: "3", label: "Custom AI Agents" },
   { number: "5.0★", label: "Google Rating" },
 ];

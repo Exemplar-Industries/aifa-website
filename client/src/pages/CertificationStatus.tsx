@@ -97,20 +97,20 @@ export default function CertificationStatus() {
         </h1>
         <p className="text-gray-400 text-base leading-relaxed">
           {isNotFound
-            ? "We could not find a course purchase for that email. Join AI Film Academy, then come back and enter the email you joined with."
-            : "That email is on file, and it is not marked as an active course purchase. Try the email you joined with, or join and use that same email."}
+            ? "We could not find that email in the community. Join AI Film Academy, then come back and enter the email you joined with."
+            : "That email is on file, and it is not marked as an active community member. Try the email you joined with, or join and use that same email."}
         </p>
       </div>
 
       <div className="w-full max-w-lg mb-12">
         <OptionCard
-          badge="Join the course"
+          badge="Free to join"
           title="Join AI Film Academy"
-          description="The certification test is for people who have joined the course. The public price is $500 one time and includes the community."
+          description="The certification is available to community members. Join the free community on Skool, then come back and enter the email you joined with."
           bullets={[
             "Self-paced course and the community",
             "Enter the email you joined with when you return",
-            "500+ AI filmmakers",
+            "Free to join on Skool",
           ]}
           cta="Join AI Film Academy"
           href={JOIN_URL}

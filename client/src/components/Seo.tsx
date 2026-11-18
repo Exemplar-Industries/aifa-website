@@ -127,7 +127,7 @@ const ROUTE_SEO: Record<string, SeoPage> = {
   },
   "/refund-policy": {
     title: "Refund Policy | AI Film Academy",
-    description: "Review the AI Film Academy refund policy.",
+    description: "The AI Film Academy community and course are free to join, so there is nothing to refund for joining.",
     noindex: true,
   },
   "/terms": {
@@ -141,8 +141,8 @@ const ROUTE_SEO: Record<string, SeoPage> = {
     noindex: true,
   },
   "/membership/success": {
-    title: "Purchase confirmation | AI Film Academy",
-    description: "Your AI Film Academy course purchase confirmation.",
+    title: "Join the community | AI Film Academy",
+    description: "The AI Film Academy community and course are free to join on Skool.",
     noindex: true,
   },
   "/internal/lessons": {
@@ -354,13 +354,6 @@ export default function Seo() {
       else if (path === "/contact" || path === "/work-with-us") eventName = "aifa_contact_cta_click";
       else if (path === "/productions") eventName = "aifa_production_cta_click";
       else if (path === "/certification") eventName = "aifa_certification_cta_click";
-      else if (label === "Start Monthly Membership") {
-        eventName = "aifa_checkout_start";
-        params.billing_cycle = "monthly";
-      } else if (label === "Start Annual Membership") {
-        eventName = "aifa_checkout_start";
-        params.billing_cycle = "annual";
-      }
 
       if (!eventName) return;
       element.setAttribute("data-aifa-tracked", "true");
