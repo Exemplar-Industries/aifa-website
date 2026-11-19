@@ -3,8 +3,10 @@
  * Guided path: hero, learn-by-doing system, proof/member reviews, final decision, contact.
  */
 
+import FreeTrainingSignup from "@/components/FreeTrainingSignup";
 import InsideAFASection from "@/components/InsideAFASection";
 import ProofSection from "@/components/ProofSection";
+import ShowcaseGrid from "@/components/ShowcaseGrid";
 import StartHereSection from "@/components/StartHereSection";
 import { useSkoolCta } from "@/contexts/AffiliateLinkContext";
 import { useEffect, useRef, useState } from "react";
@@ -78,13 +80,7 @@ function FullscreenHero() {
             className="btn-primary pulse-cta min-h-14 px-8 py-4 text-[1rem] font-bold"
             onClick={() => trackCtaClick("Homepage Join AI Film Academy")}
           >
-            Join AI Film Academy
-          </a>
-          <a
-            href="/free-video-training"
-            className="btn-outline homepage-hero-outline min-h-14 px-8 py-4 text-[1rem] font-bold"
-          >
-            Try Free
+            Join the AI Film Academy community for free
           </a>
         </div>
       </div>
@@ -97,6 +93,33 @@ export default function Home() {
     <div className="homepage-shell min-h-screen bg-[#080808]">
       <FullscreenHero />
       <InsideAFASection />
+      <section className="bg-[#080808] py-20 md:py-24">
+        <div className="container">
+          <h2 className="text-center text-[clamp(3rem,6vw,5.5rem)] leading-[0.9] text-[#F5F5F0]">
+            What creators have <span style={{ color: "var(--afa-red)" }}>made</span>
+          </h2>
+          <p className="mx-auto mt-6 max-w-3xl text-center font-semibold text-white">
+            A first look at the work creators are making through AI Film Academy training, live events, and creative practice. Each piece is here to show the range of ideas, genres, and visual worlds this work can hold.
+          </p>
+          <div className="mt-10">
+            <ShowcaseGrid />
+          </div>
+          <p className="mt-8 text-center">
+            <a href="/showcase" className="btn-outline inline-flex min-h-12 items-center px-6 py-3 text-[1rem] font-bold">Open the showcase</a>
+          </p>
+        </div>
+      </section>
+      <section id="free-training" className="border-y border-white/10 bg-[#0B0B0B] py-20 md:py-28">
+        <div className="container">
+          <div className="mx-auto max-w-xl text-center">
+            <h2 className="text-[clamp(3rem,6vw,5.2rem)] leading-[0.9] text-[#F5F5F0]">Get the free video training</h2>
+            <p className="mx-auto mt-6 max-w-lg font-semibold text-white">A free video training for DIY filmmakers.</p>
+            <div className="mt-8 flex justify-center">
+              <FreeTrainingSignup />
+            </div>
+          </div>
+        </div>
+      </section>
       <ProofSection />
       <StartHereSection />
     </div>

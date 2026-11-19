@@ -24,17 +24,18 @@ function getColumns(skoolUrl: string): FooterColumn[] {
   {
     heading: "Start Here",
     links: [
-      { label: "Join AI Film Academy", href: skoolUrl, ctaLabel: "Footer Join AI Film Academy" },
-      { label: "Try Free", href: "/free-video-training" },
-      { label: "FAQ", href: "/faq" },
+      { label: "Join the AI Film Academy community for free", href: skoolUrl, ctaLabel: "Footer Join AI Film Academy" },
+      { label: "Get the free video training", href: "/free-video-training" },
+      { label: "Animation", href: "/productions" },
+      { label: "Consulting", href: "/work-with-brandon" },
     ],
   },
   {
     heading: "Explore AIFA",
     links: [
-      { label: "Resources", href: "/resources" },
       { label: "Showcase", href: "/showcase" },
-      { label: "Work with Brandon", href: "/work-with-brandon" },
+      { label: "Resources", href: "/resources" },
+      { label: "FAQ", href: "/faq" },
       { label: "Contact", href: "/contact" },
     ],
   },

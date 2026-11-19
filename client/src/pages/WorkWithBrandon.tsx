@@ -3,6 +3,7 @@ import { Send } from "lucide-react";
 import PageMeta from "@/components/PageMeta";
 import Turnstile from "@/components/Turnstile";
 import { deliverAifaForm } from "@/lib/formDelivery";
+import { CONSULTING_NEEDS, HIGH_TICKET_BUDGET_OPTIONS } from "@/lib/inquiryForms";
 import { LearnerRedirectNote } from "@/components/SharedInquiryFields";
 
 const CALENDLY_URL = "https://calendly.com/llcexemplar/strategy-call-w-brandon";
@@ -10,16 +11,16 @@ const CONTACT_EMAIL = "brandon@aifilmacademy.com";
 
 const WAYS = [
   {
-    title: "Author animation",
-    copy: "Animations for authors and storytellers, from character design and storyboards to the final edit, sound, and voiceover. You send the brief, I run the production.",
+    title: "Curriculum development",
+    copy: "Curriculum for schools, learning programs, and edtech companies that want creative AI in the classroom.",
   },
   {
-    title: "Edtech consulting",
-    copy: "Help for schools and learning programs that want creative AI in the classroom: curriculum, workshops, and a workflow the team can keep using.",
+    title: "Workshops, speaking, and events",
+    copy: "Workshops, speaking events, and event facilitation for teams that want to practice creative AI together.",
   },
   {
-    title: "Business consulting",
-    copy: "Help for marketing and creative teams starting with AI video: a team intensive, ongoing advising, and custom workflow builds.",
+    title: "Task force advisory",
+    copy: "Advisory for large businesses, nonprofits, and edtech companies that need a plan for creative AI.",
   },
 ];
 
@@ -34,7 +35,7 @@ const QUOTES = [
   },
 ];
 
-const NEEDS = ["Author animation", "Edtech consulting", "Business consulting"];
+const NEEDS = CONSULTING_NEEDS;
 
 export default function WorkWithBrandon() {
   const [submitted, setSubmitted] = useState(false);
@@ -46,11 +47,12 @@ export default function WorkWithBrandon() {
     if (!turnstileToken) return;
     const form = new FormData(event.currentTarget);
     try {
-      await deliverAifaForm("Author animation or consulting inquiry", {
+      await deliverAifaForm("Consulting inquiry", {
         name: String(form.get("name") || ""),
         email: String(form.get("email") || ""),
         organization: String(form.get("organization") || ""),
         need: String(form.get("need") || ""),
+        budget: String(form.get("budget") || ""),
         timeline: String(form.get("timeline") || ""),
         message: String(form.get("message") || ""),
       });
@@ -65,8 +67,8 @@ export default function WorkWithBrandon() {
   return (
     <main className="work-page">
       <PageMeta
-        title="Work with Brandon Patino | AI Film Academy"
-        description="Author animation and edtech or business consulting with Brandon Patino. Inquiries go to brandon@aifilmacademy.com."
+        title="Consulting with Brandon Patino | AI Film Academy"
+        description="Consulting for edtech companies, schools, nonprofits, and large businesses. Curriculum, workshops, speaking, events, and task force advisory. Inquiries go to brandon@aifilmacademy.com."
         path="/work-with-brandon"
       />
       <style>{`
@@ -105,6 +107,7 @@ export default function WorkWithBrandon() {
         .work-submit { display: inline-flex; align-items: center; justify-content: center; gap: .6rem; min-height: 56px; border: 0; border-radius: 8px; background: var(--afa-red); color: #fff; font: inherit; font-weight: 800; cursor: pointer; }
         .work-submit:disabled { opacity: .55; cursor: not-allowed; }
         .work-note { color: rgba(255,255,255,.74); font-weight: 650; }
+        .work-portrait { display: block; width: min(320px, 78vw); height: auto; margin: 1.5rem auto 0; border: 1px solid rgba(255,255,255,.18); border-radius: 12px; }
         .work-calendly { margin-top: 1.4rem; text-align: center; }
         .work-calendly a { color: #fff; font-weight: 800; }
         @media (max-width: 800px) {
@@ -115,15 +118,16 @@ export default function WorkWithBrandon() {
 
       <section className="work-hero">
         <div className="work-shell">
-          <h1 className="work-display">Work with Brandon Patino</h1>
-          <p>Author animation, plus edtech and business consulting, for authors, schools, and companies.</p>
-          <a className="work-primary" href="#project-form">Tell me about your project</a>
+          <h1 className="work-display">Work Directly with Brandon</h1>
+          <img className="work-portrait" src="https://d2xsxph8kpxj0f.cloudfront.net/310419663032668673/9znEqYZ2JpzLxCzomcgMbf/brandon-guinness_4043d965.webp" alt="Brandon Patino with his Guinness World Records certificate" />
+          <p>Consulting for edtech companies, schools, nonprofits, and large businesses. Curriculum, workshops, speaking, event facilitation, and task force advisory.</p>
+          <a className="work-primary" href="#project-form">Tell us about the consulting project</a>
         </div>
       </section>
 
       <section className="work-section">
         <div className="work-shell">
-          <h2 className="work-display">Three ways to work together</h2>
+          <h2 className="work-display">Consulting</h2>
           <div className="work-grid">
             {WAYS.map((way) => (
               <article className="work-card" key={way.title}>
@@ -177,7 +181,7 @@ export default function WorkWithBrandon() {
         <div className="work-shell">
           <h2 className="work-display">How it starts</h2>
           <div className="work-steps">
-            <article className="work-step"><span>1</span><p>Send the form with the animation or consulting work you need, and your timeline.</p></article>
+            <article className="work-step"><span>1</span><p>Send the form with the consulting work you need, your timeline, and your budget.</p></article>
             <article className="work-step"><span>2</span><p>I reply within two business days with the right next step.</p></article>
             <article className="work-step"><span>3</span><p>We agree on scope and a quote, then get to work.</p></article>
           </div>
@@ -186,8 +190,8 @@ export default function WorkWithBrandon() {
 
       <section className="work-section" id="project-form">
         <div className="work-form-wrap">
-          <h2 className="work-display" style={{ textAlign: "center" }}>Author animation and consulting</h2>
-          <p className="work-note" style={{ marginTop: "1rem", textAlign: "center" }}>This form is for an author animation project or for edtech and business consulting.</p>
+          <h2 className="work-display" style={{ textAlign: "center" }}>Animation and Consulting</h2>
+          <p className="work-note" style={{ marginTop: "1rem", textAlign: "center" }}>This form is for animation and consulting projects only.</p>
           <LearnerRedirectNote />
           <form className="work-form" onSubmit={sendInquiry}>
             <div className="work-fields">
@@ -211,12 +215,19 @@ export default function WorkWithBrandon() {
                 </select>
               </div>
               <div className="work-field work-field--full">
+                <label htmlFor="work-budget">Budget</label>
+                <select id="work-budget" name="budget" required defaultValue="">
+                  <option value="" disabled>Select one</option>
+                  {HIGH_TICKET_BUDGET_OPTIONS.map((option) => <option key={option}>{option}</option>)}
+                </select>
+              </div>
+              <div className="work-field work-field--full">
                 <label htmlFor="work-timeline">Timeline</label>
                 <input id="work-timeline" name="timeline" placeholder="When do you want to start?" />
               </div>
               <div className="work-field work-field--full">
-                <label htmlFor="work-message">Message</label>
-                <textarea id="work-message" name="message" required placeholder="What animation do you want made, or what consulting help do you need?" />
+                <label htmlFor="work-message">Project details</label>
+                <textarea id="work-message" name="message" required placeholder="What consulting help do you need, and who is it for?" />
               </div>
             </div>
             <Turnstile action="work-with-brandon" theme="dark" onTokenChange={setTurnstileToken} />
@@ -226,7 +237,7 @@ export default function WorkWithBrandon() {
             {submitError && <p className="work-note">{submitError}</p>}
           </form>
           <p className="work-calendly">
-            If you already know the scope, you can also <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer">book a call</a>.
+            If you already know the scope and budget, you can also <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer">book a call</a>.
           </p>
         </div>
       </section>

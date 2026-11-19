@@ -2,26 +2,32 @@ import { FormEvent, useState } from "react";
 import { Send } from "lucide-react";
 import PageMeta from "@/components/PageMeta";
 import { deliverAifaForm } from "@/lib/formDelivery";
-import { InquiryIdentityFields, LearnerRedirectNote } from "@/components/SharedInquiryFields";
+import { CONSULTING_NEEDS, HIGH_TICKET_BUDGET_OPTIONS, buildInquiryPayload } from "@/lib/inquiryForms";
+import { InquiryIdentityFields, LearnerRedirectNote, MasterInquiryFields } from "@/components/SharedInquiryFields";
 import Turnstile from "@/components/Turnstile";
 
 type InquiryTopic = "animation" | "consulting";
 
 const TOPIC_DETAILS: Record<InquiryTopic, { label: string; messageLabel: string; messagePlaceholder: string }> = {
   animation: {
-    label: "Author animation",
-    messageLabel: "Tell us about the animation",
+    label: "Animation",
+    messageLabel: "Project details",
     messagePlaceholder: "What should the animation cover, where will it live, and what does a strong result look like?",
   },
   consulting: {
-    label: "Edtech or business consulting",
-    messageLabel: "Tell us about the consulting",
+    label: "Consulting",
+    messageLabel: "Project details",
     messagePlaceholder: "Who is the work for, and what do you want help with?",
   },
 };
 
+function initialTopic(): InquiryTopic {
+  const topic = new URLSearchParams(window.location.search).get("topic");
+  return topic === "consulting" ? "consulting" : "animation";
+}
+
 export default function Contact() {
-  const [topic, setTopic] = useState<InquiryTopic>("animation");
+  const [topic, setTopic] = useState<InquiryTopic>(initialTopic);
   const [identity, setIdentity] = useState({ name: "", email: "", phone: "" });
   const [submitted, setSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState("");
@@ -34,14 +40,28 @@ export default function Contact() {
     const topicDetails = TOPIC_DETAILS[topic];
 
     try {
-      const fields = {
-        name: identity.name,
-        email: identity.email,
-        phone: identity.phone,
-        topic: topicDetails.label,
-        message: String(form.get("message") || ""),
-      };
-      await deliverAifaForm("Author animation or consulting inquiry", fields);
+      const animation = buildInquiryPayload("production", form);
+      const fields: Record<string, string> = topic === "animation"
+        ? {
+            name: animation.name,
+            email: animation.email,
+            phone: animation.phone || "",
+            topic: topicDetails.label,
+            budget: animation.budget || "",
+            timeline: animation.timeline || "",
+            message: animation.message,
+          }
+        : {
+            name: identity.name,
+            email: identity.email,
+            phone: identity.phone,
+            topic: topicDetails.label,
+            need: String(form.get("need") || ""),
+            budget: String(form.get("budget") || ""),
+            timeline: String(form.get("timeline") || ""),
+            message: String(form.get("message") || ""),
+          };
+      await deliverAifaForm("Animation or consulting inquiry", fields);
       setSubmitted(true);
       setSubmitError("");
     } catch (error) {
@@ -54,7 +74,7 @@ export default function Contact() {
     <main className="contact-page">
       <PageMeta
         title="Contact AI Film Academy | Animation and Consulting"
-        description="Contact Brandon about an author animation project or edtech and business consulting. The community and course are free on Skool."
+        description="Contact Brandon about an animation or consulting project. The community and course are free on Skool."
         path="/contact"
       />
 
@@ -69,6 +89,7 @@ export default function Contact() {
         .contact-form-intro { max-width: 660px; margin: 0 auto .7rem; color: rgba(255,255,255,.9); font-size: 1.12rem; font-weight: 600; line-height: 1.55; text-align: center; }
         .contact-field { display: grid; gap: .5rem; }
         .contact-field-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+        .contact-field--full { grid-column: 1 / -1; }
         .contact-field label { color: #F5F5F0; font-size: 1rem; font-weight: 800; }
         .contact-field small { color: rgba(255,255,255,.74); font-size: .93rem; font-weight: 600; line-height: 1.45; }
         .contact-field input, .contact-field select, .contact-field textarea { width: 100%; border: 1px solid rgba(255,255,255,.28); border-radius: 7px; outline: none; background: #101010; color: #F5F5F0; padding: .9rem .95rem; font: inherit; font-size: 1rem; font-weight: 600; }
@@ -81,6 +102,7 @@ export default function Contact() {
         @media (max-width: 680px) {
           .contact-page section { padding-left: 1.25rem; padding-right: 1.25rem; }
           .contact-field-grid { grid-template-columns: 1fr; }
+          .contact-field--full { grid-column: auto; }
         }
       `}</style>
 
@@ -88,22 +110,47 @@ export default function Contact() {
         <div className="contact-shell">
           <LearnerRedirectNote />
           <form className="contact-form" onSubmit={sendInquiry}>
-            <h2 className="contact-display">Animation and consulting.</h2>
-            <p className="contact-form-intro">This form is for an author animation project or for edtech and business consulting.</p>
+            <h2 className="contact-display">Animation and Consulting</h2>
+            <p className="contact-form-intro">This form is for animation and consulting projects only.</p>
 
             <InquiryIdentityFields values={identity} setValues={setIdentity} fieldClassName="contact-field" gridClassName="contact-field-grid" nameId="contact-name" emailId="contact-email" showPhone phoneId="contact-phone" />
 
-            <div className="contact-field">
+            <div className="contact-field contact-field--full">
               <label htmlFor="contact-topic">What are you reaching out about?</label>
               <select id="contact-topic" value={topic} onChange={(event) => setTopic(event.target.value as InquiryTopic)}>
                 {(Object.keys(TOPIC_DETAILS) as InquiryTopic[]).map((key) => <option key={key} value={key}>{TOPIC_DETAILS[key].label}</option>)}
               </select>
             </div>
 
-            <div className="contact-field">
-              <label htmlFor="contact-message">{TOPIC_DETAILS[topic].messageLabel}</label>
-              <textarea id="contact-message" name="message" required placeholder={TOPIC_DETAILS[topic].messagePlaceholder} />
-            </div>
+            {topic === "animation" && (
+              <MasterInquiryFields kind="production" fieldClassName="contact-field" gridClassName="contact-field-grid" fullFieldClassName="contact-field--full" idPrefix="contact-production" />
+            )}
+            {topic === "consulting" && (
+              <div className="contact-field-grid">
+                <div className="contact-field contact-field--full">
+                  <label htmlFor="contact-need">What do you need?</label>
+                  <select id="contact-need" name="need" required defaultValue="">
+                    <option value="" disabled>Select one</option>
+                    {CONSULTING_NEEDS.map((option) => <option key={option}>{option}</option>)}
+                  </select>
+                </div>
+                <div className="contact-field contact-field--full">
+                  <label htmlFor="contact-budget">Budget</label>
+                  <select id="contact-budget" name="budget" required defaultValue="">
+                    <option value="" disabled>Select one</option>
+                    {HIGH_TICKET_BUDGET_OPTIONS.map((option) => <option key={option}>{option}</option>)}
+                  </select>
+                </div>
+                <div className="contact-field contact-field--full">
+                  <label htmlFor="contact-timeline">Timeline</label>
+                  <input id="contact-timeline" name="timeline" placeholder="When do you want to start?" />
+                </div>
+                <div className="contact-field contact-field--full">
+                  <label htmlFor="contact-message">{TOPIC_DETAILS.consulting.messageLabel}</label>
+                  <textarea id="contact-message" name="message" required placeholder={TOPIC_DETAILS.consulting.messagePlaceholder} />
+                </div>
+              </div>
+            )}
 
             <Turnstile action="contact-inquiry" theme="dark" onTokenChange={setTurnstileToken} />
             <button className="contact-submit" type="submit" disabled={!turnstileToken}>Send Inquiry <Send size={19} /></button>

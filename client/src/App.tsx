@@ -10,7 +10,6 @@ import { AffiliateLinkProvider, useSkoolUrl } from "./contexts/AffiliateLinkCont
 import Home from "./pages/Home";
 import Seo from "./components/Seo";
 
-const Consulting = lazy(() => import("./pages/Consulting"));
 const Certification = lazy(() => import("./pages/Certification"));
 const CertificationStatus = lazy(() => import("./pages/CertificationStatus"));
 const FAQ = lazy(() => import("./pages/FAQ"));
@@ -100,7 +99,8 @@ function Router() {
       <Route path={"/faq"} component={FAQ} />
       <Route path={"/showcase"} component={Showcase} />
       <Route path={"/connect"} component={Connect} />
-      <Route path={"/consulting"} component={Consulting} />
+      <Route path={"/consulting"}><Redirect to="/work-with-brandon" /></Route>
+      <Route path={"/author-animation"}><Redirect to="/productions#starter-package" /></Route>
       <Route path={"/certification"} component={Certification} />
       <Route path={"/certification-status"} component={CertificationStatus} />
       <Route path={"/lpv3"} component={MembershipRedirect} />

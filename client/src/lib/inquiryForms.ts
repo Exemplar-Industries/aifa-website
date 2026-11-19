@@ -9,30 +9,49 @@ export type InquiryPayload = {
   runtime?: string;
   delivery?: string;
   location?: string;
+  budget?: string;
+  timeline?: string;
   message: string;
 };
 
 type FormEntrySource = FormData;
 
+export const HIGH_TICKET_BUDGET_OPTIONS = [
+  "Under $5,000",
+  "$5,000 to $15,000",
+  "$15,000 to $25,000",
+  "$25,000+",
+  "Not sure yet",
+] as const;
+
+export const CONSULTING_NEEDS = [
+  "Curriculum development",
+  "Workshop",
+  "Speaking event",
+  "Event facilitation",
+  "Task force advisory",
+  "Large business, nonprofit, or edtech company",
+] as const;
+
 export const INQUIRY_FORM_DEFINITIONS = {
   production: {
-    label: "Author animation",
-    subject: "Author animation inquiry",
+    label: "Animation",
+    subject: "Animation inquiry",
     message: {
-      label: "Tell us about the animation",
+      label: "Project details",
       placeholder: "What should the animation cover, where will it live, and what does a strong result look like?",
     },
     fields: {
-      projectType: {
-        name: "whatToMake",
-        label: "What do you want to make?",
-        options: ["Author animation", "Book or story trailer", "Character animation"],
+      budget: {
+        name: "budget",
+        label: "Budget",
+        options: HIGH_TICKET_BUDGET_OPTIONS,
         required: true,
       },
-      runtime: {
-        name: "runtime",
-        label: "Estimated runtime",
-        options: ["Under 60 seconds", "1 to 3 minutes", "3 to 5 minutes", "Over 5 minutes", "Not sure yet"],
+      timeline: {
+        name: "timeline",
+        label: "Timeline",
+        placeholder: "When do you want to start?",
         required: false,
       },
     },
@@ -69,6 +88,12 @@ export const INQUIRY_FORM_DEFINITIONS = {
         placeholder: "Example: Austin, TX",
         required: true,
       },
+      budget: {
+        name: "budget",
+        label: "Budget",
+        options: HIGH_TICKET_BUDGET_OPTIONS,
+        required: false,
+      },
     },
   },
 } as const;
@@ -82,8 +107,8 @@ export function buildInquiryPayload(kind: InquiryKind, form: FormEntrySource): I
       name: read(form, "name"),
       email: read(form, "email"),
       phone: read(form, "phone"),
-      projectType: read(form, fields.projectType.name),
-      runtime: read(form, fields.runtime.name),
+      budget: read(form, fields.budget.name),
+      timeline: read(form, fields.timeline.name),
       message: read(form, "message"),
     };
   }
@@ -98,6 +123,7 @@ export function buildInquiryPayload(kind: InquiryKind, form: FormEntrySource): I
     projectType: read(form, fields.service.name),
     delivery,
     location: delivery === "In person" ? read(form, fields.location.name) : "",
+    budget: read(form, fields.budget.name),
     message: read(form, "message"),
   };
 }

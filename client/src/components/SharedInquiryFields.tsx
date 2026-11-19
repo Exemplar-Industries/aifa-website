@@ -65,7 +65,7 @@ export function InquiryIdentityFields({ values, setValues, fieldClassName, gridC
   );
 }
 
-function SelectField({ id, className, name, label, options, required, value, onChange }: {
+function SelectField({ id, className, name, label, options, required, value, onChange, defaultOption }: {
   id: string;
   className: string;
   name: string;
@@ -74,6 +74,7 @@ function SelectField({ id, className, name, label, options, required, value, onC
   required: boolean;
   value?: string;
   onChange?: (value: string) => void;
+  defaultOption?: string;
 }) {
   return (
     <div className={className}>
@@ -83,7 +84,7 @@ function SelectField({ id, className, name, label, options, required, value, onC
         name={name}
         required={required}
         value={value}
-        defaultValue={value === undefined ? "" : undefined}
+        defaultValue={value === undefined ? (defaultOption ?? "") : undefined}
         onChange={(event) => onChange?.(event.target.value)}
       >
         <option value="" disabled>Select one</option>
@@ -95,17 +96,20 @@ function SelectField({ id, className, name, label, options, required, value, onC
 
 export function MasterInquiryFields({ kind, fieldClassName, gridClassName, fullFieldClassName, idPrefix, eventDelivery = "", onEventDeliveryChange }: MasterFieldsProps) {
   if (kind === "production") {
-    const { projectType, runtime } = INQUIRY_FORM_DEFINITIONS.production.fields;
+    const { budget, timeline } = INQUIRY_FORM_DEFINITIONS.production.fields;
     return (
       <div className={gridClassName}>
-        <SelectField id={`${idPrefix}-project-type`} className={fieldClasses(fieldClassName, fullFieldClassName)} {...projectType} />
-        <SelectField id={`${idPrefix}-runtime`} className={fieldClasses(fieldClassName, fullFieldClassName)} {...runtime} />
+        <SelectField id={`${idPrefix}-budget`} className={fieldClasses(fieldClassName, fullFieldClassName)} {...budget} />
+        <div className={fieldClasses(fieldClassName, fullFieldClassName)}>
+          <label htmlFor={`${idPrefix}-timeline`}>{timeline.label}</label>
+          <input id={`${idPrefix}-timeline`} name={timeline.name} placeholder={timeline.placeholder} />
+        </div>
         <MessageField kind="production" id={`${idPrefix}-message`} className={fieldClasses(fieldClassName, fullFieldClassName)} />
       </div>
     );
   }
 
-  const { organization, service, delivery, location } = INQUIRY_FORM_DEFINITIONS.event.fields;
+  const { organization, service, delivery, location, budget } = INQUIRY_FORM_DEFINITIONS.event.fields;
   return (
     <div className={gridClassName}>
       <div className={fieldClasses(fieldClassName, fullFieldClassName)}>
@@ -120,6 +124,7 @@ export function MasterInquiryFields({ kind, fieldClassName, gridClassName, fullF
           <input id={`${idPrefix}-location`} name={location.name} placeholder={location.placeholder} required />
         </div>
       )}
+      <SelectField id={`${idPrefix}-budget`} className={fieldClasses(fieldClassName, fullFieldClassName)} {...budget} />
       <MessageField kind="event" id={`${idPrefix}-message`} className={fieldClasses(fieldClassName, fullFieldClassName)} />
     </div>
   );
