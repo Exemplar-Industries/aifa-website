@@ -341,7 +341,7 @@ const SEO_PUBLIC_PAGES: Record<string, ServerSeoPage> = {
   },
   "/work-with-brandon": {
     title: "Work with Brandon Patino | AI Film Academy",
-    description: "AI production, workshops, and creative AI consulting for brands, schools, and organizations.",
+    description: "Author animation and edtech or business consulting with Brandon Patino. Inquiries go to brandon@aifilmacademy.com.",
   },
   "/certification-status": {
     title: "Certification status | AI Film Academy",
@@ -387,8 +387,8 @@ const SEO_PUBLIC_PAGES: Record<string, ServerSeoPage> = {
     description: "Explore original AI filmmaking work, creator projects, and portfolio-ready visual storytelling from the AI Film Academy community.",
   },
   "/productions": {
-    title: "AI Video Production for Brands | AI Film Academy",
-    description: "Work with AI Film Academy on director-led AI video production for brands, campaigns, trailers, and visual storytelling projects.",
+    title: "Author Animation | AI Film Academy",
+    description: "Request an author animation from AI Film Academy. The community and course are free on Skool.",
   },
   "/consulting": {
     title: "AI Filmmaking Consulting | AI Film Academy",
@@ -403,8 +403,8 @@ const SEO_PUBLIC_PAGES: Record<string, ServerSeoPage> = {
     description: "Find answers to common questions about the AI Film Academy course, AI filmmaking workflow, certification, feedback, and the creator community.",
   },
   "/contact": {
-    title: "Contact AI Film Academy | Education and Production Inquiries",
-    description: "Contact AI Film Academy about the course, certification, consulting, and AI video production inquiries.",
+    title: "Contact AI Film Academy | Animation and Consulting",
+    description: "Contact Brandon about an author animation project or edtech and business consulting. The community and course are free on Skool.",
   },
 };
 

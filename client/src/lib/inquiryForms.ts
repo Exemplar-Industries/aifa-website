@@ -9,7 +9,6 @@ export type InquiryPayload = {
   runtime?: string;
   delivery?: string;
   location?: string;
-  budget?: string;
   message: string;
 };
 
@@ -17,17 +16,17 @@ type FormEntrySource = FormData;
 
 export const INQUIRY_FORM_DEFINITIONS = {
   production: {
-    label: "Production project",
-    subject: "Production inquiry",
+    label: "Author animation",
+    subject: "Author animation inquiry",
     message: {
-      label: "Your message",
-      placeholder: "Your message",
+      label: "Tell us about the animation",
+      placeholder: "What should the animation cover, where will it live, and what does a strong result look like?",
     },
     fields: {
       projectType: {
         name: "whatToMake",
         label: "What do you want to make?",
-        options: ["Animation", "Commercial", "Story trailer", "Other custom production"],
+        options: ["Author animation", "Book or story trailer", "Character animation"],
         required: true,
       },
       runtime: {
@@ -35,12 +34,6 @@ export const INQUIRY_FORM_DEFINITIONS = {
         label: "Estimated runtime",
         options: ["Under 60 seconds", "1 to 3 minutes", "3 to 5 minutes", "Over 5 minutes", "Not sure yet"],
         required: false,
-      },
-      budget: {
-        name: "budget",
-        label: "Budget",
-        options: ["Less than $5,000", "$5,000 to $15,000", "$15,000 to $30,000", "$30,000+"],
-        required: true,
       },
     },
   },
@@ -76,12 +69,6 @@ export const INQUIRY_FORM_DEFINITIONS = {
         placeholder: "Example: Austin, TX",
         required: true,
       },
-      budget: {
-        name: "budget",
-        label: "Budget",
-        options: ["Less than $5,000", "$5,000 to $15,000", "$15,000 to $30,000", "$30,000+"],
-        required: false,
-      },
     },
   },
 } as const;
@@ -97,7 +84,6 @@ export function buildInquiryPayload(kind: InquiryKind, form: FormEntrySource): I
       phone: read(form, "phone"),
       projectType: read(form, fields.projectType.name),
       runtime: read(form, fields.runtime.name),
-      budget: read(form, fields.budget.name),
       message: read(form, "message"),
     };
   }
@@ -112,7 +98,6 @@ export function buildInquiryPayload(kind: InquiryKind, form: FormEntrySource): I
     projectType: read(form, fields.service.name),
     delivery,
     location: delivery === "In person" ? read(form, fields.location.name) : "",
-    budget: read(form, fields.budget.name),
     message: read(form, "message"),
   };
 }

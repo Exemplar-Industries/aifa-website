@@ -2,38 +2,26 @@ import { FormEvent, useState } from "react";
 import { Send } from "lucide-react";
 import PageMeta from "@/components/PageMeta";
 import { deliverAifaForm } from "@/lib/formDelivery";
-import { buildInquiryPayload } from "@/lib/inquiryForms";
-import { InquiryIdentityFields, MasterInquiryFields } from "@/components/SharedInquiryFields";
+import { InquiryIdentityFields, LearnerRedirectNote } from "@/components/SharedInquiryFields";
 import Turnstile from "@/components/Turnstile";
 
-type InquiryTopic = "production" | "event" | "membership" | "other";
+type InquiryTopic = "animation" | "consulting";
 
 const TOPIC_DETAILS: Record<InquiryTopic, { label: string; messageLabel: string; messagePlaceholder: string }> = {
-  production: {
-    label: "Production project",
-    messageLabel: "Tell us about the idea",
-    messagePlaceholder: "Tell us about the idea, where it will live, and what a strong final result looks like.",
+  animation: {
+    label: "Author animation",
+    messageLabel: "Tell us about the animation",
+    messagePlaceholder: "What should the animation cover, where will it live, and what does a strong result look like?",
   },
-  event: {
-    label: "Workshop, GenJam, or keynote",
-    messageLabel: "Tell us about the event",
-    messagePlaceholder: "Share the audience, goals, and what you want people to leave with.",
-  },
-  membership: {
-    label: "Joining the course",
-    messageLabel: "How can we help?",
-    messagePlaceholder: "Tell us what you would like to know about the course, training, or community.",
-  },
-  other: {
-    label: "Something else",
-    messageLabel: "Message",
-    messagePlaceholder: "Tell us what you are reaching out about.",
+  consulting: {
+    label: "Edtech or business consulting",
+    messageLabel: "Tell us about the consulting",
+    messagePlaceholder: "Who is the work for, and what do you want help with?",
   },
 };
 
 export default function Contact() {
-  const [topic, setTopic] = useState<InquiryTopic>("production");
-  const [eventDelivery, setEventDelivery] = useState("");
+  const [topic, setTopic] = useState<InquiryTopic>("animation");
   const [identity, setIdentity] = useState({ name: "", email: "", phone: "" });
   const [submitted, setSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState("");
@@ -46,10 +34,14 @@ export default function Contact() {
     const topicDetails = TOPIC_DETAILS[topic];
 
     try {
-      const fields = topic === "production" || topic === "event"
-        ? buildInquiryPayload(topic, form)
-        : { name: identity.name, email: identity.email, topic: topicDetails.label, message: String(form.get("message") || "") };
-      await deliverAifaForm("Contact inquiry", fields);
+      const fields = {
+        name: identity.name,
+        email: identity.email,
+        phone: identity.phone,
+        topic: topicDetails.label,
+        message: String(form.get("message") || ""),
+      };
+      await deliverAifaForm("Author animation or consulting inquiry", fields);
       setSubmitted(true);
       setSubmitError("");
     } catch (error) {
@@ -61,8 +53,8 @@ export default function Contact() {
   return (
     <main className="contact-page">
       <PageMeta
-        title="Contact AI Film Academy | Course, Production, and Events"
-        description="Contact AI Film Academy about the course, a production project, a workshop or keynote, or another creative inquiry."
+        title="Contact AI Film Academy | Animation and Consulting"
+        description="Contact Brandon about an author animation project or edtech and business consulting. The community and course are free on Skool."
         path="/contact"
       />
 
@@ -94,11 +86,12 @@ export default function Contact() {
 
       <section className="contact-section">
         <div className="contact-shell">
+          <LearnerRedirectNote />
           <form className="contact-form" onSubmit={sendInquiry}>
-            <h2 className="contact-display">Contact Us.</h2>
-            <p className="contact-form-intro">Tell us what you are looking to create, learn, or bring to your team. We will make sure the right conversation starts.</p>
+            <h2 className="contact-display">Animation and consulting.</h2>
+            <p className="contact-form-intro">This form is for an author animation project or for edtech and business consulting.</p>
 
-            <InquiryIdentityFields values={identity} setValues={setIdentity} fieldClassName="contact-field" gridClassName="contact-field-grid" nameId="contact-name" emailId="contact-email" showPhone={topic === "production" || topic === "event"} phoneId="contact-phone" />
+            <InquiryIdentityFields values={identity} setValues={setIdentity} fieldClassName="contact-field" gridClassName="contact-field-grid" nameId="contact-name" emailId="contact-email" showPhone phoneId="contact-phone" />
 
             <div className="contact-field">
               <label htmlFor="contact-topic">What are you reaching out about?</label>
@@ -107,12 +100,10 @@ export default function Contact() {
               </select>
             </div>
 
-            {topic === "production" && <MasterInquiryFields kind="production" fieldClassName="contact-field" gridClassName="contact-field-grid" idPrefix="contact-production" />}
-            {topic === "event" && <MasterInquiryFields kind="event" fieldClassName="contact-field" gridClassName="contact-field-grid" idPrefix="contact-event" eventDelivery={eventDelivery} onEventDeliveryChange={setEventDelivery} />}
-            {(topic === "membership" || topic === "other") && <div className="contact-field">
+            <div className="contact-field">
               <label htmlFor="contact-message">{TOPIC_DETAILS[topic].messageLabel}</label>
               <textarea id="contact-message" name="message" required placeholder={TOPIC_DETAILS[topic].messagePlaceholder} />
-            </div>}
+            </div>
 
             <Turnstile action="contact-inquiry" theme="dark" onTokenChange={setTurnstileToken} />
             <button className="contact-submit" type="submit" disabled={!turnstileToken}>Send Inquiry <Send size={19} /></button>

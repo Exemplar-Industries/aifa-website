@@ -3,22 +3,23 @@ import { Send } from "lucide-react";
 import PageMeta from "@/components/PageMeta";
 import Turnstile from "@/components/Turnstile";
 import { deliverAifaForm } from "@/lib/formDelivery";
+import { LearnerRedirectNote } from "@/components/SharedInquiryFields";
 
 const CALENDLY_URL = "https://calendly.com/llcexemplar/strategy-call-w-brandon";
 const CONTACT_EMAIL = "brandon@aifilmacademy.com";
 
 const WAYS = [
   {
-    title: "Production",
-    copy: "Animations, commercials, and story trailers made with AI, from character design and storyboards to the final edit, sound, and voiceover. You send the brief, I run the production.",
+    title: "Author animation",
+    copy: "Animations for authors and storytellers, from character design and storyboards to the final edit, sound, and voiceover. You send the brief, I run the production.",
   },
   {
-    title: "Workshops and GenJams",
-    copy: "Hands-on sessions that get your people making work with creative AI, together. A GenJam is a six-hour team creative challenge. Workshops run one to two hours. Keynotes are available for events.",
+    title: "Edtech consulting",
+    copy: "Help for schools and learning programs that want creative AI in the classroom: curriculum, workshops, and a workflow the team can keep using.",
   },
   {
-    title: "AI consulting for creative teams",
-    copy: "Help for marketing and creative teams starting with AI video: a one-day team intensive, ongoing advising, curriculum for schools and programs, and custom workflow builds.",
+    title: "Business consulting",
+    copy: "Help for marketing and creative teams starting with AI video: a team intensive, ongoing advising, and custom workflow builds.",
   },
 ];
 
@@ -33,8 +34,7 @@ const QUOTES = [
   },
 ];
 
-const NEEDS = ["Production", "Workshop or GenJam", "Consulting", "Something else"];
-const BUDGETS = ["Under $5,000", "$5,000 to $15,000", "$15,000 to $30,000", "$30,000+"];
+const NEEDS = ["Author animation", "Edtech consulting", "Business consulting"];
 
 export default function WorkWithBrandon() {
   const [submitted, setSubmitted] = useState(false);
@@ -46,12 +46,11 @@ export default function WorkWithBrandon() {
     if (!turnstileToken) return;
     const form = new FormData(event.currentTarget);
     try {
-      await deliverAifaForm("Work with Brandon", {
+      await deliverAifaForm("Author animation or consulting inquiry", {
         name: String(form.get("name") || ""),
         email: String(form.get("email") || ""),
         organization: String(form.get("organization") || ""),
         need: String(form.get("need") || ""),
-        budget: String(form.get("budget") || ""),
         timeline: String(form.get("timeline") || ""),
         message: String(form.get("message") || ""),
       });
@@ -67,7 +66,7 @@ export default function WorkWithBrandon() {
     <main className="work-page">
       <PageMeta
         title="Work with Brandon Patino | AI Film Academy"
-        description="AI production, workshops, and creative AI consulting for brands, schools, and organizations. One form to brandon@aifilmacademy.com."
+        description="Author animation and edtech or business consulting with Brandon Patino. Inquiries go to brandon@aifilmacademy.com."
         path="/work-with-brandon"
       />
       <style>{`
@@ -117,7 +116,7 @@ export default function WorkWithBrandon() {
       <section className="work-hero">
         <div className="work-shell">
           <h1 className="work-display">Work with Brandon Patino</h1>
-          <p>AI production, workshops, and creative AI consulting for brands, schools, and organizations.</p>
+          <p>Author animation, plus edtech and business consulting, for authors, schools, and companies.</p>
           <a className="work-primary" href="#project-form">Tell me about your project</a>
         </div>
       </section>
@@ -178,7 +177,7 @@ export default function WorkWithBrandon() {
         <div className="work-shell">
           <h2 className="work-display">How it starts</h2>
           <div className="work-steps">
-            <article className="work-step"><span>1</span><p>Send the form with what you want to make or host, your timeline, and budget.</p></article>
+            <article className="work-step"><span>1</span><p>Send the form with the animation or consulting work you need, and your timeline.</p></article>
             <article className="work-step"><span>2</span><p>I reply within two business days with the right next step.</p></article>
             <article className="work-step"><span>3</span><p>We agree on scope and a quote, then get to work.</p></article>
           </div>
@@ -187,7 +186,9 @@ export default function WorkWithBrandon() {
 
       <section className="work-section" id="project-form">
         <div className="work-form-wrap">
-          <h2 className="work-display" style={{ textAlign: "center" }}>Tell me about your project</h2>
+          <h2 className="work-display" style={{ textAlign: "center" }}>Author animation and consulting</h2>
+          <p className="work-note" style={{ marginTop: "1rem", textAlign: "center" }}>This form is for an author animation project or for edtech and business consulting.</p>
+          <LearnerRedirectNote />
           <form className="work-form" onSubmit={sendInquiry}>
             <div className="work-fields">
               <div className="work-field">
@@ -202,18 +203,11 @@ export default function WorkWithBrandon() {
                 <label htmlFor="work-organization">Organization</label>
                 <input id="work-organization" name="organization" />
               </div>
-              <div className="work-field">
+              <div className="work-field work-field--full">
                 <label htmlFor="work-need">What do you need?</label>
                 <select id="work-need" name="need" required defaultValue="">
                   <option value="" disabled>Select one</option>
                   {NEEDS.map((option) => <option key={option}>{option}</option>)}
-                </select>
-              </div>
-              <div className="work-field">
-                <label htmlFor="work-budget">Budget</label>
-                <select id="work-budget" name="budget" required defaultValue="">
-                  <option value="" disabled>Select one</option>
-                  {BUDGETS.map((option) => <option key={option}>{option}</option>)}
                 </select>
               </div>
               <div className="work-field work-field--full">
@@ -222,7 +216,7 @@ export default function WorkWithBrandon() {
               </div>
               <div className="work-field work-field--full">
                 <label htmlFor="work-message">Message</label>
-                <textarea id="work-message" name="message" required placeholder="What do you want to make or host?" />
+                <textarea id="work-message" name="message" required placeholder="What animation do you want made, or what consulting help do you need?" />
               </div>
             </div>
             <Turnstile action="work-with-brandon" theme="dark" onTokenChange={setTurnstileToken} />
@@ -232,7 +226,7 @@ export default function WorkWithBrandon() {
             {submitError && <p className="work-note">{submitError}</p>}
           </form>
           <p className="work-calendly">
-            If you already know the scope and budget, you can also <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer">book a call</a>.
+            If you already know the scope, you can also <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer">book a call</a>.
           </p>
         </div>
       </section>
