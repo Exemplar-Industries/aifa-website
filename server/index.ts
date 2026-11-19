@@ -341,7 +341,7 @@ const SEO_PUBLIC_PAGES: Record<string, ServerSeoPage> = {
   },
   "/work-with-brandon": {
     title: "Work with Brandon Patino | AI Film Academy",
-    description: "Paid consulting for edtech companies, schools, nonprofits, and large businesses. Curriculum, workshops, speaking, events, and task force advisory. Inquiries go to brandon@aifilmacademy.com.",
+    description: "Consulting for edtech companies, schools, nonprofits, and large businesses. Curriculum, workshops, speaking, events, and task force advisory. Inquiries go to brandon@aifilmacademy.com.",
   },
   "/certification-status": {
     title: "Certification status | AI Film Academy",
@@ -387,8 +387,8 @@ const SEO_PUBLIC_PAGES: Record<string, ServerSeoPage> = {
     description: "Explore original AI filmmaking work, creator projects, and portfolio-ready visual storytelling from the AI Film Academy community.",
   },
   "/productions": {
-    title: "Author Animation Starter Package | AI Film Academy",
-    description: "The Author Animation Starter Package is $15,000. It includes character design, a lookbook, storyboarding, a 2 to 3 minute animated trailer, and a pitch deck. Payment plans are available.",
+    title: "Animation Starter Package | AI Film Academy",
+    description: "The Animation Starter Package is $15,000. It includes character design, a lookbook, storyboarding, a 2 to 3 minute animated trailer, and a pitch deck. Payment plans are available.",
   },
   "/consulting": {
     title: "AI Filmmaking Consulting | AI Film Academy",
@@ -404,7 +404,7 @@ const SEO_PUBLIC_PAGES: Record<string, ServerSeoPage> = {
   },
   "/contact": {
     title: "Contact AI Film Academy | Animation and Consulting",
-    description: "Contact Brandon about a paid author animation or consulting project. The community and course are free on Skool.",
+    description: "Contact Brandon about an animation or consulting project. The community and course are free on Skool.",
   },
 };
 

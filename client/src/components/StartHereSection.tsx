@@ -15,11 +15,11 @@ export default function StartHereSection() {
               <span style={{ color: "var(--afa-red)" }}>journey starts here.</span>
             </h2>
             <p className="final-action-copy mx-auto mt-8 max-w-5xl text-[clamp(1.52rem,2.8vw,2.12rem)] font-semibold leading-[1.42] text-white">
-              Need a paid author animation or a consulting project? Start with the form that fits the work.
+              Need an animation project or consulting? Start with the form that fits the work.
             </p>
             <div className="mt-10 flex flex-col justify-center gap-4 sm:flex-row">
               <a href="/productions#starter-package" className="btn-primary min-h-14 min-w-[220px] px-8 py-4 text-[1rem] font-bold">
-                Author animation
+                Animation
               </a>
               <a href="/work-with-brandon#project-form" className="btn-outline final-action-outline min-h-14 min-w-[180px] px-8 py-4 text-[1rem] font-bold">
                 Consulting

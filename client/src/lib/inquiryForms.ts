@@ -10,6 +10,7 @@ export type InquiryPayload = {
   delivery?: string;
   location?: string;
   budget?: string;
+  timeline?: string;
   message: string;
 };
 
@@ -34,30 +35,24 @@ export const CONSULTING_NEEDS = [
 
 export const INQUIRY_FORM_DEFINITIONS = {
   production: {
-    label: "Author animation",
-    subject: "Author animation inquiry",
+    label: "Animation",
+    subject: "Animation inquiry",
     message: {
-      label: "Tell us about the animation",
+      label: "Project details",
       placeholder: "What should the animation cover, where will it live, and what does a strong result look like?",
     },
     fields: {
-      projectType: {
-        name: "whatToMake",
-        label: "What do you want to make?",
-        options: ["Author animation", "Book or story trailer", "Character animation"],
-        required: true,
-      },
-      runtime: {
-        name: "runtime",
-        label: "Estimated runtime",
-        options: ["Under 60 seconds", "1 to 3 minutes", "3 to 5 minutes", "Over 5 minutes", "Not sure yet"],
-        required: false,
-      },
       budget: {
         name: "budget",
         label: "Budget",
         options: HIGH_TICKET_BUDGET_OPTIONS,
         required: true,
+      },
+      timeline: {
+        name: "timeline",
+        label: "Timeline",
+        placeholder: "When do you want to start?",
+        required: false,
       },
     },
   },
@@ -112,9 +107,8 @@ export function buildInquiryPayload(kind: InquiryKind, form: FormEntrySource): I
       name: read(form, "name"),
       email: read(form, "email"),
       phone: read(form, "phone"),
-      projectType: read(form, fields.projectType.name),
-      runtime: read(form, fields.runtime.name),
       budget: read(form, fields.budget.name),
+      timeline: read(form, fields.timeline.name),
       message: read(form, "message"),
     };
   }

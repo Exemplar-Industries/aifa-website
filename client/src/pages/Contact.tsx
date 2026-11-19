@@ -2,7 +2,7 @@ import { FormEvent, useState } from "react";
 import { Send } from "lucide-react";
 import PageMeta from "@/components/PageMeta";
 import { deliverAifaForm } from "@/lib/formDelivery";
-import { CONSULTING_NEEDS, HIGH_TICKET_BUDGET_OPTIONS, INQUIRY_FORM_DEFINITIONS, buildInquiryPayload } from "@/lib/inquiryForms";
+import { CONSULTING_NEEDS, HIGH_TICKET_BUDGET_OPTIONS, buildInquiryPayload } from "@/lib/inquiryForms";
 import { InquiryIdentityFields, LearnerRedirectNote, MasterInquiryFields } from "@/components/SharedInquiryFields";
 import Turnstile from "@/components/Turnstile";
 
@@ -10,13 +10,13 @@ type InquiryTopic = "animation" | "consulting";
 
 const TOPIC_DETAILS: Record<InquiryTopic, { label: string; messageLabel: string; messagePlaceholder: string }> = {
   animation: {
-    label: "Author animation",
-    messageLabel: "Tell us about the animation",
+    label: "Animation",
+    messageLabel: "Project details",
     messagePlaceholder: "What should the animation cover, where will it live, and what does a strong result look like?",
   },
   consulting: {
     label: "Consulting",
-    messageLabel: "Tell us about the consulting",
+    messageLabel: "Project details",
     messagePlaceholder: "Who is the work for, and what do you want help with?",
   },
 };
@@ -26,15 +26,8 @@ function initialTopic(): InquiryTopic {
   return topic === "consulting" ? "consulting" : "animation";
 }
 
-function initialProject() {
-  const project = new URLSearchParams(window.location.search).get("project");
-  const options = INQUIRY_FORM_DEFINITIONS.production.fields.projectType.options;
-  return project && (options as readonly string[]).includes(project) ? project : undefined;
-}
-
 export default function Contact() {
   const [topic, setTopic] = useState<InquiryTopic>(initialTopic);
-  const [projectDefault] = useState(initialProject);
   const [identity, setIdentity] = useState({ name: "", email: "", phone: "" });
   const [submitted, setSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState("");
@@ -54,9 +47,8 @@ export default function Contact() {
             email: animation.email,
             phone: animation.phone || "",
             topic: topicDetails.label,
-            projectType: animation.projectType || "",
-            runtime: animation.runtime || "",
             budget: animation.budget || "",
+            timeline: animation.timeline || "",
             message: animation.message,
           }
         : {
@@ -69,7 +61,7 @@ export default function Contact() {
             timeline: String(form.get("timeline") || ""),
             message: String(form.get("message") || ""),
           };
-      await deliverAifaForm("Paid animation or consulting inquiry", fields);
+      await deliverAifaForm("Animation or consulting inquiry", fields);
       setSubmitted(true);
       setSubmitError("");
     } catch (error) {
@@ -82,7 +74,7 @@ export default function Contact() {
     <main className="contact-page">
       <PageMeta
         title="Contact AI Film Academy | Animation and Consulting"
-        description="Contact Brandon about a paid author animation or consulting project. The community and course are free on Skool."
+        description="Contact Brandon about an animation or consulting project. The community and course are free on Skool."
         path="/contact"
       />
 
@@ -118,8 +110,8 @@ export default function Contact() {
         <div className="contact-shell">
           <LearnerRedirectNote />
           <form className="contact-form" onSubmit={sendInquiry}>
-            <h2 className="contact-display">Paid animation and consulting.</h2>
-            <p className="contact-form-intro">This form is for paid author animation and consulting projects.</p>
+            <h2 className="contact-display">Animation and Consulting</h2>
+            <p className="contact-form-intro">This form is for animation and consulting projects only.</p>
 
             <InquiryIdentityFields values={identity} setValues={setIdentity} fieldClassName="contact-field" gridClassName="contact-field-grid" nameId="contact-name" emailId="contact-email" showPhone phoneId="contact-phone" />
 
@@ -131,7 +123,7 @@ export default function Contact() {
             </div>
 
             {topic === "animation" && (
-              <MasterInquiryFields kind="production" fieldClassName="contact-field" gridClassName="contact-field-grid" fullFieldClassName="contact-field--full" idPrefix="contact-production" projectDefault={projectDefault} />
+              <MasterInquiryFields kind="production" fieldClassName="contact-field" gridClassName="contact-field-grid" fullFieldClassName="contact-field--full" idPrefix="contact-production" />
             )}
             {topic === "consulting" && (
               <div className="contact-field-grid">

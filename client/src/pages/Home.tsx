@@ -25,7 +25,7 @@ function FullscreenHero() {
   }, []);
 
   return (
-    <section className="homepage-hero relative overflow-hidden" style={{ minHeight: "100svh" }}>
+    <section className="homepage-hero relative overflow-hidden" style={{ height: "100svh", minHeight: "620px" }}>
       <video
         ref={videoRef}
         src={HERO_VIDEO_URL}
@@ -54,7 +54,7 @@ function FullscreenHero() {
       <div className="homepage-hero-vignette absolute inset-0" />
       <div className="homepage-hero-grain absolute inset-0" />
 
-      <div className="relative z-10 flex min-h-[100svh] flex-col items-center justify-center px-6 py-28 text-center">
+      <div className="relative z-10 flex h-full flex-col items-center justify-center px-6 text-center">
         <h1
           className="homepage-hero-title max-w-none text-[#F5F5F0]"
           style={{ fontSize: "clamp(3.15rem, 6.1vw, 6.7rem)" }}
@@ -71,23 +71,18 @@ function FullscreenHero() {
             textShadow: "0 2px 18px rgba(0,0,0,0.78)",
           }}
         >
-          Join the free community, or get the free video training. For a paid project, see author animation and consulting.
+          Beginner friendly training to help you create a premium AI portfolio for high ticket creative work.
         </p>
 
-        <div className="mt-9 flex w-full max-w-5xl flex-col items-center justify-center gap-5 lg:flex-row lg:items-start">
+        <div className="mt-9 flex flex-col justify-center gap-4 sm:flex-row">
           <a
             href={skoolUrl}
-            className="btn-primary pulse-cta min-h-14 shrink-0 px-8 py-4 text-[1rem] font-bold"
+            className="btn-primary pulse-cta min-h-14 px-8 py-4 text-[1rem] font-bold"
             onClick={() => trackCtaClick("Homepage Join AI Film Academy")}
           >
             Join the AI Film Academy community for free
           </a>
-          <FreeTrainingSignup />
         </div>
-        <p className="mt-6 flex flex-wrap justify-center gap-x-6 gap-y-2 text-base font-bold text-white">
-          <a href="/productions#starter-package" className="underline decoration-[var(--afa-red)] underline-offset-4">Author animation</a>
-          <a href="/work-with-brandon#project-form" className="underline decoration-[var(--afa-red)] underline-offset-4">Consulting</a>
-        </p>
       </div>
     </section>
   );
@@ -101,7 +96,7 @@ export default function Home() {
       <section className="bg-[#080808] py-20 md:py-24">
         <div className="container">
           <h2 className="text-center text-[clamp(3rem,6vw,5.5rem)] leading-[0.9] text-[#F5F5F0]">
-            What creators have <span style={{ color: "var(--afa-red)" }}>made.</span>
+            What creators have <span style={{ color: "var(--afa-red)" }}>made</span>
           </h2>
           <p className="mx-auto mt-6 max-w-3xl text-center font-semibold text-white">
             A first look at the work creators are making through AI Film Academy training, live events, and creative practice. Each piece is here to show the range of ideas, genres, and visual worlds this work can hold.
@@ -112,6 +107,17 @@ export default function Home() {
           <p className="mt-8 text-center">
             <a href="/showcase" className="btn-outline inline-flex min-h-12 items-center px-6 py-3 text-[1rem] font-bold">Open the showcase</a>
           </p>
+        </div>
+      </section>
+      <section id="free-training" className="border-y border-white/10 bg-[#0B0B0B] py-20 md:py-28">
+        <div className="container">
+          <div className="mx-auto max-w-xl text-center">
+            <h2 className="text-[clamp(3rem,6vw,5.2rem)] leading-[0.9] text-[#F5F5F0]">Get the free video training</h2>
+            <p className="mx-auto mt-6 max-w-lg font-semibold text-white">A free video training for DIY filmmakers.</p>
+            <div className="mt-8 flex justify-center">
+              <FreeTrainingSignup />
+            </div>
+          </div>
         </div>
       </section>
       <ProofSection />

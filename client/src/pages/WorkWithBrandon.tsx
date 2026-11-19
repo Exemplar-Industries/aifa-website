@@ -47,7 +47,7 @@ export default function WorkWithBrandon() {
     if (!turnstileToken) return;
     const form = new FormData(event.currentTarget);
     try {
-      await deliverAifaForm("Paid consulting inquiry", {
+      await deliverAifaForm("Consulting inquiry", {
         name: String(form.get("name") || ""),
         email: String(form.get("email") || ""),
         organization: String(form.get("organization") || ""),
@@ -68,7 +68,7 @@ export default function WorkWithBrandon() {
     <main className="work-page">
       <PageMeta
         title="Consulting with Brandon Patino | AI Film Academy"
-        description="Paid consulting for edtech companies, schools, nonprofits, and large businesses. Curriculum, workshops, speaking, events, and task force advisory. Inquiries go to brandon@aifilmacademy.com."
+        description="Consulting for edtech companies, schools, nonprofits, and large businesses. Curriculum, workshops, speaking, events, and task force advisory. Inquiries go to brandon@aifilmacademy.com."
         path="/work-with-brandon"
       />
       <style>{`
@@ -107,6 +107,7 @@ export default function WorkWithBrandon() {
         .work-submit { display: inline-flex; align-items: center; justify-content: center; gap: .6rem; min-height: 56px; border: 0; border-radius: 8px; background: var(--afa-red); color: #fff; font: inherit; font-weight: 800; cursor: pointer; }
         .work-submit:disabled { opacity: .55; cursor: not-allowed; }
         .work-note { color: rgba(255,255,255,.74); font-weight: 650; }
+        .work-portrait { display: block; width: min(320px, 78vw); height: auto; margin: 1.5rem auto 0; border: 1px solid rgba(255,255,255,.18); border-radius: 12px; }
         .work-calendly { margin-top: 1.4rem; text-align: center; }
         .work-calendly a { color: #fff; font-weight: 800; }
         @media (max-width: 800px) {
@@ -117,10 +118,10 @@ export default function WorkWithBrandon() {
 
       <section className="work-hero">
         <div className="work-shell">
-          <h1 className="work-display">Work with Brandon Patino</h1>
-          <p>Paid consulting for edtech companies, schools, nonprofits, and large businesses. Curriculum, workshops, speaking, event facilitation, and task force advisory.</p>
+          <h1 className="work-display">Work Directly with Brandon</h1>
+          <img className="work-portrait" src="https://d2xsxph8kpxj0f.cloudfront.net/310419663032668673/9znEqYZ2JpzLxCzomcgMbf/brandon-guinness_4043d965.webp" alt="Brandon Patino with his Guinness World Records certificate" />
+          <p>Consulting for edtech companies, schools, nonprofits, and large businesses. Curriculum, workshops, speaking, event facilitation, and task force advisory.</p>
           <a className="work-primary" href="#project-form">Tell us about the consulting project</a>
-          <p style={{ marginTop: "1.2rem" }}>For a paid author animation, see <a href="/productions#starter-package" style={{ color: "var(--afa-red)" }}>Author animation</a>.</p>
         </div>
       </section>
 
@@ -189,8 +190,8 @@ export default function WorkWithBrandon() {
 
       <section className="work-section" id="project-form">
         <div className="work-form-wrap">
-          <h2 className="work-display" style={{ textAlign: "center" }}>Paid consulting</h2>
-          <p className="work-note" style={{ marginTop: "1rem", textAlign: "center" }}>This form is for paid consulting projects. Tell us what you need, your timeline, and your budget.</p>
+          <h2 className="work-display" style={{ textAlign: "center" }}>Animation and Consulting</h2>
+          <p className="work-note" style={{ marginTop: "1rem", textAlign: "center" }}>This form is for animation and consulting projects only.</p>
           <LearnerRedirectNote />
           <form className="work-form" onSubmit={sendInquiry}>
             <div className="work-fields">
@@ -225,7 +226,7 @@ export default function WorkWithBrandon() {
                 <input id="work-timeline" name="timeline" placeholder="When do you want to start?" />
               </div>
               <div className="work-field work-field--full">
-                <label htmlFor="work-message">Message</label>
+                <label htmlFor="work-message">Project details</label>
                 <textarea id="work-message" name="message" required placeholder="What consulting help do you need, and who is it for?" />
               </div>
             </div>
