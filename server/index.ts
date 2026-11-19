@@ -341,7 +341,7 @@ const SEO_PUBLIC_PAGES: Record<string, ServerSeoPage> = {
   },
   "/work-with-brandon": {
     title: "Work with Brandon Patino | AI Film Academy",
-    description: "Author animation and edtech or business consulting with Brandon Patino. Inquiries go to brandon@aifilmacademy.com.",
+    description: "Paid consulting for edtech companies, schools, nonprofits, and large businesses. Curriculum, workshops, speaking, events, and task force advisory. Inquiries go to brandon@aifilmacademy.com.",
   },
   "/certification-status": {
     title: "Certification status | AI Film Academy",
@@ -387,8 +387,8 @@ const SEO_PUBLIC_PAGES: Record<string, ServerSeoPage> = {
     description: "Explore original AI filmmaking work, creator projects, and portfolio-ready visual storytelling from the AI Film Academy community.",
   },
   "/productions": {
-    title: "Author Animation | AI Film Academy",
-    description: "Request an author animation from AI Film Academy. The community and course are free on Skool.",
+    title: "Author Animation Starter Package | AI Film Academy",
+    description: "The Author Animation Starter Package is $15,000. It includes character design, a lookbook, storyboarding, a 2 to 3 minute animated trailer, and a pitch deck. Payment plans are available.",
   },
   "/consulting": {
     title: "AI Filmmaking Consulting | AI Film Academy",
@@ -404,7 +404,7 @@ const SEO_PUBLIC_PAGES: Record<string, ServerSeoPage> = {
   },
   "/contact": {
     title: "Contact AI Film Academy | Animation and Consulting",
-    description: "Contact Brandon about an author animation project or edtech and business consulting. The community and course are free on Skool.",
+    description: "Contact Brandon about a paid author animation or consulting project. The community and course are free on Skool.",
   },
 };
 
@@ -901,8 +901,12 @@ async function startServer() {
   });
 
   // Scattered high-ticket URLs whose offer is now on one page.
-  app.get(["/education-events", "/work-with-us"], (_req, res) => {
+  app.get(["/education-events", "/work-with-us", "/consulting"], (_req, res) => {
     res.redirect(301, "/work-with-brandon");
+  });
+
+  app.get("/author-animation", (_req, res) => {
+    res.redirect(301, "/productions#starter-package");
   });
 
   // Serve static files from dist/public in production

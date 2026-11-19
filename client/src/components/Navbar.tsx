@@ -5,22 +5,17 @@
 
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
-import { useSkoolCta } from "@/contexts/AffiliateLinkContext";
 
 const LOGO_URL = "/assets/afa-logo-horizontal.png";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const { skoolUrl, trackCtaClick } = useSkoolCta();
   const navLinks = [
     { label: "Home", href: "/" },
-    { label: "Join AI Film Academy", href: skoolUrl, membershipCta: true },
-    { label: "Resources", href: "/resources" },
-    { label: "Work with Brandon", href: "/work-with-brandon" },
+    { label: "Animation", href: "/productions" },
+    { label: "Consulting", href: "/work-with-brandon" },
     { label: "Showcase", href: "/showcase" },
-    { label: "Contact", href: "/contact" },
-    { label: "FAQ", href: "/faq" },
   ];
 
   useEffect(() => {
@@ -53,7 +48,6 @@ export default function Navbar() {
               key={link.href}
               href={link.href}
               className="nav-link whitespace-nowrap text-[0.98rem] font-semibold transition-colors duration-150"
-              onClick={link.membershipCta ? () => trackCtaClick("Navigation Join AI Film Academy") : undefined}
             >
               {link.label}
             </a>
@@ -61,12 +55,6 @@ export default function Navbar() {
         </div>
 
         <div className="flex shrink-0 items-center gap-2 sm:gap-3">
-          <a
-            href="/free-video-training"
-            className="btn-primary inline-flex min-h-11 items-center gap-2 px-3.5 py-2.5 text-[0.94rem] font-bold sm:px-4"
-          >
-            <span>Try Free</span>
-          </a>
           <button
             type="button"
             className="menu-toggle inline-flex h-11 w-11 items-center justify-center border border-white/25 text-white transition-colors xl:hidden"
@@ -88,21 +76,11 @@ export default function Navbar() {
                 key={link.href}
                 href={link.href}
                 className="nav-link border-b border-white/12 py-4 text-[1.08rem] font-semibold transition-colors"
-                onClick={() => {
-                  if (link.membershipCta) trackCtaClick("Navigation Join AI Film Academy");
-                  setMenuOpen(false);
-                }}
+                onClick={() => setMenuOpen(false)}
               >
                 {link.label}
               </a>
             ))}
-            <a
-              href="/free-video-training"
-              className="btn-primary mt-4 inline-flex min-h-12 items-center justify-center px-5 py-3 text-[1rem] font-bold"
-              onClick={() => setMenuOpen(false)}
-            >
-              Try Free
-            </a>
           </div>
         </div>
       )}

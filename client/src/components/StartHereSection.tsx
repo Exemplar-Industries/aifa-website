@@ -2,11 +2,7 @@
  * AI Film Academy - Homepage final action panel
  */
 
-import { useSkoolCta } from "@/contexts/AffiliateLinkContext";
-
 export default function StartHereSection() {
-  const { skoolUrl, trackCtaClick } = useSkoolCta();
-
   return (
     <section id="start" className="relative overflow-hidden bg-[#080808] py-20 md:py-28">
       <div className="container">
@@ -19,14 +15,14 @@ export default function StartHereSection() {
               <span style={{ color: "var(--afa-red)" }}>journey starts here.</span>
             </h2>
             <p className="final-action-copy mx-auto mt-8 max-w-5xl text-[clamp(1.52rem,2.8vw,2.12rem)] font-semibold leading-[1.42] text-white">
-              Master one production system, create a premium portfolio, and land high ticket creative work.
+              Need a paid author animation or a consulting project? Start with the form that fits the work.
             </p>
             <div className="mt-10 flex flex-col justify-center gap-4 sm:flex-row">
-              <a href={skoolUrl} className="btn-primary min-h-14 min-w-[220px] px-8 py-4 text-[1rem] font-bold" onClick={() => trackCtaClick("Homepage Join AI Film Academy")}>
-                Join AI Film Academy
+              <a href="/productions#starter-package" className="btn-primary min-h-14 min-w-[220px] px-8 py-4 text-[1rem] font-bold">
+                Author animation
               </a>
-              <a href="/free-video-training" className="btn-outline final-action-outline min-h-14 min-w-[180px] px-8 py-4 text-[1rem] font-bold">
-                Try Free
+              <a href="/work-with-brandon#project-form" className="btn-outline final-action-outline min-h-14 min-w-[180px] px-8 py-4 text-[1rem] font-bold">
+                Consulting
               </a>
             </div>
           </div>

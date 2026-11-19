@@ -26,6 +26,9 @@ type MasterFieldsProps = {
   idPrefix: string;
   eventDelivery?: string;
   onEventDeliveryChange?: (value: string) => void;
+  projectValue?: string;
+  onProjectChange?: (value: string) => void;
+  projectDefault?: string;
 };
 
 const fieldClasses = (base: string, full?: string) => `${base}${full ? ` ${full}` : ""}`;
@@ -34,10 +37,15 @@ const SKOOL_ABOUT_URL = "https://www.skool.com/aifilmacademy/about";
 
 export function LearnerRedirectNote() {
   return (
-    <p style={{ margin: "0 0 1rem", color: "rgba(255,255,255,0.92)", fontSize: "1.05rem", fontWeight: 700, lineHeight: 1.55, textAlign: "center" }}>
-      Looking to learn AI filmmaking? The AI Film Academy community and course are free.{" "}
-      <a href={SKOOL_ABOUT_URL} target="_blank" rel="noopener noreferrer" style={{ color: "var(--afa-red)" }}>Join here.</a>
-    </p>
+    <div style={{ margin: "0 0 1rem", textAlign: "center" }}>
+      <p style={{ margin: 0, color: "rgba(255,255,255,0.92)", fontSize: "1.05rem", fontWeight: 700, lineHeight: 1.55 }}>
+        Looking to learn AI filmmaking? The AI Film Academy community and course are free.{" "}
+        <a href={SKOOL_ABOUT_URL} target="_blank" rel="noopener noreferrer" style={{ color: "var(--afa-red)" }}>Join here.</a>
+      </p>
+      <p style={{ margin: "0.7rem 0 0", fontSize: "1.05rem", fontWeight: 700, lineHeight: 1.55 }}>
+        <a href="/free-video-training" style={{ color: "var(--afa-red)" }}>Get the free AI filmmaking video training</a>
+      </p>
+    </div>
   );
 }
 
@@ -65,7 +73,7 @@ export function InquiryIdentityFields({ values, setValues, fieldClassName, gridC
   );
 }
 
-function SelectField({ id, className, name, label, options, required, value, onChange }: {
+function SelectField({ id, className, name, label, options, required, value, onChange, defaultOption }: {
   id: string;
   className: string;
   name: string;
@@ -74,6 +82,7 @@ function SelectField({ id, className, name, label, options, required, value, onC
   required: boolean;
   value?: string;
   onChange?: (value: string) => void;
+  defaultOption?: string;
 }) {
   return (
     <div className={className}>
@@ -83,7 +92,7 @@ function SelectField({ id, className, name, label, options, required, value, onC
         name={name}
         required={required}
         value={value}
-        defaultValue={value === undefined ? "" : undefined}
+        defaultValue={value === undefined ? (defaultOption ?? "") : undefined}
         onChange={(event) => onChange?.(event.target.value)}
       >
         <option value="" disabled>Select one</option>
@@ -93,19 +102,20 @@ function SelectField({ id, className, name, label, options, required, value, onC
   );
 }
 
-export function MasterInquiryFields({ kind, fieldClassName, gridClassName, fullFieldClassName, idPrefix, eventDelivery = "", onEventDeliveryChange }: MasterFieldsProps) {
+export function MasterInquiryFields({ kind, fieldClassName, gridClassName, fullFieldClassName, idPrefix, eventDelivery = "", onEventDeliveryChange, projectValue, onProjectChange, projectDefault }: MasterFieldsProps) {
   if (kind === "production") {
-    const { projectType, runtime } = INQUIRY_FORM_DEFINITIONS.production.fields;
+    const { projectType, runtime, budget } = INQUIRY_FORM_DEFINITIONS.production.fields;
     return (
       <div className={gridClassName}>
-        <SelectField id={`${idPrefix}-project-type`} className={fieldClasses(fieldClassName, fullFieldClassName)} {...projectType} />
+        <SelectField id={`${idPrefix}-project-type`} className={fieldClasses(fieldClassName, fullFieldClassName)} {...projectType} value={projectValue} onChange={onProjectChange} defaultOption={projectDefault} />
         <SelectField id={`${idPrefix}-runtime`} className={fieldClasses(fieldClassName, fullFieldClassName)} {...runtime} />
+        <SelectField id={`${idPrefix}-budget`} className={fieldClasses(fieldClassName, fullFieldClassName)} {...budget} />
         <MessageField kind="production" id={`${idPrefix}-message`} className={fieldClasses(fieldClassName, fullFieldClassName)} />
       </div>
     );
   }
 
-  const { organization, service, delivery, location } = INQUIRY_FORM_DEFINITIONS.event.fields;
+  const { organization, service, delivery, location, budget } = INQUIRY_FORM_DEFINITIONS.event.fields;
   return (
     <div className={gridClassName}>
       <div className={fieldClasses(fieldClassName, fullFieldClassName)}>
@@ -120,6 +130,7 @@ export function MasterInquiryFields({ kind, fieldClassName, gridClassName, fullF
           <input id={`${idPrefix}-location`} name={location.name} placeholder={location.placeholder} required />
         </div>
       )}
+      <SelectField id={`${idPrefix}-budget`} className={fieldClasses(fieldClassName, fullFieldClassName)} {...budget} />
       <MessageField kind="event" id={`${idPrefix}-message`} className={fieldClasses(fieldClassName, fullFieldClassName)} />
     </div>
   );

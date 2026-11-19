@@ -2,7 +2,7 @@ import { FormEvent, useEffect, useRef, useState } from "react";
 import { Send } from "lucide-react";
 import PageMeta from "@/components/PageMeta";
 import { deliverAifaForm } from "@/lib/formDelivery";
-import { buildInquiryPayload } from "@/lib/inquiryForms";
+import { INQUIRY_FORM_DEFINITIONS, buildInquiryPayload } from "@/lib/inquiryForms";
 import { InquiryIdentityFields, LearnerRedirectNote, MasterInquiryFields } from "@/components/SharedInquiryFields";
 import Turnstile from "@/components/Turnstile";
 
@@ -34,10 +34,39 @@ const HOW_WE_DO_IT = [
   },
 ];
 
+const PACKAGE_INCLUDES = [
+  "Character design and character sheets",
+  "A lookbook",
+  "Storyboarding",
+  "A 2 to 3 minute animated trailer",
+  "A pitch deck",
+];
+
+const PACKAGE_STEPS = [
+  ["Discovery call", "We talk through the book, who the pitch is for, and whether this package is the right fit."],
+  ["Character design and character sheets", "We design the characters and turn them into sheets you can use in the pitch."],
+  ["Lookbook and storyboard", "We set the look of the world and board the trailer."],
+  ["Animated trailer", "We produce a 2 to 3 minute animated trailer."],
+  ["Pitch deck delivery", "You receive a pitch deck for a series, a film or TV project, or a publisher conversation."],
+];
+
+const PACKAGE_FAQ = [
+  ["Are payment plans available?", "Yes. Payment plans are available. We will go over the schedule on the discovery call."],
+  ["How long does it take?", "We will confirm the timeline on the call."],
+  ["What do you need from me?", "Your book or manuscript, any notes you already have on the characters and the world, and what you want the pitch to do."],
+];
+
+function initialProjectType() {
+  const project = new URLSearchParams(window.location.search).get("project");
+  const options = INQUIRY_FORM_DEFINITIONS.production.fields.projectType.options;
+  return project && (options as readonly string[]).includes(project) ? project : "";
+}
+
 export default function Productions() {
   const [submitted, setSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState("");
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const [projectType, setProjectType] = useState(initialProjectType);
   const methodVideoRef = useRef<HTMLVideoElement | null>(null);
 
   useEffect(() => {
@@ -77,8 +106,8 @@ export default function Productions() {
   return (
     <main className="productions-page">
       <PageMeta
-        title="Author Animation | AI Film Academy"
-        description="Request an author animation from AI Film Academy. The community and course are free on Skool."
+        title="Author Animation Starter Package | AI Film Academy"
+        description="The Author Animation Starter Package is $15,000. It includes character design, a lookbook, storyboarding, a 2 to 3 minute animated trailer, and a pitch deck. Payment plans are available."
         path="/productions"
       />
 
@@ -142,6 +171,16 @@ export default function Productions() {
         .productions-field input:focus, .productions-field textarea:focus, .productions-field select:focus { border-color: var(--afa-red); box-shadow: 0 0 0 3px color-mix(in srgb, var(--afa-red) 22%, transparent); }
         .productions-note { margin: 0; color: rgba(255,255,255,.72); font-size: .98rem; line-height: 1.5; font-weight: 600; }
         .productions-success { margin: 0; color: #F5F5F0; font-size: 1rem; font-weight: 750; }
+        .productions-package { display: grid; gap: 1.4rem; margin-top: 2rem; }
+        .productions-price { margin: .4rem 0 0; color: var(--afa-red); font-family: 'Bebas Neue', sans-serif; font-size: clamp(4rem, 8vw, 6.5rem); line-height: .9; letter-spacing: .02em; text-align: center; }
+        .productions-include, .productions-faq { display: grid; gap: .8rem; margin: 0; padding: 0; list-style: none; }
+        .productions-include li, .productions-faq li, .productions-step { border: 1px solid rgba(255,255,255,.18); border-radius: 12px; background: rgba(255,255,255,.04); padding: 1.15rem 1.25rem; }
+        .productions-include li { font-weight: 750; }
+        .productions-steps { display: grid; gap: .8rem; }
+        .productions-step { display: grid; grid-template-columns: auto 1fr; gap: 1rem; align-items: start; }
+        .productions-step span { color: var(--afa-red); font-family: 'Bebas Neue', sans-serif; font-size: 2rem; line-height: 1; }
+        .productions-step h3, .productions-faq strong { display: block; margin: 0 0 .35rem; font-family: 'Bebas Neue', sans-serif; font-size: clamp(1.7rem, 3vw, 2.2rem); letter-spacing: .02em; line-height: .95; text-transform: uppercase; }
+        .productions-step p, .productions-faq p { margin: 0; }
         @media (max-width: 820px) {
           .productions-page section { padding-left: 1.25rem; padding-right: 1.25rem; }
           .productions-title { font-size: clamp(3.55rem, 14.5vw, 5.6rem); }
@@ -170,11 +209,62 @@ export default function Productions() {
 
       <section className="productions-hero">
         <div className="productions-shell">
-          <h1 className="productions-display productions-title"><span>Done For You</span> Productions.</h1>
-          <p className="productions-hero-copy">Work with our in house studio on author animation, from the brief through the final piece.</p>
-          <p className="productions-hero-copy">Production, workshops, and consulting now start on <a href="/work-with-brandon" style={{ color: "var(--afa-red)", textDecoration: "underline" }}>Work with Brandon</a>. This page keeps the production steps.</p>
+          <h1 className="productions-display productions-title"><span>Author</span> animation.</h1>
+          <p className="productions-hero-copy">Done for you production for authors who want to bring a book to life and pitch it.</p>
+          <p className="productions-hero-copy">The Author Animation Starter Package is $15,000. Payment plans are available.</p>
+          <p className="productions-hero-copy">For paid consulting, go to <a href="/work-with-brandon#project-form" style={{ color: "var(--afa-red)", textDecoration: "underline" }}>Consulting</a>.</p>
           <div className="productions-actions">
-            <a className="productions-primary" href="#production-inquiry">Request a Custom Production <Send size={19} /></a>
+            <a className="productions-primary" href="#starter-package">See the starter package</a>
+            <a className="productions-primary" href="#production-inquiry" onClick={() => setProjectType("Author animation")}>Request a paid author animation <Send size={19} /></a>
+          </div>
+        </div>
+      </section>
+
+      <section id="starter-package" className="productions-section">
+        <div className="productions-shell">
+          <h2 className="productions-display productions-section-heading">Author Animation <span>Starter Package.</span></h2>
+          <p className="productions-section-copy">A paid package for authors who want to bring a book to life and pitch it as a series, a film or TV project, or to a publisher.</p>
+          <p className="productions-price">$15,000</p>
+          <p className="productions-section-copy">Payment plans are available.</p>
+          <div className="productions-package">
+            <div>
+              <h3 className="productions-display" style={{ fontSize: "clamp(2.2rem, 4vw, 3.2rem)", margin: "0 0 .8rem" }}>What is included</h3>
+              <ul className="productions-include">
+                {PACKAGE_INCLUDES.map((item) => <li key={item}>{item}</li>)}
+              </ul>
+            </div>
+            <div>
+              <h3 className="productions-display" style={{ fontSize: "clamp(2.2rem, 4vw, 3.2rem)", margin: "0 0 .8rem" }}>How the package works</h3>
+              <div className="productions-steps">
+                {PACKAGE_STEPS.map(([title, copy], index) => (
+                  <article className="productions-step" key={title}>
+                    <span>{index + 1}</span>
+                    <div>
+                      <h3>{title}</h3>
+                      <p>{copy}</p>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </div>
+            <div>
+              <h3 className="productions-display" style={{ fontSize: "clamp(2.2rem, 4vw, 3.2rem)", margin: "0 0 .8rem" }}>Who it is for</h3>
+              <p className="productions-section-copy" style={{ margin: 0, textAlign: "left" }}>Authors who want to bring their book to life and pitch it. That includes a series, a film or TV project, or a pitch for publishers.</p>
+            </div>
+            <div>
+              <h3 className="productions-display" style={{ fontSize: "clamp(2.2rem, 4vw, 3.2rem)", margin: "0 0 .8rem" }}>Questions</h3>
+              <ul className="productions-faq">
+                {PACKAGE_FAQ.map(([question, answer]) => (
+                  <li key={question}>
+                    <strong>{question}</strong>
+                    <p>{answer}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+          <div className="productions-actions">
+            <a className="productions-primary" href="#production-inquiry" onClick={() => setProjectType("Author animation")}>Request this package <Send size={19} /></a>
           </div>
         </div>
       </section>
@@ -182,14 +272,14 @@ export default function Productions() {
       <section className="productions-section productions-section--what">
         <div className="productions-shell">
           <div className="productions-method-intro">
-            <h2 className="productions-display productions-section-heading">How It <span>Works.</span></h2>
+            <h2 className="productions-display productions-section-heading">How the film <span>gets made.</span></h2>
             <p className="productions-section-copy">You send us the brief. We align on the vision, then take the work through design, production, and post.</p>
           </div>
           <article className="productions-brief-step">
             <div className="productions-brief-copy">
               <span className="productions-method-number">01</span>
               <h3>You send us your brief.</h3>
-              <p>Use the form below to tell us what you want to make, the runtime, and any references. We review the fit and come back with the right next step.</p>
+              <p>Use the form below to tell us what you want to make, the runtime, your budget, and any references. We review the fit and come back with the right next step.</p>
             </div>
             <div className="productions-brief-visual" aria-hidden="true">
               <span />
@@ -220,14 +310,14 @@ export default function Productions() {
       <section id="production-inquiry" className="productions-section productions-section--inquiry">
         <div className="productions-shell productions-inquiry">
           <div className="productions-inquiry-heading">
-            <h2 className="productions-display productions-section-heading">Author <span>animation.</span></h2>
+            <h2 className="productions-display productions-section-heading">Paid author <span>animation.</span></h2>
           </div>
           <LearnerRedirectNote />
           <form className="productions-form" onSubmit={sendInquiry}>
-            <h3>Request an author animation.</h3>
-            <p className="productions-form-intro">This form is for an author animation project. Tell us what you want made.</p>
+            <h3>Request a paid author animation.</h3>
+            <p className="productions-form-intro">This form is for a paid author animation project. Tell us what you want made, the runtime, and your budget.</p>
             <InquiryIdentityFields fieldClassName="productions-field" gridClassName="productions-form-grid" nameId="production-name" emailId="production-email" showPhone phoneId="production-phone" />
-            <MasterInquiryFields kind="production" fieldClassName="productions-field" gridClassName="productions-form-grid" fullFieldClassName="productions-field--full" idPrefix="production" />
+            <MasterInquiryFields kind="production" fieldClassName="productions-field" gridClassName="productions-form-grid" fullFieldClassName="productions-field--full" idPrefix="production" projectValue={projectType} onProjectChange={setProjectType} />
             <Turnstile action="production-inquiry" theme="dark" onTokenChange={setTurnstileToken} />
             <button className="productions-primary" type="submit" disabled={!turnstileToken}>Send Your Production Brief <Send size={19} /></button>
             <p className="productions-note">Production briefs go directly to brandon@aifilmacademy.com.</p>

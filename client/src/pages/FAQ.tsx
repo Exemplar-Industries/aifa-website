@@ -105,7 +105,7 @@ export default function FAQ() {
               <a href={skoolUrl} className="btn-primary px-7 py-4 font-bold" onClick={() => trackCtaClick("FAQ Join AIFA")}>
                 Join AI Film Academy <ArrowUpRight className="h-4 w-4" />
               </a>
-              <a href="/free-video-training" className="btn-outline px-7 py-4 font-semibold">Try Free</a>
+              <a href="/free-video-training" className="btn-outline px-7 py-4 font-semibold">Get the free video training</a>
             </div>
           </div>
         </section>

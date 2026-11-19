@@ -3,8 +3,10 @@
  * Guided path: hero, learn-by-doing system, proof/member reviews, final decision, contact.
  */
 
+import FreeTrainingSignup from "@/components/FreeTrainingSignup";
 import InsideAFASection from "@/components/InsideAFASection";
 import ProofSection from "@/components/ProofSection";
+import ShowcaseGrid from "@/components/ShowcaseGrid";
 import StartHereSection from "@/components/StartHereSection";
 import { useSkoolCta } from "@/contexts/AffiliateLinkContext";
 import { useEffect, useRef, useState } from "react";
@@ -23,7 +25,7 @@ function FullscreenHero() {
   }, []);
 
   return (
-    <section className="homepage-hero relative overflow-hidden" style={{ height: "100svh", minHeight: "620px" }}>
+    <section className="homepage-hero relative overflow-hidden" style={{ minHeight: "100svh" }}>
       <video
         ref={videoRef}
         src={HERO_VIDEO_URL}
@@ -52,7 +54,7 @@ function FullscreenHero() {
       <div className="homepage-hero-vignette absolute inset-0" />
       <div className="homepage-hero-grain absolute inset-0" />
 
-      <div className="relative z-10 flex h-full flex-col items-center justify-center px-6 text-center">
+      <div className="relative z-10 flex min-h-[100svh] flex-col items-center justify-center px-6 py-28 text-center">
         <h1
           className="homepage-hero-title max-w-none text-[#F5F5F0]"
           style={{ fontSize: "clamp(3.15rem, 6.1vw, 6.7rem)" }}
@@ -69,24 +71,23 @@ function FullscreenHero() {
             textShadow: "0 2px 18px rgba(0,0,0,0.78)",
           }}
         >
-          Beginner friendly training to help you create a premium AI portfolio for high ticket creative work.
+          Join the free community, or get the free video training. For a paid project, see author animation and consulting.
         </p>
 
-        <div className="mt-9 flex flex-col justify-center gap-4 sm:flex-row">
+        <div className="mt-9 flex w-full max-w-5xl flex-col items-center justify-center gap-5 lg:flex-row lg:items-start">
           <a
             href={skoolUrl}
-            className="btn-primary pulse-cta min-h-14 px-8 py-4 text-[1rem] font-bold"
+            className="btn-primary pulse-cta min-h-14 shrink-0 px-8 py-4 text-[1rem] font-bold"
             onClick={() => trackCtaClick("Homepage Join AI Film Academy")}
           >
-            Join AI Film Academy
+            Join the AI Film Academy community for free
           </a>
-          <a
-            href="/free-video-training"
-            className="btn-outline homepage-hero-outline min-h-14 px-8 py-4 text-[1rem] font-bold"
-          >
-            Try Free
-          </a>
+          <FreeTrainingSignup />
         </div>
+        <p className="mt-6 flex flex-wrap justify-center gap-x-6 gap-y-2 text-base font-bold text-white">
+          <a href="/productions#starter-package" className="underline decoration-[var(--afa-red)] underline-offset-4">Author animation</a>
+          <a href="/work-with-brandon#project-form" className="underline decoration-[var(--afa-red)] underline-offset-4">Consulting</a>
+        </p>
       </div>
     </section>
   );
@@ -97,6 +98,22 @@ export default function Home() {
     <div className="homepage-shell min-h-screen bg-[#080808]">
       <FullscreenHero />
       <InsideAFASection />
+      <section className="bg-[#080808] py-20 md:py-24">
+        <div className="container">
+          <h2 className="text-center text-[clamp(3rem,6vw,5.5rem)] leading-[0.9] text-[#F5F5F0]">
+            What creators have <span style={{ color: "var(--afa-red)" }}>made.</span>
+          </h2>
+          <p className="mx-auto mt-6 max-w-3xl text-center font-semibold text-white">
+            A first look at the work creators are making through AI Film Academy training, live events, and creative practice. Each piece is here to show the range of ideas, genres, and visual worlds this work can hold.
+          </p>
+          <div className="mt-10">
+            <ShowcaseGrid />
+          </div>
+          <p className="mt-8 text-center">
+            <a href="/showcase" className="btn-outline inline-flex min-h-12 items-center px-6 py-3 text-[1rem] font-bold">Open the showcase</a>
+          </p>
+        </div>
+      </section>
       <ProofSection />
       <StartHereSection />
     </div>
