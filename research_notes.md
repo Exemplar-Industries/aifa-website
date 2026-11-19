@@ -4,7 +4,7 @@
 - **Goal**: High-converting landing page for cold Meta Ads traffic → $19/month Skool subscription
 - **Target**: Live by May 2026, support June $25k MRR target
 - **Tech**: Zero-maintenance, static site (Vercel/Netlify), mobile-first, sub-2s load
-- **Skool checkout**: https://www.skool.com/aifilmacademy
+- **Skool community**: https://www.skool.com/aifilmacademy/about
 - **Meta Pixel**: Must be installed for ad tracking
 - **No CMS, no WordPress, no plugins**
 

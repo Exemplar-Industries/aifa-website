@@ -12,55 +12,48 @@ const features = [
     tag: "CORE",
     icon: "🎬",
     title: "The AIFA Workflow System",
-    value: "$297 value",
     description:
-      "One proven, repeatable workflow for creating cinematic AI films — from concept to final export. No more tool chaos.",
+      "One proven, repeatable workflow for creating cinematic AI films, from concept to final export. No more tool chaos.",
   },
   {
     tag: "TRAINING",
     icon: "📚",
     title: "50+ Video Lessons",
-    value: "$197 value",
     description:
-      "Step-by-step tutorials covering Midjourney, Kling, Runway, Veo, CapCut, and more — updated as tools evolve.",
+      "Step-by-step tutorials covering Midjourney, Kling, Runway, Veo, CapCut, and more, updated as tools evolve.",
   },
   {
     tag: "AI TOOLS",
     icon: "🤖",
     title: "Custom AI Agents",
-    value: "$79 value",
     description:
-      "Personal AI assistants that help you prompt faster, fix errors, and generate better results — built specifically for the AIFA workflow.",
+      "Personal AI assistants that help you prompt faster, fix errors, and generate better results, built specifically for the AIFA workflow.",
   },
   {
     tag: "COMMUNITY",
     icon: "👥",
     title: "Private Creator Community",
-    value: "$97 value",
     description:
-      "Connect with 1,100+ AI filmmakers. Share work, get feedback, find collaborators, and stay ahead of the curve.",
+      "Share work, get feedback, find collaborators, and stay ahead of the curve.",
   },
   {
     tag: "TOOLS",
     icon: "🛠",
     title: "Curated AI Tool Stack",
-    value: "$27 value",
     description:
-      "We've tested hundreds of tools so you don't have to. Get the exact stack pros use — organized by use case and budget. Stop paying for tools you don't need.",
+      "We've tested hundreds of tools so you don't have to. Get the exact stack pros use, organized by use case. Skip the tools you do not need.",
   },
   {
     tag: "CREDENTIAL",
     icon: "🏆",
     title: "LinkedIn Certification",
-    value: "$497 value",
     description:
-      "Earn a verifiable AI Filmmaker certification you can add to your LinkedIn profile and portfolio. Stand out in the market.",
+      "Community members can earn a verifiable AI Filmmaker certification to add to a LinkedIn profile and portfolio.",
   },
 ];
 
 export default function WhatYouGetSection() {
   const skoolUrl = useSkoolUrl();
-  const totalValue = 1194;
 
   return (
     <section id="what-you-get" className="py-20 md:py-28 bg-[#0D0D0D]">
@@ -84,7 +77,7 @@ export default function WhatYouGetSection() {
             </span>
           </h2>
           <p className="mt-4 text-white/60 text-base leading-relaxed" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            The AI Film Academy is a complete system — not just a course. You get the workflow, the training, the community, and the credential. All included in one membership.
+            The AI Film Academy is a complete system. You get the workflow, the training, the community, and the credential. Joining is free.
           </p>
         </div>
 
@@ -108,9 +101,6 @@ export default function WhatYouGetSection() {
                 >
                   {feature.title}
                 </h3>
-                <p className="text-xs text-white/35 mb-3" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
-                  {feature.value}
-                </p>
                 <p className="text-sm text-white/60 leading-relaxed" style={{ fontFamily: "'DM Sans', sans-serif" }}>
                   {feature.description}
                 </p>
@@ -129,21 +119,16 @@ export default function WhatYouGetSection() {
             />
             <div>
               <p className="text-white/50 text-sm mb-1" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-                Total value if purchased separately
-              </p>
-              <p
-                className="stat-number text-4xl text-white/30 line-through"
-              >
-                ${totalValue}
-              </p>
-              <p className="text-white/50 text-sm mt-1" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-                Your price today:
+                Community membership
               </p>
               <p
                 className="stat-number text-5xl"
                 style={{ color: "oklch(0.48 0.22 25)" }}
               >
-                $19/mo or $149/yr
+                Free
+              </p>
+              <p className="text-white/50 text-sm mt-1" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+                Join on Skool.
               </p>
             </div>
           </div>
@@ -153,7 +138,7 @@ export default function WhatYouGetSection() {
             rel="noopener noreferrer"
             className="btn-primary pulse-cta px-10 py-4 text-lg font-bold text-center shrink-0"
           >
-            Get Instant Access
+            Join the community
           </a>
         </div>
       </div>

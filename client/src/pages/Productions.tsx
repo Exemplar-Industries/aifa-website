@@ -3,7 +3,7 @@ import { Send } from "lucide-react";
 import PageMeta from "@/components/PageMeta";
 import { deliverAifaForm } from "@/lib/formDelivery";
 import { buildInquiryPayload } from "@/lib/inquiryForms";
-import { InquiryIdentityFields, MasterInquiryFields } from "@/components/SharedInquiryFields";
+import { InquiryIdentityFields, LearnerRedirectNote, MasterInquiryFields } from "@/components/SharedInquiryFields";
 import Turnstile from "@/components/Turnstile";
 
 const HOW_WE_DO_IT = [
@@ -65,7 +65,7 @@ export default function Productions() {
     const form = new FormData(event.currentTarget);
 
     try {
-      await deliverAifaForm("Production inquiry", buildInquiryPayload("production", form));
+      await deliverAifaForm("Author animation inquiry", buildInquiryPayload("production", form));
       setSubmitted(true);
       setSubmitError("");
     } catch (error) {
@@ -77,8 +77,8 @@ export default function Productions() {
   return (
     <main className="productions-page">
       <PageMeta
-        title="AI Production Studio | Animation, Commercials & Trailers | AI Film Academy"
-        description="AIFA is an AI-native production studio for ambitious animation, commercials, and trailers. Bring us the idea. We bring it to life."
+        title="Author Animation | AI Film Academy"
+        description="Request an author animation from AI Film Academy. The community and course are free on Skool."
         path="/productions"
       />
 
@@ -171,7 +171,7 @@ export default function Productions() {
       <section className="productions-hero">
         <div className="productions-shell">
           <h1 className="productions-display productions-title"><span>Done For You</span> Productions.</h1>
-          <p className="productions-hero-copy">Work with our in house production studio for ambitious animations, commercials, and trailers.</p>
+          <p className="productions-hero-copy">Work with our in house studio on author animation, from the brief through the final piece.</p>
           <p className="productions-hero-copy">Production, workshops, and consulting now start on <a href="/work-with-brandon" style={{ color: "var(--afa-red)", textDecoration: "underline" }}>Work with Brandon</a>. This page keeps the production steps.</p>
           <div className="productions-actions">
             <a className="productions-primary" href="#production-inquiry">Request a Custom Production <Send size={19} /></a>
@@ -189,7 +189,7 @@ export default function Productions() {
             <div className="productions-brief-copy">
               <span className="productions-method-number">01</span>
               <h3>You send us your brief.</h3>
-              <p>Use the form below to tell us what you want to make, your runtime, budget, timeline, and any references. We review the fit and come back with the right next step.</p>
+              <p>Use the form below to tell us what you want to make, the runtime, and any references. We review the fit and come back with the right next step.</p>
             </div>
             <div className="productions-brief-visual" aria-hidden="true">
               <span />
@@ -220,11 +220,12 @@ export default function Productions() {
       <section id="production-inquiry" className="productions-section productions-section--inquiry">
         <div className="productions-shell productions-inquiry">
           <div className="productions-inquiry-heading">
-            <h2 className="productions-display productions-section-heading">Have an idea <span>in mind?</span></h2>
+            <h2 className="productions-display productions-section-heading">Author <span>animation.</span></h2>
           </div>
+          <LearnerRedirectNote />
           <form className="productions-form" onSubmit={sendInquiry}>
-            <h3>Contact us.</h3>
-            <p className="productions-form-intro">Bring the idea. We will take it from here.</p>
+            <h3>Request an author animation.</h3>
+            <p className="productions-form-intro">This form is for an author animation project. Tell us what you want made.</p>
             <InquiryIdentityFields fieldClassName="productions-field" gridClassName="productions-form-grid" nameId="production-name" emailId="production-email" showPhone phoneId="production-phone" />
             <MasterInquiryFields kind="production" fieldClassName="productions-field" gridClassName="productions-form-grid" fullFieldClassName="productions-field--full" idPrefix="production" />
             <Turnstile action="production-inquiry" theme="dark" onTokenChange={setTurnstileToken} />

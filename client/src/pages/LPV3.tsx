@@ -7,7 +7,7 @@
  * 3. Gallery       — "Show, Don't Tell" — student work gallery builds visual desire
  * 4. Problem       — Agitate the pain: AI tools are overwhelming, figuring it out alone wastes time
  * 5. WhatYouGet    — The offer stack: courses, calls, workflows, community — make value >> cost
- * 6. Pricing       — The logical close with monthly/annual toggle
+ * 6. Community    — Free join close
  * 7. Testimonials  — Social proof after they already want the results
  * 8. FinalCTA      — Risk reversal, FAQ, final high-contrast CTA
  * 9. Footer
@@ -166,8 +166,7 @@ function FullscreenHero() {
           , a proven tech stack, and a{" "}
           <strong style={{ color: "rgba(245,245,240,0.95)" }}>
             LinkedIn certification
-          </strong>{" "}
-          — all for less than a Netflix subscription.
+          </strong>. The community is free to join.
         </p>
         {/* CTAs */}
         <div
@@ -181,7 +180,7 @@ function FullscreenHero() {
             className="btn-primary pulse-cta px-8 py-4 text-base font-bold"
             style={{ fontSize: "1rem", letterSpacing: "0.03em" }}
           >
-            Join the Academy — From $19/mo
+            Join the community
           </a>
           <a
             href="#gallery"
@@ -203,7 +202,7 @@ function FullscreenHero() {
           }}
         >
           {[
-            "Cancel anytime",
+            "Free to join",
             "1,100+ active creators",
             "Google Certified AI Educator",
           ].map((item) => (
@@ -242,9 +241,9 @@ export default function LPV3() {
       <GallerySection />
       {/* 4. Problem — Agitate the pain: AI tools are overwhelming, figuring it out alone wastes time */}
       <ProblemSection />
-      {/* 5. WhatYouGet — The offer stack: make value heavily outweigh the $19 cost */}
+      {/* 5. WhatYouGet — workflow, training, community, and certification */}
       <WhatYouGetSection />
-      {/* 6. Pricing — The logical close with monthly/annual toggle + annual upsell seed */}
+      {/* 6. Community — free join */}
       <PricingSection />
       {/* 7. Testimonials — Social proof after they already want the results and understand the offer */}
       <TestimonialsSection />

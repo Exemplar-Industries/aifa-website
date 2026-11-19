@@ -153,8 +153,8 @@ async function checkEligibility(email: string): Promise<EligibilityResult> {
     return { eligible: true };
   }
 
-  // The public course is a one-time purchase. Anyone with an active course
-  // record can take the test. Legacy monthly, annual, lifetime, and free
+  // The community is free. Anyone with an active member
+  // record can take the test. Older monthly, annual, lifetime, and free
   // records stay eligible. The old 90-day monthly wait is retired.
   const haystack = `${status} ${plan}`.toLowerCase();
   if (/churn|cancel|inactive|expired|refund|past_due|paused/.test(haystack)) {
@@ -341,7 +341,7 @@ const SEO_PUBLIC_PAGES: Record<string, ServerSeoPage> = {
   },
   "/work-with-brandon": {
     title: "Work with Brandon Patino | AI Film Academy",
-    description: "AI production, workshops, and creative AI consulting for brands, schools, and organizations.",
+    description: "Author animation and edtech or business consulting with Brandon Patino. Inquiries go to brandon@aifilmacademy.com.",
   },
   "/certification-status": {
     title: "Certification status | AI Film Academy",
@@ -387,8 +387,8 @@ const SEO_PUBLIC_PAGES: Record<string, ServerSeoPage> = {
     description: "Explore original AI filmmaking work, creator projects, and portfolio-ready visual storytelling from the AI Film Academy community.",
   },
   "/productions": {
-    title: "AI Video Production for Brands | AI Film Academy",
-    description: "Work with AI Film Academy on director-led AI video production for brands, campaigns, trailers, and visual storytelling projects.",
+    title: "Author Animation | AI Film Academy",
+    description: "Request an author animation from AI Film Academy. The community and course are free on Skool.",
   },
   "/consulting": {
     title: "AI Filmmaking Consulting | AI Film Academy",
@@ -403,8 +403,8 @@ const SEO_PUBLIC_PAGES: Record<string, ServerSeoPage> = {
     description: "Find answers to common questions about the AI Film Academy course, AI filmmaking workflow, certification, feedback, and the creator community.",
   },
   "/contact": {
-    title: "Contact AI Film Academy | Education and Production Inquiries",
-    description: "Contact AI Film Academy about the course, certification, consulting, and AI video production inquiries.",
+    title: "Contact AI Film Academy | Animation and Consulting",
+    description: "Contact Brandon about an author animation project or edtech and business consulting. The community and course are free on Skool.",
   },
 };
 
@@ -627,17 +627,18 @@ async function startServer() {
     }
   });
 
-  // New subscription checkout is closed. The course is a one-time Skool purchase.
-  // Legacy Stripe subscription webhooks below still record an existing renewal.
+  // Paid signups are closed. The community is free on Skool.
+  // The route name is kept so an old client gets a clear closed response.
+  // Legacy Stripe webhooks below still record an old renewal if Stripe sends one.
   app.post("/api/create-membership-checkout", async (_req, res) => {
     res.status(410).json({
-      error: "The course is a one-time purchase on Skool. This checkout is closed.",
+      error: "The AI Film Academy community is free to join on Skool. This site does not take payment.",
     });
   });
 
   // ── STRIPE PAID MEMBERSHIP WEBHOOK ─────────────────────────────────────────
-  // Stripe sends checkout.session.completed for a legacy subscription checkout.
-  // We verify the signature, confirm the price, then record the purchase.
+  // Stripe may still send a completed session event for an old signup.
+  // We verify the signature, confirm the price, then record the membership.
   app.post("/api/stripe-webhook", async (req, res) => {
     const sig = req.headers["stripe-signature"] as string;
     const rawBody = req.body as Buffer;
@@ -700,8 +701,8 @@ async function startServer() {
         ((session.customer_details as Record<string, unknown>)?.name as string) ??
         "";
 
-      // Confirm the exact purchased price through Stripe line items. Payment
-      // fulfillment must never rely on browser-provided price or product details.
+      // Confirm the Stripe price through line items.
+      // Fulfillment must never rely on browser-provided price or product details.
       let paidMembershipCycle: MembershipBillingCycle | null = null;
       try {
         if (STRIPE_SECRET_KEY && session.id) {
@@ -723,7 +724,7 @@ async function startServer() {
         }
       } catch (err) {
         console.error("[stripe-webhook] Line item check failed:", err);
-        res.status(500).json({ error: "Could not confirm the purchased price." });
+        res.status(500).json({ error: "Could not confirm the Stripe price." });
         return;
       }
 
@@ -748,7 +749,7 @@ async function startServer() {
           return;
         }
       } else {
-        console.log(`[stripe-webhook] Skipping checkout ${String(session.id ?? "")}. No configured price or no email.`);
+        console.log(`[stripe-webhook] Skipping session ${String(session.id ?? "")}. No configured price or no email.`);
       }
     }
 
@@ -888,7 +889,7 @@ async function startServer() {
     res.redirect(302, skoolAboutUrl(req));
   });
 
-  // Retired paid landing page. Send it to the live one-time course page.
+  // Retired landing page. Send it to the free Skool community page.
   app.get("/lpv3", (req, res) => {
     res.redirect(301, skoolAboutUrl(req));
   });

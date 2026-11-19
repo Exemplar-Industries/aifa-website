@@ -43,7 +43,7 @@ function getColumns(skoolUrl: string): FooterColumn[] {
     links: [
       { label: "Instagram", href: "https://www.instagram.com/theaifilmacademy/", external: true },
       { label: "LinkedIn", href: "https://www.linkedin.com/in/exemplar7", external: true },
-      { label: "Skool Community", href: "https://www.skool.com/aifilmacademy", external: true },
+      { label: "Skool Community", href: skoolUrl, external: true },
     ],
   },
   {

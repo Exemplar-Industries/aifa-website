@@ -5,19 +5,19 @@ const PRIVACY_SECTIONS = [
   },
   {
     title: "Information We Collect",
-    body: "We collect information you provide directly, including your name, email address, inquiry details, project brief, messages, training-signup information, and communications with us. If you purchase the course, we receive transaction information from Skool or Stripe, such as your customer contact details, the purchase amount, and payment status. Stripe processes payment-card information for the partner-rate checkout; we do not receive or store your full payment-card number.",
+    body: "We collect information you provide directly, including your name, email address, inquiry details, project brief, messages, training-signup information, and communications with us. The community and course are free to join. If you paid for the course before it was free, or you pay for a custom service, we may receive transaction details from the payment provider, such as your contact details, the amount, and the payment status. We do not receive or store your full card number.",
   },
   {
     title: "How We Use Information",
-    body: "We use information to respond to inquiries, deliver requested training, operate course and community access, manage purchases and billing support, send service and account communications, invite eligible members to the private community, run training and events, improve the website and services, protect the security and integrity of our systems, and comply with legal, accounting, and recordkeeping obligations.",
+    body: "We use information to respond to inquiries, deliver requested training, operate course and community access, answer questions about earlier payments and custom-service invoices, send service and account communications, invite members to the community, run training and events, improve the website and services, protect the security and integrity of our systems, and comply with legal, accounting, and recordkeeping obligations.",
   },
   {
     title: "Marketing Email",
-    body: "When you opt in to receive the free training and occasional AI Film Academy emails, we use your name and email address to deliver that training and send related marketing communications. You can unsubscribe from marketing emails at any time using the unsubscribe link in the email. We may still send non-marketing messages that are necessary to provide a service, manage a purchase, or respond to a request you made.",
+    body: "When you opt in to receive the free training and occasional AI Film Academy emails, we use your name and email address to deliver that training and send related marketing communications. You can unsubscribe from marketing emails at any time using the unsubscribe link in the email. We may still send non-marketing messages that are necessary to provide a service or respond to a request you made.",
   },
   {
-    title: "Payments, Community, and Service Providers",
-    body: "We use service providers to operate the business. These include Skool for the one-time course checkout and private-community access, Stripe for the one-time partner-rate checkout and payment processing, n8n workflows and email providers to deliver forms, training, notices, and member communications, and hosting and infrastructure providers to run the website. These providers process information only as needed to provide their services, subject to their own privacy terms and applicable agreements.",
+    title: "Community and Service Providers",
+    body: "We use service providers to operate the business. These include Skool for the free community, n8n workflows and email providers to deliver forms, training, notices, and member communications, and hosting and infrastructure providers to run the website. If a custom service or an earlier course payment used a payment provider, that provider handles the payment under its own terms. These providers process information only as needed to provide their services, subject to their own privacy terms and applicable agreements.",
   },
   {
     title: "Advertising and Website Analytics",
@@ -29,7 +29,7 @@ const PRIVACY_SECTIONS = [
   },
   {
     title: "How Information Is Disclosed",
-    body: "We do not sell your personal information for money. We disclose information to our service providers when needed to operate the site and services, process payments, deliver communications, provide community access, prevent fraud, or comply with law. Our use of the Meta Pixel involves sharing website event and device-related information with Meta for advertising measurement and related purposes. Depending on where you live, that activity may be treated as a form of sharing for cross-context behavioral advertising.",
+    body: "We do not sell your personal information for money. We disclose information to our service providers when needed to operate the site and services, deliver communications, provide community access, prevent fraud, or comply with law. Our use of the Meta Pixel involves sharing website event and device-related information with Meta for advertising measurement and related purposes. Depending on where you live, that activity may be treated as a form of sharing for cross-context behavioral advertising.",
   },
   {
     title: "Community and Submitted Content",
@@ -68,8 +68,8 @@ export default function Privacy() {
         <div style={{ maxWidth: "880px", margin: "0 auto" }}>
           <a href="/" style={{ color: "rgba(255,255,255,0.72)", fontSize: "1rem", fontWeight: 700, textDecoration: "none" }}>← AI Film Academy</a>
           <h1 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(3.3rem, 9vw, 7rem)", lineHeight: 0.9, letterSpacing: "0.02em", marginBottom: "1.3rem" }}>Privacy <span style={{ color: "var(--afa-red)" }}>Policy</span></h1>
-          <p style={{ maxWidth: "760px", color: "rgba(255,255,255,0.92)", fontSize: "1.08rem", fontWeight: 600, lineHeight: 1.7 }}>This policy explains the limited customer, inquiry, payment, email, community, advertising, and website-usage information we collect, why we use it, and the choices available to you.</p>
-          <p style={{ color: "rgba(255,255,255,0.86)", fontSize: "1rem", marginTop: "1.5rem" }}>Last updated: August 18, 2026</p>
+          <p style={{ maxWidth: "760px", color: "rgba(255,255,255,0.92)", fontSize: "1.08rem", fontWeight: 600, lineHeight: 1.7 }}>This policy explains the limited inquiry, email, community, advertising, and website-usage information we collect, why we use it, and the choices available to you.</p>
+          <p style={{ color: "rgba(255,255,255,0.86)", fontSize: "1rem", marginTop: "1.5rem" }}>Last updated: November 18, 2026</p>
         </div>
       </section>
       <section style={{ maxWidth: "880px", margin: "0 auto", padding: "2rem 1.5rem 5rem" }}>

@@ -3,7 +3,7 @@ import { ArrowRight, Send } from "lucide-react";
 import PageMeta from "@/components/PageMeta";
 import { deliverAifaForm } from "@/lib/formDelivery";
 import { buildInquiryPayload } from "@/lib/inquiryForms";
-import { InquiryIdentityFields, MasterInquiryFields } from "@/components/SharedInquiryFields";
+import { InquiryIdentityFields, LearnerRedirectNote, MasterInquiryFields } from "@/components/SharedInquiryFields";
 import Turnstile from "@/components/Turnstile";
 
 const SERVICES = [
@@ -122,6 +122,7 @@ export default function EducationEvents() {
             <div className="events-inquiry-heading">
               <h2 className="events-display events-heading">Contact Us.</h2>
             </div>
+            <LearnerRedirectNote />
             <form className="events-form" onSubmit={sendInquiry}>
               <InquiryIdentityFields fieldClassName="events-field" gridClassName="events-form-grid" nameId="event-name" emailId="event-email" showPhone phoneId="event-phone" />
               <MasterInquiryFields kind="event" fieldClassName="events-field" gridClassName="events-form-grid" fullFieldClassName="events-field--full" idPrefix="event" eventDelivery={eventDelivery} onEventDeliveryChange={setEventDelivery} />

@@ -12,7 +12,7 @@ const faqs = [
   },
   {
     q: "What tools will I need? Are they expensive?",
-    a: "We cover a range of tools across different price points, including free options. Our curated stack guide tells you exactly what's worth paying for and what you can skip. Most members start with under $50/month in tool costs.",
+    a: "We cover a range of tools, including free options. The stack guide tells you which tools are worth using and which you can skip. Most members can start with free tools.",
   },
   {
     q: "How is this different from free YouTube tutorials?",
@@ -27,16 +27,16 @@ const faqs = [
     a: "Upon completing the AIFA curriculum, you earn a verifiable 'Certified AI Filmmaker' credential that you can add to your LinkedIn profile. It's recognized by the AI creative community and signals to clients and employers that you have professional-level skills.",
   },
   {
-    q: "Can I cancel anytime?",
-    a: "Yes, absolutely. No contracts, no cancellation fees, no guilt. Cancel with one click from your Skool account settings. Your access continues until the end of your billing period.",
+    q: "Does it cost anything to join?",
+    a: "No. The AI Film Academy community and course are free to join on Skool.",
   },
   {
     q: "Who is Brandon Patino?",
     a: "Brandon is a Google-certified AI educator, filmmaker, and the founder of AI Film Academy (AIFA). He's been at the forefront of AI filmmaking since the technology emerged and has helped thousands of creators build professional-grade AI workflows.",
   },
   {
-    q: "Is this a one-time purchase or subscription?",
-    a: "You can join monthly at $19/month, or save 40% with an annual membership at $149/year (that's just $12.42/month). Both plans include everything — no upsells, no paywalls. Cancel anytime.",
+    q: "Where do I join?",
+    a: "Join on Skool. The Join button on this site opens the free AI Film Academy community page.",
   },
 ];
 
