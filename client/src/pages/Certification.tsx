@@ -1027,6 +1027,11 @@ export default function Certification() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: gateEmail }),
       });
+      if (!res.ok) {
+        setGateError("We could not verify that email right now. Please try again.");
+        setStage("gate");
+        return;
+      }
       const data = await res.json();
 
       if (data.eligible) {
@@ -1040,9 +1045,8 @@ export default function Certification() {
         setLocation("/certification-status");
       }
     } catch {
-      // Fail open on network error — don't block legitimate members
-      setEmail(gateEmail);
-      setStage("intro");
+      setGateError("We could not verify that email right now. Please try again.");
+      setStage("gate");
     }
   };
 

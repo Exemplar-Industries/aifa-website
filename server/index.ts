@@ -80,6 +80,38 @@ function matchesArchivePasscode(candidate: unknown): boolean {
   return actual.length === expected.length && crypto.timingSafeEqual(actual, expected);
 }
 
+function bearerToken(header: string | string[] | undefined): string {
+  const value = Array.isArray(header) ? header[0] : header;
+  if (!value) return "";
+  const match = /^Bearer\s+(\S+)\s*$/i.exec(value);
+  return match?.[1] ?? "";
+}
+
+// Slide saves and the certification redeploy share the archive admin credential
+// that POST /api/archive/unlock already checks. A missing passcode matches nothing.
+function requestHasInternalAccess(req: express.Request): boolean {
+  if (hasArchiveAccess(req.headers.cookie)) return true;
+  return matchesArchivePasscode(bearerToken(req.headers.authorization));
+}
+
+// Production waits 10 seconds between CRM polls, up to 18 times.
+// The shorter values apply only while the test runner sets NODE_ENV=test.
+function recheckPollIntervalMs(): number {
+  if (process.env.NODE_ENV === "test") {
+    const configured = Number(process.env.AIFA_RECHECK_POLL_INTERVAL_MS);
+    if (Number.isFinite(configured) && configured >= 0) return configured;
+  }
+  return 10_000;
+}
+
+function recheckMaxPolls(): number {
+  if (process.env.NODE_ENV === "test") {
+    const configured = Number(process.env.AIFA_RECHECK_MAX_POLLS);
+    if (Number.isInteger(configured) && configured > 0) return configured;
+  }
+  return 18;
+}
+
 // ─── RAILWAY SYNC TRIGGER CONFIG ────────────────────────────────────────────
 const RAILWAY_TOKEN = process.env.RAILWAY_TOKEN || "";
 const RAILWAY_SYNC_SERVICE_ID = process.env.RAILWAY_SYNC_SERVICE_ID || "fcf6db96-29b5-4019-b016-829b850a4eb4";
@@ -108,6 +140,10 @@ type EligibilityResult =
     };
 
 async function checkEligibility(email: string): Promise<EligibilityResult> {
+  if (!TWENTY_API_KEY) {
+    throw new Error("TWENTY_API_KEY is not configured");
+  }
+
   const query = `
     query CheckMember($email: String!) {
       people(filter: { emails: { primaryEmail: { eq: $email } } }, first: 1) {
@@ -525,9 +561,8 @@ function routeSeoHead(pathname: string): string {
 }
 
 // ─── SERVER ───────────────────────────────────────────────────────────────────
-async function startServer() {
+export function createApp() {
   const app = express();
-  const server = createServer(app);
 
   // Redirect the bare host to www for every path and query string.
   // Railway often puts the public host in x-forwarded-host and may include a port.
@@ -616,14 +651,18 @@ async function startServer() {
       return;
     }
 
+    if (!TWENTY_API_KEY) {
+      console.error("[cert-gate] TWENTY_API_KEY is not configured");
+      res.status(503).json({ eligible: false, error: "Eligibility check is not configured." });
+      return;
+    }
+
     try {
       const result = await checkEligibility(email);
       res.json(result);
     } catch (err: unknown) {
       console.error("[cert-gate] CRM lookup failed:", err);
-      // Fail open: if CRM is unreachable, let the user through rather than
-      // blocking legitimate members due to a backend outage.
-      res.json({ eligible: true, warning: "crm_unavailable" });
+      res.status(503).json({ eligible: false, error: "Eligibility check is unavailable." });
     }
   });
 
@@ -763,6 +802,16 @@ async function startServer() {
   // 3. Returns eligible=true as soon as the CRM shows Annual/Lifetime, or the
   //    current gate result if the sync completes but plan hasn't changed.
   app.post("/api/recheck-certification-eligibility", async (req, res) => {
+    if (!requestHasInternalAccess(req)) {
+      res.status(401).json({ error: "Authentication required." });
+      return;
+    }
+    if (!RAILWAY_TOKEN || !TWENTY_API_KEY) {
+      console.error("[recheck] Refusing to run because RAILWAY_TOKEN or TWENTY_API_KEY is not configured");
+      res.status(503).json({ error: "Recheck is not configured." });
+      return;
+    }
+
     const { email } = req.body ?? {};
 
     if (!email || typeof email !== "string" || !email.includes("@")) {
@@ -804,8 +853,8 @@ async function startServer() {
 
     // Step 2: Poll CRM every 10 seconds for up to 3 minutes (18 attempts)
     // The sync takes ~60-90 seconds on Railway. We poll until it flips or we time out.
-    const MAX_POLLS = 18;
-    const POLL_INTERVAL_MS = 10000;
+    const MAX_POLLS = recheckMaxPolls();
+    const POLL_INTERVAL_MS = recheckPollIntervalMs();
 
     for (let attempt = 0; attempt < MAX_POLLS; attempt++) {
       // Wait before polling (give sync time to start on first attempt)
@@ -844,8 +893,13 @@ async function startServer() {
     res.json({ eligible: false, reason: "not_active_member", rechecked: true, syncTriggered });
   });
 
-  // Save edited slide HTML back to disk
+  // Save edited slide HTML back to disk. Callers must already hold the archive
+  // admin session, or present that same passcode as a bearer token.
   app.post("/api/slides/save", async (req, res) => {
+    if (!requestHasInternalAccess(req)) {
+      res.status(401).json({ error: "Authentication required." });
+      return;
+    }
     const { deck, slideId, html } = req.body ?? {};
     const ALLOWED_DECKS = ["week1", "week4"];
     if (!deck || !slideId || !html || !ALLOWED_DECKS.includes(deck)) {
@@ -905,6 +959,25 @@ async function startServer() {
     res.redirect(301, "/work-with-brandon");
   });
 
+  // Lightweight readiness endpoint for external uptime checks.
+  // No authentication, customer data, configuration, or internal details are exposed.
+  app.get("/health", (_req, res) => {
+    res.status(200).json({ status: "ok" });
+  });
+
+  return app;
+}
+
+function isMainModule(): boolean {
+  const entry = process.argv[1];
+  if (!entry) return false;
+  return path.resolve(entry) === fileURLToPath(import.meta.url);
+}
+
+async function startServer() {
+  const app = createApp();
+  const server = createServer(app);
+
   // Serve static files from dist/public in production
   const staticPath =
     process.env.NODE_ENV === "production"
@@ -916,13 +989,6 @@ async function startServer() {
 
   // Keep asset responses static, while route documents receive canonical metadata before JavaScript executes.
   app.use(express.static(staticPath, { index: false }));
-
-  // Handle client-side routing with route-aware server-rendered SEO metadata.
-// Lightweight readiness endpoint for external uptime checks.
-// No authentication, customer data, configuration, or internal details are exposed.
-app.get("/health", (_req, res) => {
-  res.status(200).json({ status: "ok" });
-});
 
   const KNOWN_SPA_PATHS = new Set([
     "/",
@@ -980,4 +1046,6 @@ app.get("/health", (_req, res) => {
   });
 }
 
-startServer().catch(console.error);
+if (!process.env.VITEST && isMainModule()) {
+  startServer().catch(console.error);
+}

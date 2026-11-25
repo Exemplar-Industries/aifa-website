@@ -36,6 +36,10 @@ export default function SlideViewer() {
   const [editMode, setEditMode] = useState(false);
   const [hasChanges, setHasChanges] = useState(false);
   const [saveState, setSaveState] = useState<SaveState>("idle");
+  const [authPrompt, setAuthPrompt] = useState(false);
+  const [passcode, setPasscode] = useState("");
+  const [authError, setAuthError] = useState(false);
+  const pendingHtmlRef = useRef<string | null>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const editorReadyRef = useRef(false);
@@ -124,16 +128,50 @@ export default function SlideViewer() {
     try {
       const res = await fetch("/api/slides/save", {
         method: "POST",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ deck: deck.folder, slideId, html }),
       });
+      if (res.status === 401) {
+        pendingHtmlRef.current = html;
+        setAuthPrompt(true);
+        setSaveState("error");
+        return;
+      }
       if (res.ok) {
+        pendingHtmlRef.current = null;
+        setAuthPrompt(false);
         setSaveState("saved");
         setHasChanges(false);
         setTimeout(() => setSaveState("idle"), 2500);
       } else {
         setSaveState("error");
       }
+    } catch {
+      setSaveState("error");
+    }
+  };
+
+  const unlockAndRetry = async () => {
+    const html = pendingHtmlRef.current;
+    if (!html) return;
+    setSaveState("saving");
+    setAuthError(false);
+    try {
+      const unlock = await fetch("/api/archive/unlock", {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ passcode }),
+      });
+      if (!unlock.ok) {
+        setAuthError(true);
+        setSaveState("error");
+        return;
+      }
+      setPasscode("");
+      setAuthPrompt(false);
+      await saveSlideHTML(html);
     } catch {
       setSaveState("error");
     }
@@ -194,7 +232,7 @@ export default function SlideViewer() {
             {saveState === "saved" && !hasChanges && (
               <span style={{ color: "#27ae60", fontSize: 11, fontWeight: 700, letterSpacing: 2 }}>SAVED ✓</span>
             )}
-            {saveState === "error" && (
+            {saveState === "error" && !authPrompt && (
               <span style={{ color: "#E31E24", fontSize: 11, fontWeight: 700, letterSpacing: 2 }}>SAVE FAILED</span>
             )}
 
@@ -217,6 +255,14 @@ export default function SlideViewer() {
           <div style={{ background: "#1a0000", borderBottom: "1px solid #3a0000", padding: "6px 20px", fontSize: 11, color: "#E31E24", letterSpacing: 2, textAlign: "center", flexShrink: 0 }}>
             EDIT MODE — CLICK ANY TEXT TO EDIT · HIT SAVE WHEN DONE
           </div>
+        )}
+        {authPrompt && (
+          <form onSubmit={(event) => { event.preventDefault(); void unlockAndRetry(); }} style={{ background: "#1a0000", borderBottom: "1px solid #3a0000", padding: "8px 20px", display: "flex", gap: 8, alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+            <label htmlFor="slide-save-passcode" style={{ color: "#E31E24", fontSize: 11, letterSpacing: 2 }}>ARCHIVE PASSCODE TO SAVE</label>
+            <input id="slide-save-passcode" type="password" autoComplete="current-password" value={passcode} onChange={(event) => setPasscode(event.target.value)} style={{ background: "#111", border: "1px solid #333", color: "#fff", padding: "6px 10px", fontSize: 12, fontFamily: "Montserrat, sans-serif" }} />
+            <button type="submit" disabled={saveState === "saving" || passcode.length === 0} style={{ background: "#E31E24", color: "#fff", border: "none", padding: "6px 14px", fontSize: 11, fontWeight: 700, letterSpacing: 2, cursor: "pointer", fontFamily: "Montserrat, sans-serif" }}>UNLOCK AND SAVE</button>
+            {authError && <span style={{ color: "#E31E24", fontSize: 11, letterSpacing: 2 }}>INCORRECT PASSCODE</span>}
+          </form>
         )}
 
         {/* Body */}
