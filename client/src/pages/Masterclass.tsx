@@ -15,6 +15,7 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import { deliverAifaForm } from "@/lib/formDelivery";
+import { useInquiryAntiSpam } from "@/lib/useInquiryAntiSpam";
 import Turnstile from "@/components/Turnstile";
 
 // Webinar date: next Thursday at 5pm PST — update this to the actual date
@@ -80,6 +81,7 @@ function HeroSection() {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const { honeypotField, buildAntiSpam } = useInquiryAntiSpam();
 
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {
@@ -94,13 +96,13 @@ function HeroSection() {
           name,
           email: emailVal,
           source: "Masterclass page",
-        });
+        }, buildAntiSpam(turnstileToken));
         setFormState("success");
       } catch {
         setFormState("error");
       }
     },
-    [formState, fullName, email, turnstileToken]
+    [formState, fullName, email, turnstileToken, buildAntiSpam]
   );
 
   return (
@@ -228,7 +230,8 @@ function HeroSection() {
               </p>
             </div>
           ) : (
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} style={{ position: "relative" }}>
+              {honeypotField}
               <input
                 type="text"
                 placeholder="Full Name"

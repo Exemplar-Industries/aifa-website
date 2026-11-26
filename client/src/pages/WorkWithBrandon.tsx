@@ -3,6 +3,7 @@ import { Send } from "lucide-react";
 import PageMeta from "@/components/PageMeta";
 import Turnstile from "@/components/Turnstile";
 import { deliverAifaForm } from "@/lib/formDelivery";
+import { useInquiryAntiSpam } from "@/lib/useInquiryAntiSpam";
 import { LearnerRedirectNote } from "@/components/SharedInquiryFields";
 
 const CALENDLY_URL = "https://calendly.com/llcexemplar/strategy-call-w-brandon";
@@ -40,11 +41,13 @@ export default function WorkWithBrandon() {
   const [submitted, setSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState("");
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const { submitting, setSubmitting, honeypotField, buildAntiSpam } = useInquiryAntiSpam();
 
   const sendInquiry = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!turnstileToken) return;
+    if (!turnstileToken || submitting) return;
     const form = new FormData(event.currentTarget);
+    setSubmitting(true);
     try {
       await deliverAifaForm("Author animation or consulting inquiry", {
         name: String(form.get("name") || ""),
@@ -53,12 +56,14 @@ export default function WorkWithBrandon() {
         need: String(form.get("need") || ""),
         timeline: String(form.get("timeline") || ""),
         message: String(form.get("message") || ""),
-      });
+      }, buildAntiSpam(turnstileToken));
       setSubmitted(true);
       setSubmitError("");
     } catch (error) {
       setSubmitError(error instanceof Error ? error.message : `We could not send your note. Please email ${CONTACT_EMAIL} directly.`);
       setSubmitted(false);
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -189,7 +194,8 @@ export default function WorkWithBrandon() {
           <h2 className="work-display" style={{ textAlign: "center" }}>Author animation and consulting</h2>
           <p className="work-note" style={{ marginTop: "1rem", textAlign: "center" }}>This form is for an author animation project or for edtech and business consulting.</p>
           <LearnerRedirectNote />
-          <form className="work-form" onSubmit={sendInquiry}>
+          <form className="work-form" onSubmit={sendInquiry} style={{ position: "relative" }}>
+            {honeypotField}
             <div className="work-fields">
               <div className="work-field">
                 <label htmlFor="work-name">Name</label>
@@ -220,7 +226,7 @@ export default function WorkWithBrandon() {
               </div>
             </div>
             <Turnstile action="work-with-brandon" theme="dark" onTokenChange={setTurnstileToken} />
-            <button className="work-submit" type="submit" disabled={!turnstileToken}>Send the form <Send size={18} /></button>
+            <button className="work-submit" type="submit" disabled={!turnstileToken || submitting}>Send the form <Send size={18} /></button>
             <p className="work-note">Goes straight to {CONTACT_EMAIL}.</p>
             {submitted && <p className="work-note">Your note has been received. Check your inbox for a confirmation.</p>}
             {submitError && <p className="work-note">{submitError}</p>}

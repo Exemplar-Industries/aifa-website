@@ -2,6 +2,7 @@ import { FormEvent, useState } from "react";
 import { ArrowRight, Send } from "lucide-react";
 import PageMeta from "@/components/PageMeta";
 import { deliverAifaForm } from "@/lib/formDelivery";
+import { useInquiryAntiSpam } from "@/lib/useInquiryAntiSpam";
 import { buildInquiryPayload } from "@/lib/inquiryForms";
 import { InquiryIdentityFields, LearnerRedirectNote, MasterInquiryFields } from "@/components/SharedInquiryFields";
 import Turnstile from "@/components/Turnstile";
@@ -18,19 +19,23 @@ export default function EducationEvents() {
   const [submitted, setSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState("");
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const { submitting, setSubmitting, honeypotField, buildAntiSpam } = useInquiryAntiSpam();
 
   const sendInquiry = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!turnstileToken) return;
+    if (!turnstileToken || submitting) return;
     const form = new FormData(event.currentTarget);
 
+    setSubmitting(true);
     try {
-      await deliverAifaForm("Events inquiry", buildInquiryPayload("event", form));
+      await deliverAifaForm("Events inquiry", buildInquiryPayload("event", form), buildAntiSpam(turnstileToken));
       setSubmitted(true);
       setSubmitError("");
     } catch (error) {
       setSubmitError(error instanceof Error ? error.message : "We could not send your event inquiry. Please email brandon@aifilmacademy.com directly.");
       setSubmitted(false);
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -123,11 +128,12 @@ export default function EducationEvents() {
               <h2 className="events-display events-heading">Contact Us.</h2>
             </div>
             <LearnerRedirectNote />
-            <form className="events-form" onSubmit={sendInquiry}>
+            <form className="events-form" onSubmit={sendInquiry} style={{ position: "relative" }}>
+              {honeypotField}
               <InquiryIdentityFields fieldClassName="events-field" gridClassName="events-form-grid" nameId="event-name" emailId="event-email" showPhone phoneId="event-phone" />
               <MasterInquiryFields kind="event" fieldClassName="events-field" gridClassName="events-form-grid" fullFieldClassName="events-field--full" idPrefix="event" eventDelivery={eventDelivery} onEventDeliveryChange={setEventDelivery} />
               <Turnstile action="event-inquiry" theme="dark" onTokenChange={setTurnstileToken} />
-              <button className="events-primary" type="submit" disabled={!turnstileToken}>Send Your Event Brief <Send size={19} /></button>
+              <button className="events-primary" type="submit" disabled={!turnstileToken || submitting}>Send Your Event Brief <Send size={19} /></button>
               <p className="events-note">Event briefs go directly to brandon@aifilmacademy.com.</p>
               {submitted && <p className="events-success">Your event inquiry has been received. Check your inbox for a confirmation. We will get back to you within 24 hours.</p>}
               {submitError && <p className="events-success">{submitError}</p>}

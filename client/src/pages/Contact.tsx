@@ -2,6 +2,7 @@ import { FormEvent, useState } from "react";
 import { Send } from "lucide-react";
 import PageMeta from "@/components/PageMeta";
 import { deliverAifaForm } from "@/lib/formDelivery";
+import { useInquiryAntiSpam } from "@/lib/useInquiryAntiSpam";
 import { InquiryIdentityFields, LearnerRedirectNote } from "@/components/SharedInquiryFields";
 import Turnstile from "@/components/Turnstile";
 
@@ -26,13 +27,15 @@ export default function Contact() {
   const [submitted, setSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState("");
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const { submitting, setSubmitting, honeypotField, buildAntiSpam } = useInquiryAntiSpam();
 
   const sendInquiry = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!turnstileToken) return;
+    if (!turnstileToken || submitting) return;
     const form = new FormData(event.currentTarget);
     const topicDetails = TOPIC_DETAILS[topic];
 
+    setSubmitting(true);
     try {
       const fields = {
         name: identity.name,
@@ -41,12 +44,14 @@ export default function Contact() {
         topic: topicDetails.label,
         message: String(form.get("message") || ""),
       };
-      await deliverAifaForm("Author animation or consulting inquiry", fields);
+      await deliverAifaForm("Author animation or consulting inquiry", fields, buildAntiSpam(turnstileToken));
       setSubmitted(true);
       setSubmitError("");
     } catch (error) {
       setSubmitError(error instanceof Error ? error.message : "We could not send your inquiry. Please email brandon@aifilmacademy.com directly.");
       setSubmitted(false);
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -87,7 +92,8 @@ export default function Contact() {
       <section className="contact-section">
         <div className="contact-shell">
           <LearnerRedirectNote />
-          <form className="contact-form" onSubmit={sendInquiry}>
+          <form className="contact-form" onSubmit={sendInquiry} style={{ position: "relative" }}>
+            {honeypotField}
             <h2 className="contact-display">Animation and consulting.</h2>
             <p className="contact-form-intro">This form is for an author animation project or for edtech and business consulting.</p>
 
@@ -106,7 +112,7 @@ export default function Contact() {
             </div>
 
             <Turnstile action="contact-inquiry" theme="dark" onTokenChange={setTurnstileToken} />
-            <button className="contact-submit" type="submit" disabled={!turnstileToken}>Send Inquiry <Send size={19} /></button>
+            <button className="contact-submit" type="submit" disabled={!turnstileToken || submitting}>Send Inquiry <Send size={19} /></button>
             <p className="contact-note">Inquiries go directly to brandon@aifilmacademy.com.</p>
             {submitted && <p className="contact-success">Your inquiry has been received. Check your inbox for a confirmation.</p>}
             {submitError && <p className="contact-success">{submitError}</p>}

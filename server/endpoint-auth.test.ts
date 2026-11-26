@@ -68,6 +68,9 @@ async function boot(env: Record<string, string>) {
     "RAILWAY_TOKEN",
     "STRIPE_WEBHOOK_SECRET",
     "STRIPE_WEBHOOK_SECRET_PREVIOUS",
+    "TURNSTILE_SECRET_KEY",
+    "AIFA_INQUIRY_WEBHOOK_URL",
+    "AIFA_INQUIRY_WEBHOOK_SECRET",
   ]) {
     delete process.env[key];
   }
