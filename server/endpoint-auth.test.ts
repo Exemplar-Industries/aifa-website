@@ -71,6 +71,7 @@ async function boot(env: Record<string, string>) {
     "TURNSTILE_SECRET_KEY",
     "AIFA_INQUIRY_WEBHOOK_URL",
     "AIFA_INQUIRY_WEBHOOK_SECRET",
+    "AIFA_FREE_TRAINING_WEBHOOK_URL",
   ]) {
     delete process.env[key];
   }

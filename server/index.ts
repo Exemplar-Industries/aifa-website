@@ -1,5 +1,6 @@
 import express from "express";
 import { handleInquiry } from "./inquiry";
+import { handleFreeTraining } from "./free-training";
 import { createServer } from "http";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -635,6 +636,9 @@ export function createApp() {
 
   // Inquiry forms post here so the n8n webhook URL never ships in the browser bundle.
   app.post("/api/inquiry", handleInquiry);
+
+  // Free Video Training signups post here so the n8n webhook URL never ships in the browser bundle.
+  app.post("/api/free-training", handleFreeTraining);
 
   // ── PRIVATE SLIDE ARCHIVE ─────────────────────────────────────────────────
   // The archive uses a short, server-signed httpOnly session after a valid
