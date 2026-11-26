@@ -7,7 +7,7 @@
  */
 
 import { useState, useEffect, useCallback } from "react";
-import { supabase, SUPABASE_URL } from "@/lib/supabase";
+import { supabase } from "@/lib/supabase";
 import Turnstile from "@/components/Turnstile";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -63,9 +63,9 @@ export default function LiveExclusive() {
         throw insertError;
       }
 
-      // 2. Trigger Skool invite via Edge Function
+      // 2. Trigger Skool invite via the server proxy (webhook URL stays server-side)
       try {
-        const res = await fetch(`${SUPABASE_URL}/functions/v1/send-skool-invite`, {
+        const res = await fetch("/api/skool-invite", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email: trimmedEmail }),
@@ -77,7 +77,7 @@ export default function LiveExclusive() {
             .eq("email", trimmedEmail);
         }
       } catch {
-        console.warn("Skool invite edge function failed — claim saved, invite may need manual follow-up");
+        console.warn("Skool invite failed — claim saved, invite may need manual follow-up");
       }
 
       setFormState("success");

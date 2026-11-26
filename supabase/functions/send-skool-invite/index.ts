@@ -1,7 +1,8 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
-const SKOOL_WEBHOOK_BASE_URL =
-  "https://api2.skool.com/groups/aifilmacademy/webhooks/9a86544a0f29423a9a02444dfe481693";
+// The Skool invite webhook URL must be provided as a function secret.
+// Do not hardcode it here; this repo is public.
+const SKOOL_INVITE_WEBHOOK_URL = Deno.env.get("SKOOL_INVITE_WEBHOOK_URL") ?? "";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -14,6 +15,13 @@ Deno.serve(async (req: Request) => {
   }
 
   try {
+    if (!SKOOL_INVITE_WEBHOOK_URL) {
+      return new Response(
+        JSON.stringify({ success: false, error: "Skool invite is not configured" }),
+        { status: 503, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
     const { email } = await req.json();
 
     if (!email || typeof email !== "string") {
@@ -23,13 +31,13 @@ Deno.serve(async (req: Request) => {
       );
     }
 
-    const skoolUrl = `${SKOOL_WEBHOOK_BASE_URL}?email=${encodeURIComponent(email.trim().toLowerCase())}`;
+    const endpoint = new URL(SKOOL_INVITE_WEBHOOK_URL);
+    endpoint.searchParams.set("email", email.trim().toLowerCase());
 
-    const skoolRes = await fetch(skoolUrl, { method: "POST" });
+    const skoolRes = await fetch(endpoint, { method: "POST" });
 
     if (!skoolRes.ok) {
-      const body = await skoolRes.text();
-      console.error(`Skool webhook error: ${skoolRes.status} — ${body}`);
+      console.error(`Skool webhook error: ${skoolRes.status}`);
       return new Response(
         JSON.stringify({ success: false, error: `Skool returned ${skoolRes.status}` }),
         { status: 502, headers: { ...corsHeaders, "Content-Type": "application/json" } }

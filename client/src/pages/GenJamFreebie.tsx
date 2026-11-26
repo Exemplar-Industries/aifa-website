@@ -5,7 +5,7 @@
  * Design: Cinematic dark with animated red particle/glow background, full-width
  */
 import { useState, useEffect, useCallback, useRef } from "react";
-import { supabase, SUPABASE_URL } from "@/lib/supabase";
+import { supabase } from "@/lib/supabase";
 import Turnstile from "@/components/Turnstile";
 
 const TOTAL_SLOTS = 150;
@@ -287,9 +287,9 @@ export default function GenJamFreebie() {
       const { error: ie } = await supabase.from("invite_claims").insert({ name: tf, email: te, source: "genjam_freebie" });
       if (ie) { if (ie.code === "23505" || ie.message?.toLowerCase().includes("unique")) { setFormState("duplicate"); return; } throw ie; }
       try {
-        const res = await fetch(`${SUPABASE_URL}/functions/v1/send-skool-invite`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email: te }) });
+        const res = await fetch("/api/skool-invite", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email: te }) });
         if (res.ok) await supabase.from("invite_claims").update({ zapier_triggered: true, zapier_triggered_at: new Date().toISOString() }).eq("email", te);
-      } catch { console.warn("Skool invite edge function failed — claim saved"); }
+      } catch { console.warn("Skool invite failed — claim saved"); }
       await fetchSlots();
       setFormState("success");
     } catch (err: unknown) { setErrorMsg(err instanceof Error ? err.message : "Something went wrong."); setFormState("error"); }
