@@ -216,7 +216,23 @@ type MembershipBillingCycle = "monthly" | "annual";
 
 const AIFA_MEMBERSHIP_MONTHLY_PRICE_ID = process.env.AIFA_MEMBERSHIP_MONTHLY_PRICE_ID ?? "price_1U3n1qAtNs5zyUU7yqfNuVrg";
 const AIFA_MEMBERSHIP_ANNUAL_PRICE_ID = process.env.AIFA_MEMBERSHIP_ANNUAL_PRICE_ID ?? "price_1U3n22AtNs5zyUU7RW9EP9V2";
-const AIFA_SKOOL_INVITE_FUNCTION_URL = process.env.AIFA_SKOOL_INVITE_FUNCTION_URL ?? "https://mdjjmanqnlfgttwtlufx.supabase.co/functions/v1/send-skool-invite";
+const SKOOL_INVITE_WEBHOOK_URL = process.env.SKOOL_INVITE_WEBHOOK_URL || "";
+const SKOOL_INVITE_EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const SKOOL_INVITE_IP_LIMIT = 5;
+const SKOOL_INVITE_IP_WINDOW_MS = 10 * 60 * 1000;
+const skoolInviteAttempts = new Map<string, number[]>();
+
+function skoolInviteAllowed(ip: string): boolean {
+  const now = Date.now();
+  const recent = (skoolInviteAttempts.get(ip) ?? []).filter((stamp) => now - stamp < SKOOL_INVITE_IP_WINDOW_MS);
+  if (recent.length >= SKOOL_INVITE_IP_LIMIT) {
+    skoolInviteAttempts.set(ip, recent);
+    return false;
+  }
+  recent.push(now);
+  skoolInviteAttempts.set(ip, recent);
+  return true;
+}
 const AIFA_PAID_PURCHASE_FULFILLMENT_URL = process.env.AIFA_PAID_PURCHASE_FULFILLMENT_URL ?? "";
 // Optional during staged rollout; make this required only after n8n's endpoint
 // has been migrated to header authentication and validated in production.
@@ -305,15 +321,20 @@ async function createPaidMemberInviteClaim(input: {
   }
 }
 
-async function sendPaidMemberSkoolInvite(email: string): Promise<void> {
-  if (!AIFA_SKOOL_INVITE_FUNCTION_URL) {
-    throw new Error("AIFA_SKOOL_INVITE_FUNCTION_URL is not configured");
+async function sendSkoolInvite(email: string): Promise<void> {
+  if (!SKOOL_INVITE_WEBHOOK_URL) {
+    throw new Error("SKOOL_INVITE_WEBHOOK_URL is not configured");
   }
-  await axios.post(
-    AIFA_SKOOL_INVITE_FUNCTION_URL,
-    { email: email.toLowerCase().trim(), source: "stripe_paid_membership" },
-    { headers: { "Content-Type": "application/json" }, timeout: 15000 }
-  );
+  const endpoint = new URL(SKOOL_INVITE_WEBHOOK_URL);
+  endpoint.searchParams.set("email", email.toLowerCase().trim());
+  const response = await fetch(endpoint, { method: "POST" });
+  if (!response.ok) {
+    throw new Error(`Skool invite failed with status ${response.status}`);
+  }
+}
+
+async function sendPaidMemberSkoolInvite(email: string): Promise<void> {
+  await sendSkoolInvite(email);
 }
 
 async function sendPaidPurchasePostProcessing(input: {
@@ -563,6 +584,7 @@ function routeSeoHead(pathname: string): string {
 // ─── SERVER ───────────────────────────────────────────────────────────────────
 export function createApp() {
   const app = express();
+  app.set("trust proxy", 1);
 
   // Redirect the bare host to www for every path and query string.
   // Railway often puts the public host in x-forwarded-host and may include a port.
@@ -583,6 +605,32 @@ export function createApp() {
 
   // Parse JSON bodies for all other API routes
   app.use(express.json());
+
+  // The Skool invite webhook URL stays in SKOOL_INVITE_WEBHOOK_URL on Railway.
+  // Public pages (if remounted) POST here instead of calling Skool with a bundled secret.
+  app.post("/api/skool-invite", async (req, res) => {
+    const email = typeof req.body?.email === "string" ? req.body.email.trim().toLowerCase() : "";
+    if (!email || !SKOOL_INVITE_EMAIL_PATTERN.test(email)) {
+      res.status(400).json({ success: false, error: "Missing or invalid email" });
+      return;
+    }
+    if (!SKOOL_INVITE_WEBHOOK_URL) {
+      res.status(503).json({ success: false, error: "Skool invite is not configured" });
+      return;
+    }
+    const ip = (req.ip || req.socket.remoteAddress || "unknown").toString();
+    if (!skoolInviteAllowed(ip)) {
+      res.status(429).json({ success: false, error: "Too many invite requests. Please try again later." });
+      return;
+    }
+    try {
+      await sendSkoolInvite(email);
+      res.json({ success: true });
+    } catch {
+      console.error("[skool-invite] Request failed");
+      res.status(502).json({ success: false, error: "Could not send the Skool invite." });
+    }
+  });
 
   // ── PRIVATE SLIDE ARCHIVE ─────────────────────────────────────────────────
   // The archive uses a short, server-signed httpOnly session after a valid
