@@ -2,6 +2,7 @@ import { FormEvent, useEffect, useRef, useState } from "react";
 import { Send } from "lucide-react";
 import PageMeta from "@/components/PageMeta";
 import { deliverAifaForm } from "@/lib/formDelivery";
+import { useInquiryAntiSpam } from "@/lib/useInquiryAntiSpam";
 import { buildInquiryPayload } from "@/lib/inquiryForms";
 import { InquiryIdentityFields, LearnerRedirectNote, MasterInquiryFields } from "@/components/SharedInquiryFields";
 import Turnstile from "@/components/Turnstile";
@@ -38,6 +39,7 @@ export default function Productions() {
   const [submitted, setSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState("");
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const { submitting, setSubmitting, honeypotField, buildAntiSpam } = useInquiryAntiSpam();
   const methodVideoRef = useRef<HTMLVideoElement | null>(null);
 
   useEffect(() => {
@@ -61,16 +63,19 @@ export default function Productions() {
 
   const sendInquiry = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!turnstileToken) return;
+    if (!turnstileToken || submitting) return;
     const form = new FormData(event.currentTarget);
 
+    setSubmitting(true);
     try {
-      await deliverAifaForm("Author animation inquiry", buildInquiryPayload("production", form));
+      await deliverAifaForm("Author animation inquiry", buildInquiryPayload("production", form), buildAntiSpam(turnstileToken));
       setSubmitted(true);
       setSubmitError("");
     } catch (error) {
       setSubmitError(error instanceof Error ? error.message : "We could not send your brief. Please email brandon@aifilmacademy.com directly.");
       setSubmitted(false);
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -223,13 +228,14 @@ export default function Productions() {
             <h2 className="productions-display productions-section-heading">Author <span>animation.</span></h2>
           </div>
           <LearnerRedirectNote />
-          <form className="productions-form" onSubmit={sendInquiry}>
+          <form className="productions-form" onSubmit={sendInquiry} style={{ position: "relative" }}>
+            {honeypotField}
             <h3>Request an author animation.</h3>
             <p className="productions-form-intro">This form is for an author animation project. Tell us what you want made.</p>
             <InquiryIdentityFields fieldClassName="productions-field" gridClassName="productions-form-grid" nameId="production-name" emailId="production-email" showPhone phoneId="production-phone" />
             <MasterInquiryFields kind="production" fieldClassName="productions-field" gridClassName="productions-form-grid" fullFieldClassName="productions-field--full" idPrefix="production" />
             <Turnstile action="production-inquiry" theme="dark" onTokenChange={setTurnstileToken} />
-            <button className="productions-primary" type="submit" disabled={!turnstileToken}>Send Your Production Brief <Send size={19} /></button>
+            <button className="productions-primary" type="submit" disabled={!turnstileToken || submitting}>Send Your Production Brief <Send size={19} /></button>
             <p className="productions-note">Production briefs go directly to brandon@aifilmacademy.com.</p>
             {submitted && <p className="productions-success">Your production brief has been received. Check your inbox for a confirmation. We will get back to you within 24 hours.</p>}
             {submitError && <p className="productions-success">{submitError}</p>}

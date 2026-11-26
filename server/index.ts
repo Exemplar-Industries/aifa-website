@@ -1,4 +1,5 @@
 import express from "express";
+import { handleInquiry } from "./inquiry";
 import { createServer } from "http";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -631,6 +632,9 @@ export function createApp() {
       res.status(502).json({ success: false, error: "Could not send the Skool invite." });
     }
   });
+
+  // Inquiry forms post here so the n8n webhook URL never ships in the browser bundle.
+  app.post("/api/inquiry", handleInquiry);
 
   // ── PRIVATE SLIDE ARCHIVE ─────────────────────────────────────────────────
   // The archive uses a short, server-signed httpOnly session after a valid
