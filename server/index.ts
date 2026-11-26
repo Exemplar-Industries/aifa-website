@@ -948,6 +948,11 @@ export function createApp() {
     res.redirect(301, skoolAboutUrl(req));
   });
 
+  // Retired GenJam offer page. Send it to the free Skool community page.
+  app.get("/genjam-offer", (req, res) => {
+    res.redirect(302, skoolAboutUrl(req));
+  });
+
   // Retired free-claim and countdown pages. Homepage, because they were not the paid course.
   app.get(["/live-exclusive", "/anthum-exclusive", "/genjam-freebie", "/masterclass"], (req, res) => {
     const query = req.originalUrl.includes("?") ? req.originalUrl.slice(req.originalUrl.indexOf("?")) : "";
@@ -1011,7 +1016,6 @@ async function startServer() {
     "/contact",
     "/productions",
     "/work-with-brandon",
-    "/genjam-offer",
     "/cref",
     "/genjam/character-sheet",
     "/genjam/submit",

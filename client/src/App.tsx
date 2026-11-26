@@ -18,7 +18,6 @@ const Connect = lazy(() => import("./pages/Connect"));
 const InternalLessons = lazy(() => import("./pages/InternalLessons"));
 const SlideViewer = lazy(() => import("./pages/SlideViewer"));
 const FreeVideoTraining = lazy(() => import("./pages/FreeVideoTraining"));
-const GenJamOffer = lazy(() => import("./pages/GenJamOffer"));
 const MembershipSuccess = lazy(() => import("./pages/MembershipSuccess"));
 const RefundPolicy = lazy(() => import("./pages/RefundPolicy"));
 const Terms = lazy(() => import("./pages/Terms"));
@@ -128,7 +127,7 @@ function Router() {
       <Route path={"/education-events"}><Redirect to="/work-with-brandon" /></Route>
       <Route path={"/events"}><Redirect to="/" /></Route>
       <Route path={"/genjam-freebie"}><Redirect to="/" /></Route>
-      <Route path={"/genjam-offer"} component={GenJamOffer} />
+      <Route path={"/genjam-offer"} component={MembershipRedirect} />
       <Route path={"/cref"} component={CharacterReferenceDownload} />
       <Route path={"/genjam/character-sheet"} component={CharacterReferenceDownload} />
       <Route path={"/genjam/submit"} component={ShowcaseUploadRedirect} />
