@@ -254,6 +254,7 @@ const BENEFITS = [
 // ─── Main Page ────────────────────────────────────────────────────────────────
 export default function GenJamFreebie() {
   const [formState, setFormState] = useState<FormState>("idle");
+  const [joinDirectly, setJoinDirectly] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [firstName, setFirstName] = useState("");
   const [email, setEmail] = useState("");
@@ -288,8 +289,9 @@ export default function GenJamFreebie() {
       if (ie) { if (ie.code === "23505" || ie.message?.toLowerCase().includes("unique")) { setFormState("duplicate"); return; } throw ie; }
       try {
         const res = await fetch("/api/skool-invite", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email: te }) });
-        if (res.ok) await supabase.from("invite_claims").update({ zapier_triggered: true, zapier_triggered_at: new Date().toISOString() }).eq("email", te);
-      } catch { console.warn("Skool invite failed — claim saved"); }
+        if (res.status === 410) setJoinDirectly(true);
+        else if (res.ok) await supabase.from("invite_claims").update({ zapier_triggered: true, zapier_triggered_at: new Date().toISOString() }).eq("email", te);
+      } catch { setJoinDirectly(true); }
       await fetchSlots();
       setFormState("success");
     } catch (err: unknown) { setErrorMsg(err instanceof Error ? err.message : "Something went wrong."); setFormState("error"); }
@@ -334,9 +336,20 @@ export default function GenJamFreebie() {
             <div style={{ fontSize: "4rem", marginBottom: "1rem" }}>🎬</div>
             <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "2.8rem", color: "#fff", marginBottom: "1rem", letterSpacing: "0.02em" }}>You're in.</h2>
             <p style={{ color: "rgba(255,255,255,0.55)", fontSize: "1.1rem", lineHeight: 1.65 }}>
-              Check your inbox — your Skool invite is on its way.<br />
-              <strong style={{ color: "#fff" }}>It may take up to 15 minutes.</strong><br /><br />
-              Welcome to AI Film Academy. See you inside.
+              {joinDirectly ? (
+                <>
+                  Auto-invites are retired. The community is free to join.<br />
+                  <a href={SKOOL_COMMUNITY_URL} target="_blank" rel="noopener noreferrer" style={{ color: "#fff", textDecoration: "underline" }}>
+                    Join free on Skool
+                  </a>
+                </>
+              ) : (
+                <>
+                  Check your inbox — your Skool invite is on its way.<br />
+                  <strong style={{ color: "#fff" }}>It may take up to 15 minutes.</strong><br /><br />
+                  Welcome to AI Film Academy. See you inside.
+                </>
+              )}
             </p>
           </div>
         ) : formState === "duplicate" ? (

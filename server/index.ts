@@ -20,8 +20,8 @@ const STRIPE_WEBHOOK_SECRET_PREVIOUS = process.env.STRIPE_WEBHOOK_SECRET_PREVIOU
 const SKOOL_MEMBERSHIP_URL = "https://www.skool.com/aifilmacademy/about";
 
 // ─── PAID-SUBSCRIBER INVITE CLAIM CONFIG ──────────────────────────────────────
-// The Skool invite edge function authorizes an email only after an invite_claims
-// record exists. These values are provided through Railway, never source fallbacks.
+// Leftover Stripe events may still record an invite_claims row. These values are
+// provided through Railway, never source fallbacks.
 const AIFA_SUPABASE_URL = process.env.AIFA_SUPABASE_URL || "";
 const AIFA_SUPABASE_ANON_KEY = process.env.AIFA_SUPABASE_ANON_KEY || "";
 const AIFA_SUPABASE_SERVICE_ROLE_KEY = process.env.AIFA_SUPABASE_SERVICE_ROLE_KEY || "";
@@ -218,23 +218,6 @@ type MembershipBillingCycle = "monthly" | "annual";
 
 const AIFA_MEMBERSHIP_MONTHLY_PRICE_ID = process.env.AIFA_MEMBERSHIP_MONTHLY_PRICE_ID ?? "price_1U3n1qAtNs5zyUU7yqfNuVrg";
 const AIFA_MEMBERSHIP_ANNUAL_PRICE_ID = process.env.AIFA_MEMBERSHIP_ANNUAL_PRICE_ID ?? "price_1U3n22AtNs5zyUU7RW9EP9V2";
-const SKOOL_INVITE_WEBHOOK_URL = process.env.SKOOL_INVITE_WEBHOOK_URL || "";
-const SKOOL_INVITE_EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const SKOOL_INVITE_IP_LIMIT = 5;
-const SKOOL_INVITE_IP_WINDOW_MS = 10 * 60 * 1000;
-const skoolInviteAttempts = new Map<string, number[]>();
-
-function skoolInviteAllowed(ip: string): boolean {
-  const now = Date.now();
-  const recent = (skoolInviteAttempts.get(ip) ?? []).filter((stamp) => now - stamp < SKOOL_INVITE_IP_WINDOW_MS);
-  if (recent.length >= SKOOL_INVITE_IP_LIMIT) {
-    skoolInviteAttempts.set(ip, recent);
-    return false;
-  }
-  recent.push(now);
-  skoolInviteAttempts.set(ip, recent);
-  return true;
-}
 const AIFA_PAID_PURCHASE_FULFILLMENT_URL = process.env.AIFA_PAID_PURCHASE_FULFILLMENT_URL ?? "";
 // Optional during staged rollout; make this required only after n8n's endpoint
 // has been migrated to header authentication and validated in production.
@@ -321,22 +304,6 @@ async function createPaidMemberInviteClaim(input: {
     if (axios.isAxiosError(err) && err.response?.status === 409) return;
     throw err;
   }
-}
-
-async function sendSkoolInvite(email: string): Promise<void> {
-  if (!SKOOL_INVITE_WEBHOOK_URL) {
-    throw new Error("SKOOL_INVITE_WEBHOOK_URL is not configured");
-  }
-  const endpoint = new URL(SKOOL_INVITE_WEBHOOK_URL);
-  endpoint.searchParams.set("email", email.toLowerCase().trim());
-  const response = await fetch(endpoint, { method: "POST" });
-  if (!response.ok) {
-    throw new Error(`Skool invite failed with status ${response.status}`);
-  }
-}
-
-async function sendPaidMemberSkoolInvite(email: string): Promise<void> {
-  await sendSkoolInvite(email);
 }
 
 async function sendPaidPurchasePostProcessing(input: {
@@ -608,30 +575,13 @@ export function createApp() {
   // Parse JSON bodies for all other API routes
   app.use(express.json());
 
-  // The Skool invite webhook URL stays in SKOOL_INVITE_WEBHOOK_URL on Railway.
-  // Public pages (if remounted) POST here instead of calling Skool with a bundled secret.
-  app.post("/api/skool-invite", async (req, res) => {
-    const email = typeof req.body?.email === "string" ? req.body.email.trim().toLowerCase() : "";
-    if (!email || !SKOOL_INVITE_EMAIL_PATTERN.test(email)) {
-      res.status(400).json({ success: false, error: "Missing or invalid email" });
-      return;
-    }
-    if (!SKOOL_INVITE_WEBHOOK_URL) {
-      res.status(503).json({ success: false, error: "Skool invite is not configured" });
-      return;
-    }
-    const ip = (req.ip || req.socket.remoteAddress || "unknown").toString();
-    if (!skoolInviteAllowed(ip)) {
-      res.status(429).json({ success: false, error: "Too many invite requests. Please try again later." });
-      return;
-    }
-    try {
-      await sendSkoolInvite(email);
-      res.json({ success: true });
-    } catch {
-      console.error("[skool-invite] Request failed");
-      res.status(502).json({ success: false, error: "Could not send the Skool invite." });
-    }
+  // Auto-invites are retired. The community is free to join on Skool.
+  // The route name is kept so an old client gets a clear closed response.
+  app.post("/api/skool-invite", (_req, res) => {
+    res.status(410).json({
+      success: false,
+      error: `Skool auto-invites are retired; join free at ${SKOOL_MEMBERSHIP_URL}`,
+    });
   });
 
   // Inquiry forms post here so the n8n webhook URL never ships in the browser bundle.
@@ -830,7 +780,6 @@ export function createApp() {
             email,
             customerName,
           });
-          await sendPaidMemberSkoolInvite(email);
           await sendPaidPurchasePostProcessing({
             email,
             customerName,
