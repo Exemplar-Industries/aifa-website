@@ -4,6 +4,7 @@ import type { AddressInfo } from "net";
 import path from "path";
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 
+const RETIRED_MESSAGE = "Skool auto-invites are retired; join free at https://www.skool.com/aifilmacademy/about";
 const TEST_WEBHOOK_URL = "https://example.test/skool-invite-webhook";
 
 type JsonResponse = { status: number; json: Record<string, unknown> | null };
@@ -68,72 +69,38 @@ describe("POST /api/skool-invite", () => {
     vi.unstubAllGlobals();
   });
 
-  it("fails closed when SKOOL_INVITE_WEBHOOK_URL is not set", async () => {
+  it("returns 410 and does not call Skool when the env var is unset", async () => {
     const ctx = await boot({});
     try {
       const result = await postJson(ctx.base, "/api/skool-invite", { email: "member@example.com" });
-      expect(result.status).toBe(503);
-      expect(result.json).toEqual({ success: false, error: "Skool invite is not configured" });
+      expect(result.status).toBe(410);
+      expect(result.json).toEqual({ success: false, error: RETIRED_MESSAGE });
       expect(outbound).not.toHaveBeenCalled();
     } finally {
       await ctx.close();
     }
   });
 
-  it("rejects a missing or invalid email before calling Skool", async () => {
-    const ctx = await boot({ SKOOL_INVITE_WEBHOOK_URL: TEST_WEBHOOK_URL });
-    try {
-      const missing = await postJson(ctx.base, "/api/skool-invite", {});
-      expect(missing.status).toBe(400);
-      const invalid = await postJson(ctx.base, "/api/skool-invite", { email: "not-an-email" });
-      expect(invalid.status).toBe(400);
-      expect(outbound).not.toHaveBeenCalled();
-    } finally {
-      await ctx.close();
-    }
-  });
-
-  it("proxies a valid email to the configured webhook and hides the URL in the response", async () => {
-    outbound.mockResolvedValue(new Response("ok", { status: 200 }));
-    const ctx = await boot({ SKOOL_INVITE_WEBHOOK_URL: TEST_WEBHOOK_URL });
-    try {
-      const result = await postJson(ctx.base, "/api/skool-invite", { email: "Member@Example.com" });
-      expect(result.status).toBe(200);
-      expect(result.json).toEqual({ success: true });
-      expect(JSON.stringify(result.json)).not.toContain(TEST_WEBHOOK_URL);
-      expect(outbound).toHaveBeenCalledTimes(1);
-      const calledUrl = new URL(String(outbound.mock.calls[0]?.[0]));
-      expect(calledUrl.origin + calledUrl.pathname).toBe(TEST_WEBHOOK_URL);
-      expect(calledUrl.searchParams.get("email")).toBe("member@example.com");
-    } finally {
-      await ctx.close();
-    }
-  });
-
-  it("returns 502 when Skool rejects the invite, without exposing the webhook URL", async () => {
-    outbound.mockResolvedValue(new Response("nope", { status: 500 }));
+  it("returns 410 and does not call Skool even if a webhook env var is still set", async () => {
     const ctx = await boot({ SKOOL_INVITE_WEBHOOK_URL: TEST_WEBHOOK_URL });
     try {
       const result = await postJson(ctx.base, "/api/skool-invite", { email: "member@example.com" });
-      expect(result.status).toBe(502);
-      expect(result.json).toEqual({ success: false, error: "Could not send the Skool invite." });
-      expect(JSON.stringify(result.json)).not.toContain(TEST_WEBHOOK_URL);
+      expect(result.status).toBe(410);
+      expect(result.json).toEqual({ success: false, error: RETIRED_MESSAGE });
+      expect(outbound).not.toHaveBeenCalled();
     } finally {
       await ctx.close();
     }
   });
 
-  it("rate-limits repeated invites from the same client", async () => {
-    outbound.mockResolvedValue(new Response("ok", { status: 200 }));
+  it("returns 410 for a missing or invalid body without calling Skool", async () => {
     const ctx = await boot({ SKOOL_INVITE_WEBHOOK_URL: TEST_WEBHOOK_URL });
     try {
-      const statuses: number[] = [];
-      for (let i = 0; i < 6; i += 1) {
-        const result = await postJson(ctx.base, "/api/skool-invite", { email: `member${i}@example.com` });
-        statuses.push(result.status);
-      }
-      expect(statuses.slice(0, 5).every((status) => status === 200)).toBe(true);
-      expect(statuses[5]).toBe(429);
+      const missing = await postJson(ctx.base, "/api/skool-invite", {});
+      expect(missing.status).toBe(410);
+      const invalid = await postJson(ctx.base, "/api/skool-invite", { email: "not-an-email" });
+      expect(invalid.status).toBe(410);
+      expect(outbound).not.toHaveBeenCalled();
     } finally {
       await ctx.close();
     }

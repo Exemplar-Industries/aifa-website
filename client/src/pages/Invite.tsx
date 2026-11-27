@@ -2,7 +2,8 @@
  * AI Film Academy — Anthum Community Free Invite Page
  * Route: /anthum-exclusive
  * Purpose: 100 free membership slots for Anthum community members
- * Backend: Supabase (slot tracking + duplicate prevention) → Skool direct webhook invite
+ * Backend: Supabase (slot tracking + duplicate prevention). Auto-invites are retired;
+ * the success state points people to the free Skool community.
  * Sold-out state: Anthum waitlist capture → anthum_waitlist table (status: waitlist)
  */
 
@@ -13,6 +14,8 @@ import Turnstile from "@/components/Turnstile";
 // ─── Types ────────────────────────────────────────────────────────────────────
 type FormState = "idle" | "loading" | "success" | "error" | "duplicate" | "full";
 type WaitlistState = "idle" | "loading" | "success" | "error" | "duplicate";
+
+const SKOOL_COMMUNITY_URL = "https://www.skool.com/aifilmacademy/about";
 
 // ─── Animated Counter Component ───────────────────────────────────────────────
 function AnimatedCounter({ value, total }: { value: number; total: number }) {
@@ -298,6 +301,7 @@ function WaitlistForm() {
 export default function Invite() {
   const [slotsRemaining, setSlotsRemaining] = useState<number | null>(null);
   const [formState, setFormState] = useState<FormState>("idle");
+  const [joinDirectly, setJoinDirectly] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -378,21 +382,23 @@ export default function Invite() {
         throw insertError;
       }
 
-      // 3. Trigger Skool invite via the server proxy (webhook URL stays server-side)
+      // 3. Auto-invites are retired; a 410 points the success state at the free community.
       try {
         const res = await fetch("/api/skool-invite", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email: trimmedEmail }),
         });
-        if (res.ok) {
+        if (res.status === 410) {
+          setJoinDirectly(true);
+        } else if (res.ok) {
           await supabase
             .from("invite_claims")
             .update({ zapier_triggered: true, zapier_triggered_at: new Date().toISOString() })
             .eq("email", trimmedEmail);
         }
       } catch {
-        console.warn("Skool invite failed — claim saved, invite may need manual follow-up");
+        setJoinDirectly(true);
       }
 
       // 4. Refresh counter
@@ -503,8 +509,20 @@ export default function Invite() {
             <div className="text-4xl mb-3">🎬</div>
             <h2 className="text-xl font-bold text-white mb-2">You're in!</h2>
             <p className="text-gray-400 text-sm">
-              Check your inbox — your Skool invite is on its way. It may take up to 15 minutes.
-              Once you accept, you'll have full access to every course in the Academy.
+              {joinDirectly ? (
+                <>
+                  Auto-invites are retired. The community is free to join.{" "}
+                  <a href={SKOOL_COMMUNITY_URL} target="_blank" rel="noopener noreferrer" className="underline text-white">
+                    Join free on Skool
+                  </a>
+                  .
+                </>
+              ) : (
+                <>
+                  Check your inbox — your Skool invite is on its way. It may take up to 15 minutes.
+                  Once you accept, you'll have full access to every course in the Academy.
+                </>
+              )}
             </p>
           </div>
         ) : formState === "duplicate" ? (
